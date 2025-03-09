@@ -1,0 +1,61 @@
+{
+    "card_name": "The HeavyKnight Kummander",
+    "ID": "BS70-033",
+    "card_type": "Spirit",
+    "set": "BS70",
+    "image": "card_images/BS70/BS70-033.jpg",
+    "color": [
+      "Green"
+    ],
+    "cost": 5,
+    "reductions": [
+      "green",
+      "green",
+      "god"
+    ],
+    "symbols": [
+      "green"
+    ],
+    "families": [
+      "Devotee",
+      "Shellman"
+    ],
+    "effects": [
+      {
+        "levels": [
+          1,
+          2
+        ],
+        "condition": "When Summoned",
+        "keywords": [],
+        "details": "You can put two cores from the Void to any \"Shellman\" family Spirits you control. Then, if you control any \"Contractor Ares\", your counter +1.",
+        "steps": []
+      },
+      {
+        "levels": [
+          2
+        ],
+        "condition": "Your Turn",
+        "keywords": [],
+        "details": "When you activate (When Summoned) effects of your \"Shellman\" family Spirits, the opponent can't activate [After an opposing Spirit's (When Summoned) effect resolves] Burst effects.",
+        "steps": []
+      }
+    ],
+    "core_requirements": [
+      {
+        "level": 1,
+        "battlePoints": 5000,
+        "cores": 1
+      },
+      {
+        "level": 2,
+        "battlePoints": 8000,
+        "cores": 3
+      }
+    ],
+    "related_cards": [
+      "Contractor Ares",
+      "Shellman family cards"
+    ]
+  }
+  
