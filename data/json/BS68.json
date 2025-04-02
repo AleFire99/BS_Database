@@ -1,0 +1,688 @@
+[
+    {
+        "Name": "Shuriken Fish",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-001"
+    },
+    {
+        "Name": "Fogna-Blader",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-002"
+    },
+    {
+        "Name": "Sham-Bladra",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-003"
+    },
+    {
+        "Name": "The WolfDragonStar Shooting-Lou",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-004"
+    },
+    {
+        "Name": "The WhiteCrowDragon Korax (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-005"
+    },
+    {
+        "Name": "The JudgmentBeast Dead-Stallion",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-006"
+    },
+    {
+        "Name": "The TwinGalaxyDragon Lindblad (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-007"
+    },
+    {
+        "Name": "The AstralStagDragon Elafeed",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-008"
+    },
+    {
+        "Name": "The SmallSwordMaster Gadged",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-009"
+    },
+    {
+        "Name": "Mega-StarDragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-010"
+    },
+    {
+        "Name": "Leo-Smog",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-011"
+    },
+    {
+        "Name": "The Sorcerer Infernal Soldier",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-012"
+    },
+    {
+        "Name": "The DarkKnight Sagramore",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-013"
+    },
+    {
+        "Name": "The SorcererWatchdog Hound-Beros",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-014"
+    },
+    {
+        "Name": "The SorcererDragonWarrior Galatiark",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-015"
+    },
+    {
+        "Name": "The SorcererMystic Heineza",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-016"
+    },
+    {
+        "Name": "The SorcererBirdGeneral Naberidus",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-017"
+    },
+    {
+        "Name": "The SorcererDuchess Phenlese (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-018"
+    },
+    {
+        "Name": "The SorcererSwordsman Javir",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-019"
+    },
+    {
+        "Name": "The SorcererWolf Volgoat (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-020"
+    },
+    {
+        "Name": "The BloodAllianceThirteenMarquess Alvanshell",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-021"
+    },
+    {
+        "Name": "The SorcererWarrior Gadirac",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-022"
+    },
+    {
+        "Name": "The SorcererBeastMarquis Vaplus",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-023"
+    },
+    {
+        "Name": "Gaudy Trooper G",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-024"
+    },
+    {
+        "Name": "Keravno-Möwe",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-025"
+    },
+    {
+        "Name": "Keravno-Husky (w/ Secret)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-026"
+    },
+    {
+        "Name": "Kinopper",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-027"
+    },
+    {
+        "Name": "The JudgmentBeast Dead-Foxy",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-028"
+    },
+    {
+        "Name": "Binarater, Shinobi Lampo (w/ Secret)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-029"
+    },
+    {
+        "Name": "The MischievousBug Colick",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-030"
+    },
+    {
+        "Name": "Keravno-Elephant",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-031"
+    },
+    {
+        "Name": "The ShellGrandPreceptor Goliath-Toutaku",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-032"
+    },
+    {
+        "Name": "Keravno-Cicindela",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-033"
+    },
+    {
+        "Name": "Thunder-Yakko",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-034"
+    },
+    {
+        "Name": "The SteelKnight Cleomenes",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-035"
+    },
+    {
+        "Name": "The SteelKnight Phalaicos",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-036"
+    },
+    {
+        "Name": "The SteelMaiden012 Alcyone (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-037"
+    },
+    {
+        "Name": "The SteelKnight Stratos",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-038"
+    },
+    {
+        "Name": "The SteelMaiden002 Eufemia (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-039"
+    },
+    {
+        "Name": "The DinosaurMobile Defendic-Spino",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-040"
+    },
+    {
+        "Name": "Railgunner-Foresight",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-041"
+    },
+    {
+        "Name": "The SteelKnight OwlUser Ignatios",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-042"
+    },
+    {
+        "Name": "The SteelMaiden008 Tryphaena",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-043"
+    },
+    {
+        "Name": "The VeteranSteelKnight Mithridates",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-044"
+    },
+    {
+        "Name": "The ChalkSteelKnight Gennadios",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-045"
+    },
+    {
+        "Name": "Arcanabird-ClubOwl",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-046"
+    },
+    {
+        "Name": "Nut kun",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-047"
+    },
+    {
+        "Name": "Kamikiri File",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-048"
+    },
+    {
+        "Name": "Maimai Measure",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-049"
+    },
+    {
+        "Name": "Parrot Wrench",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-050"
+    },
+    {
+        "Name": "Bison Jigsaw",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-051"
+    },
+    {
+        "Name": "Tooled Fighter",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-052"
+    },
+    {
+        "Name": "Beast Pliers (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-053"
+    },
+    {
+        "Name": "Tortoise Drill",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-054"
+    },
+    {
+        "Name": "Another SagePentan",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-055"
+    },
+    {
+        "Name": "The FateAngelia Fortunel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-056"
+    },
+    {
+        "Name": "Vultur Chainsaw (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-057"
+    },
+    {
+        "Name": "Gigant Hammer",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-058"
+    },
+    {
+        "Name": "Specimen No.6 Fropper",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-059"
+    },
+    {
+        "Name": "The SpacePirate Cali-Harius",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-060"
+    },
+    {
+        "Name": "Folly-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-061"
+    },
+    {
+        "Name": "The SteamNobleThief Latimer",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-062"
+    },
+    {
+        "Name": "The GrandseaBeast Daiou-Manticore (w/ Secret)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-063"
+    },
+    {
+        "Name": "The JudgmentBeast Dead-Regalecus",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-064"
+    },
+    {
+        "Name": "Binarater, Powered Shack (w/ Secret)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-065"
+    },
+    {
+        "Name": "Red Arohydra",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS68-066"
+    },
+    {
+        "Name": "The SteamNobleThief Winchelsea",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-067"
+    },
+    {
+        "Name": "The SpacePirate Captain-Gorgordes",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS68-068"
+    },
+    {
+        "Name": "The Sun Tree",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "BS68-069"
+    },
+    {
+        "Name": "Hades' Nether Temple",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS68-070"
+    },
+    {
+        "Name": "The Secret Book of Thunder",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS68-071"
+    },
+    {
+        "Name": "Steel Sanctuary",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS68-072"
+    },
+    {
+        "Name": "Kinich-Ahau's Toolcraft Temple",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS68-073"
+    },
+    {
+        "Name": "The Sea Serpent Eye's Odachi",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS68-074"
+    },
+    {
+        "Name": "Blade Burst",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS68-075"
+    },
+    {
+        "Name": "Plutonic Wall",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS68-076"
+    },
+    {
+        "Name": "Hades Disaster",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS68-077"
+    },
+    {
+        "Name": "Thunderclap Incarnation",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS68-078"
+    },
+    {
+        "Name": "Steel Arm Block",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS68-079"
+    },
+    {
+        "Name": "Steel Creation",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS68-080"
+    },
+    {
+        "Name": "Shock Hammer",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS68-081"
+    },
+    {
+        "Name": "Tooled Piercer",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS68-082"
+    },
+    {
+        "Name": "Squidomain",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS68-083"
+    },
+    {
+        "Name": "The SorcererContractor Hades (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Contract Nexus",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS68-CX01"
+    },
+    {
+        "Name": "The SteelContractor Athena (w/ Secret)",
+        "Color": "White",
+        "Type": "Contract Nexus",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS68-CX02"
+    },
+    {
+        "Name": "The ToolcraftContractor Kinich-Ahau (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Contract Nexus",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS68-CX03"
+    },
+    {
+        "Name": "The SunCreationDragonDeity Helio-Rising-Apollodragon (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS68-X01"
+    },
+    {
+        "Name": "The UltraBladeEmperorDragon Gladi-Bladra (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS68-X02"
+    },
+    {
+        "Name": "The SorcererInfernalKing Dark-Clymenus (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS68-X03"
+    },
+    {
+        "Name": "The ThunderEmperorBird Keravno-Adler (w/ Secret)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS68-X04"
+    },
+    {
+        "Name": "The SteelLord Pallas-Dione (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS68-X05"
+    },
+    {
+        "Name": "The ToolcraftSacredBeast Chilam-Balam (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS68-X06"
+    },
+    {
+        "Name": "The AzureKingBondDeity Frag-Judgment (w/ Secret)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS68-X07"
+    },
+    {
+        "Name": "The Colosseo Hyde-Crab (w/ Secret)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS68-X08"
+    },
+    {
+        "Name": "Fatal-Judgment (w/ Secret)",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS68-X09"
+    },
+    {
+        "Name": "The SixHellSorcerer Dells-Vajram (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "NX-Rare",
+        "Card_ID": "BS68-NX01"
+    },
+    {
+        "Name": "The SteelMaiden ScrappedUnit Lambda (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "NX-Rare",
+        "Card_ID": "BS68-NX02"
+    },
+    {
+        "Name": "The DaikouguDragon Gigo-Tool (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "NX-Rare",
+        "Card_ID": "BS68-NX03"
+    }
+]

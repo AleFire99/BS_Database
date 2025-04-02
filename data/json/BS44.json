@@ -1,0 +1,772 @@
+[
+    {
+        "Name": "The ThrustDinosaur Pachycetto",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-001"
+    },
+    {
+        "Name": "Winter-Triangle-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-002"
+    },
+    {
+        "Name": "Summer-Triangle-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-003"
+    },
+    {
+        "Name": "Spring-Triangle-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-004"
+    },
+    {
+        "Name": "Godseeker-Alpharegion",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-005"
+    },
+    {
+        "Name": "Shamant-Baboon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-006"
+    },
+    {
+        "Name": "Fallscross-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-007"
+    },
+    {
+        "Name": "The EruptionDinosaur Stego-Erupt",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-008"
+    },
+    {
+        "Name": "The SunBlackSpot Sunspot-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-009"
+    },
+    {
+        "Name": "The SunEmperor Heliosphere-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-010"
+    },
+    {
+        "Name": "Crystal-Siegfriedragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-011"
+    },
+    {
+        "Name": "The SuperDreadnoughtStarship Schwarzschild-Dragon",
+        "Color": "Red",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-012"
+    },
+    {
+        "Name": "The ThunderstormDragon Varevars",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-013"
+    },
+    {
+        "Name": "Mummy Headiless",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-014"
+    },
+    {
+        "Name": "Smog Phynx",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-015"
+    },
+    {
+        "Name": "Ankh Snake",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-016"
+    },
+    {
+        "Name": "Flightfeather Snake",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-017"
+    },
+    {
+        "Name": "Godseeker-Hajarcobra",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-018"
+    },
+    {
+        "Name": "Kaisermustache Snake",
+        "Color": "Purple",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-019"
+    },
+    {
+        "Name": "Egyt-Gladiator",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-020"
+    },
+    {
+        "Name": "Deathmask Knight",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-021"
+    },
+    {
+        "Name": "Mummy Dragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-022"
+    },
+    {
+        "Name": "Alien Viper",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-023"
+    },
+    {
+        "Name": "The DeadlyScorpionKing Menescorpio",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-024"
+    },
+    {
+        "Name": "The SnakeDeityPrincess Hatshepsut",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-025"
+    },
+    {
+        "Name": "The MakaiChanceller Renegada",
+        "Color": "Purple",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-026"
+    },
+    {
+        "Name": "Bamboo Corgi",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-027"
+    },
+    {
+        "Name": "Strelitzia-Bandicoot",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-028"
+    },
+    {
+        "Name": "Pachira Fox",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-029"
+    },
+    {
+        "Name": "Mink Yuccar",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-030"
+    },
+    {
+        "Name": "Aglao Pelican",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-031"
+    },
+    {
+        "Name": "The HeroBeast ArcheryGeneral Pandaro-Cross",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-032"
+    },
+    {
+        "Name": "The HeroBeast OldGeneral Tiger-Nestor",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-033"
+    },
+    {
+        "Name": "The SevenGreatHeroBeasts Lio-Ajax",
+        "Color": "Green",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-034"
+    },
+    {
+        "Name": "The HornedKnight Gyas-Basher",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-035"
+    },
+    {
+        "Name": "Futreif-Hedgehog",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-036"
+    },
+    {
+        "Name": "Titaniumquartz-Lizard",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-037"
+    },
+    {
+        "Name": "Commando-Collie",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-038"
+    },
+    {
+        "Name": "Hippo-Cruiser",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-039"
+    },
+    {
+        "Name": "Godseeker-Negasbok",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-040"
+    },
+    {
+        "Name": "Zaneegun Mk-X",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-041"
+    },
+    {
+        "Name": "Spread Tortoise",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-042"
+    },
+    {
+        "Name": "The SevenSisters Electra",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-043"
+    },
+    {
+        "Name": "Polarnight-Garm",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-044"
+    },
+    {
+        "Name": "The GiantCannonMothership Mother-Phaia",
+        "Color": "White",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-045"
+    },
+    {
+        "Name": "The BeastKingMachine Doldleon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-046"
+    },
+    {
+        "Name": "The GiantCannonMechaBeast Calydonian-Boar",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-047"
+    },
+    {
+        "Name": "The HecatoncheiresGigantic Briareos",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-048"
+    },
+    {
+        "Name": "The Wonderland Horsefly",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-049"
+    },
+    {
+        "Name": "The Wonderland Kitty and Snowdrop",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-050"
+    },
+    {
+        "Name": "The Angelia Luluel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-051"
+    },
+    {
+        "Name": "The WaterAngelia Efuel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-052"
+    },
+    {
+        "Name": "The DarkStoneMaiden Alice",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-053"
+    },
+    {
+        "Name": "The PentanKaiser ~Wandering Olym~",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-054"
+    },
+    {
+        "Name": "The WaterAngelia Freesiel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-055"
+    },
+    {
+        "Name": "The DivineWorldGuide Trickster",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-056"
+    },
+    {
+        "Name": "The WaterAngelia Tifaniel",
+        "Color": "Yellow",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-057"
+    },
+    {
+        "Name": "The SandseaBeast Dorcas Gazelle",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-058"
+    },
+    {
+        "Name": "The SandseaPriest Pheasantmarm",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-059"
+    },
+    {
+        "Name": "The SandseaExecutioner Hyenam",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-060"
+    },
+    {
+        "Name": "The SandseaWarrior Buffarosa",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-061"
+    },
+    {
+        "Name": "The WanderingSandseaPirate Captain-Humpback",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-062"
+    },
+    {
+        "Name": "Pyramid-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS44-063"
+    },
+    {
+        "Name": "The SandseaPirateKing Crocohetep",
+        "Color": "Blue",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-064"
+    },
+    {
+        "Name": "The SandseaPirateKing Zebefre",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-065"
+    },
+    {
+        "Name": "Obelisk-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS44-066"
+    },
+    {
+        "Name": "Drag-Pulsar",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS44-067"
+    },
+    {
+        "Name": "The EarthSnake Sa-Ta",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS44-068"
+    },
+    {
+        "Name": "The BladeWolfArmor Belio-Wulf",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS44-069"
+    },
+    {
+        "Name": "Bowgunner-Eagle",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS44-070"
+    },
+    {
+        "Name": "The DivineChariot Merkabah",
+        "Color": "Yellow",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS44-071"
+    },
+    {
+        "Name": "Jackal-Arms",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS44-072"
+    },
+    {
+        "Name": "Apollon's Shooting Stardragon Temple",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-073"
+    },
+    {
+        "Name": "Olym's Conical Mountain",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-074"
+    },
+    {
+        "Name": "Osiris' Underground Temple",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-075"
+    },
+    {
+        "Name": "Floating Pyramid Fleet",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-076"
+    },
+    {
+        "Name": "Olym's Golden Streets",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-077"
+    },
+    {
+        "Name": "The Grassland Ruins",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-078"
+    },
+    {
+        "Name": "Artemis' Giant Tree Temple",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-079"
+    },
+    {
+        "Name": "The Ice Pillar Landbridge",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-080"
+    },
+    {
+        "Name": "The Unified Capital Lumina-Aeterna",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-081"
+    },
+    {
+        "Name": "Arrival at the Divine World",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-082"
+    },
+    {
+        "Name": "Pyramid Atop The Sapphire Sea",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-083"
+    },
+    {
+        "Name": "The Sandsea Artificial Oasis",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS44-084"
+    },
+    {
+        "Name": "Shamanic Draw",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-085"
+    },
+    {
+        "Name": "Magnetic Flame",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-086"
+    },
+    {
+        "Name": "Evil Oracle",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-087"
+    },
+    {
+        "Name": "Snake Vision",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-088"
+    },
+    {
+        "Name": "Hero's Roar",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-089"
+    },
+    {
+        "Name": "Awakening Beast",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-090"
+    },
+    {
+        "Name": "Dream Snow",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-091"
+    },
+    {
+        "Name": "Artemic Shield",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-092"
+    },
+    {
+        "Name": "Healing Aid",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-093"
+    },
+    {
+        "Name": "Elemental Magic",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-094"
+    },
+    {
+        "Name": "Holy Ankh",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-095"
+    },
+    {
+        "Name": "Splash Zapper",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS44-096"
+    },
+    {
+        "Name": "The SunSupernovaDragon Apollowurm",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS44-X01"
+    },
+    {
+        "Name": "The UnderworldSnakeDeity Authaal",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS44-X02"
+    },
+    {
+        "Name": "The SevenGreatHeroBeasts WhirlwindKing Achilleser",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS44-X03"
+    },
+    {
+        "Name": "The CandraSacredBeast Fanatech-Elk",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS44-X04"
+    },
+    {
+        "Name": "The WaterSeraph Mirediel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS44-X05"
+    },
+    {
+        "Name": "The DarkStones SandseaPirateDeity Pharaom",
+        "Color": "Blue",
+        "Type": "Spirit/Burst",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS44-X06"
+    },
+    {
+        "Name": "Grandwalker Apollon",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS44-X07"
+    },
+    {
+        "Name": "Grandwalker Osiris",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS44-X08"
+    },
+    {
+        "Name": "Grandwalker Artemis",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS44-X09"
+    },
+    {
+        "Name": "The WorldDragon Grand-Lolo-Dragon",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS44-XX01"
+    },
+    {
+        "Name": "Grandwalker Lolo",
+        "Color": "All",
+        "Type": "Nexus",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS44-XX02"
+    },
+    {
+        "Name": "The ConvictionDownfallSword Judgment-Dragon-Sword",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "10thX-Rare",
+        "Card_ID": "BS44-10thX01"
+    },
+    {
+        "Name": "The SacredEmperorWeapon Siegfrieden-Cannon",
+        "Color": "Red/White",
+        "Type": "Brave",
+        "Rarity": "10thX-Rare",
+        "Card_ID": "BS44-10thX02"
+    },
+    {
+        "Name": "Apollosword & Strikeblade",
+        "Color": "Red/White",
+        "Type": "Brave",
+        "Rarity": "10thX-Rare",
+        "Card_ID": "BS44-10thX03"
+    }
+]

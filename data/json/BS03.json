@@ -1,0 +1,1073 @@
+[
+    {
+        "Name": "The FireSpirit Salamandert",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-001"
+    },
+    {
+        "Name": "Edgehog",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-002"
+    },
+    {
+        "Name": "The Assassin Dragno",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-003"
+    },
+    {
+        "Name": "Brontrident",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-004"
+    },
+    {
+        "Name": "Enchu",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-005"
+    },
+    {
+        "Name": "Runkaphorhynchus",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-006"
+    },
+    {
+        "Name": "Flame-Elk",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-007"
+    },
+    {
+        "Name": "The BladeDragon Stegorasaurus",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-008"
+    },
+    {
+        "Name": "The FireBlower Melt",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-009"
+    },
+    {
+        "Name": "The BlackDragon Vritra",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-010"
+    },
+    {
+        "Name": "The DinoCavalry Diridalus",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS03-011"
+    },
+    {
+        "Name": "The GrandBishop Levia",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-012"
+    },
+    {
+        "Name": "Hellscorpio",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-013"
+    },
+    {
+        "Name": "Skull-Fish",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-014"
+    },
+    {
+        "Name": "The EvilGrass Mindragora",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-015"
+    },
+    {
+        "Name": "The InvisibleMan Eclear",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-016"
+    },
+    {
+        "Name": "The GhostCaptain Silvershark",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-017"
+    },
+    {
+        "Name": "Darkwraith",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-018"
+    },
+    {
+        "Name": "The EvilTactician Hellmia",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-019"
+    },
+    {
+        "Name": "Mega-Humpdump",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-020"
+    },
+    {
+        "Name": "The Count Wyhl",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-021"
+    },
+    {
+        "Name": "The DarkReefDiva Seiren",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-022"
+    },
+    {
+        "Name": "The ArtificialCreature No.44",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-023"
+    },
+    {
+        "Name": "The VampireKnight Nosferat",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS03-024"
+    },
+    {
+        "Name": "Stagscissor",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-025"
+    },
+    {
+        "Name": "The WoodenSpirit Dryadena",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-026"
+    },
+    {
+        "Name": "Fullmingo",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-027"
+    },
+    {
+        "Name": "Mogrunner",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-028"
+    },
+    {
+        "Name": "Machfly",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-029"
+    },
+    {
+        "Name": "The BeastMaster Rainer Bros.",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-030"
+    },
+    {
+        "Name": "The BlackWind Panther",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-031"
+    },
+    {
+        "Name": "The SpiderWoman Arachnet",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-032"
+    },
+    {
+        "Name": "The Beatpriest",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-033"
+    },
+    {
+        "Name": "The Gamecock Bishamon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-034"
+    },
+    {
+        "Name": "The GoldenFlower Zonne-Bloem",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-035"
+    },
+    {
+        "Name": "The GodBird Peagod",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS03-036"
+    },
+    {
+        "Name": "Ratatoscr",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-037"
+    },
+    {
+        "Name": "Angelafish",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-038"
+    },
+    {
+        "Name": "The Piper Heimdall",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-039"
+    },
+    {
+        "Name": "Ver-Thandia",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-040"
+    },
+    {
+        "Name": "The Artifact Asc",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-041"
+    },
+    {
+        "Name": "The SeaCreature Dugong",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-042"
+    },
+    {
+        "Name": "Hotaruri",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-043"
+    },
+    {
+        "Name": "The MetalMan Surtr",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-044"
+    },
+    {
+        "Name": "The SilverFox Hati",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-045"
+    },
+    {
+        "Name": "The Unicorn Einhorn",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-046"
+    },
+    {
+        "Name": "The CrystalGoddess Freyr",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-047"
+    },
+    {
+        "Name": "The ArmoredSnake Mithgarth",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS03-048"
+    },
+    {
+        "Name": "Mikene",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-049"
+    },
+    {
+        "Name": "Kinokonoko",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-050"
+    },
+    {
+        "Name": "Dongurin",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-051"
+    },
+    {
+        "Name": "Froger",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-052"
+    },
+    {
+        "Name": "The HundredFaces Flatface",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-053"
+    },
+    {
+        "Name": "Arcanadoll-Tria",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-054"
+    },
+    {
+        "Name": "Gomazarashi",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-055"
+    },
+    {
+        "Name": "Ochogo",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-056"
+    },
+    {
+        "Name": "Jellfy",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-057"
+    },
+    {
+        "Name": "The Fairy Tinguly",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-058"
+    },
+    {
+        "Name": "Arcanabeast-Paira",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-059"
+    },
+    {
+        "Name": "Rumpkin",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-060"
+    },
+    {
+        "Name": "The StrawberryGirl Strawberi",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-061"
+    },
+    {
+        "Name": "Chihuahl",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-062"
+    },
+    {
+        "Name": "Ponysus",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-063"
+    },
+    {
+        "Name": "The RoseLady Barossa",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-064"
+    },
+    {
+        "Name": "The Angelia Curio",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-065"
+    },
+    {
+        "Name": "The Angelia Archre",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS03-066"
+    },
+    {
+        "Name": "Arcanaprincess-Un",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-067"
+    },
+    {
+        "Name": "Forthros",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-068"
+    },
+    {
+        "Name": "The Rockhopper Pentan",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-069"
+    },
+    {
+        "Name": "The GreatAngelia Exsia",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS03-070"
+    },
+    {
+        "Name": "The BattleBeast Bulltop",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-071"
+    },
+    {
+        "Name": "The Pikeman Jeffrey",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-072"
+    },
+    {
+        "Name": "Stone-Statue",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-073"
+    },
+    {
+        "Name": "The BattleBeast Doben",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-074"
+    },
+    {
+        "Name": "The DogMan Murdoch",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-075"
+    },
+    {
+        "Name": "The ClawSword Lazarus",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-076"
+    },
+    {
+        "Name": "The AssaultSoldier Norman",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-077"
+    },
+    {
+        "Name": "The Berserker Troll",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-078"
+    },
+    {
+        "Name": "The StaffOfficer Foxin",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-079"
+    },
+    {
+        "Name": "Rock-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-080"
+    },
+    {
+        "Name": "The GiantCentaurusSoldier Danston",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-081"
+    },
+    {
+        "Name": "Sharkhammer",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-082"
+    },
+    {
+        "Name": "The BearMan Beard",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-083"
+    },
+    {
+        "Name": "The GiantCat Blynx",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-084"
+    },
+    {
+        "Name": "Wood-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-085"
+    },
+    {
+        "Name": "The Repairer Baran-Baran",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-086"
+    },
+    {
+        "Name": "The BattleBeast Rhino-Ceros",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-087"
+    },
+    {
+        "Name": "The FortressCrasher Dennis",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-088"
+    },
+    {
+        "Name": "Deep-Arnold",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-089"
+    },
+    {
+        "Name": "The DragonSlayBlade Guy",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-090"
+    },
+    {
+        "Name": "The BattleBeast Bun-Ffalo",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-091"
+    },
+    {
+        "Name": "The GroundSupporter Francis",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-092"
+    },
+    {
+        "Name": "The BuffaloMan Bulltania",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-091"
+    },
+    {
+        "Name": "The Weaponsmith Bagin",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-094"
+    },
+    {
+        "Name": "The Conjurer Oliver",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-095"
+    },
+    {
+        "Name": "The GiantKing Randolph",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS03-096"
+    },
+    {
+        "Name": "The BirdMan Hawkeye",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-097"
+    },
+    {
+        "Name": "The BattleDragon Wyvern",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS03-098"
+    },
+    {
+        "Name": "The IronFist Tiga",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS03-099"
+    },
+    {
+        "Name": "The WeaponCollector Godfrey",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS03-100"
+    },
+    {
+        "Name": "Volcano-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-101"
+    },
+    {
+        "Name": "The Outlaw Wasteland",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-102"
+    },
+    {
+        "Name": "The Middle of Hard Battle",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS03-103"
+    },
+    {
+        "Name": "The Crossroads of Destiny",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-104"
+    },
+    {
+        "Name": "The Dark Reef Sea Area",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS03-105"
+    },
+    {
+        "Name": "The Sea of Trees in Dark Green",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-106"
+    },
+    {
+        "Name": "The Endless Horizon",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS03-107"
+    },
+    {
+        "Name": "The High Sky Covered by Metal",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-108"
+    },
+    {
+        "Name": "The Earth of Aurora",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS03-109"
+    },
+    {
+        "Name": "The Sacred Place in Falling Stars",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS03-110"
+    },
+    {
+        "Name": "The Child's Room in Midnight",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-111"
+    },
+    {
+        "Name": "The Kingdom of Cards",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS03-112"
+    },
+    {
+        "Name": "The Absorption Triumphal Arch",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-113"
+    },
+    {
+        "Name": "The Rampart of Sapphire",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-114"
+    },
+    {
+        "Name": "The Collapse of Battle Line",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS03-115"
+    },
+    {
+        "Name": "The Loss of Heroes",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-116"
+    },
+    {
+        "Name": "The H.Q. filled with Fighting Spirits",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS03-117"
+    },
+    {
+        "Name": "Fourth Draw",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-118"
+    },
+    {
+        "Name": "Buster Lance",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-119"
+    },
+    {
+        "Name": "Flame Cyclone",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-120"
+    },
+    {
+        "Name": "Double Hearts",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-121"
+    },
+    {
+        "Name": "Fall Down",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-122"
+    },
+    {
+        "Name": "Necromancy",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-123"
+    },
+    {
+        "Name": "Poison Mist",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-124"
+    },
+    {
+        "Name": "Weakness",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-125"
+    },
+    {
+        "Name": "Potion Berry",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-126"
+    },
+    {
+        "Name": "Ivy Cage",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-127"
+    },
+    {
+        "Name": "Multiple Cores",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-128"
+    },
+    {
+        "Name": "Flock Recovery",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-129"
+    },
+    {
+        "Name": "Möbius Loop",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-130"
+    },
+    {
+        "Name": "United Power",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-131"
+    },
+    {
+        "Name": "Perfect Guard",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-132"
+    },
+    {
+        "Name": "High Elixir",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-133"
+    },
+    {
+        "Name": "Puppet String",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-134"
+    },
+    {
+        "Name": "Escape Route",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-135"
+    },
+    {
+        "Name": "Focus Light",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-136"
+    },
+    {
+        "Name": "Four Cards",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-137"
+    },
+    {
+        "Name": "Teleport Change",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-138"
+    },
+    {
+        "Name": "Same Tired",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-139"
+    },
+    {
+        "Name": "Shining Magic",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-140"
+    },
+    {
+        "Name": "Build Up",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-141"
+    },
+    {
+        "Name": "Salvage",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-142"
+    },
+    {
+        "Name": "Blitz",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-143"
+    },
+    {
+        "Name": "Magic Hammer",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-144"
+    },
+    {
+        "Name": "Scramble",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-145"
+    },
+    {
+        "Name": "Nexus Register",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS03-146"
+    },
+    {
+        "Name": "Golem Craft",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS03-147"
+    },
+    {
+        "Name": "Construction",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-148"
+    },
+    {
+        "Name": "Delta Crash",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS03-149"
+    },
+    {
+        "Name": "The SavageKnight Hercules",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS03-X09"
+    },
+    {
+        "Name": "The IceBeast Mam-Morl",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS03-X10"
+    },
+    {
+        "Name": "The ArcAngelia Valiero",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS03-X11"
+    },
+    {
+        "Name": "The GiantHero Titus",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS03-X12"
+    }
+]

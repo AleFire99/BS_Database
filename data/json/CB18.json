@@ -1,0 +1,541 @@
+[
+    {
+        "Name": "The WildFierceMonster Horoboros［Ultra Kaiju 2020］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-001 (A)"
+    },
+    {
+        "Name": "The ParasiticDevastationMonster Metsuboros［Ultra Kaiju 2020］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-001 (B)"
+    },
+    {
+        "Name": "New Generation Ultraman Victory",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-002"
+    },
+    {
+        "Name": "The BrutalSpaceKaiju Kelbim［Ultra Kajiu 2020］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-003"
+    },
+    {
+        "Name": "The FerociousSpaceShark Genegarg［Ultra Kajiu 2020］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-004"
+    },
+    {
+        "Name": "The BombingThunderMonster Grigio-Raiden［Ultra Kaiju 2020］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-005"
+    },
+    {
+        "Name": "New Generation Ultraman Ginga",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-006"
+    },
+    {
+        "Name": "New Generation Ultraman Fuma",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-007"
+    },
+    {
+        "Name": "The SpaceRobot King Joe［Ultra Kaiju 2020］",
+        "Color": "Red/White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-008"
+    },
+    {
+        "Name": "The SkullKaiju Red King A［Ultra Kaiju 2020］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-009"
+    },
+    {
+        "Name": "The SkullKaiju Red King B［Ultra Kaiju 2020］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-010"
+    },
+    {
+        "Name": "New Generation Ultraman Orb Orb Origin",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-011"
+    },
+    {
+        "Name": "New Generation Ultraman Taiga",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-012 (A)"
+    },
+    {
+        "Name": "New Generation Ultraman Taiga Tri-Strium",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-012 (B)"
+    },
+    {
+        "Name": "New Generation Ultraman Geed Primitive",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-013 (A)"
+    },
+    {
+        "Name": "New Generation Ultraman Geed Ultimate Final",
+        "Color": "Red/Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-013 (B)"
+    },
+    {
+        "Name": "New Generation Ultraman X",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-014"
+    },
+    {
+        "Name": "New Generation Ultraman Titas",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-015"
+    },
+    {
+        "Name": "The CombinationKingDemonBeast Zeppandon［Ultra Kaiju 2020］ (w/ Parallel Art)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB18-016"
+    },
+    {
+        "Name": "The LastJudgementer Gillvalis［Ultra Kaiju 2020］",
+        "Color": "Red/White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-017"
+    },
+    {
+        "Name": "The HitmanTerrible-Monster Baraba［Ultra Kaiju 2020］",
+        "Color": "Red/Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-018"
+    },
+    {
+        "Name": "New Generation Ultraman Ginga Victory",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-019"
+    },
+    {
+        "Name": "The BrutalSpaceKaiju Mother Kelbim［Ultra Kaiju 2020］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-020"
+    },
+    {
+        "Name": "New Generation Ultraman Exceed X Beta Spark Armor",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-021"
+    },
+    {
+        "Name": "New Generation Ultraman Taiga Photon-Earth",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB18-022"
+    },
+    {
+        "Name": "New Generation Ultraman Gruebe",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-023"
+    },
+    {
+        "Name": "New Generation Ultrawoman Grigio",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-024"
+    },
+    {
+        "Name": "New Generation Ultraman Blu Aqua",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-025"
+    },
+    {
+        "Name": "New Generation Ultraman Rosso Flame",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-026"
+    },
+    {
+        "Name": "The PirateAlien Barossa Seijin (The Second)［Ultra Kaiju 2020］",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-027"
+    },
+    {
+        "Name": "The VoidKaiju Greeza［Ultra Kaiju 2020］",
+        "Color": "Purple/Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-028"
+    },
+    {
+        "Name": "Ultraman Belial",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-029 (A)"
+    },
+    {
+        "Name": "The HundredBodyKaiju Belyudra",
+        "Color": "Purple/Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-029 (B)"
+    },
+    {
+        "Name": "Ultraman Tregear",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-030"
+    },
+    {
+        "Name": "The MaliciousDemonicMonster Grimdo",
+        "Color": "Purple/Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-031"
+    },
+    {
+        "Name": "Ultraman Zett Alpha Edge",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-032"
+    },
+    {
+        "Name": "Ultraman Zett Alpha Edge",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-033 (A)"
+    },
+    {
+        "Name": "Ultraman Zett Gamma Future",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-033 (B)"
+    },
+    {
+        "Name": "Ultraman Zett Beta Smash",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-034"
+    },
+    {
+        "Name": "Ultraman Geed Galaxy Rising",
+        "Color": "White/Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-035"
+    },
+    {
+        "Name": "Ultraman Ace",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB18-036"
+    },
+    {
+        "Name": "Ultraman Zett Gamma Future",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-037"
+    },
+    {
+        "Name": "Special Aircraft No. 4 Ultroid Zero",
+        "Color": "White/Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-038 (A)"
+    },
+    {
+        "Name": "The AnnihilationArmorMonster Destrudos［Ultra Kaiju 2020］",
+        "Color": "Purple/White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-038 (B)"
+    },
+    {
+        "Name": "Special Aircraft No. 1 Sevenger",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-039"
+    },
+    {
+        "Name": "Special Aircraft No. 2 Windom",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-040"
+    },
+    {
+        "Name": "Special Aircraft No. 3 King Joe STORAGE Custom",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-041"
+    },
+    {
+        "Name": "Ultraman Dyna Strong Type",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-042"
+    },
+    {
+        "Name": "Ultraman Zett Original",
+        "Color": "Blue/White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-043"
+    },
+    {
+        "Name": "Ultraman Tiga Multi Type",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-044 (A)"
+    },
+    {
+        "Name": "Ultraman Tiga Sky Type",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-044 (B)"
+    },
+    {
+        "Name": "Ultraman Trigger Multi Type",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB18-045"
+    },
+    {
+        "Name": "The SuperAncientGiantOfLight Ultraman Tiga (w/ Parallel Art)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-046"
+    },
+    {
+        "Name": "The YoungUltraWarrior Ultraman Zero",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB18-047"
+    },
+    {
+        "Name": "Ultraman Dyna Miracle Type",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB18-048"
+    },
+    {
+        "Name": "Ultraman Tiga Multi Type",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-049 (A)"
+    },
+    {
+        "Name": "Ultraman Tiga Power Type",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB18-049 (B)"
+    },
+    {
+        "Name": "Ultraman Gaia (SV)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-050"
+    },
+    {
+        "Name": "The PhantomWorldSword Beliarok",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "CB18-051"
+    },
+    {
+        "Name": "New Generation Ultraman",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-052"
+    },
+    {
+        "Name": "Celebro Kaburagi-Possessed Form［Ultra Kaiju 2020］",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-053"
+    },
+    {
+        "Name": "The Special Tactical Operations Regimental Airborne and Ground Equipment STORAGE Headquarters",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-054"
+    },
+    {
+        "Name": "The Giants' Statues",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB18-055"
+    },
+    {
+        "Name": "Ultraman No. 6 Ultraman Taro (w/ Parallel Art)",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB18-056"
+    },
+    {
+        "Name": "Zett's Master Ultraman Zero (w/ Parallel Art)",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB18-057"
+    },
+    {
+        "Name": "The CrimsonFighter Ultraseven",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB18-058"
+    },
+    {
+        "Name": "Reiga Ultimate Blaster",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB18-059"
+    },
+    {
+        "Name": "Atros Burst",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB18-060"
+    },
+    {
+        "Name": "Zestium Ray",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB18-061"
+    },
+    {
+        "Name": "Glitter Zeperion Ray",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB18-062"
+    },
+    {
+        "Name": "The SuperCombinationKaiju Five King［Ultra Kaiju 2020］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB18-X01"
+    },
+    {
+        "Name": "New Generation Ultraman Reiga (w/ Parallel Art)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB18-X02"
+    },
+    {
+        "Name": "Ultraman Belial Atrocious",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB18-X03"
+    },
+    {
+        "Name": "The PhantomDemon Jugglus Juggler［Ultra Kaiju 2020］",
+        "Color": "White/Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB18-X04"
+    },
+    {
+        "Name": "Ultraman Zett Delta Rise Claw (w/ Parallel Art)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB18-X05"
+    },
+    {
+        "Name": "The LightOfHope Glitter Tiga",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB18-X06"
+    },
+    {
+        "Name": "Ultraman King",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "XX-Rare",
+        "Card_ID": "CB18-XX01"
+    }
+]

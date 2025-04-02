@@ -1,0 +1,772 @@
+[
+    {
+        "Name": "Futargo Lizard",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-001"
+    },
+    {
+        "Name": "Fizard X",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-002"
+    },
+    {
+        "Name": "Ignite Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-003"
+    },
+    {
+        "Name": "The VolcanoDinosaur Vurgannon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-004 (A)"
+    },
+    {
+        "Name": "The VolcanoAzureDragon Vurgannon",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-004 (B)"
+    },
+    {
+        "Name": "The ImaginaryFlameDragon Crimson-Mirage",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-005"
+    },
+    {
+        "Name": "The HeavyTrooper Dragno",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-006"
+    },
+    {
+        "Name": "The ImperialRouseWarlord OujinDragon -Type Zhuque-",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-007 (A)"
+    },
+    {
+        "Name": "The ImperialRouseWarlord OujinDragon -Type Xuanwu-",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-007 (B)"
+    },
+    {
+        "Name": "The SixSwordsDragon Val-de-Roc",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-008"
+    },
+    {
+        "Name": "The MachineCatalystGreatGeneral Muramasa-Dragon",
+        "Color": "Red/White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-009"
+    },
+    {
+        "Name": "Green Flash Dragon",
+        "Color": "Red",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-010"
+    },
+    {
+        "Name": "Night Bladra",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-011"
+    },
+    {
+        "Name": "Camelot Rook",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-012"
+    },
+    {
+        "Name": "Camelot Knight X",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-013"
+    },
+    {
+        "Name": "Pioneer Vampire Angie",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-014"
+    },
+    {
+        "Name": "The NetherNecromancer Dominus",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-015"
+    },
+    {
+        "Name": "The BladeVampire Shredder",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-016"
+    },
+    {
+        "Name": "The DemonDragon Schwarzione",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-017 (A)"
+    },
+    {
+        "Name": "The SteamDemonDragon Schwarzione",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-017 (B)"
+    },
+    {
+        "Name": "The AzureDuke Vernhard",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-018"
+    },
+    {
+        "Name": "The DarkKnight Lancelot X",
+        "Color": "Purple",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-019"
+    },
+    {
+        "Name": "The NetherKnight L'Evangile",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-020"
+    },
+    {
+        "Name": "The PurpleSmokeWatchdog Cerberusmog",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-021 (A)"
+    },
+    {
+        "Name": "The VisionaryFlameWatchdog Cerberussa",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-021 (B)"
+    },
+    {
+        "Name": "The DragonKnight Albert",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-022"
+    },
+    {
+        "Name": "The StaveBeast Alpascore",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-023"
+    },
+    {
+        "Name": "Shield Beetle",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-024"
+    },
+    {
+        "Name": "Pioneer TreeSpirit Happa",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-025"
+    },
+    {
+        "Name": "Racket Hummingbird",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-026"
+    },
+    {
+        "Name": "Bat-Eared Fox",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-027"
+    },
+    {
+        "Name": "The RouseBeastPrince Leonedge",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-028 (A)"
+    },
+    {
+        "Name": "The FlameBeastPrince Leonedge",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-028 (B)"
+    },
+    {
+        "Name": "The EighthToneBeast NoteKangaroo",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-029"
+    },
+    {
+        "Name": "Jisaidori",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-030"
+    },
+    {
+        "Name": "The ShellRouseSwordsman Rhinoceros",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-031 (A)"
+    },
+    {
+        "Name": "The OneFallenIntoDarkness Rhinoceros",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-031 (B)"
+    },
+    {
+        "Name": "The ShellWarrior Gakuhi-Hopper",
+        "Color": "Green",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-032"
+    },
+    {
+        "Name": "The DeathWingsKing Death-Condor",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-033"
+    },
+    {
+        "Name": "The RagingBeast BlackPanther",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-034"
+    },
+    {
+        "Name": "Jammer Owl",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-035"
+    },
+    {
+        "Name": "Shield Badger",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-036"
+    },
+    {
+        "Name": "Diamond Betta",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-037"
+    },
+    {
+        "Name": "The UnicornMachineBeast Amdus-Cias",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-038 (A)"
+    },
+    {
+        "Name": "The UnicornHellMachine Amdus-Cias",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-038 (B)"
+    },
+    {
+        "Name": "ShiningHeavenCleverMachine SixthPlace Ishikoridome",
+        "Color": "White",
+        "Type": "Spirit/Soul Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-039"
+    },
+    {
+        "Name": "The HeavyArmorMobile Shieldias",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-040"
+    },
+    {
+        "Name": "The WanderingSteelKnight Deucalion",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-041"
+    },
+    {
+        "Name": "Big Coconut Crab",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-042"
+    },
+    {
+        "Name": "The IceSorceress Alistesia",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-043"
+    },
+    {
+        "Name": "The MagicianWarMachine Lughaid",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-044 (A)"
+    },
+    {
+        "Name": "The StoutArmWarMachine Lughaid Type-G",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-044 (B)"
+    },
+    {
+        "Name": "Past Pom",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-045"
+    },
+    {
+        "Name": "The DruidSleepingWitch Chelsea",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-046"
+    },
+    {
+        "Name": "Pioneer AngeliaOfVirtues Fanael",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-047"
+    },
+    {
+        "Name": "The ShyDruidMonk Rirura",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-048 (A)"
+    },
+    {
+        "Name": "The JadeBirdWitch Rirura",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-048 (B)"
+    },
+    {
+        "Name": "Amabie",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-049"
+    },
+    {
+        "Name": "Capricornus",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-050"
+    },
+    {
+        "Name": "The FireSpirit Salamander",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-051"
+    },
+    {
+        "Name": "The MagicalLightHunter Janeway",
+        "Color": "Yellow",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-052"
+    },
+    {
+        "Name": "The DruidSuperhumanPriestess Bernelita",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-053"
+    },
+    {
+        "Name": "The ImaginaryDragonKing Juran",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-054 (A)"
+    },
+    {
+        "Name": "The VolcanoDragonKing Juran",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-054 (B)"
+    },
+    {
+        "Name": "The WBS Wrestler Clyde",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-055"
+    },
+    {
+        "Name": "Godseeker WBS ExclusiveCommentator Vihan",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-056"
+    },
+    {
+        "Name": "The WBS RookieWrestler Aarush",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-057"
+    },
+    {
+        "Name": "Smaragd-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-058"
+    },
+    {
+        "Name": "The WBS Wrestler Mask-The-Mysterio",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-059"
+    },
+    {
+        "Name": "The WBS Wrestler Syria",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-060"
+    },
+    {
+        "Name": "The WBS Legend TigerMaster",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-061"
+    },
+    {
+        "Name": "The WBS Wrestler Gabiah",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS53-062"
+    },
+    {
+        "Name": "The WBS King Zeophilus",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-063 (A)"
+    },
+    {
+        "Name": "The ShellMaskedKing Zeophirider-WBS",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-063 (B)"
+    },
+    {
+        "Name": "The DivineOrb Puruna-Karasha",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS53-064"
+    },
+    {
+        "Name": "The Dragon's Holy Sword",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS53-065"
+    },
+    {
+        "Name": "Lakshmi's Muscle Temple",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-066 (A)"
+    },
+    {
+        "Name": "The WBS Trainer McGard",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS53-066 (B)"
+    },
+    {
+        "Name": "Nexus Hazard",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS53-067"
+    },
+    {
+        "Name": "Burning Dust",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS53-068"
+    },
+    {
+        "Name": "Demon's Finger",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS53-069"
+    },
+    {
+        "Name": "Dragoon Shoot",
+        "Color": "Purple",
+        "Type": "Magic/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS53-070"
+    },
+    {
+        "Name": "Binding Noise",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS53-071"
+    },
+    {
+        "Name": "Leaf Jammer",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS53-072"
+    },
+    {
+        "Name": "Mist Shield",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS53-073"
+    },
+    {
+        "Name": "Dream Spark",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS53-074"
+    },
+    {
+        "Name": "Pom Pom Pom Pom",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS53-075"
+    },
+    {
+        "Name": "Mertipressure",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS53-076"
+    },
+    {
+        "Name": "Azure Stream Beam",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS53-077"
+    },
+    {
+        "Name": "Spartan Throw",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS53-078"
+    },
+    {
+        "Name": "The DragonKnight Swordius-Dragoon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS53-TX01 (A)"
+    },
+    {
+        "Name": "The DragonRideEmperor Dragonic-Arthur",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS53-TX01 (B)"
+    },
+    {
+        "Name": "The Purple World",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS53-TX02 (A)"
+    },
+    {
+        "Name": "The Purple Evil Deity",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS53-TX02 (B)"
+    },
+    {
+        "Name": "The Green World",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS53-TX03 (A)"
+    },
+    {
+        "Name": "The Green Nature Deity",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS53-TX03 (B)"
+    },
+    {
+        "Name": "The Yellow World",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS53-TX04 (A)"
+    },
+    {
+        "Name": "The Yellow Dream Deity",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS53-TX04 (B)"
+    },
+    {
+        "Name": "The EtherRouseFleetDragon Teazerola",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS53-X01"
+    },
+    {
+        "Name": "The HellRouseKing Luciferd",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS53-X02"
+    },
+    {
+        "Name": "The RouseBeastKing Leo-Ziven",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS53-X03"
+    },
+    {
+        "Name": "The ZeroRideEmpress Queen-Flawless",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS53-X04"
+    },
+    {
+        "Name": "The RousePope Mertiana",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS53-X05"
+    },
+    {
+        "Name": "The AbyssalRouseDragon Bashlomu",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS53-X06"
+    },
+    {
+        "Name": "The WBS Ace FortuneGoddess Lokamata",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS53-X07"
+    },
+    {
+        "Name": "The GenesisOrb Hexa-Talisman",
+        "Color": "All",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS53-X08"
+    },
+    {
+        "Name": "Grandwalker Lakshmi",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS53-X09"
+    },
+    {
+        "Name": "The ThreeDisasterBeasts EarthDisaster Behemodth",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS53-XX01"
+    },
+    {
+        "Name": "The ThreeDisasterBeasts SeaDisaster Desirathan",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS53-XX02"
+    },
+    {
+        "Name": "The ThreeDisasterBeasts SkyDisaster Dest-Ziz",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS53-XX03"
+    }
+]

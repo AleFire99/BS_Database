@@ -1,0 +1,639 @@
+[
+    {
+        "Name": "Starry-Ryuuman",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-001"
+    },
+    {
+        "Name": "Drago-Speeder",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-002"
+    },
+    {
+        "Name": "The Ptera Fighter",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-003"
+    },
+    {
+        "Name": "Aroblader",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-004"
+    },
+    {
+        "Name": "Pleiades-Rockdragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-005"
+    },
+    {
+        "Name": "The FlameDragonGeneral Ifrit",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-006"
+    },
+    {
+        "Name": "Ryuuman-Fantasista",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-007"
+    },
+    {
+        "Name": "The EmperorDragon Kaiserdragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS26-008"
+    },
+    {
+        "Name": "Smog Sheep",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-009"
+    },
+    {
+        "Name": "Hornviper",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-010"
+    },
+    {
+        "Name": "Jibakku-Armor",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-011"
+    },
+    {
+        "Name": "Linksmoker",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-012"
+    },
+    {
+        "Name": "Bone-Ritter",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-013"
+    },
+    {
+        "Name": "The EvilRitter Kilmedeath",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-014"
+    },
+    {
+        "Name": "The CorpseDustGeneral Mukuro",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-015"
+    },
+    {
+        "Name": "Queen-Nightmare",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS26-016"
+    },
+    {
+        "Name": "Tsurugimukade",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-017"
+    },
+    {
+        "Name": "The ShellWarrior Tendo",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-018"
+    },
+    {
+        "Name": "Purokiwan",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-019"
+    },
+    {
+        "Name": "Silva-Yanma",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-020"
+    },
+    {
+        "Name": "The NorthWindWolf BoreasWolf",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-021"
+    },
+    {
+        "Name": "The ShellBladeGeneral Legioss",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS26-022"
+    },
+    {
+        "Name": "The HuntingBladeBeast Carla-Hound",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-023"
+    },
+    {
+        "Name": "Tank-Mobil-Leopard",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-024"
+    },
+    {
+        "Name": "Amber-Leon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-025"
+    },
+    {
+        "Name": "The FatePrincessDeity Skuld",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS26-026"
+    },
+    {
+        "Name": "The MachineGunDeity HeimCannon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-027"
+    },
+    {
+        "Name": "The UnicornMachine Unicorn",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-028"
+    },
+    {
+        "Name": "The WhiteKnightGeneral Sigfodr",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-029"
+    },
+    {
+        "Name": "OnyxDragon-Rider",
+        "Color": "White/Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-030"
+    },
+    {
+        "Name": "Purimuppo",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-031"
+    },
+    {
+        "Name": "Radon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-032"
+    },
+    {
+        "Name": "The FairyPrincess Perfume",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS26-033"
+    },
+    {
+        "Name": "The Angelia Nursel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-034"
+    },
+    {
+        "Name": "［Diva Lady］Griffiar d'Arc",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-035"
+    },
+    {
+        "Name": "The FairyGeneral Gloria",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-036"
+    },
+    {
+        "Name": "The SeaCreature Cetus",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-037"
+    },
+    {
+        "Name": "The TraditionalDiva Marika",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS26-038"
+    },
+    {
+        "Name": "The Helmsman Isaac",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-039"
+    },
+    {
+        "Name": "The Defender Nupia",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-040"
+    },
+    {
+        "Name": "The ViceCaptain Chester",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-041"
+    },
+    {
+        "Name": "The BladeWolf Jigen",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-042"
+    },
+    {
+        "Name": "The StarOceanPirate Perseus",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS26-043"
+    },
+    {
+        "Name": "The CatManSwashbuckler Birman",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-044"
+    },
+    {
+        "Name": "The PirateGeneral Edward",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS26-045"
+    },
+    {
+        "Name": "The RubyFlameDragon Hinoko",
+        "Color": "Red",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-046"
+    },
+    {
+        "Name": "The DevilEmperor David",
+        "Color": "Purple",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-047"
+    },
+    {
+        "Name": "The EmeraldPhoenix Nix",
+        "Color": "Green",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-048"
+    },
+    {
+        "Name": "The ElectricGodEmperor Train",
+        "Color": "White",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-049"
+    },
+    {
+        "Name": "The HolyPegasus Sky",
+        "Color": "Yellow",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-050"
+    },
+    {
+        "Name": "The SapphireBeastEmperor Panzer",
+        "Color": "Blue",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-051"
+    },
+    {
+        "Name": "The GunAstralArmored Baldo-Lizard",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS26-052"
+    },
+    {
+        "Name": "The BirdAstralArmored Shisobird",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS26-053"
+    },
+    {
+        "Name": "The DevilAstralArmored Flybeat",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS26-054"
+    },
+    {
+        "Name": "The SnakeAstralArmored Snakers",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-055"
+    },
+    {
+        "Name": "The EarthAstralArmored Foxstar",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS26-056"
+    },
+    {
+        "Name": "The SkyAstralArmored Eaglet",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-057"
+    },
+    {
+        "Name": "The ShieldAstralArmored Shieldtank",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS26-058"
+    },
+    {
+        "Name": "The SwordAstralArmored Swordfish",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS26-059"
+    },
+    {
+        "Name": "The RabbitAstralArmored Rabitta",
+        "Color": "Yellow",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS26-060"
+    },
+    {
+        "Name": "The VirgoAstralArmored VirgoBrave",
+        "Color": "Yellow",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-061"
+    },
+    {
+        "Name": "The ShipAstralArmored BraveArgo",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS26-062"
+    },
+    {
+        "Name": "The ScorpioAstralArmored BraveScorpion",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-063"
+    },
+    {
+        "Name": "The Gainarock Big Canyon",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS26-064"
+    },
+    {
+        "Name": "The Shine of Supernova",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-065"
+    },
+    {
+        "Name": "The Ptolomea Streets of Grief",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS26-066"
+    },
+    {
+        "Name": "The Alver Prairie",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS26-067"
+    },
+    {
+        "Name": "The Spacetime Bonding Point A-01",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS26-068"
+    },
+    {
+        "Name": "The Norandy Absolute Defense Line",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-069"
+    },
+    {
+        "Name": "The Soluje Hill",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS26-070"
+    },
+    {
+        "Name": "The Thunder Seas",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS26-071"
+    },
+    {
+        "Name": "Cannonball",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-072"
+    },
+    {
+        "Name": "Crimson Flare",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS26-073"
+    },
+    {
+        "Name": "Core Drain",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS26-074"
+    },
+    {
+        "Name": "Forbidden Grave",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS26-075"
+    },
+    {
+        "Name": "High Pressure",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-076"
+    },
+    {
+        "Name": "Ultimate Wind",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS26-077"
+    },
+    {
+        "Name": "Ultimate Eraser",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-078"
+    },
+    {
+        "Name": "Anti-Brave Barrier",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS26-079"
+    },
+    {
+        "Name": "Illusion Mirror",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS26-080"
+    },
+    {
+        "Name": "Changeling",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS26-081"
+    },
+    {
+        "Name": "Thunder Tactics",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Unommon",
+        "Card_ID": "BS26-082"
+    },
+    {
+        "Name": "Impact Roar",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS26-083"
+    },
+    {
+        "Name": "The ShellPriest Shirokabuto",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS26-X01"
+    },
+    {
+        "Name": "The PhantomPrincessDeity Echidna",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS26-X02"
+    },
+    {
+        "Name": "Ultimate-Siegwurm-Nova",
+        "Color": "Red",
+        "Type": "Ultimate",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS26-X03"
+    },
+    {
+        "Name": "Ultimate-Ragna-Rock",
+        "Color": "White/Green",
+        "Type": "Ultimate",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS26-X04"
+    },
+    {
+        "Name": "The NextGenerationBeastKing Liodras",
+        "Color": "Blue",
+        "Type": "Ultimate",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS26-X05"
+    },
+    {
+        "Name": "The PiscesAstralArmored BravePisces",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS26-X06"
+    },
+    {
+        "Name": "The CancerAstralArmored BraveCancer",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS26-X07"
+    },
+    {
+        "Name": "The WaterCarrierAstralArmored BraveAquarius",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS26-X08"
+    }
+]

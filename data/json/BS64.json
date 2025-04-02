@@ -1,0 +1,751 @@
+[
+    {
+        "Name": "Bladra-Returner",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-001"
+    },
+    {
+        "Name": "Firemingbird",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-002"
+    },
+    {
+        "Name": "Emaudius",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-003"
+    },
+    {
+        "Name": "Spinobladras",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-004"
+    },
+    {
+        "Name": "Drago Fighter",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-005"
+    },
+    {
+        "Name": "Veteran Drago Fighter",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-006"
+    },
+    {
+        "Name": "Drago Monk",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-007"
+    },
+    {
+        "Name": "The GuidingDragon Drago Elder",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-008"
+    },
+    {
+        "Name": "Rotor Blader, Gut (w/ Parallel Art)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-009"
+    },
+    {
+        "Name": "The Moa Kelenkein",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-010"
+    },
+    {
+        "Name": "The WingBeastDragon Garde-Varuna",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-011"
+    },
+    {
+        "Name": "The GreatEmperorBird Dem-Dezanba",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-012"
+    },
+    {
+        "Name": "Smoke Baboon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-013"
+    },
+    {
+        "Name": "The WaterDeitySerpent Chalchiuhtlicue",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-014"
+    },
+    {
+        "Name": "The ForbiddenDragon Ta-Boo",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-015"
+    },
+    {
+        "Name": "The Hollow Soldier of Sickle-and-Chain",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-016"
+    },
+    {
+        "Name": "The BloodAllianceThirteenMarquess Servenox",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-017"
+    },
+    {
+        "Name": "The JudgmentSnake Tsui-no-Mushibami",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-018"
+    },
+    {
+        "Name": "The DepravedMonk Mioga",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-019"
+    },
+    {
+        "Name": "The TreeSpirit Saplin",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-020"
+    },
+    {
+        "Name": "Amazo-Jaguar",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-021"
+    },
+    {
+        "Name": "Lenmot",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-022"
+    },
+    {
+        "Name": "Coppelia Wasp",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-023"
+    },
+    {
+        "Name": "The Giant Anteater Lord",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-024"
+    },
+    {
+        "Name": "The HolyTreeMessenger Gross-Corn",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-025"
+    },
+    {
+        "Name": "The IllusivePrincess Hitotsume",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-026"
+    },
+    {
+        "Name": "Botani Maiden, Frau (w/ Parallel Art)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-027"
+    },
+    {
+        "Name": "The TreeWolf Fenleaf",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-028"
+    },
+    {
+        "Name": "The HolyTreeSpirit Ivyram",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-029"
+    },
+    {
+        "Name": "Mercur-Bug",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-030"
+    },
+    {
+        "Name": "Tashikani",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-031"
+    },
+    {
+        "Name": "Ghillie-Bandit",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-032"
+    },
+    {
+        "Name": "The MoonlightFish Moonfish",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-033"
+    },
+    {
+        "Name": "Mercur-Fox",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-034"
+    },
+    {
+        "Name": "Mercur-Lizard",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-035"
+    },
+    {
+        "Name": "The MachineGunArtilleryDragon Gatlinger",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-036"
+    },
+    {
+        "Name": "The SilverMagician Vif-Argent",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-037"
+    },
+    {
+        "Name": "Zero Fencer, Wiz (w/ Parallel Art)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-038"
+    },
+    {
+        "Name": "Zero's Warrior, Saryute",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-039"
+    },
+    {
+        "Name": "Vulture-Vrick",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-040"
+    },
+    {
+        "Name": "Mercur-Cerberus",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-041"
+    },
+    {
+        "Name": "The WalkingCathedral  Garan-Cathedral",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-042"
+    },
+    {
+        "Name": "Million Dollar Vandamme",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-043"
+    },
+    {
+        "Name": "The Mathematician Pentan",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-044"
+    },
+    {
+        "Name": "The GrandflowerFairy Gekkabijin",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-045"
+    },
+    {
+        "Name": "The MathematicWitch Mari-Mersenne",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-046"
+    },
+    {
+        "Name": "The JudgmentBeast Judgephinx",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-047"
+    },
+    {
+        "Name": "The LogarithmSisters Umaru & Umeru",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-048"
+    },
+    {
+        "Name": "Aracna-Suit-Dragon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-049"
+    },
+    {
+        "Name": "The MagicalMathematician Arsh-Makiya",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-050"
+    },
+    {
+        "Name": "The ImperialLionGuard Fiddich",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-051"
+    },
+    {
+        "Name": "The ImperialLionGuard Band-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-052"
+    },
+    {
+        "Name": "The WBS Wrestler Dhruv",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-053"
+    },
+    {
+        "Name": "The JudgmentSeaDragon Bazdazilla",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS64-054"
+    },
+    {
+        "Name": "The StrangeBeast Chimai-Raon",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-055"
+    },
+    {
+        "Name": "The ImperialLionGuard Former WBS King, Aditya",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-056"
+    },
+    {
+        "Name": "The ImperialLionGuard Captain Gangurias",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-057"
+    },
+    {
+        "Name": "The HellflameBaron Garoborg",
+        "Color": "Red/Green",
+        "Type": "Ultimate",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-058"
+    },
+    {
+        "Name": "The DemonLordButler Barandoll",
+        "Color": "Purple",
+        "Type": "Ultimate",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS64-059"
+    },
+    {
+        "Name": "The HellsoilBaron Judas",
+        "Color": "Purple",
+        "Type": "Ultimate",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-060"
+    },
+    {
+        "Name": "The HellwindBaron Grachar",
+        "Color": "Green",
+        "Type": "Ultimate",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-061"
+    },
+    {
+        "Name": "The HellseaBaron Glaugall",
+        "Color": "Blue",
+        "Type": "Ultimate",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-062"
+    },
+    {
+        "Name": "The AncientHammer Baltica Hammer",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-063"
+    },
+    {
+        "Name": "Savage Axe",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS64-064"
+    },
+    {
+        "Name": "Dinowing",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS64-065"
+    },
+    {
+        "Name": "The BloodOgreBlade Chishibuki",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS64-066"
+    },
+    {
+        "Name": "Lycoris Bow",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS64-067"
+    },
+    {
+        "Name": "The SpinyLeafSpear Alospear",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-068"
+    },
+    {
+        "Name": "Bugs Rod",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS64-069"
+    },
+    {
+        "Name": "The TwinkleFlashSword RaySaber",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-070"
+    },
+    {
+        "Name": "Solid Slasher",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS64-071"
+    },
+    {
+        "Name": "Bounty Hunt",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS64-072"
+    },
+    {
+        "Name": "The Spellbook of Numerology",
+        "Color": "Yellow",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS64-073"
+    },
+    {
+        "Name": "Lio Knuckle",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS64-074"
+    },
+    {
+        "Name": "The Cyclo Canyon",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS64-075"
+    },
+    {
+        "Name": "The Floating Mass of Cloud",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS64-076"
+    },
+    {
+        "Name": "The Throne of the Ruler of Four Demon Lords",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS64-077"
+    },
+    {
+        "Name": "The Towering Strange Divine Trees",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS64-078"
+    },
+    {
+        "Name": "The Merolaura Flower Field",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS64-079"
+    },
+    {
+        "Name": "Point Zero",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS64-080"
+    },
+    {
+        "Name": "The Zeroth Survey Colony",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS64-081"
+    },
+    {
+        "Name": "The Starlight Study",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS64-082"
+    },
+    {
+        "Name": "The Lion Statue",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS64-083"
+    },
+    {
+        "Name": "Weapons Draw",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS64-084"
+    },
+    {
+        "Name": "Return of the Evil Gods",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS64-085"
+    },
+    {
+        "Name": "Spring Reverse",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS64-086"
+    },
+    {
+        "Name": "Bravery Barrier",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS64-087"
+    },
+    {
+        "Name": "Just as Calculated",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS64-088"
+    },
+    {
+        "Name": "Coleus Field",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS64-089"
+    },
+    {
+        "Name": "Hydric Submersion",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS64-090"
+    },
+    {
+        "Name": "The Eagle Partner, Gut (w/ Parallel Art)",
+        "Color": "Red",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS64-CX01"
+    },
+    {
+        "Name": "The Flower Partner, Frau (w/ Parallel Art)",
+        "Color": "Green",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS64-CX02"
+    },
+    {
+        "Name": "The Zero Partner, Wiz (w/ Parallel Art)",
+        "Color": "White",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS64-CX03"
+    },
+    {
+        "Name": "The BloodOgreDivineGeneral Goku-Oboro (w/ Parallel Art)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS64-X01"
+    },
+    {
+        "Name": "The CloudNumberBondDeity Frag-Judgment (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS64-X02"
+    },
+    {
+        "Name": "The StarCountSage Fermat-Searam-Q.E.D. (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS64-X03"
+    },
+    {
+        "Name": "The GreatJudge Gefan-Gnis (w/ Parallel Art)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS64-X04"
+    },
+    {
+        "Name": "The AnnihilationGiantBeast Gigant-Board (w/ Parallel Art)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS64-X05"
+    },
+    {
+        "Name": "The Ruler of FourDemonLords God-Javad (w/ Parallel Art)",
+        "Color": "All",
+        "Type": "Ultimate",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS64-X06"
+    },
+    {
+        "Name": "The SpinningReversalBlade Zweizar (w/ Parallel Art)",
+        "Color": "Red/Green",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS64-X07"
+    },
+    {
+        "Name": "The EmeraldFlowerLance Bloom-Stem (w/ Parallel Art)",
+        "Color": "Green/Yellow",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS64-X08"
+    },
+    {
+        "Name": "The AstralZeroSword Foranswer (w/ Parallel Art)",
+        "Color": "White/Blue",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS64-X09"
+    },
+    {
+        "Name": "The DragonEmperor Siegfried XV (w/ Parallel Art)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "XV-Rare",
+        "Card_ID": "BS64-XV01"
+    },
+    {
+        "Name": "The SevenShogun Destlord XV (w/ Parallel Art)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "XV-Rare",
+        "Card_ID": "BS64-XV02"
+    },
+    {
+        "Name": "The Emperor Kaiseratlas XV (w/ Parallel Art)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "XV-Rare",
+        "Card_ID": "BS64-XV03"
+    },
+    {
+        "Name": "The Gigantic Thor XV (w/ Parallel Art)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "XV-Rare",
+        "Card_ID": "BS64-XV04"
+    },
+    {
+        "Name": "The PhantomLord Rean XV (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "XV-Rare",
+        "Card_ID": "BS64-XV05"
+    }
+]

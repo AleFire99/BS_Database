@@ -1,0 +1,723 @@
+[
+    {
+        "Name": "Doragotchi",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-001"
+    },
+    {
+        "Name": "Garmindra",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-002"
+    },
+    {
+        "Name": "Edge Draco",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-003"
+    },
+    {
+        "Name": "The SacredFlameBeast Almirabbit",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-004"
+    },
+    {
+        "Name": "Hiba-Swallow",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-005"
+    },
+    {
+        "Name": "Mother Bladra",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-006"
+    },
+    {
+        "Name": "Shieldoran",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-007"
+    },
+    {
+        "Name": "Bladesaurus",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-008"
+    },
+    {
+        "Name": "Nycto-Lansaurus",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-009"
+    },
+    {
+        "Name": "The FlyingTwinkleDragon Dignitis",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-010"
+    },
+    {
+        "Name": "The JudgmentDragon Exodusk",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-011"
+    },
+    {
+        "Name": "The SoaringFlyingFang Terad-HighTide",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-012"
+    },
+    {
+        "Name": "Blade-Works-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-013"
+    },
+    {
+        "Name": "The FlameWolf Diafrey Wolf",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-014"
+    },
+    {
+        "Name": "The AirborneDragon Drag-Lightning",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-015"
+    },
+    {
+        "Name": "Thread Sword Paradise",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-016"
+    },
+    {
+        "Name": "The DriftingBlade Blazels",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-017"
+    },
+    {
+        "Name": "The Flame-Eating Dio-Glow-Gan",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-018"
+    },
+    {
+        "Name": "The ArmoredOgre Gashin",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-019"
+    },
+    {
+        "Name": "The Fallen Sacred Armor",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-020"
+    },
+    {
+        "Name": "The OgreMusha Headiless",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-021"
+    },
+    {
+        "Name": "The FeatheredSerpent Tlacopan",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-022"
+    },
+    {
+        "Name": "Gasberix",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-023"
+    },
+    {
+        "Name": "The DaughterOfBeginning Mayahuel",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-024"
+    },
+    {
+        "Name": "The DevilMarshal Zavi-Baphorogue",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-025"
+    },
+    {
+        "Name": "The WindWingedSerpent Ehecatl",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-026"
+    },
+    {
+        "Name": "The BloodAllianceThirteenMarquess Mishra-Klein",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-027"
+    },
+    {
+        "Name": "The OgreCorpseMusha Gasha-Oboro",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-028"
+    },
+    {
+        "Name": "The God-Ripper Agabel",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-029"
+    },
+    {
+        "Name": "The GoldenWingedSerpent Koishtra",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-030"
+    },
+    {
+        "Name": "The AviciOgreGeneral Zekuu",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-031"
+    },
+    {
+        "Name": "The Grün∴Baum Smerinthus",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-032"
+    },
+    {
+        "Name": "The WindHornedBeast Windeer",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-033"
+    },
+    {
+        "Name": "The Grün∴Baum Kacomic",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-034"
+    },
+    {
+        "Name": "The Grün∴Baum ShineKing Razzle-Bazzle",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-035"
+    },
+    {
+        "Name": "Shephed",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-036"
+    },
+    {
+        "Name": "The TreeMonkey Geoffroyider",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-037"
+    },
+    {
+        "Name": "The Grün∴Baum Greed-Gataru-the-Traceless",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-038"
+    },
+    {
+        "Name": "The BeautifulBeardBird Ligle",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-039"
+    },
+    {
+        "Name": "Grenade",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-040"
+    },
+    {
+        "Name": "Dezeron",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-041"
+    },
+    {
+        "Name": "Gun Dog",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-042"
+    },
+    {
+        "Name": "The SecretaryToDuchess Mirene",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-043"
+    },
+    {
+        "Name": "The ArmoredBeast ArmorHorn",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-044"
+    },
+    {
+        "Name": "The GunMachine Revol-Fighter",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-045"
+    },
+    {
+        "Name": "The GunShockDragon Barrel-Dragon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-046"
+    },
+    {
+        "Name": "Stark-Jet",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-047"
+    },
+    {
+        "Name": "Stark-Tank",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-048"
+    },
+    {
+        "Name": "Muzzle Cheilinus",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-049"
+    },
+    {
+        "Name": "Gatlingrizzly",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-050"
+    },
+    {
+        "Name": "The Pursuer Jeno-Calvary",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-051"
+    },
+    {
+        "Name": "The GunMachineDragon Shot-Gaizard",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-052"
+    },
+    {
+        "Name": "The Assailant Glutton-Joe",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-053"
+    },
+    {
+        "Name": "The WaterRockArmoredSacredBeast Tlaloc",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-054"
+    },
+    {
+        "Name": "The MoonlightSwordDragon Sword-Strikewurm",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-055"
+    },
+    {
+        "Name": "The Familiar Houho",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-056"
+    },
+    {
+        "Name": "The Familiar Dieckrow",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-057"
+    },
+    {
+        "Name": "The ChildOfStars Starry",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-058"
+    },
+    {
+        "Name": "Arcanabeast-ClubDoll",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-059"
+    },
+    {
+        "Name": "Arcanabeast-DiaFox",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-060"
+    },
+    {
+        "Name": "Laplace Devil",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-061"
+    },
+    {
+        "Name": "The MagicalMathematician Pia-Fibonacci",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-062"
+    },
+    {
+        "Name": "Another FortuneTellerPentan",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-063"
+    },
+    {
+        "Name": "The Witch Rene-Bernoulli",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-064"
+    },
+    {
+        "Name": "The FallenAngeliaOfWisdom Raviel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-065"
+    },
+    {
+        "Name": "Angelikudu",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-066"
+    },
+    {
+        "Name": "ArcanaWitch-Hypatia",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-067"
+    },
+    {
+        "Name": "The AdvancedFamiliar Cocatrix",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-068"
+    },
+    {
+        "Name": "The CrownFairy Clion",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-069"
+    },
+    {
+        "Name": "The ImperialLionGuard Sapper David",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-070"
+    },
+    {
+        "Name": "The ImperialLionGuard Hydrain",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-071"
+    },
+    {
+        "Name": "The Physicist Manadae",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-072"
+    },
+    {
+        "Name": "The ImperialLionGuard Colonel Lambiel",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-073"
+    },
+    {
+        "Name": "The DragonRider Raon",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-074"
+    },
+    {
+        "Name": "The Sealed Ela-Zaguir",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS63-075"
+    },
+    {
+        "Name": "The RoaringFangBeast Warthock",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-076"
+    },
+    {
+        "Name": "The Sealed Zeira",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS63-077"
+    },
+    {
+        "Name": "The Canyon of Alar Blades",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS63-078"
+    },
+    {
+        "Name": "The Tumbleweed Village",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS63-079"
+    },
+    {
+        "Name": "The Magical Celestial Globe",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS63-080"
+    },
+    {
+        "Name": "The Judgment Day",
+        "Color": "All",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS63-081"
+    },
+    {
+        "Name": "Spiral Draw",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS63-082"
+    },
+    {
+        "Name": "Saurays Force",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS63-083"
+    },
+    {
+        "Name": "Oracle XV Over Devil",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-084"
+    },
+    {
+        "Name": "Reversal Incantation",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS63-085"
+    },
+    {
+        "Name": "Steel Barrage",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS63-086"
+    },
+    {
+        "Name": "Mathematic Down",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS63-087"
+    },
+    {
+        "Name": "Oracle XII Over Hanged Man",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-088"
+    },
+    {
+        "Name": "Fatal Judge",
+        "Color": "All",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS63-089"
+    },
+    {
+        "Name": "Oracle XX Over Judgment",
+        "Color": "All",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS63-090"
+    },
+    {
+        "Name": "The PartnerBurai Vrick (w/ Parallel Art)",
+        "Color": "White",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS63-CX01"
+    },
+    {
+        "Name": "The PartnerCat Fermat (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS63-CX02"
+    },
+    {
+        "Name": "The FlameSkyBondDeity Frag-Judgment (w/ Parallel Art)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS63-X01"
+    },
+    {
+        "Name": "The OracleTwentyOnePillars XV The Devil (w/ Parallel Art)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS63-X02"
+    },
+    {
+        "Name": "The DevastationGoddess Tzitzi-Mitl (w/ Parallel Art)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS63-X03"
+    },
+    {
+        "Name": "The AnnihilationShellDeity Mollenkampi (w/ Parallel Art)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS63-X04"
+    },
+    {
+        "Name": "The GlacierDuchess Ryutia-V-Glacier (w/ Parallel Art)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS63-X05"
+    },
+    {
+        "Name": "The GunEmperorMachineDeity Guns-Mavrick (w/ Parallel Art)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS63-X06"
+    },
+    {
+        "Name": "The HeavenCountSorceress Fermat-Searam (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS63-X07"
+    },
+    {
+        "Name": "The OracleTwentyOnePillars XII The Hanged Man (w/ Parallel Art)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS63-X08"
+    },
+    {
+        "Name": "The OracleTwentyOnePillars XX The Judgment (w/ Parallel Art)",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS63-X09"
+    },
+    {
+        "Name": "The SixAbsoluteDeities Einsam-of-Despair",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS63-XX01"
+    },
+    {
+        "Name": "The SixAbsoluteDeities Celestia-of-Hope",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS63-XX02"
+    }
+]

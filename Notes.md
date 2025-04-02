@@ -3,7 +3,4 @@
 - nexus
 - magic
 - brave
-- burst ?
 - ultimate
-- soul burst ?
-- Contract Spirit

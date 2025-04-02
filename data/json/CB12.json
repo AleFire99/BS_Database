@@ -1,0 +1,499 @@
+[
+    {
+        "Name": "Kamen Rider Kuuga Mighty Form［3］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-001"
+    },
+    {
+        "Name": "Kamen Rider Faiz［3］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-002"
+    },
+    {
+        "Name": "Kamen Rider Kuuga Pegasus Form［2］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-003"
+    },
+    {
+        "Name": "Kamen Rider Kuuga Dragon Form［2］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-004"
+    },
+    {
+        "Name": "Kamen Rider Kuuga Titan Form［2］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-005"
+    },
+    {
+        "Name": "Kamen Rider Delta［2］",
+        "Color": "Red/Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-006"
+    },
+    {
+        "Name": "Kamen Rider Faiz Accel Form［3］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-007"
+    },
+    {
+        "Name": "Zu-Gumun-Ba",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-008"
+    },
+    {
+        "Name": "Me-Ginoga-De",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-009"
+    },
+    {
+        "Name": "Rose Orphnoch",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-010"
+    },
+    {
+        "Name": "Go-Jaraji-Da",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-011"
+    },
+    {
+        "Name": "Zu-Gooma-Gu Ultimate Form",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-012"
+    },
+    {
+        "Name": "Crane Orphnoch Violent Emotion",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-013"
+    },
+    {
+        "Name": "Horse Orphnoch Violent Emotion (w/ Secret)",
+        "Color": "Purple/Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB12-014"
+    },
+    {
+        "Name": "N-Daguva-Zeba［2］ (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB12-015"
+    },
+    {
+        "Name": "Kamen Rider Orga",
+        "Color": "Purple/Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-016"
+    },
+    {
+        "Name": "Humagear",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-017"
+    },
+    {
+        "Name": "Kamen Rider 001",
+        "Color": "Green/Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-018"
+    },
+    {
+        "Name": "Kamen Rider Ichi-Gata Rocking Hopper",
+        "Color": "Green/Purple",
+        "Type": "Spirit/Burst",
+        "Rarity": "Common",
+        "Card_ID": "CB12-019"
+    },
+    {
+        "Name": "Kamen Rider Zero-One Shining Assault Hopper［2］",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-020"
+    },
+    {
+        "Name": "Kamen Rider Rampage Vulcan",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB12-021"
+    },
+    {
+        "Name": "Kamen Rider Den-O Sword Form［3］ (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-022"
+    },
+    {
+        "Name": "Kamen Rider Den-O Liner Form［2］",
+        "Color": "White",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-023"
+    },
+    {
+        "Name": "Attache Caliber",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "CB12-024"
+    },
+    {
+        "Name": "Ryutaros［2］",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "CB12-025"
+    },
+    {
+        "Name": "Urataros［2］",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-026"
+    },
+    {
+        "Name": "Kintaros［2］",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "CB12-027"
+    },
+    {
+        "Name": "The KillingGame Gegeru",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-028"
+    },
+    {
+        "Name": "Kamen Rider Kaixa［2］ (w/ Secret)",
+        "Color": "Red/Purple",
+        "Type": "Spirit/Burst",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB12-X01"
+    },
+    {
+        "Name": "Kamen Rider Kuuga Ultimate Form［2］ (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB12-X02"
+    },
+    {
+        "Name": "Wolf Orphnoch Dash Form",
+        "Color": "Purple/Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB12-X03"
+    },
+    {
+        "Name": "Kamen Rider Zero-One Metal Cluster Hopper",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB12-X04"
+    },
+    {
+        "Name": "Here I am! Momotaros (w/ Secret)",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "XX-Rare",
+        "Card_ID": "CB12-XX01"
+    },
+    {
+        "Name": "Diamond Wall",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB12-BS33-079"
+    },
+    {
+        "Name": "Gouram",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB04-001"
+    },
+    {
+        "Name": "Kamen Rider Kuuga Growing Form",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB04-002"
+    },
+    {
+        "Name": "Kamen Rider Kuuga Titan Form",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB04-006"
+    },
+    {
+        "Name": "Kamen Rider Kuuga Dragon Form",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB04-007"
+    },
+    {
+        "Name": "Kamen Rider Kuuga Amazing Mighty",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB04-008"
+    },
+    {
+        "Name": "Me-Badjisu-Ba",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB04-013"
+    },
+    {
+        "Name": "Masquerade Dopant",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB04-014"
+    },
+    {
+        "Name": "Zu-Gooma-Gu",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB04-017"
+    },
+    {
+        "Name": "Go-Gadoru-Ba",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB04-022"
+    },
+    {
+        "Name": "Kamen Rider W CycloneJokerXtreme",
+        "Color": "Green/Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB12-CB04-035"
+    },
+    {
+        "Name": "Kamen Rider Den-O Plat Form",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB04-036"
+    },
+    {
+        "Name": "Kamen Rider Zeronos Zero Form",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB04-044"
+    },
+    {
+        "Name": "Kamen Rider Den-O Ax Form",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB04-045"
+    },
+    {
+        "Name": "Kamen Rider Build KaizokuRessya Form",
+        "Color": "Blue/Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB04-050"
+    },
+    {
+        "Name": "Kamen Rider Cross-Z",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB12-CB04-051"
+    },
+    {
+        "Name": "Prism Bicker",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB04-058"
+    },
+    {
+        "Name": "Kintaros",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB04-059"
+    },
+    {
+        "Name": "Deneb",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB04-063"
+    },
+    {
+        "Name": "DenLiner",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB04-070"
+    },
+    {
+        "Name": "Time Branch Point",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB04-071"
+    },
+    {
+        "Name": "Kamen Rider Decade Violent Emotion",
+        "Color": "Red/Purple",
+        "Type": "Spirit",
+        "Rarity": "X Rare",
+        "Card_ID": "CB12-CB04-X03"
+    },
+    {
+        "Name": "Kamen Rider Den-O Climax Form",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X Rare",
+        "Card_ID": "CB12-CB04-X06"
+    },
+    {
+        "Name": "Kamen Rider Faiz",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB06-001"
+    },
+    {
+        "Name": "Kamen Rider Faiz Accel Form",
+        "Color": "Red",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB12-CB06-005"
+    },
+    {
+        "Name": "Kamen Rider Delta",
+        "Color": "Red/Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB06-011"
+    },
+    {
+        "Name": "Crane Orphnoch",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB06-023"
+    },
+    {
+        "Name": "Centipede Orphnoch",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB06-024"
+    },
+    {
+        "Name": "Goat Orphnoch",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB06-031"
+    },
+    {
+        "Name": "Dragon Orphnoch Devil Form",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB06-037"
+    },
+    {
+        "Name": "Horse Orphnoch",
+        "Color": "Purple/Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB12-CB06-042"
+    },
+    {
+        "Name": "Kamen Rider Evol Black Hole Form",
+        "Color": "Purple/White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB12-CB06-043"
+    },
+    {
+        "Name": "Kamen Rider Den-O Sword Form［2］",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB06-055"
+    },
+    {
+        "Name": "Smart Brain, Inc.",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB12-CB06-072"
+    },
+    {
+        "Name": "Kamen Rider Faiz Blaster Form",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB12-CB06-X01"
+    },
+    {
+        "Name": "Horse Orphnoch Dash Form",
+        "Color": "Purple/Red",
+        "Type": "Spirit/Burst",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB12-CB06-X03"
+    },
+    {
+        "Name": "Kamen Rider Ghost Ore Damashii",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-SD42-CP01"
+    },
+    {
+        "Name": "Kamen Rider Build RabbitTank Form",
+        "Color": "Red/Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB12-SD42-CP08"
+    }
+]

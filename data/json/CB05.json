@@ -1,0 +1,464 @@
+[
+    {
+        "Name": "Hawkmon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-001"
+    },
+    {
+        "Name": "Bearmon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-002"
+    },
+    {
+        "Name": "Aquilamon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-003"
+    },
+    {
+        "Name": "Tyrannomon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-004"
+    },
+    {
+        "Name": "Halsemon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-005"
+    },
+    {
+        "Name": "Flamedramon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-006"
+    },
+    {
+        "Name": "SaberLeomon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-007"
+    },
+    {
+        "Name": "Triceramon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-008"
+    },
+    {
+        "Name": "Silphymon",
+        "Color": "Red/Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB05-009"
+    },
+    {
+        "Name": "Gazimon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-010"
+    },
+    {
+        "Name": "Tapirmon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-011"
+    },
+    {
+        "Name": "Bakemon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-012"
+    },
+    {
+        "Name": "Vilemon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-013"
+    },
+    {
+        "Name": "SkullSatamon",
+        "Color": "Purple",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-014"
+    },
+    {
+        "Name": "Mummymon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-015"
+    },
+    {
+        "Name": "Daemon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB05-016"
+    },
+    {
+        "Name": "MaloMyotismon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB05-017"
+    },
+    {
+        "Name": "SkullMeramon",
+        "Color": "Purple/Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-018"
+    },
+    {
+        "Name": "Floramon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-019"
+    },
+    {
+        "Name": "Wormmon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-020"
+    },
+    {
+        "Name": "Kuwagamon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-021"
+    },
+    {
+        "Name": "Piximon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-022"
+    },
+    {
+        "Name": "Dokugumon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-023"
+    },
+    {
+        "Name": "Stingmon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-024"
+    },
+    {
+        "Name": "Shurimon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-025"
+    },
+    {
+        "Name": "Raidramon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-026"
+    },
+    {
+        "Name": "Arukenimon",
+        "Color": "Green/Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB05-027"
+    },
+    {
+        "Name": "Betamon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-028"
+    },
+    {
+        "Name": "Hackmon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-029"
+    },
+    {
+        "Name": "Deputymon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-030"
+    },
+    {
+        "Name": "Golemon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-031"
+    },
+    {
+        "Name": "Thundermon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-032"
+    },
+    {
+        "Name": "Datamon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB05-033"
+    },
+    {
+        "Name": "Knightmon",
+        "Color": "White",
+        "Type": "Spirit/Burst",
+        "Rarity": "Common",
+        "Card_ID": "CB05-034"
+    },
+    {
+        "Name": "Elecmon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-035"
+    },
+    {
+        "Name": "Armadillomon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-036"
+    },
+    {
+        "Name": "Ankylomon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-037"
+    },
+    {
+        "Name": "Centarumon",
+        "Color": "Yellow",
+        "Type": "Spirit/Burst",
+        "Rarity": "Common",
+        "Card_ID": "CB05-038"
+    },
+    {
+        "Name": "Digmon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-039"
+    },
+    {
+        "Name": "Nefertimon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-040"
+    },
+    {
+        "Name": "Pegasusmon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-041"
+    },
+    {
+        "Name": "Hippogriffomon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-042"
+    },
+    {
+        "Name": "Azulongmon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB05-043"
+    },
+    {
+        "Name": "Shakkoumon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB05-044"
+    },
+    {
+        "Name": "Gizamon",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-045"
+    },
+    {
+        "Name": "Veemon",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-046"
+    },
+    {
+        "Name": "Exveemon",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-047"
+    },
+    {
+        "Name": "Shellmon",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-048"
+    },
+    {
+        "Name": "Submarimon",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-049"
+    },
+    {
+        "Name": "Dagomon",
+        "Color": "Blue",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-050"
+    },
+    {
+        "Name": "Orochimon",
+        "Color": "Blue/Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-051"
+    },
+    {
+        "Name": "Imperialdramon Dragon Mode",
+        "Color": "Blue/Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-052"
+    },
+    {
+        "Name": "Kuramon",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB05-053"
+    },
+    {
+        "Name": "Armageddemon",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB05-054"
+    },
+    {
+        "Name": "Dark Tower",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-055"
+    },
+    {
+        "Name": "D-3",
+        "Color": "All",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB05-056"
+    },
+    {
+        "Name": "Omni Sword",
+        "Color": "Green",
+        "Type": "Magic/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "CB05-057"
+    },
+    {
+        "Name": "Golden Noose",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB05-058"
+    },
+    {
+        "Name": "Destiny Destroyer",
+        "Color": "All",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB05-059"
+    },
+    {
+        "Name": "BlackWarGreymon (w/ Parallel Art)",
+        "Color": "Red/Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB05-X01"
+    },
+    {
+        "Name": "Jesmon (w/ Parallel Art)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB05-X02"
+    },
+    {
+        "Name": "Magnamon (w/ Parallel Art)",
+        "Color": "White/Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB05-X03"
+    },
+    {
+        "Name": "Paildramon (w/ Parallel Art)",
+        "Color": "Blue/Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB05-X04"
+    },
+    {
+        "Name": "Imperialdramon Fighter Mode (w/ Parallel Art)",
+        "Color": "Blue/Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB05-X05"
+    },
+    {
+        "Name": "Alphamon (w/ Parallel Art)",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB05-X06"
+    },
+    {
+        "Name": "Imperialdramon Paladin Mode",
+        "Color": "Blue/Green",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "CB05-XX01"
+    }
+]

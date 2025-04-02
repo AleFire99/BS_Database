@@ -1,0 +1,639 @@
+[
+    {
+        "Name": "Horned Penguin",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-001"
+    },
+    {
+        "Name": "The Aide Homuramandrill",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-002"
+    },
+    {
+        "Name": "The CrossbowDragon Suiha",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-003"
+    },
+    {
+        "Name": "The GunDog Zash",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-004"
+    },
+    {
+        "Name": "The RowdyGeneral Goujin",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-005"
+    },
+    {
+        "Name": "The MushaPriest Suou",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-006"
+    },
+    {
+        "Name": "Musharex",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-007"
+    },
+    {
+        "Name": "Holy Flame Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-008"
+    },
+    {
+        "Name": "The ChiefRetainer Ryuuzen",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS34-009"
+    },
+    {
+        "Name": "Front Ogre",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-010"
+    },
+    {
+        "Name": "Kemurineko",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-011"
+    },
+    {
+        "Name": "The Aide Hell-Skull",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-012"
+    },
+    {
+        "Name": "Skeleton Archbishop",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-013"
+    },
+    {
+        "Name": "The OgreArtsPriest Araya",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-014"
+    },
+    {
+        "Name": "Musha Devil",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-015"
+    },
+    {
+        "Name": "The HeavenlyDemonKing God-Sechs -Type Zero-",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-016"
+    },
+    {
+        "Name": "The OnmyouMonk Shido",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-017"
+    },
+    {
+        "Name": "Purple Smoke Eagle",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-018"
+    },
+    {
+        "Name": "Back Ogre",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS34-019"
+    },
+    {
+        "Name": "The WindDemon Yabusame",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-020"
+    },
+    {
+        "Name": "The Aide Usson",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-021"
+    },
+    {
+        "Name": "The StrangeFangShinobi Warabi",
+        "Color": "Green",
+        "Type": "Spirit/Soul Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-022"
+    },
+    {
+        "Name": "The Sentry Kinka",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-023"
+    },
+    {
+        "Name": "The ShellMusha Hishigata",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-024"
+    },
+    {
+        "Name": "The Retainer Ezowolf",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-025"
+    },
+    {
+        "Name": "Otonosama",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-026"
+    },
+    {
+        "Name": "The WindDemon Hototogisu",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-027"
+    },
+    {
+        "Name": "The StrangeFangNinjaCommander Leo-Kamui",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-028"
+    },
+    {
+        "Name": "The EarthShinobi Daibeet",
+        "Color": "Green",
+        "Type": "Spirit/Soul Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS34-029"
+    },
+    {
+        "Name": "Ashigaru Archer",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-030"
+    },
+    {
+        "Name": "The GenjiEightKnights Genta",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-031"
+    },
+    {
+        "Name": "The Aide Shibadog",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-032"
+    },
+    {
+        "Name": "Saiborg",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-033"
+    },
+    {
+        "Name": "The CleverMachineMusha Zuiun",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-034"
+    },
+    {
+        "Name": "The CleverMachineNinja Shiomaneki",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-035"
+    },
+    {
+        "Name": "The CleverMachinePriest Yatenkou",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS34-036"
+    },
+    {
+        "Name": "The CleverMachineGeneral Ichiya-Jo",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-037"
+    },
+    {
+        "Name": "The CleverMachineMusha Yukigure",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-038"
+    },
+    {
+        "Name": "The GenjiEightKnights Hachiryou",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS34-039"
+    },
+    {
+        "Name": "The SengokuPrincess Tamaki",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-040"
+    },
+    {
+        "Name": "The Aide Wankoma Un",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-041"
+    },
+    {
+        "Name": "Gyuuki",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-042"
+    },
+    {
+        "Name": "The SengokuPrincess Kochou",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-043"
+    },
+    {
+        "Name": "Don Nurarihyon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-044"
+    },
+    {
+        "Name": "Noppera Girl",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-045"
+    },
+    {
+        "Name": "The SengokuPrincess Kira & Sara",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS34-046"
+    },
+    {
+        "Name": "Ittan Momen",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-047"
+    },
+    {
+        "Name": "Daidarabotchi",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-048"
+    },
+    {
+        "Name": "The SmallWave Douji",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-049"
+    },
+    {
+        "Name": "Bullhead Shark Cat",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-050"
+    },
+    {
+        "Name": "The GlacierMusha Gomafu",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-051"
+    },
+    {
+        "Name": "The Aide Jinbear",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-052"
+    },
+    {
+        "Name": "Waniarashi",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-053"
+    },
+    {
+        "Name": "The SeadragonMusha Ikkaku",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-054"
+    },
+    {
+        "Name": "The Devil Conqueror WisdomKing",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS34-055"
+    },
+    {
+        "Name": "Nokogiriwolf",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-056"
+    },
+    {
+        "Name": "The Dharma Swords Myouou",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS34-057"
+    },
+    {
+        "Name": "The FlameDragonKatana Onimaru-Shin'uchi",
+        "Color": "Red",
+        "Type": "Brave/Soul Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS34-058"
+    },
+    {
+        "Name": "Kaigyuu-Arms",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS34-059"
+    },
+    {
+        "Name": "No. 20 Long Field",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-060"
+    },
+    {
+        "Name": "The Flame War Crest",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-061"
+    },
+    {
+        "Name": "No. 23 Love Wisdom",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-062"
+    },
+    {
+        "Name": "The Single Cedar in the Shinobi's Forest",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS34-063"
+    },
+    {
+        "Name": "No. 10 Crowd Horse",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS34-064"
+    },
+    {
+        "Name": "The Burning Bonnouji Temple",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS34-065"
+    },
+    {
+        "Name": "No. 40 Good Luck Hill",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS34-066"
+    },
+    {
+        "Name": "The Throne Inheritance Lottery",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS34-067"
+    },
+    {
+        "Name": "No. 30 Total Song Mountain",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS34-068"
+    },
+    {
+        "Name": "The Dawn Temple Fortress Arun",
+        "Color": "Blue",
+        "Type": "Nexus/Soul Burst",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-069"
+    },
+    {
+        "Name": "No. 35 Mountain Mouth",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-070"
+    },
+    {
+        "Name": "The World of Owari",
+        "Color": "All",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS34-071"
+    },
+    {
+        "Name": "Dragon Soul Draw",
+        "Color": "Red",
+        "Type": "Magic/Soul Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS34-072"
+    },
+    {
+        "Name": "Great Eccentric Flame",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS34-073"
+    },
+    {
+        "Name": "Life Manipulation Curse",
+        "Color": "Purple",
+        "Type": "Magic/Soul Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-074"
+    },
+    {
+        "Name": "The HeavenlyDemonKing Advents",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS34-075"
+    },
+    {
+        "Name": "Divine Might Wind",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS34-076"
+    },
+    {
+        "Name": "Ninja Gale Storm",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-077"
+    },
+    {
+        "Name": "Snow and Ice Circle",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-078"
+    },
+    {
+        "Name": "Eight-Pole Peerless Formation of the Genji",
+        "Color": "White",
+        "Type": "Magic/Soul Burst",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-079"
+    },
+    {
+        "Name": "Flower Dance Draw",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS34-080"
+    },
+    {
+        "Name": "Hyakki Yakou",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-081"
+    },
+    {
+        "Name": "Ocean Splitting Slash",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS34-082"
+    },
+    {
+        "Name": "Ocean Call",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS34-083"
+    },
+    {
+        "Name": "The SengokuDragonEmperor Burning-Souldragon",
+        "Color": "Red",
+        "Type": "Spirit/Soul Burst",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS34-X01"
+    },
+    {
+        "Name": "The OnmyouEmperor Rikudou",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS34-X02"
+    },
+    {
+        "Name": "The StrangeFangShinobiHead Toudou",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS34-X03"
+    },
+    {
+        "Name": "The SupremeMusha Daybreak-Third",
+        "Color": "White",
+        "Type": "Spirit/Soul Burst",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS34-X04"
+    },
+    {
+        "Name": "The SengokuPrincess Ayame",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS34-X05"
+    },
+    {
+        "Name": "The SevenSeasDaimyo Shironagasu",
+        "Color": "Blue",
+        "Type": "Spirit/Soul Burst",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS34-X06"
+    },
+    {
+        "Name": "The SengokuDragonGod Tenkafubu",
+        "Color": "Red",
+        "Type": "Ultimate",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS34-XX01"
+    },
+    {
+        "Name": "The HeavenlyDemonKing God-Sechs -Type Destroy-",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS34-XX02"
+    }
+]

@@ -1,0 +1,485 @@
+[
+    {
+        "Name": "［Dream Academy Uniform］Otoshiro Noeru",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-001"
+    },
+    {
+        "Name": "［Dream Academy Uniform］Himesato Maria (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-002"
+    },
+    {
+        "Name": "［Tyrolean Aries Coord］Himesato Maria",
+        "Color": "Yellow",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB14-003"
+    },
+    {
+        "Name": "［Dream Academy Uniform］Otoshiro Seira (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-004"
+    },
+    {
+        "Name": "［Musical Scorpio Coord］Otoshiro Seira",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-005"
+    },
+    {
+        "Name": "［Dream Academy Uniform］Kazesawa Sora (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-006"
+    },
+    {
+        "Name": "［Oriental Libra Coord］Kazesawa Sora",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB14-007"
+    },
+    {
+        "Name": "［Unicorn Sagitto Coord］Saegusa Kii",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-008"
+    },
+    {
+        "Name": "［Crystal Aquarius Coord］Kiriya Aoi",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB14-009"
+    },
+    {
+        "Name": "［Lollipop Taurus Coord］Arisugawa Otome",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-010"
+    },
+    {
+        "Name": "［Mermaid Pisces Coord］Hoshimiya Ichigo",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-011"
+    },
+    {
+        "Name": "［Resort Cancer Coord］Natsuki Mikuru",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-012"
+    },
+    {
+        "Name": "［King Leo Coord］Shibuki Ran",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB14-013"
+    },
+    {
+        "Name": "［Nightmare Capricorn Coord］Toudou Yurika",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB14-014"
+    },
+    {
+        "Name": "［Mysterious Virgo Coord］Kanzaki Mizuki",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB14-015"
+    },
+    {
+        "Name": "［Silky Love Devil Coord］Shirakaba Risa",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-016"
+    },
+    {
+        "Name": "［Silky Love Devil Coord］Daichi Nono",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-017"
+    },
+    {
+        "Name": "［Angel Alice Coord］Amahane Madoka",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-018"
+    },
+    {
+        "Name": "［Soul Marionette Coord］Kurosawa Rin",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-019"
+    },
+    {
+        "Name": "［Señorita Scheherazade Coord］Kurebayashi Juri",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-020"
+    },
+    {
+        "Name": "［Street Art Coord］Shinjou Hinaki",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-021"
+    },
+    {
+        "Name": "［Blue Empress Coord］Hikami Sumire",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB14-022"
+    },
+    {
+        "Name": "［Four Star Academy Admin Uniform］Nanakura Koharu (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-023"
+    },
+    {
+        "Name": "［Rainbow Chérie Purple Coord］Nanakura Koharu",
+        "Color": "Yellow",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB14-024"
+    },
+    {
+        "Name": "［Four Star Academy Admin Uniform］Sakuraba Rola (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-025"
+    },
+    {
+        "Name": "［Four Star Academy S4 Uniform］Kasumi Mahiru (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-026"
+    },
+    {
+        "Name": "［Daylight Festival Coord］Kasumi Mahiru",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-027"
+    },
+    {
+        "Name": "［Four Star Academy S4 Uniform］Saotome Ako (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-028"
+    },
+    {
+        "Name": "［Sweet Limelight Coord］Saotome Ako",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-029"
+    },
+    {
+        "Name": "［Four Star Academy S4 Uniform］Nijino Yume (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-030"
+    },
+    {
+        "Name": "［Eternal Rainbow Coord］Nijino Yume",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-031"
+    },
+    {
+        "Name": "［Rosetta Thorn Coord］Shirogane Lily",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-032"
+    },
+    {
+        "Name": "［Asian Night Coord］Kasumi Yozora",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-033"
+    },
+    {
+        "Name": "［Aurora Butterfly Coord］Shiratori Hime",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-034"
+    },
+    {
+        "Name": "［Girls' Flag Coord］Kisaragi Tsubasa",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-035"
+    },
+    {
+        "Name": "［Tropical Hula Girl Coord］Nikaidou Yuzu",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-036"
+    },
+    {
+        "Name": "［Tropical Beach Coord］Nikaidou Yuzu",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-037"
+    },
+    {
+        "Name": "［Sweet Dreams Coord］Hanazono Kirara",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-038"
+    },
+    {
+        "Name": "［Innocent Prince Coord］Kizaki Rei",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-039"
+    },
+    {
+        "Name": "［Floral Fantasia Coord］Futaba Aria",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-040"
+    },
+    {
+        "Name": "［Star Harmony Academy Uniform］Yuuki Aine (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-041"
+    },
+    {
+        "Name": "［Bloom Palette Coord］Yuuki Aine",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-042"
+    },
+    {
+        "Name": "［Star Harmony Academy Uniform］Minato Mio (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-043"
+    },
+    {
+        "Name": "［Aqua Palette Coord］Minato Mio",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-044"
+    },
+    {
+        "Name": "［Spicy Kitty Coord］Chouno Maika",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-045"
+    },
+    {
+        "Name": "［Pretty Kitty Coord］Hinata Ema",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-046"
+    },
+    {
+        "Name": "［Noir Plume Coord］Shirayuri Sakuya",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-047"
+    },
+    {
+        "Name": "［Blanc Plume Coord］Shirayuri Kaguya",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-048"
+    },
+    {
+        "Name": "［Star Harmony Academy Uniform］Kiseki Raki (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-049"
+    },
+    {
+        "Name": "［Cheerful Pinkish Coord］Kiseki Raki",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-050"
+    },
+    {
+        "Name": "［Cheerful Splash Coord］Harukaze Wakaba",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB14-051"
+    },
+    {
+        "Name": "Dream Academy",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB14-052"
+    },
+    {
+        "Name": "Starlight Academy",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB14-053"
+    },
+    {
+        "Name": "Four Star Academy",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB14-054"
+    },
+    {
+        "Name": "Star Harmony Academy",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB14-055"
+    },
+    {
+        "Name": "Coco",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB14-056"
+    },
+    {
+        "Name": "［Dream Academy Uniform］Saegusa Kii (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB14-057"
+    },
+    {
+        "Name": "Your Entrance",
+        "Color": "Yellow",
+        "Type": "Magic/Burst",
+        "Rarity": "Common",
+        "Card_ID": "CB14-058"
+    },
+    {
+        "Name": "Start Line!",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB14-059"
+    },
+    {
+        "Name": "Thank You ⇄ It'll Be Alright",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB14-060"
+    },
+    {
+        "Name": "SHINING LINE*",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB14-061"
+    },
+    {
+        "Name": "Happy Crescendo",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB14-062"
+    },
+    {
+        "Name": "［Dream Eminence Coord］Otoshiro Noeru",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB14-X01"
+    },
+    {
+        "Name": "［White Sky Veil Coord］Oozora Akari",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB14-X02"
+    },
+    {
+        "Name": "［Rock My Heart Coord］Sakuraba Rola",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB14-X03"
+    },
+    {
+        "Name": "［Eternal Princess Coord］Shiratori Hime",
+        "Color": "Yellow",
+        "Type": "Spirit/Burst",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB14-X04"
+    },
+    {
+        "Name": "［Blooming Queen Coord］Elza Forte",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB14-X05"
+    },
+    {
+        "Name": "［Little Ribbon Story Coord］Kiseki Raki",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB14-X06"
+    },
+    {
+        "Name": "［Lilac Fairy Coord］Hoshimiya Ichigo",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "CB14-XX01"
+    }
+]

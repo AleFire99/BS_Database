@@ -1,0 +1,646 @@
+[
+    {
+        "Name": "The FanBladeDragon Dimetron",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-001"
+    },
+    {
+        "Name": "The DinosaurSwordMaster Dracorex",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-002"
+    },
+    {
+        "Name": "Shining-Bladra",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-003"
+    },
+    {
+        "Name": "Souen-Dragoon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-004"
+    },
+    {
+        "Name": "The MeteorSwordMaster Shootingstar",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-005"
+    },
+    {
+        "Name": "Guardian-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-006"
+    },
+    {
+        "Name": "Silver-Wurm",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-007"
+    },
+    {
+        "Name": "The NebulaDragon Andromeda-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS23-008"
+    },
+    {
+        "Name": "Caucasustricera",
+        "Color": "Red/Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-009"
+    },
+    {
+        "Name": "Wingwinder",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-010"
+    },
+    {
+        "Name": "Amethysnake",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-011"
+    },
+    {
+        "Name": "The WolfKnight Loup-Gar",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-012"
+    },
+    {
+        "Name": "The WhiteSnakeSwordMaster Albinaga",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS23-013"
+    },
+    {
+        "Name": "Bone-Ceros",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-014"
+    },
+    {
+        "Name": "The WhiteRiderDragon White-Pendragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-015"
+    },
+    {
+        "Name": "The GrimReaperSwordMaster Darkness-Mare",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-016"
+    },
+    {
+        "Name": "Shadow-Aldius",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-017"
+    },
+    {
+        "Name": "The WickedBoneDragonEmperor Bone-Titanoks",
+        "Color": "Purple/Red",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-018"
+    },
+    {
+        "Name": "The WaterShinobi Gamon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-019"
+    },
+    {
+        "Name": "Yoroibatta",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-020"
+    },
+    {
+        "Name": "Mushatanuki",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-021"
+    },
+    {
+        "Name": "The FireShinobi Hashibiro",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS23-022"
+    },
+    {
+        "Name": "Grace Caterpillar",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-023"
+    },
+    {
+        "Name": "The NoctisButterflySwordMaster Morphonight",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-024"
+    },
+    {
+        "Name": "The ShinobiBird Juichi",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-025"
+    },
+    {
+        "Name": "The SwordMasterMagusShinobi Jiraiya",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-026"
+    },
+    {
+        "Name": "The FortressWorm Fort-Caucasus",
+        "Color": "Green/White",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-027"
+    },
+    {
+        "Name": "Anagpanzer",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-028"
+    },
+    {
+        "Name": "The ImperialMachine Ranger No. 6",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-029"
+    },
+    {
+        "Name": "The GunStrikeWarrior Maclir",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-030"
+    },
+    {
+        "Name": "The AeroSwordMaster Finvel",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS23-031"
+    },
+    {
+        "Name": "The BlackGoddess Nemhain",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-032"
+    },
+    {
+        "Name": "The ArmoredSwordMaster Minotauros",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-033"
+    },
+    {
+        "Name": "Nega-Typhon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS23-034"
+    },
+    {
+        "Name": "Clubman-AT",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-035"
+    },
+    {
+        "Name": "The GreatImperialMachine ISS",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-036"
+    },
+    {
+        "Name": "The DancingWitch Maya",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-037"
+    },
+    {
+        "Name": "The AdventureAngelia Turel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-038"
+    },
+    {
+        "Name": "The Adventurer Adopentan",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-039"
+    },
+    {
+        "Name": "The PuppeteerAngelia Mariel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-040"
+    },
+    {
+        "Name": "The Angelia of Light Dariel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-041"
+    },
+    {
+        "Name": "Caprinmel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-042"
+    },
+    {
+        "Name": "The MoonlightSwordMaster Amalthea",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS23-043"
+    },
+    {
+        "Name": "The IceFireSwordMaster Sphiel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-044"
+    },
+    {
+        "Name": "The WaterDragonDeity Galgios",
+        "Color": "Yellow/Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-045"
+    },
+    {
+        "Name": "Atlaisoldier",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-046"
+    },
+    {
+        "Name": "Migo",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-047"
+    },
+    {
+        "Name": "Falcopanther",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-048"
+    },
+    {
+        "Name": "The BoarMan Boarboar",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-049"
+    },
+    {
+        "Name": "The AbyssalSwordMaster Shub-Niggura",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-050"
+    },
+    {
+        "Name": "The Blacksmith Beta",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-051"
+    },
+    {
+        "Name": "The SwordMasterGeneral Firanda",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS23-052"
+    },
+    {
+        "Name": "Timbertoll",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS23-053"
+    },
+    {
+        "Name": "The OceanEmperorGiantSoldier Atlaia-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-054"
+    },
+    {
+        "Name": "The SunBlade Cardinal-Sun",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-055"
+    },
+    {
+        "Name": "The BlazeMoonBlade Scarlet-Moon",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-056"
+    },
+    {
+        "Name": "Zaguna-Orix",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS23-057"
+    },
+    {
+        "Name": "The DemonSword Deathscythe",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-058"
+    },
+    {
+        "Name": "Hanmyoru",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS23-059"
+    },
+    {
+        "Name": "The JadeKodachi Nichirinmaru",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS23-060"
+    },
+    {
+        "Name": "Phantomjetter",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS23-061"
+    },
+    {
+        "Name": "The AuroraSword Sol Breaker",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-062"
+    },
+    {
+        "Name": "The HaloBlade Angelhalo",
+        "Color": "Yellow",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-063"
+    },
+    {
+        "Name": "The AnnihilationAngelia Nephilim",
+        "Color": "Yellow",
+        "Type": "Brave",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-064"
+    },
+    {
+        "Name": "The OceanEmperorBlade Triwave",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-065"
+    },
+    {
+        "Name": "Hydra-Arms",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS23-066"
+    },
+    {
+        "Name": "The Eternal Deity Capital",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS23-067"
+    },
+    {
+        "Name": "The Underground Empire of Lies",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS23-068"
+    },
+    {
+        "Name": "The Bug-Inviting Bewitching Flower Tower",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-069"
+    },
+    {
+        "Name": "The Rocket City",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-070"
+    },
+    {
+        "Name": "The St. Mikafar Cathedral",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS23-071"
+    },
+    {
+        "Name": "The Warning Sky Shrine",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-072"
+    },
+    {
+        "Name": "Dino Reborn",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS23-073"
+    },
+    {
+        "Name": "Sword Raid",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-074"
+    },
+    {
+        "Name": "Dead Sword",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS23-075"
+    },
+    {
+        "Name": "Vanishing Core",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS23-076"
+    },
+    {
+        "Name": "Quickly Sword",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS23-077"
+    },
+    {
+        "Name": "Grass Bind",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS23-078"
+    },
+    {
+        "Name": "Counter Sword",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS23-079"
+    },
+    {
+        "Name": "Back Attack",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-080"
+    },
+    {
+        "Name": "Thunder Wall",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS23-081"
+    },
+    {
+        "Name": "Dancing Sword",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-082"
+    },
+    {
+        "Name": "Spinning Sword",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS23-083"
+    },
+    {
+        "Name": "Deep Sea Illusion",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS23-084"
+    },
+    {
+        "Name": "The DragonShineDeity Shining-Dragon-Overray",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS23-X01"
+    },
+    {
+        "Name": "The WhiteSnakeEmperor Aldius-Viper",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS23-X02"
+    },
+    {
+        "Name": "The ButterflyEmpress Grace-Papillon",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS23-X03"
+    },
+    {
+        "Name": "The TwinGunMachineDeity Diarmui-Dyna",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS23-X04"
+    },
+    {
+        "Name": "The ArcAngelia Avrielle",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS23-X05"
+    },
+    {
+        "Name": "The AbyssalTwinDragon Hasturk",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS23-X06"
+    },
+    {
+        "Name": "The True Sword of Judgment Truth-Eden",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS23-X07"
+    },
+    {
+        "Name": "The FlashSoulBlade Lightning-Shion",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS23-X08"
+    }
+]

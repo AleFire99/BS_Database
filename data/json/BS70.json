@@ -1,0 +1,765 @@
+[
+    {
+        "Name": "Shakson Geosoldier",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-001"
+    },
+    {
+        "Name": "Saber Gurnard",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-002"
+    },
+    {
+        "Name": "Gecko Geozard",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-003"
+    },
+    {
+        "Name": "Nogihara Geozard",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-004"
+    },
+    {
+        "Name": "The DinosaurSaint Saint Roch",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-005"
+    },
+    {
+        "Name": "The FierceStarDragon Stellarwurm",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-006"
+    },
+    {
+        "Name": "The YoungDragonSage Boogardy",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-007"
+    },
+    {
+        "Name": "Crocodie Geozard",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-008"
+    },
+    {
+        "Name": "The RedBladeDragon Merzoudo",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-009"
+    },
+    {
+        "Name": "The PrimordialWings Genocondor",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-010"
+    },
+    {
+        "Name": "Binarater, Blaze Glow (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-011"
+    },
+    {
+        "Name": "Komodo Geozard (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-012"
+    },
+    {
+        "Name": "The MakaiKnight Beelzett",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-013"
+    },
+    {
+        "Name": "The GardenerDoll †Bamboo†",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-014"
+    },
+    {
+        "Name": "Death Deigos",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-015"
+    },
+    {
+        "Name": "The PatissierDoll †Pompier†",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-016"
+    },
+    {
+        "Name": "The AssassinDoll †Bellini† (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-017"
+    },
+    {
+        "Name": "Deathares",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-018"
+    },
+    {
+        "Name": "The FireWingedSerpent Chantico",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-019"
+    },
+    {
+        "Name": "The FortuneTellerDoll †Bahia†",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-020"
+    },
+    {
+        "Name": "The DepravedDoll †Negroni†",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-021"
+    },
+    {
+        "Name": "The LabyrinthGuard Deatherios",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-022"
+    },
+    {
+        "Name": "The MakaiGuardGeneral Deathdriath (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-023"
+    },
+    {
+        "Name": "Destpede",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-024"
+    },
+    {
+        "Name": "Kyukondori",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-025"
+    },
+    {
+        "Name": "The BladeTiger Byakrode",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-026"
+    },
+    {
+        "Name": "The TreeDragon Woodedragone (w/ Secret)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-027"
+    },
+    {
+        "Name": "The StrongArmLionheart Sisyphus",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-028"
+    },
+    {
+        "Name": "The MischievousLionheart Pan",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-029"
+    },
+    {
+        "Name": "ChouRyou Wolf",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-030"
+    },
+    {
+        "Name": "The LionheartCenturion Iphicles",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-031"
+    },
+    {
+        "Name": "Centaurus-Taishici",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-032"
+    },
+    {
+        "Name": "The HeavyKnight Kummander",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-033"
+    },
+    {
+        "Name": "The LionheartGeneral Pelops (w/ Secret)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-034"
+    },
+    {
+        "Name": "The GreenWindLionheart Hermaphros",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-035"
+    },
+    {
+        "Name": "The FrostyLittleFairy Tink",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-036"
+    },
+    {
+        "Name": "The FrostyHeavenFairy Disel",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-037"
+    },
+    {
+        "Name": "The FrostyFairy Shuryea",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-038"
+    },
+    {
+        "Name": "The FrostyGreatFairy Breg",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-039"
+    },
+    {
+        "Name": "The ShieldKnight Yggdrance",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-040"
+    },
+    {
+        "Name": "The FrostyConjurerFairy Funnel (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-041"
+    },
+    {
+        "Name": "The FrostySwordFairy Meltica",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-042"
+    },
+    {
+        "Name": "The FrostyGunFairy Wesba",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-043"
+    },
+    {
+        "Name": "The FrostyHeavenFairy Faezel",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-044"
+    },
+    {
+        "Name": "The FrostyHeavenFairy Lemusir",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-045"
+    },
+    {
+        "Name": "The WaterArmorBeast Huixtocihuatl (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-046"
+    },
+    {
+        "Name": "The FrostyFairyMachine Deetail",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-047"
+    },
+    {
+        "Name": "HighEvo-Frost",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-048"
+    },
+    {
+        "Name": "HighEvo-Bunkle",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-049"
+    },
+    {
+        "Name": "The GreatAngelia Atiel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-050"
+    },
+    {
+        "Name": "HighEvo-Cockatrice",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-051"
+    },
+    {
+        "Name": "HighEvo-Peryton",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-052"
+    },
+    {
+        "Name": "HighEvo-Remora",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-053"
+    },
+    {
+        "Name": "HighEvo-Orthrus (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-054"
+    },
+    {
+        "Name": "HighEvo-Pegasus",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-055"
+    },
+    {
+        "Name": "HighEvo-Fenrir",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-056"
+    },
+    {
+        "Name": "HighEvo-Ladon (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-057"
+    },
+    {
+        "Name": "The GrandflowerFairy Gladiolus",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-058"
+    },
+    {
+        "Name": "HighEvo-Beheemoth",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-059"
+    },
+    {
+        "Name": "Bakuon Servakya",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-060"
+    },
+    {
+        "Name": "Bakuon Vicugna",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-061"
+    },
+    {
+        "Name": "Bakuon Peccary",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-062"
+    },
+    {
+        "Name": "Agate-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-063"
+    },
+    {
+        "Name": "The SteamNobleThief Scarborough",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS70-064"
+    },
+    {
+        "Name": "Bakuon Jaguar (w/ Secret)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-065"
+    },
+    {
+        "Name": "The GiantEmpress Alexander CXV",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-066"
+    },
+    {
+        "Name": "The SteamNobleThief Westmoreland (w/ Secret)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-067"
+    },
+    {
+        "Name": "Bakuon Tusker",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS70-068"
+    },
+    {
+        "Name": "The Dragon's Upper Jaw Rock",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS70-069"
+    },
+    {
+        "Name": "Hera's Night City",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS70-070"
+    },
+    {
+        "Name": "The Sealed Lands: Swamp",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS70-071"
+    },
+    {
+        "Name": "The Messenger Post on the Cape",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS70-072"
+    },
+    {
+        "Name": "Brigit's Cartwheel Temple",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS70-073"
+    },
+    {
+        "Name": "The Sealed Lands: Iceberg",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS70-074"
+    },
+    {
+        "Name": "Uranus' Astral Night Temple",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS70-075"
+    },
+    {
+        "Name": "The Sealed Lands: Flower Field",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS70-076"
+    },
+    {
+        "Name": "The Endless Road",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS70-077"
+    },
+    {
+        "Name": "Neo Mother Core",
+        "Color": "All",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS70-078"
+    },
+    {
+        "Name": "Stella Edge",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS70-079"
+    },
+    {
+        "Name": "Gaia Howling",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS70-080"
+    },
+    {
+        "Name": "Reverse Crux",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-081"
+    },
+    {
+        "Name": "Toxin Shot",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS70-082"
+    },
+    {
+        "Name": "Cactus Shot",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS70-083"
+    },
+    {
+        "Name": "Wheel Barrier",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS70-084"
+    },
+    {
+        "Name": "Missing Link",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-085"
+    },
+    {
+        "Name": "Gravity Sphere",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS70-086"
+    },
+    {
+        "Name": "Gladiolus Field",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS70-087"
+    },
+    {
+        "Name": "Galactica Breath",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS70-088"
+    },
+    {
+        "Name": "Royal Draw",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS70-089"
+    },
+    {
+        "Name": "Run Wild",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS70-090"
+    },
+    {
+        "Name": "The ScorchingDragonEmperor Valkfalzar (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS70-X01"
+    },
+    {
+        "Name": "The MakaiCelestialNymph Diesdoll (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS70-X02"
+    },
+    {
+        "Name": "The GreatHeroBeast King Perseus (w/ Secret)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS70-X03"
+    },
+    {
+        "Name": "The SilverWheelSacred Arianrod (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS70-X04"
+    },
+    {
+        "Name": "The PinnacleDivineEmperor Caelus-Griffon (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS70-X05"
+    },
+    {
+        "Name": "The RoaringSpeedStormMachineBeast Chichen-Zephyr -Wolf Form- (w/ Secret)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS70-X06"
+    },
+    {
+        "Name": "The SilverRingSword Silverwheel (w/ Secret)",
+        "Color": "White/Purple",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS70-X07"
+    },
+    {
+        "Name": "The HeavenEarthCreationStaff Diastima (w/ Secret)",
+        "Color": "All",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS70-X08"
+    },
+    {
+        "Name": "The Precipice of Phantom Star (w/ Secret)",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS70-X09"
+    },
+    {
+        "Name": "The CurseConsortContractor Hera (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Contract Nexus",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS70-CX01"
+    },
+    {
+        "Name": "The SilverWheelContractor Brigit (w/ Secret)",
+        "Color": "White",
+        "Type": "Contract Nexus",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS70-CX02"
+    },
+    {
+        "Name": "The AstralNightContractor Uranus (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Contract Nexus",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS70-CX03"
+    },
+    {
+        "Name": "The MakaiSwordDeityDoll †Enchante† (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "NX-Rare",
+        "Card_ID": "BS70-NX01"
+    },
+    {
+        "Name": "The FrostStar Easurtr (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "NX-Rare",
+        "Card_ID": "BS70-NX02"
+    },
+    {
+        "Name": "The StarDestroyerBeast Chimestellar (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "NX-Rare",
+        "Card_ID": "BS70-NX03"
+    },
+    {
+        "Name": "The SupernovaDragon Siegwurm-Nova XV (w/ two Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "XV-Rare",
+        "Card_ID": "BS70-XV01"
+    },
+    {
+        "Name": "The DoomKnightLord Ragna-Rock XV (w/ Secret)",
+        "Color": "Green/White",
+        "Type": "Spirit",
+        "Rarity": "XV-Rare",
+        "Card_ID": "BS70-XV02"
+    },
+    {
+        "Name": "The Providence Hououga XV (w/ Secret)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "XV-Rare",
+        "Card_ID": "BS70-XV03"
+    },
+    {
+        "Name": "The WingDeity Grand-Woden XV (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "XV-Rare",
+        "Card_ID": "BS70-XV04"
+    }
+]

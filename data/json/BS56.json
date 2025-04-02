@@ -1,0 +1,751 @@
+[
+    {
+        "Name": "Rockedra",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-001"
+    },
+    {
+        "Name": "The SpaceFighterDragon BoulderDragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-002"
+    },
+    {
+        "Name": "The MagicSwordsman Dragno",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-003 (A)"
+    },
+    {
+        "Name": "The MagicSwordMaster Dragno Bud-Jida",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-003 (B)"
+    },
+    {
+        "Name": "Radome Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-004"
+    },
+    {
+        "Name": "The CannonDragonMachine Gyaradran",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-005"
+    },
+    {
+        "Name": "The SnakeDragon King-Gorgo X",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-006"
+    },
+    {
+        "Name": "The CosmicExpeditionDragon Espacion",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-007"
+    },
+    {
+        "Name": "The GreatSorcerer Dragno Sog-Mauvais",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-008"
+    },
+    {
+        "Name": "Cosmo Raiser Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-009"
+    },
+    {
+        "Name": "The ButterflyDragon Farfalla",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-010"
+    },
+    {
+        "Name": "The SpaceFortressDragon DragonicFort",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-011"
+    },
+    {
+        "Name": "Bal-Bat",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-012"
+    },
+    {
+        "Name": "The YomiBeast RaiunHyou",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-013"
+    },
+    {
+        "Name": "The DragonKnight Haizillion",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-014 (A)"
+    },
+    {
+        "Name": "The DragonKnight Haizillion -Dragon-Fused Rider-",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-014 (B)"
+    },
+    {
+        "Name": "Chupacabra",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-015"
+    },
+    {
+        "Name": "The JailBeast Gashabers X",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-016"
+    },
+    {
+        "Name": "The Bal-Masque Baron Adolf",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-017 (A)"
+    },
+    {
+        "Name": "The Bal-Masque Baron ObsidianDemon Adolf",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-017 (B)"
+    },
+    {
+        "Name": "The YomiFierceFish RaiunZame",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-018"
+    },
+    {
+        "Name": "The VampiricKnight Evaristo",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-019"
+    },
+    {
+        "Name": "The Bal-Masque Marquis Baudouin",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-020"
+    },
+    {
+        "Name": "The YomiEmperorSnake RaiunOrochi",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-021"
+    },
+    {
+        "Name": "Drone Ant",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-022"
+    },
+    {
+        "Name": "The KamiumiBeast JumokuUsagi",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-023"
+    },
+    {
+        "Name": "Drone Moth",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-024"
+    },
+    {
+        "Name": "Scarab Beetle Drone",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-025"
+    },
+    {
+        "Name": "Drone Honey",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-026"
+    },
+    {
+        "Name": "Drone Kamikiri",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-027"
+    },
+    {
+        "Name": "The Inspector LieutenantHopper",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-028"
+    },
+    {
+        "Name": "The InvestigatingOfficer Investibeetle",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-029"
+    },
+    {
+        "Name": "The KamiumiGuardian Inokami",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-030"
+    },
+    {
+        "Name": "The DivineGreenPeacock BotanicalPeacock",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-031 (A)"
+    },
+    {
+        "Name": "The RainbowFlowerDivineBird BotanicalPeacock",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-031 (B)"
+    },
+    {
+        "Name": "The Sheriff Goliathedge",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-032"
+    },
+    {
+        "Name": "Booster Orix",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-033"
+    },
+    {
+        "Name": "The FondPrincess Liliya",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-034"
+    },
+    {
+        "Name": "Boost Cheetah",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-035"
+    },
+    {
+        "Name": "The MagicCreationKnight Olesya",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-036 (A)"
+    },
+    {
+        "Name": "The IceCreationKnight Olesya",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-036 (B)"
+    },
+    {
+        "Name": "The FlyingIronBeast Gale-Fokker X",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-037"
+    },
+    {
+        "Name": "The BeastMobile Wolven-Berger",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-038 (A)"
+    },
+    {
+        "Name": "The BeastArmoredMobile Wolven-Berger -Huma Mode-",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-038 (B)"
+    },
+    {
+        "Name": "Fortresster Emperor",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-039"
+    },
+    {
+        "Name": "Zeek Dragoon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-040"
+    },
+    {
+        "Name": "The ZeroFlowerBattleMaiden Miloslava",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-041"
+    },
+    {
+        "Name": "The AbandonedUnit Disposal-Mammoth",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-042"
+    },
+    {
+        "Name": "The FlowerWitchGirl Preze",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-043"
+    },
+    {
+        "Name": "The Angelia Remiliel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-044"
+    },
+    {
+        "Name": "The StarDivineBeast Carvancle",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-045 (A)"
+    },
+    {
+        "Name": "The StarDivineSacredBeast Carvancle",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-045 (B)"
+    },
+    {
+        "Name": "The Angelia Uniel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-046"
+    },
+    {
+        "Name": "The Angelia Famuel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-047 (A)"
+    },
+    {
+        "Name": "The SlashAngelia Famuel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-047 (B)"
+    },
+    {
+        "Name": "ArcanaDarkKnight Sith",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-048"
+    },
+    {
+        "Name": "The DruidWingedPriestess Scheine",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-049"
+    },
+    {
+        "Name": "The GreatAngelia Furiuel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-050"
+    },
+    {
+        "Name": "The Angelia Hamael",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-051"
+    },
+    {
+        "Name": "The SpacePirate Rudolf",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-052"
+    },
+    {
+        "Name": "The SpacePirate Armadillo",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-053"
+    },
+    {
+        "Name": "The SpacePirate Rondine",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-054"
+    },
+    {
+        "Name": "The ChrownosSeniorTrooper High-ChronoTrooper",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-055"
+    },
+    {
+        "Name": "The ChrownosMachineSoldier Chrono-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-056 (A)"
+    },
+    {
+        "Name": "The ChrownosMachineEmperor Kaiser-Chrono-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-056 (B)"
+    },
+    {
+        "Name": "The SpacePirate Proccho",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-057"
+    },
+    {
+        "Name": "The SpacePirateOperator Lisitsa",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-058"
+    },
+    {
+        "Name": "The SpacePirate Mountainhawk",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-059"
+    },
+    {
+        "Name": "The SpacetimeSeaBeast ChronoOrca",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS56-060"
+    },
+    {
+        "Name": "The SpacePirate Tibrock",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-061"
+    },
+    {
+        "Name": "The SpacePirate Walrus",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS56-062"
+    },
+    {
+        "Name": "The CosmicCruisingDragonWarship Drag-Nautilus",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-063 (A)"
+    },
+    {
+        "Name": "The CosmicCruisingDragonMachine Drag-Nautilus-Assault",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-063 (B)"
+    },
+    {
+        "Name": "Dragons' Mirage",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-064"
+    },
+    {
+        "Name": "The Phantom Star Creation Place",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS56-065"
+    },
+    {
+        "Name": "Phantom Mirage",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS56-066"
+    },
+    {
+        "Name": "The TerrestrialCruiser Ground-Grasshopper",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-067 (A)"
+    },
+    {
+        "Name": "The GreatInsectBlade Big-Grasshopper",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-067 (B)"
+    },
+    {
+        "Name": "Nature Mirage",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS56-068"
+    },
+    {
+        "Name": "Mechanical Mirage",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS56-069"
+    },
+    {
+        "Name": "Witch Mirage",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-070"
+    },
+    {
+        "Name": "Abyssal Mirage",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS56-071"
+    },
+    {
+        "Name": "The SpacePirateShip BoneShark",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-072 (A)"
+    },
+    {
+        "Name": "The SpacePirateShip BoneShark -Assault Mode-",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "BS56-072 (B)"
+    },
+    {
+        "Name": "Laser Volley",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS56-073"
+    },
+    {
+        "Name": "Oracle XIII Over Death",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-074"
+    },
+    {
+        "Name": "Bind Edge",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS56-075"
+    },
+    {
+        "Name": "Oracle XVII Over Star",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-076"
+    },
+    {
+        "Name": "Oracle III Over Empress",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS56-077"
+    },
+    {
+        "Name": "Hydraulic Shooting",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS56-078"
+    },
+    {
+        "Name": "The CosmicCruisingDragon Astra-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS56-X01"
+    },
+    {
+        "Name": "The OracleTwentyOnePillars XIII The Death",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS56-X02"
+    },
+    {
+        "Name": "The KamiumiBushin Onogoro",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS56-X03"
+    },
+    {
+        "Name": "The LaserShellSheriff Mandi-Bularis",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS56-X04"
+    },
+    {
+        "Name": "The OracleTwentyOnePillars XVII The Star",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS56-X05"
+    },
+    {
+        "Name": "The GreatIceGiantBeast Yetika-Erakes",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS56-X06"
+    },
+    {
+        "Name": "The OracleTwentyOnePillars III The Empress",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS56-X07"
+    },
+    {
+        "Name": "The SpacePirate Captain-Sharcook",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS56-X08"
+    },
+    {
+        "Name": "The SpaceGreatOceanCrystal Valdulm",
+        "Color": "Blue/Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS56-X09"
+    },
+    {
+        "Name": "The PhantomStarDragon Gai-Asura X",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS56-TX01 (A)"
+    },
+    {
+        "Name": "The PhantomStarDragon Gai-Asura X -Lucent Rebirth-",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS56-TX01 (B)"
+    },
+    {
+        "Name": "The DragonKnight Ambrose",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS56-TX02 (A)"
+    },
+    {
+        "Name": "Grandwalker Merlin",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS56-TX02 (B)"
+    },
+    {
+        "Name": "The DragonKnight Swordius-Dragoon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS56-TX03 (A)"
+    },
+    {
+        "Name": "The DragonKnightEmperor Grand-Dragonic-Arthur",
+        "Color": "Red/Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth X-Rare",
+        "Card_ID": "BS56-TX03 (B)"
+    },
+    {
+        "Name": "The FutureMachineDeity Fogmazios",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS56-XX01"
+    },
+    {
+        "Name": "The FutureGoddess Fam-Di-Rur",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS56-XX02"
+    }
+]

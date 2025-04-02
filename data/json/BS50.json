@@ -1,0 +1,786 @@
+[
+    {
+        "Name": "The UnderworldDinoman Psita",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-001"
+    },
+    {
+        "Name": "Godseeker UnderworldPriest Ovira",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-002"
+    },
+    {
+        "Name": "Avatar Dragon Green",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-003"
+    },
+    {
+        "Name": "The UnderworldDinoman Velokick",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-004"
+    },
+    {
+        "Name": "The UnderworldHornDinoman Chasmo",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-005"
+    },
+    {
+        "Name": "The UnderworldExecutioner Carno",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-006"
+    },
+    {
+        "Name": "The BlackBeast Zegroad",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-007"
+    },
+    {
+        "Name": "The RishiDragon Ma-Daksha -Humanoid Form-",
+        "Color": "Red",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-008"
+    },
+    {
+        "Name": "The UnderworldMushaDinoman Cryolo",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-009"
+    },
+    {
+        "Name": "The StarEmperorDragon Meteorwurm X",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-010"
+    },
+    {
+        "Name": "The SwordanceDragonEmperor Ma-Zain -Dragon Form-",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-011"
+    },
+    {
+        "Name": "The UnderworldDinosaurGeneral Acrocantho",
+        "Color": "Red",
+        "Type": "Spirit/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS50-012"
+    },
+    {
+        "Name": "The UnderworldGiantDinoman Diplo",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-013"
+    },
+    {
+        "Name": "Armored Soul",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-014"
+    },
+    {
+        "Name": "The TenShikiWarOgres Danzou",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-015"
+    },
+    {
+        "Name": "Sitar Dragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-016"
+    },
+    {
+        "Name": "The MakaiThane Death Musca",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-017"
+    },
+    {
+        "Name": "Godseeker Onmyou Shiki",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-018"
+    },
+    {
+        "Name": "The TenShikiWarOgres Shiki Wakamaru",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-019"
+    },
+    {
+        "Name": "Armored Shiki",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-020"
+    },
+    {
+        "Name": "Shastra Dragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-021"
+    },
+    {
+        "Name": "Rider Shiki",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-022"
+    },
+    {
+        "Name": "The RedRockKing Boanefel",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-023"
+    },
+    {
+        "Name": "The PistolDoll †Bourbonella†",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-024"
+    },
+    {
+        "Name": "The TenShikiWarOgres Yami Benkei",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-025"
+    },
+    {
+        "Name": "The DestroyerEvilDragon Mukhalinga",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-026"
+    },
+    {
+        "Name": "The MakaiKnight Beelzeheart",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-027"
+    },
+    {
+        "Name": "The ShieldKnight Geotrupid",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-028"
+    },
+    {
+        "Name": "The SkyBraver Phara-Fisher",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-029"
+    },
+    {
+        "Name": "Onisiroman",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-030"
+    },
+    {
+        "Name": "The LightspeedKnight Waspeeder",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-031"
+    },
+    {
+        "Name": "The SixBladesKnight Chrysis-Ace",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-032"
+    },
+    {
+        "Name": "The SkyBraver Shnea-Eagle",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-033"
+    },
+    {
+        "Name": "The PeerlessKnight Centibuild",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-034"
+    },
+    {
+        "Name": "The ArgoHeroBeast Meleagros",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-035"
+    },
+    {
+        "Name": "The SpearKnight Grantbeet",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-036"
+    },
+    {
+        "Name": "Vishnaga-Shiksha",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-037"
+    },
+    {
+        "Name": "Krishnaga-Unhattar",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-038"
+    },
+    {
+        "Name": "Godseeker Vamana",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-039"
+    },
+    {
+        "Name": "Dark-Dober X",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-040"
+    },
+    {
+        "Name": "Vishnaga-Chandas",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-041"
+    },
+    {
+        "Name": "The HieroglyphHunter Raider-Iahf",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-042"
+    },
+    {
+        "Name": "Vishnaga-Vatara",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-043"
+    },
+    {
+        "Name": "The SteelMaiden006 Clytie",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-044"
+    },
+    {
+        "Name": "The GrandtreeMachineDragon Vedanga",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-045"
+    },
+    {
+        "Name": "The HieroglyphHunter Jet-Beik",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-046"
+    },
+    {
+        "Name": "Krishnaga-Gyarh",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-047"
+    },
+    {
+        "Name": "The SevenSisters Asterope",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-048"
+    },
+    {
+        "Name": "Vishnaga-Vyakarana",
+        "Color": "White",
+        "Type": "Spirit/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS50-049"
+    },
+    {
+        "Name": "Lantern Ghost",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-050"
+    },
+    {
+        "Name": "Blizzard Girl",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-051"
+    },
+    {
+        "Name": "Godseeker Onmyou Fuurin",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-052"
+    },
+    {
+        "Name": "Azuki Bean Washer",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-053"
+    },
+    {
+        "Name": "The TenJudges Henjou",
+        "Color": "Yellow/Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-054"
+    },
+    {
+        "Name": "The EgytianAngeliaPrincess Ameriel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-055"
+    },
+    {
+        "Name": "Upu-Aut",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-056"
+    },
+    {
+        "Name": "The NorthWindBeast Qebui",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-057"
+    },
+    {
+        "Name": "Rokuro Neck Girl",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-058"
+    },
+    {
+        "Name": "The TenJudges Shokou",
+        "Color": "Yellow/Purple",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-059"
+    },
+    {
+        "Name": "The GrandflowerFairyKnight Zephyranthes",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-060"
+    },
+    {
+        "Name": "Cyanite-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-061"
+    },
+    {
+        "Name": "Chrysocolla-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-062"
+    },
+    {
+        "Name": "Amazonite-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-063"
+    },
+    {
+        "Name": "Godseeker Aura Quartz Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-064"
+    },
+    {
+        "Name": "The GrandseaPirate Porpoise",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-065"
+    },
+    {
+        "Name": "Whiterock Hydra",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-066"
+    },
+    {
+        "Name": "Cinnabar-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-067"
+    },
+    {
+        "Name": "The ThreeHeadedDinosaur Rhomaleo-no-Aragami",
+        "Color": "Blue/Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-068"
+    },
+    {
+        "Name": "Kunzite-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-069"
+    },
+    {
+        "Name": "The GrandseaPirate MagicGunner Pseudolph",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS50-070"
+    },
+    {
+        "Name": "Saphir-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-071"
+    },
+    {
+        "Name": "Kamunabi-no-Mikoto",
+        "Color": "Blue",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-072"
+    },
+    {
+        "Name": "Celestite-Golem",
+        "Color": "Blue",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-073"
+    },
+    {
+        "Name": "The DragonRiderEvilBow Sagittobow",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-074"
+    },
+    {
+        "Name": "Onmyou Talisman",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS50-075"
+    },
+    {
+        "Name": "The ClearSkyKaiken Phoedec-Dagger",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS50-076"
+    },
+    {
+        "Name": "The LionDeityEvilGun Leo-Blaster",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS50-077"
+    },
+    {
+        "Name": "The GrandTransformer Axe-Arms",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-078"
+    },
+    {
+        "Name": "The GrandTransformer Lance-Arms",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS50-079"
+    },
+    {
+        "Name": "The GrandHammer Meteorforge",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-080"
+    },
+    {
+        "Name": "Anubis' Underworld Temple",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS50-081"
+    },
+    {
+        "Name": "Tsukuyomi's Onmyou Temple",
+        "Color": "Purple/Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS50-082"
+    },
+    {
+        "Name": "Vishnu's Preservation Temple",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS50-083"
+    },
+    {
+        "Name": "Hephaestus's Forge Temple",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS50-084"
+    },
+    {
+        "Name": "Advent Star",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS50-085"
+    },
+    {
+        "Name": "Cosmic Return",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS50-086"
+    },
+    {
+        "Name": "Rock Shoot",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS50-087"
+    },
+    {
+        "Name": "Kunai Rain Shower",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS50-088"
+    },
+    {
+        "Name": "Raging Ride",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS50-089"
+    },
+    {
+        "Name": "Mirage Curtain",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS50-090"
+    },
+    {
+        "Name": "Nerine Field",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS50-091"
+    },
+    {
+        "Name": "Pentagram Barrier",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS50-092"
+    },
+    {
+        "Name": "Zephyranthes Field",
+        "Color": "Yellow",
+        "Type": "Magic/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS50-093"
+    },
+    {
+        "Name": "Magma Power",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS50-094"
+    },
+    {
+        "Name": "The DarkStones DarkfearSlashDeity Dinovenge",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X01"
+    },
+    {
+        "Name": "The MoonspiritOgreDeity Sumeraginga",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X02"
+    },
+    {
+        "Name": "The VeteranKnight Dorcu-Evidence",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X03"
+    },
+    {
+        "Name": "The PreserverDeityDragon Trivi-Krama",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X04"
+    },
+    {
+        "Name": "The YoukaiEmperor En'ou",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X05"
+    },
+    {
+        "Name": "The AzureForgeDeity Vulcan-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X06"
+    },
+    {
+        "Name": "The ThreeTreasureDragonSwords Ancientcalibur",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X07"
+    },
+    {
+        "Name": "The ThreeTreasureDragonSwords Necrocalibur",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X08"
+    },
+    {
+        "Name": "The ThreeTreasureDragonSwords Absolutecalibur",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X09"
+    },
+    {
+        "Name": "Grandwalker Anubis",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X10"
+    },
+    {
+        "Name": "Grandwalker Tsukuyomi",
+        "Color": "Purple/Yellow",
+        "Type": "Nexus",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X11"
+    },
+    {
+        "Name": "Grandwalker of Preservation Vishnu",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X12"
+    },
+    {
+        "Name": "Grandwalker Hephaestus",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS50-X13"
+    },
+    {
+        "Name": "The AbsoluteDragonDeity Grand-Lolo-Dragoleon",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS50-XX01"
+    },
+    {
+        "Name": "Grandwalker Zeus-Lolo",
+        "Color": "All",
+        "Type": "Nexus",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS50-XX02"
+    },
+    {
+        "Name": "The ShineCentaurusDeity Sagitto-Apollodragon X",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "10thX-Rare",
+        "Card_ID": "BS50-10thX01"
+    },
+    {
+        "Name": "The EvilCapricornusDeity Stein-Bolg X",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "10thX-Rare",
+        "Card_ID": "BS50-10thX02"
+    },
+    {
+        "Name": "The MachineLionDeity Strikewurm-Leo X",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "10thX-Rare",
+        "Card_ID": "BS50-10thX03"
+    }
+]

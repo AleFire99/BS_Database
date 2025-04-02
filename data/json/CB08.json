@@ -1,0 +1,604 @@
+[
+    {
+        "Name": "Kamen Rider Zi-O［2］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-001"
+    },
+    {
+        "Name": "Kamen Rider Woz Futuring Quiz",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-002"
+    },
+    {
+        "Name": "Kamen Rider Zi-O Fourze Armor",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-003"
+    },
+    {
+        "Name": "Castle Hard Smash",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-004"
+    },
+    {
+        "Name": "Kamen Rider Geiz Ghost Armor",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-005"
+    },
+    {
+        "Name": "Kamen Rider Zi-O Gaim Armor",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-006"
+    },
+    {
+        "Name": "Kamen Rider Woz Futuring Shinobi",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-007"
+    },
+    {
+        "Name": "Kamen Rider Zi-O Decade Armor Build Form",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-008"
+    },
+    {
+        "Name": "Kamen Rider Geiz Genm Armor",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-009"
+    },
+    {
+        "Name": "Kamen Rider Zi-O Kuuga Armor",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-010"
+    },
+    {
+        "Name": "Kamen Rider Zi-O Decade Armor (w/ Parallel)",
+        "Color": "Red",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB08- 011"
+    },
+    {
+        "Name": "Kamen Rider Woz Futuring Kikai",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-012"
+    },
+    {
+        "Name": "Kamen Rider Faiz Blaster Form［2］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-013"
+    },
+    {
+        "Name": "Kamen Rider Decade (2018 ver.)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB08-014"
+    },
+    {
+        "Name": "Squid Jaguar Yummy",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-015"
+    },
+    {
+        "Name": "Tortoise Yummy",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-016"
+    },
+    {
+        "Name": "Snake Orphnoch",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-017"
+    },
+    {
+        "Name": "Grasshopper Yummy",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-018"
+    },
+    {
+        "Name": "Kamen Rider Ixa Save Mode",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-019"
+    },
+    {
+        "Name": "Shark Yummy",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-020"
+    },
+    {
+        "Name": "Burgermon Bugster",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-021"
+    },
+    {
+        "Name": "Mezool",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-022"
+    },
+    {
+        "Name": "Gamel",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-023"
+    },
+    {
+        "Name": "Kazari",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-024"
+    },
+    {
+        "Name": "Pteranodon Yummy (Male & Female)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-025"
+    },
+    {
+        "Name": "Lobster Orphnoch",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-026"
+    },
+    {
+        "Name": "Spider Orphnoch",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-027"
+    },
+    {
+        "Name": "Uva",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-028"
+    },
+    {
+        "Name": "Ankh (Lost)",
+        "Color": "Purple",
+        "Type": "Spirit/Burst",
+        "Rarity": "Common",
+        "Card_ID": "CB08-029"
+    },
+    {
+        "Name": "Dinosaur Greeed",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB08-030"
+    },
+    {
+        "Name": "Kamen Rider Kiva Flight Style",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-031"
+    },
+    {
+        "Name": "Gamedeus Cronus",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-032"
+    },
+    {
+        "Name": "Super Gamedeus",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-033"
+    },
+    {
+        "Name": "Kamen Rider MadRogue",
+        "Color": "Purple/White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-034"
+    },
+    {
+        "Name": "Evolto (Phantom Form)",
+        "Color": "Purple/White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-035"
+    },
+    {
+        "Name": "Kamen Rider Snipe Shooting Gamer Level 1",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-036"
+    },
+    {
+        "Name": "Kamen Rider Brave Quest Gamer Level 1",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-037"
+    },
+    {
+        "Name": "Kamen Rider Lazer Bike Gamer Level 1",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-CB02-038"
+    },
+    {
+        "Name": "Kamen Rider Ex-Aid Double Action Gamer Level X",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-039"
+    },
+    {
+        "Name": "Kamen Rider Poppy Tokimeki Crisis Gamer Level X",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-040"
+    },
+    {
+        "Name": "Kamen Rider Ex-Aid Double Action Gamer Level XX R",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-041"
+    },
+    {
+        "Name": "Kamen Rider Ex-Aid Double Action Gamer Level XX L",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-042"
+    },
+    {
+        "Name": "Kamen Rider Brave Legacy Gamer Level 100",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-043"
+    },
+    {
+        "Name": "Kamen Rider Genm Action Gamer Level 1",
+        "Color": "White/Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-044"
+    },
+    {
+        "Name": "Kamen Rider Genm God Maximum Gamer Level Billion (w/ Parallel)",
+        "Color": "White/Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB08-045"
+    },
+    {
+        "Name": "Kamen Rider Garren",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-046"
+    },
+    {
+        "Name": "Kamen Rider Blade",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-047"
+    },
+    {
+        "Name": "Kamen Rider Chalice",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-048"
+    },
+    {
+        "Name": "Owl Hard Smash",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-049"
+    },
+    {
+        "Name": "Kamen Rider Leangle",
+        "Color": "Yellow",
+        "Type": "Spirit/Burst",
+        "Rarity": "Common",
+        "Card_ID": "CB08-050"
+    },
+    {
+        "Name": "Kamen Rider Blade［2］",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-051"
+    },
+    {
+        "Name": "Kamen Rider Garren Jack Form",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-052"
+    },
+    {
+        "Name": "Kamen Rider Blade Jack Form",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB08-053"
+    },
+    {
+        "Name": "Kamen Rider Blade Jack Form［2］",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-054"
+    },
+    {
+        "Name": "Kamen Rider Wild Chalice",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB08-055"
+    },
+    {
+        "Name": "Kamen Rider Leangle［2］",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-056"
+    },
+    {
+        "Name": "Kamen Rider OOO TaToBa Combo［2］",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-057"
+    },
+    {
+        "Name": "Kamen Rider Birth",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-058"
+    },
+    {
+        "Name": "Stag Hard Smash",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-059"
+    },
+    {
+        "Name": "Kamen Rider OOO Shauta Combo",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-060"
+    },
+    {
+        "Name": "Kamen Rider OOO Gatakiriba Combo",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-061"
+    },
+    {
+        "Name": "Kamen Rider OOO Latoratar Combo",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-062"
+    },
+    {
+        "Name": "Kamen Rider OOO Sagohzo Combo",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-063"
+    },
+    {
+        "Name": "Birth-Day",
+        "Color": "Blue",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-064"
+    },
+    {
+        "Name": "Kamen Rider OOO Tajadol Combo",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB08-065"
+    },
+    {
+        "Name": "Kamen Rider OOO TaToBa Combo (True OOO)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB08-066"
+    },
+    {
+        "Name": "Ankh Greeed Form",
+        "Color": "Blue/Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB08-067"
+    },
+    {
+        "Name": "Kamen Rider Build Trial Form (RabbitDragon)",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-068"
+    },
+    {
+        "Name": "The DemonImperialSword Zanvat Sword",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-069"
+    },
+    {
+        "Name": "The RousingSword Blay Rouzer",
+        "Color": "Yellow",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-070"
+    },
+    {
+        "Name": "Ankh",
+        "Color": "Blue/Purple",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-071"
+    },
+    {
+        "Name": "Time Mazine Vehicle Mode",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB08-072"
+    },
+    {
+        "Name": "The Greeed Mansion",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB08-073"
+    },
+    {
+        "Name": "BOARD",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB08-074"
+    },
+    {
+        "Name": "Ridevendor",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB08-075"
+    },
+    {
+        "Name": "Time Break",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB08-076"
+    },
+    {
+        "Name": "Cell Medal",
+        "Color": "Purple/Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB08-077"
+    },
+    {
+        "Name": "Lightning Blast",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB08-078"
+    },
+    {
+        "Name": "Tatoba Kick",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB08-079"
+    },
+    {
+        "Name": "Kamen Rider Woz",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB08-X01"
+    },
+    {
+        "Name": "Kamen Rider Zi-O II",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB08-X02"
+    },
+    {
+        "Name": "Kamen Rider Blade King Form (w/ Parallel)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB08-X03"
+    },
+    {
+        "Name": "Kamen Rider OOO PuToTyra Combo (w/ Parallel)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB08-X04"
+    },
+    {
+        "Name": "Kamen Rider OOO Tajadol Combo (Final Episode Version) (w/ Parallel)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB08-X05"
+    },
+    {
+        "Name": "Joker (w/ Parallel)",
+        "Color": "All",
+        "Type": "Spirit/Burst",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB08-X06"
+    },
+    {
+        "Name": "Kamen Rider Oma Zi-O",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "CB08-XX01"
+    }
+]

@@ -1,0 +1,247 @@
+[
+    {
+        "Name": "Kamen Rider Sasword Rider Form ［2］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-001"
+    },
+    {
+        "Name": "Kamen Rider Gatack Rider Form ［3］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-002"
+    },
+    {
+        "Name": "Kamen Rider TheBee Rider Form ［2］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-003"
+    },
+    {
+        "Name": "Kamen Rider Baron Banana Arms ［2］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-004"
+    },
+    {
+        "Name": "Kamen Rider Kabuto Rider Form ［4］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-005"
+    },
+    {
+        "Name": "Kamen Rider Kabuto Rider Form ［5］",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB31-006"
+    },
+    {
+        "Name": "Kamen Rider Gatack Hyper Form ［2］ (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB31-007"
+    },
+    {
+        "Name": "Kamen Rider Ryugen Budou Arms ［2］",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-008"
+    },
+    {
+        "Name": "Kamen Rider Killbus (w/ Secret)",
+        "Color": "Purple/Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB31-009"
+    },
+    {
+        "Name": "Kamen Rider W HeatMetal ［3］",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-010"
+    },
+    {
+        "Name": "Kamen Rider W FangJoker ［3］",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB31-011"
+    },
+    {
+        "Name": "Kamen Rider W LunaTrigger ［3］",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-012"
+    },
+    {
+        "Name": "Kamen Rider Skull ［3］ (w/ Secret)",
+        "Color": "Green/Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB31-013"
+    },
+    {
+        "Name": "Kamen Rider W CycloneJokerXtreme ［4］",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB31-014"
+    },
+    {
+        "Name": "Kamen Rider Zangetsu Melon Arms ［2］",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB31-015"
+    },
+    {
+        "Name": "Kamen Rider Garren ［3］",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-016"
+    },
+    {
+        "Name": "Kamen Rider Blade Jack Form ［3］",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-017"
+    },
+    {
+        "Name": "Kamen Rider Leangle ［3］",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-018"
+    },
+    {
+        "Name": "Kamen Rider Gaim Jimber Lemon Arms ［2］",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB31-019"
+    },
+    {
+        "Name": "Kamen Rider Garren King Form ［2］",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB31-020"
+    },
+    {
+        "Name": "Kamen Rider Gaim Kachidoki Arms ［3］",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB31-021"
+    },
+    {
+        "Name": "Kamen Rider Wild Chalice ［2］",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB31-022"
+    },
+    {
+        "Name": "Rider Belt & Kabuto Zecter",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "CB31-023"
+    },
+    {
+        "Name": "Sengoku Driver",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "CB31-024"
+    },
+    {
+        "Name": "Blay Buckle",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "CB31-025"
+    },
+    {
+        "Name": "Kamen Rider Kabuto Masked Form ［2］ (w/ Secret)",
+        "Color": "Red",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "CB31-CX01"
+    },
+    {
+        "Name": "Kamen Rider W CycloneJoker ［3］ (w/ Secret)",
+        "Color": "Green",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "CB31-CX02"
+    },
+    {
+        "Name": "Kamen Rider Gaim Orange Arms ［3］ (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "CB31-CX03"
+    },
+    {
+        "Name": "Kamen Rider Blade ［3］ (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "CB31-CX04"
+    },
+    {
+        "Name": "Kamen Rider Kabuto Hyper Form ［3］ (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB31-X01"
+    },
+    {
+        "Name": "Kamen Rider W CycloneJokerGoldXtreme ［3］ (w/ Secret)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB31-X02"
+    },
+    {
+        "Name": "Kamen Rider Gavv PoppinGummy Form (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB31-X03"
+    },
+    {
+        "Name": "Kamen Rider Blade King Form ［3］ (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB31-X04"
+    },
+    {
+        "Name": "Kamen Rider Gaim Kiwami Arms ［2］ (w/ Secret)",
+        "Color": "All",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB31-X05"
+    },
+    {
+        "Name": "Kamen Rider Leangle King Form (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "CB31-XX01"
+    }
+]

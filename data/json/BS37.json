@@ -1,0 +1,597 @@
+[
+    {
+        "Name": "Civet Drone",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-001"
+    },
+    {
+        "Name": "The TyrantDragonKing Nero-Dragdius",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-002"
+    },
+    {
+        "Name": "The FirstArmoredBeast Cannon-Puma",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-003"
+    },
+    {
+        "Name": "Spinos Legger",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-004"
+    },
+    {
+        "Name": "The NinthBeast Acceledge",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-005"
+    },
+    {
+        "Name": "The AzureThunderbolt Keravnos",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-006"
+    },
+    {
+        "Name": "The BeamBeast Laser-Leon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-007"
+    },
+    {
+        "Name": "The ThirdBeast Blast Tiger",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-008"
+    },
+    {
+        "Name": "The BlackNinthBeast BloodySaber",
+        "Color": "Red",
+        "Type": "Spirit/Soul Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-009"
+    },
+    {
+        "Name": "The SeventhBeast Golden-Accel-Tiger",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-010"
+    },
+    {
+        "Name": "Yabusame-Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-011"
+    },
+    {
+        "Name": "The Seventh's AccelDragon Turbulence",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS37-012"
+    },
+    {
+        "Name": "Crusader Dragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-013"
+    },
+    {
+        "Name": "Mist Bat",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-014"
+    },
+    {
+        "Name": "The BeautifulOgre Ara",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-015"
+    },
+    {
+        "Name": "The LionDeathDragonKing Richard the First",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-016"
+    },
+    {
+        "Name": "The Fifth's FourDragonHorsemen Black Rider",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS37-017"
+    },
+    {
+        "Name": "The WarOgre Nosorog",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-018"
+    },
+    {
+        "Name": "Mist Wyvern",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-019"
+    },
+    {
+        "Name": "Crusader Generous",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-020"
+    },
+    {
+        "Name": "The CrossRiderDragon Crusades",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-021"
+    },
+    {
+        "Name": "The FlyingFirstArmoredDragon Steelhorn Dragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-022"
+    },
+    {
+        "Name": "The WarOgre Murciela",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS37-023"
+    },
+    {
+        "Name": "Chat Runner",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-024"
+    },
+    {
+        "Name": "The Beeman Haraaka-B",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-025"
+    },
+    {
+        "Name": "Roadrunner",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-026"
+    },
+    {
+        "Name": "Hyllus Beetle",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-027"
+    },
+    {
+        "Name": "The Beeman Cuckoo-B",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-028"
+    },
+    {
+        "Name": "The StylishNinja Burberry Hopper",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS37-029"
+    },
+    {
+        "Name": "Wheely-Coyote",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-030"
+    },
+    {
+        "Name": "The EighthKnight Redtail Knight",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-031"
+    },
+    {
+        "Name": "The FourthKnight Heavyquick",
+        "Color": "Green",
+        "Type": "Spirit/Soul Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-032"
+    },
+    {
+        "Name": "The AzureHornetEmperor Cuckoo-A",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS37-033"
+    },
+    {
+        "Name": "The TenthBird Migratory Alba",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-034"
+    },
+    {
+        "Name": "The SecondKnight Harpe-Gornis",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-035"
+    },
+    {
+        "Name": "Cynognathus",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-036"
+    },
+    {
+        "Name": "Epigaulus",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-037"
+    },
+    {
+        "Name": "The TenthArtifactBeast Grosso-Teriuman",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-038"
+    },
+    {
+        "Name": "The SixthArtifactBeastman Solid-Falco",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS37-039"
+    },
+    {
+        "Name": "The CleverMachineMusha E-Naomasa",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-040"
+    },
+    {
+        "Name": "The SixthArtifact Sheperdoll",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-041"
+    },
+    {
+        "Name": "The SixthArtifactBeastman Blockade-Tiger",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-042"
+    },
+    {
+        "Name": "The DinosaurMachine Brachiox",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-043"
+    },
+    {
+        "Name": "The Fourth's DinosaurMachine Deinonych-Walker",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-044"
+    },
+    {
+        "Name": "The DinosaurMachine Tricera-Vehicle",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-045"
+    },
+    {
+        "Name": "The Gigantic Thride-Gelm",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-046"
+    },
+    {
+        "Name": "Glorious-Sheep -Android Mode-",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-047"
+    },
+    {
+        "Name": "The WhiteMonkey Salabha",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-048"
+    },
+    {
+        "Name": "Racing Pentan",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-049"
+    },
+    {
+        "Name": "The Ninth's FireMonkey Neela",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-050"
+    },
+    {
+        "Name": "The Fifth's WaterMonkey Susena",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-051"
+    },
+    {
+        "Name": "The Fruitsel Blueblueberry",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-052"
+    },
+    {
+        "Name": "The GourmetFairy Rosette",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS37-053"
+    },
+    {
+        "Name": "The Seventh's MonkeyPrince Angada",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-054"
+    },
+    {
+        "Name": "The MonkeyWizard Onkot",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-055"
+    },
+    {
+        "Name": "The GourmetFairy Amandine",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-056"
+    },
+    {
+        "Name": "Frankenman",
+        "Color": "Yellow",
+        "Type": "Spirit/Soul Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS37-057"
+    },
+    {
+        "Name": "The Fruitsel Papaiyan",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-058"
+    },
+    {
+        "Name": "The First's MonkeyKing Sugriva",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-059"
+    },
+    {
+        "Name": "The GiantPrince Lakshmana",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-060"
+    },
+    {
+        "Name": "The GiantPrince Shatrugna",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-061"
+    },
+    {
+        "Name": "The GiantPrincess Sita",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-062"
+    },
+    {
+        "Name": "The Sixth's ExplosiveBeast Armor Rhider",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-063"
+    },
+    {
+        "Name": "Slothing",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-064"
+    },
+    {
+        "Name": "The GiantPrince Bharata",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-065"
+    },
+    {
+        "Name": "Warthog Kong",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-066"
+    },
+    {
+        "Name": "Elephant-Gear",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-067"
+    },
+    {
+        "Name": "The Eighth's StrangeBeast Black Pantherzan",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-068"
+    },
+    {
+        "Name": "The GiantPrince Rama",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-069"
+    },
+    {
+        "Name": "The BirdGiant Jatayu",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS37-070"
+    },
+    {
+        "Name": "The SakraGeneral Indra",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS37-071"
+    },
+    {
+        "Name": "Bear Demon-God",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-072"
+    },
+    {
+        "Name": "Evil Dragon Demon-God",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-073"
+    },
+    {
+        "Name": "Kabuto Demon-God",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-074"
+    },
+    {
+        "Name": "Headbutt Demon-God",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-075"
+    },
+    {
+        "Name": "Monkey Demon-God",
+        "Color": "Yellow",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-076"
+    },
+    {
+        "Name": "Elephant Demon-God",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS37-077"
+    },
+    {
+        "Name": "The TigerTwelveGodKing Revol-Tiger",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS37-X01"
+    },
+    {
+        "Name": "The SixHellsSorcerer Shamiram",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS37-X02"
+    },
+    {
+        "Name": "The AccelTenthBird AirEraser",
+        "Color": "Green/White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS37-X03"
+    },
+    {
+        "Name": "The DinosaurEighthArtifact Turborex",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS37-X04"
+    },
+    {
+        "Name": "The MonkeyTwelveGodKing Hanumerlin",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS37-X05"
+    },
+    {
+        "Name": "The PreserverGod Vishten",
+        "Color": "Blue",
+        "Type": "Spirit/Soul Burst",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS37-X06"
+    },
+    {
+        "Name": "The RedOriginDragon Amaterasu",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS37-XX01"
+    },
+    {
+        "Name": "The PurpleOriginDragon Is-Baram",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS37-XX02"
+    }
+]

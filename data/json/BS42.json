@@ -1,0 +1,723 @@
+[
+    {
+        "Name": "The TwinkleStarDragon Star-Bladra",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-001"
+    },
+    {
+        "Name": "The DinosaurAlliance Dromaeo",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-002"
+    },
+    {
+        "Name": "The TwinkleStarDragon Chondrite Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-003"
+    },
+    {
+        "Name": "The TwinkleStarDragon RedSprite",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-004"
+    },
+    {
+        "Name": "The BraveShineBeast Climbing-Margay",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-005"
+    },
+    {
+        "Name": "The DinosaurAlliance PinnedSkinAmperosa",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-006"
+    },
+    {
+        "Name": "The TwinkleStarDragon SpiculeDragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-007"
+    },
+    {
+        "Name": "The ElectricBoulderDragon Dynamo Dragon",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-008"
+    },
+    {
+        "Name": "The TwinkleStarTenthApostle Desdemona",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-009"
+    },
+    {
+        "Name": "The BraveShineCannonbull Melt Buffalo",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-010"
+    },
+    {
+        "Name": "The DinosaurAlliance ThunderBladeElectrosaurus",
+        "Color": "Red",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-011"
+    },
+    {
+        "Name": "The TwinkleStarEighthApostle Proteus",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-012"
+    },
+    {
+        "Name": "The TwinkleStarFirstApostle Asgardia",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS42-013"
+    },
+    {
+        "Name": "Puppet Soldier",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-014"
+    },
+    {
+        "Name": "The VioletCorpseBrigade Bonehead-Drago",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-015"
+    },
+    {
+        "Name": "The VioletCorpseBrigade Zombie Dragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-016"
+    },
+    {
+        "Name": "The SnakeWarrior Feraga",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-017"
+    },
+    {
+        "Name": "The Lorekeeper Wise Snake",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-018"
+    },
+    {
+        "Name": "The VioletCorpseBrigade Deathrib Dragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-019"
+    },
+    {
+        "Name": "The MysticLorekeeper Alaneia",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-020"
+    },
+    {
+        "Name": "Exoknight Dragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-021"
+    },
+    {
+        "Name": "The MakaiOfficer Drosmuba",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-022"
+    },
+    {
+        "Name": "The VioletCorpseBrigade Tanzanite-Bone-Dragon",
+        "Color": "Purple",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-023"
+    },
+    {
+        "Name": "The Wonderdragon Jabberwocky",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS42-024"
+    },
+    {
+        "Name": "The VanityDeityGeneral Telos Dragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-025"
+    },
+    {
+        "Name": "The VioletCorpseBrigade White Enigma Dragon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-026"
+    },
+    {
+        "Name": "The KingBeastTribe Bamboo Kodkod",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-027"
+    },
+    {
+        "Name": "The HundredSwordsClan Vagabond Purpuricenus",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-028"
+    },
+    {
+        "Name": "The BanditChief Higekoga",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-029"
+    },
+    {
+        "Name": "Muzorilla",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-030"
+    },
+    {
+        "Name": "The Wonderland MarchRabbit",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-031"
+    },
+    {
+        "Name": "The TwinkleWingsBird Distica-Eagle",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-032"
+    },
+    {
+        "Name": "The HundredSwordsClan ArmoredMoth Curmax",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-033"
+    },
+    {
+        "Name": "The BlackKingBeast Koku-Garou",
+        "Color": "Green",
+        "Type": "Spirit/Burst",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS42-034"
+    },
+    {
+        "Name": "The HundredSwordsClan Bodyguard Sabigasa",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-035"
+    },
+    {
+        "Name": "The HundredSwordsClan TwinkleBlade Miyama",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-036"
+    },
+    {
+        "Name": "The LanceWarrior Hundingle",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-037"
+    },
+    {
+        "Name": "The NobleOrder E-N09",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-038"
+    },
+    {
+        "Name": "Hammer-Kop",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-039"
+    },
+    {
+        "Name": "The NobleGunEmperorQueen Sieglinde",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-040"
+    },
+    {
+        "Name": "The PatrolWarrior Convatour",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-041"
+    },
+    {
+        "Name": "The NobleOrder Al-Reflection",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-042"
+    },
+    {
+        "Name": "The NobleOrderOfficer Etat-Major",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-043"
+    },
+    {
+        "Name": "The NobleColonel Officer-Ehren",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-044"
+    },
+    {
+        "Name": "Blizzastar-Eagle",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-045"
+    },
+    {
+        "Name": "The NobleValkyrie Grimgerde",
+        "Color": "White",
+        "Type": "Spirit/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS42-046"
+    },
+    {
+        "Name": "The Wonderland Whyte​? Rabbit",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-047"
+    },
+    {
+        "Name": "The Wonderland Dum&Dee",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-048"
+    },
+    {
+        "Name": "The Wonderland Trump Pentans",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-049"
+    },
+    {
+        "Name": "The BraveShineAngelia Jiniel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-050"
+    },
+    {
+        "Name": "The Wonderland Alice",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS42-051"
+    },
+    {
+        "Name": "The Wonderland Yamane",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-052"
+    },
+    {
+        "Name": "The BraveShineAngelia Creshiel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-053"
+    },
+    {
+        "Name": "The Wonderland HeartKnightJack",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-054"
+    },
+    {
+        "Name": "The Wonderland WhiteQueen",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-055"
+    },
+    {
+        "Name": "The Wonderland CheshireCat",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-056"
+    },
+    {
+        "Name": "The Wonderland Trump-Griffon",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-057"
+    },
+    {
+        "Name": "The Wonderland Bandersnatch",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-058"
+    },
+    {
+        "Name": "The Wonderland RedPenpress",
+        "Color": "Yellow",
+        "Type": "Spirit/Burst",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-059"
+    },
+    {
+        "Name": "The Angelia Rumiel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-060"
+    },
+    {
+        "Name": "The WonderGodKing Hanuslem",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS42-061"
+    },
+    {
+        "Name": "The ThreeHeadedPirateGang Rottweiler",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-062"
+    },
+    {
+        "Name": "The DragonEmperor'sPirateCrew NavigatorRabu",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-063"
+    },
+    {
+        "Name": "The BraveShineHero BlueBlaze",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-064"
+    },
+    {
+        "Name": "The DragonEmperor'sPirateCrew HelmsmanBigMouth",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-065"
+    },
+    {
+        "Name": "The ThreeHeadedPirateGang Engray",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-066"
+    },
+    {
+        "Name": "The BraveShineHero Lightning",
+        "Color": "Blue",
+        "Type": "Spirit/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS42-067"
+    },
+    {
+        "Name": "The ThreeHeadedPirateGang Pitbull",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS42-068"
+    },
+    {
+        "Name": "The DragonEmperor'sPirateCrew Vice-Captain Aozack",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-069"
+    },
+    {
+        "Name": "The PirateUnionVice-Captain Longnose",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-070"
+    },
+    {
+        "Name": "The PirateGodKing Greedog-Pirate",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS42-071"
+    },
+    {
+        "Name": "The ShelledGun Kuwaga-Shima",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS42-072"
+    },
+    {
+        "Name": "The WindGodGun Behexhaust",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-073"
+    },
+    {
+        "Name": "The NobleGun Rebellion",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS42-074"
+    },
+    {
+        "Name": "The TwinkleDragonGunblade Guns-Balmung -Gun Mode-",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS42-075"
+    },
+    {
+        "Name": "The ThreeHeadedGun Greed-Lock",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS42-076"
+    },
+    {
+        "Name": "The Pirate'sSpeargun Zeroy-Shooter",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS42-077"
+    },
+    {
+        "Name": "The TwinkleStar Laniakea",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-078"
+    },
+    {
+        "Name": "Horned Dragon Mountain",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-079"
+    },
+    {
+        "Name": "The Drifting Spire in the Night Sky",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-080"
+    },
+    {
+        "Name": "The Reopened Hole in the Empty Sky",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-081"
+    },
+    {
+        "Name": "The Floating Jade Black Castle",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-082"
+    },
+    {
+        "Name": "The Green Holy Relic",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-083"
+    },
+    {
+        "Name": "The Desolated Rocky Mountains",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-084"
+    },
+    {
+        "Name": "The NobleOrder Headquarters",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-085"
+    },
+    {
+        "Name": "Mad Tea Party",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-086"
+    },
+    {
+        "Name": "Wonderland",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-087"
+    },
+    {
+        "Name": "The Dragon Emperor's Pirate Crew Hidden Harbor",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS42-088"
+    },
+    {
+        "Name": "Attack! The Pirate Ship Greedog",
+        "Color": "Blue/Green",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "BS42-089"
+    },
+    {
+        "Name": "Boundaries of the Wind Blade",
+        "Color": "Green",
+        "Type": "Magic/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS42-090"
+    },
+    {
+        "Name": "Wild Storm",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS42-091"
+    },
+    {
+        "Name": "Co-op Barrier",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS42-092"
+    },
+    {
+        "Name": "Dream Wave",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS42-093"
+    },
+    {
+        "Name": "Quick Draw",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS42-094"
+    },
+    {
+        "Name": "Trump of Pirates",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS42-095"
+    },
+    {
+        "Name": "The TwinkleStarDragonKing Moebius Dragon (w/ Parallel Art)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS42-X01"
+    },
+    {
+        "Name": "The DarkStones VioletCorpseDragonGod Daimezak (w/ Parallel Art)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS42-X02"
+    },
+    {
+        "Name": "The DarkStones HundredSwordsBushin Gogmazan (w/ Parallel Art)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS42-X03"
+    },
+    {
+        "Name": "The NobleFinalArms La-Illusion (w/ Parallel Art)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS42-X04"
+    },
+    {
+        "Name": "The WonderKing Siegfried-Madhatter (w/ Parallel Art)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS42-X05"
+    },
+    {
+        "Name": "The PirateUnionGeneral Forge-Low (w/ Parallel Art)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS42-X06"
+    },
+    {
+        "Name": "The ClownDeity Lady-Frankelly",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS42-XX01"
+    },
+    {
+        "Name": "The ClownDeity Polluc&Castar",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS42-XX02"
+    }
+]

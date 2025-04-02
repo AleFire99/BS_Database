@@ -1,0 +1,541 @@
+[
+    {
+        "Name": "Evangelion Production Model Unit-02 Revised Beta",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-001"
+    },
+    {
+        "Name": "Evangelion Production Model (WILLE Custom) Unit-08 Alpha",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-002"
+    },
+    {
+        "Name": "Evangelion Production Model (WILLE Custom) Unit-08 Beta",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-003"
+    },
+    {
+        "Name": "Evangelion Production Model Unit-02 Revised Gamma",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-004"
+    },
+    {
+        "Name": "Evangelion Production Model Unit-02 -Thunder Spear-",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-005 (A)"
+    },
+    {
+        "Name": "Evangelion  Production Model Unit-02 Beast Form 2nd Phase (Type 1)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-005 (B)"
+    },
+    {
+        "Name": "Evangelion Production Model Unit-02 Revised Gamma -Machine Gun-",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-006"
+    },
+    {
+        "Name": "Evangelion Production Model (WILLE Custom) Unit-08 Beta -Sniper Rifle-",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-007"
+    },
+    {
+        "Name": "Evangelion Production Model Unit-02 Revised Gamma -Wunder Saving-",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-008 (A)"
+    },
+    {
+        "Name": "Evangelion Production Model Unit-02 Revised Gamma -Code 777-",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-008 (B)"
+    },
+    {
+        "Name": "Evangelion Production Model Unit-02 -To Work a Miracle-  (w/ Parallel Art)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB21-009"
+    },
+    {
+        "Name": "Evangelion Production Model (WILLE Custom) Unit-08 Beta Temporary Combat Form",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-010"
+    },
+    {
+        "Name": "Evangelion Production Model New Unit-02 Alpha",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB21-011"
+    },
+    {
+        "Name": "EVANGELION Mark. 09 -Wunder Raiding-",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-012"
+    },
+    {
+        "Name": "Evangelion Test Type Unit-01 -First Activation-",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-013 (A)"
+    },
+    {
+        "Name": "Evangelion Test Type Unit-01 -Berserk-",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-013 (B)"
+    },
+    {
+        "Name": "EVANGELION Mark.04 Code 4A",
+        "Color": "Purple/Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-014"
+    },
+    {
+        "Name": "EVANGELION Mark.04 Code 4B",
+        "Color": "Purple/Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-015"
+    },
+    {
+        "Name": "Evangelion Test Type Unit-01 -Dummy System-",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-016"
+    },
+    {
+        "Name": "EVANGELION Mark.09",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-017"
+    },
+    {
+        "Name": "EVANGELION Mark.04 Code 4C",
+        "Color": "Purple/Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-018"
+    },
+    {
+        "Name": "EVANGELION Mark.06",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-019"
+    },
+    {
+        "Name": "The First Adams' Vessel",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-020"
+    },
+    {
+        "Name": "Evangelion Test Type Unit-01 -To Work a Miracle-  (w/ Parallel Art)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB21-021"
+    },
+    {
+        "Name": "Evangelion Unit-13 -Defense Unit-",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-022"
+    },
+    {
+        "Name": "Evangelion Unit-13 Pseudo-Synthesis 3+ Form (Estimated)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-023"
+    },
+    {
+        "Name": "Evangelion Provisional Unit-05 -The Spear of Longinus Basic Type (Pseudo-Restoration)-",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-024"
+    },
+    {
+        "Name": "Evangelion Prototype Unit-00 (Revised) -N2 Warhead Bomb-",
+        "Color": "Yellow/Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-025"
+    },
+    {
+        "Name": "Evangelion Prototype Unit-00 (Revised) -To Work A Miracle-  (w/ Parallel Art)",
+        "Color": "Yellow/Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB21-026"
+    },
+    {
+        "Name": "The 10th Apostle -Unit-00 Devoured-",
+        "Color": "Yellow/Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-027"
+    },
+    {
+        "Name": "The 13th Apostle",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-028"
+    },
+    {
+        "Name": "The 3rd Apsotle",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-029"
+    },
+    {
+        "Name": "The 4th Apostle",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-030"
+    },
+    {
+        "Name": "The 5th Apostle",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-031"
+    },
+    {
+        "Name": "The 12th Apostle",
+        "Color": "Blue/Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-032"
+    },
+    {
+        "Name": "The 6th Apostle",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-033"
+    },
+    {
+        "Name": "The 7th Apostle",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-034"
+    },
+    {
+        "Name": "The 9th Apostle",
+        "Color": "Blue/Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "CB21-035"
+    },
+    {
+        "Name": "The 8th Apostle",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-036"
+    },
+    {
+        "Name": "The 10th Apostle",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB21-037"
+    },
+    {
+        "Name": "Shikinami Asuka Langley -WILLE-  (w/ Parallel Art)",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB21-038"
+    },
+    {
+        "Name": "Ayanami-Rei (Tentative Name)  (w/ Parallel Art)",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB21-039"
+    },
+    {
+        "Name": "Ikari Shinji -Unit-13 Plugsuit-  (w/ Parallel Art)",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-040"
+    },
+    {
+        "Name": "Dummy System",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "CB21-041"
+    },
+    {
+        "Name": "The Spear of Longinus",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB21-042"
+    },
+    {
+        "Name": "AAA Wunder",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-043"
+    },
+    {
+        "Name": "WILLE",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB21-044"
+    },
+    {
+        "Name": "Shikinami Asuka Langley -Uniform-",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-045 (A)"
+    },
+    {
+        "Name": "Shikinami Asuka Langley -Plugsuit-",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-045 (B)"
+    },
+    {
+        "Name": "SEELE",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB21-046"
+    },
+    {
+        "Name": "Nagisa Kaworu",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-047 (A)"
+    },
+    {
+        "Name": "Nagisa Kaworu -Mark. 06 Plugsuit-",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-047 (B)"
+    },
+    {
+        "Name": "Akagi Ritsuko",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-048"
+    },
+    {
+        "Name": "Ikari Shinji -Uniform-",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-049 (A)"
+    },
+    {
+        "Name": "Evangelion Unit-01 Pilot Ikari Shinji",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-049 (B)"
+    },
+    {
+        "Name": "Makinami Mari Illustrious -Uniform-",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-050 (A)"
+    },
+    {
+        "Name": "Makinami Mari Illustrious -Plugsuit-",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-050 (B)"
+    },
+    {
+        "Name": "Ayanami Rei -Uniform-",
+        "Color": "Yellow/Purple",
+        "Type": "Nexus",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-051 (A)"
+    },
+    {
+        "Name": "Ayanami Rei -Plugsuit-",
+        "Color": "Yellow/Purple",
+        "Type": "Brave",
+        "Rarity": "Rebirth Rare",
+        "Card_ID": "CB21-051 (B)"
+    },
+    {
+        "Name": "Central Dogma's Deepest Part",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB21-052"
+    },
+    {
+        "Name": "The 2nd Apostle Lilith",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "CB21-053"
+    },
+    {
+        "Name": "Ikari Gendo",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Master Rare",
+        "Card_ID": "CB21-054"
+    },
+    {
+        "Name": "I Know That Already!",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-055"
+    },
+    {
+        "Name": "This Is The Last One!",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB21-056"
+    },
+    {
+        "Name": "Adults Know The Right Time To Be Sly",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB21-057"
+    },
+    {
+        "Name": "Now The Promised Time Has Come, Ikari Shinji-kun. This Time, I’ll Definitely Make You Happy",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-058"
+    },
+    {
+        "Name": "We've Won",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB21-059"
+    },
+    {
+        "Name": "Go! Shinji-kun",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB21-060"
+    },
+    {
+        "Name": "You Won't Die. Because I'll Protect You",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "CB21-061"
+    },
+    {
+        "Name": "Pattern Blue",
+        "Color": "Blue/Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "CB21-062"
+    },
+    {
+        "Name": "EVANGELION Mark. 06 -Spear of Cassius-",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB21-X01"
+    },
+    {
+        "Name": "Evangelion Unit-13",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB21-X02"
+    },
+    {
+        "Name": "Evangelion Test Type Unit-01 Pseudo-Synthesis 2nd Form",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB21-X03"
+    },
+    {
+        "Name": "Shikinami Asuka Langley -Test Suit-",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB21-X04"
+    },
+    {
+        "Name": "Nagisa Kaworu -Unit-13 Plugsuit-  (w/ Parallel Art)",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB21-X05"
+    },
+    {
+        "Name": "Ayanami Rei -Feeling Warm-",
+        "Color": "Yellow/Purple",
+        "Type": "Brave",
+        "Rarity": "X-Rare",
+        "Card_ID": "CB21-X06"
+    },
+    {
+        "Name": "Ikari Yui",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "XX-Rare",
+        "Card_ID": "CB21-XX01"
+    }
+]

@@ -1,0 +1,618 @@
+[
+    {
+        "Name": "Scipioclaw",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-001"
+    },
+    {
+        "Name": "Fire Fin Wyvern",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-002"
+    },
+    {
+        "Name": "Orencheetah",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-003"
+    },
+    {
+        "Name": "Magmarowana",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-004"
+    },
+    {
+        "Name": "The BurningFlameDragon Rise-Glow",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-005"
+    },
+    {
+        "Name": "Ryuuman-StarBreaker",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-006"
+    },
+    {
+        "Name": "Steel-Harpon-Tops",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-007"
+    },
+    {
+        "Name": "Onnendama",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-008"
+    },
+    {
+        "Name": "Onmyouja",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-009"
+    },
+    {
+        "Name": "Skeleton-Sorcerer",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-010"
+    },
+    {
+        "Name": "The CursedCorpseOrgeMusha Zetsumei",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-011"
+    },
+    {
+        "Name": "Smoke Brown Bear",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-012"
+    },
+    {
+        "Name": "The KanabouOgreMusha Tekkai",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-013"
+    },
+    {
+        "Name": "The BloodPrincess Akaha",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-014"
+    },
+    {
+        "Name": "The CurseGrudgeOgreGeneral Bagrago",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-015"
+    },
+    {
+        "Name": "The EvilBloodDragon Banshola",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-016"
+    },
+    {
+        "Name": "The SorcererMystic Strega-Bat",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-017"
+    },
+    {
+        "Name": "The BloodAllianceThirteenMarquess Weinrich",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-018"
+    },
+    {
+        "Name": "The SpellbindOgreGeneral Inga",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-019"
+    },
+    {
+        "Name": "Hundred-Arm Giant Snake",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-020"
+    },
+    {
+        "Name": "The Grün∴Baum Spidark",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-021"
+    },
+    {
+        "Name": "The Grün∴Baum Monkara",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-022"
+    },
+    {
+        "Name": "Wood Pony",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-023"
+    },
+    {
+        "Name": "The Grün∴Baum HiddenWeapon Benisis",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-024"
+    },
+    {
+        "Name": "The Grün∴Baum Oceloza",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-025"
+    },
+    {
+        "Name": "The Grün∴Baum WiseKing Duskiten",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-026"
+    },
+    {
+        "Name": "The Grün∴Baum SorcererKing Greed-Veil",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-027"
+    },
+    {
+        "Name": "Sasa-CrestedMurrelet",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-028"
+    },
+    {
+        "Name": "The Grün∴Baum GreatKing Elec-Ram",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-029"
+    },
+    {
+        "Name": "The Grün∴Baum ShadowBlade Sirius",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-030"
+    },
+    {
+        "Name": "The Grün∴Baum DemonKing Zanardite",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-031"
+    },
+    {
+        "Name": "The Grün∴Baum MagicalWeapon Acty-Beeton",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-032"
+    },
+    {
+        "Name": "The TreeFistFangKing Timber-Lampo",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-033"
+    },
+    {
+        "Name": "The ArmoredBird Kongou Bird",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-034"
+    },
+    {
+        "Name": "The Anti-GravityRobo Byaal",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-035"
+    },
+    {
+        "Name": "Godseeker ArmoredPriest Upatl",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-036"
+    },
+    {
+        "Name": "The ArmoredBeast Gray Wolf",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-037"
+    },
+    {
+        "Name": "The ArmoredFighter Warrior Jaguar",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-038"
+    },
+    {
+        "Name": "The DinosaurMachine Stego-Late",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-039"
+    },
+    {
+        "Name": "The DinosaurMobile Rex-Stark",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-040"
+    },
+    {
+        "Name": "The ArmoredKing Tloque-Nahuaque",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-041"
+    },
+    {
+        "Name": "The ArmoredBird Obsidian Eagle",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-042"
+    },
+    {
+        "Name": "The RoyalGuard Recheryl",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-043"
+    },
+    {
+        "Name": "The ArmoredRite Toxcatl-Turtle",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-044"
+    },
+    {
+        "Name": "The LightSpearFish Billfisher",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-045"
+    },
+    {
+        "Name": "The ArmoredBeast Obsidiagator",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-046"
+    },
+    {
+        "Name": "The ArmoredDragon Obsidian Iguana",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-047"
+    },
+    {
+        "Name": "Kuzuverine",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-048"
+    },
+    {
+        "Name": "Achlis",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-049"
+    },
+    {
+        "Name": "Arcanabeast-SpadeBirman",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-050"
+    },
+    {
+        "Name": "The StarOceanPirateAngel Maryel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-051"
+    },
+    {
+        "Name": "Phoenix-Feaniel",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-052"
+    },
+    {
+        "Name": "Another RockhopperPentan",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-053"
+    },
+    {
+        "Name": "Hououjack",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-054"
+    },
+    {
+        "Name": "The Chemist Gaagaagoo",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-055"
+    },
+    {
+        "Name": "The GalaxyBountyHunter Braddoka",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS61-056"
+    },
+    {
+        "Name": "The GrandseaArtificialSoldier Fishbone-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-057"
+    },
+    {
+        "Name": "The MartialArtsMaster Ashikanosuke",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-058"
+    },
+    {
+        "Name": "The GalaxyHydra Halluginate",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-059"
+    },
+    {
+        "Name": "The GrandseaArtificialSoldier Shack-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS61-060"
+    },
+    {
+        "Name": "The ChargerBull Bullsion",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-061"
+    },
+    {
+        "Name": "The Moon Ogre Castle",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS61-062"
+    },
+    {
+        "Name": "The Secret Entrance",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS61-063"
+    },
+    {
+        "Name": "Tezcatlipoca's Obsidian Temple",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS61-064"
+    },
+    {
+        "Name": "The Cape Overlooking the Morning Star",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS61-065"
+    },
+    {
+        "Name": "The Triple Star of Hope",
+        "Color": "Red/Yellow/Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS61-066"
+    },
+    {
+        "Name": "Oracle I Over Magician",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-067"
+    },
+    {
+        "Name": "Flame Knuckle",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS61-068"
+    },
+    {
+        "Name": "Cutting Blood Strings",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS61-069"
+    },
+    {
+        "Name": "Fatal Attack",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS61-070"
+    },
+    {
+        "Name": "Dimension Shift",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS61-071"
+    },
+    {
+        "Name": "Tezcatle Shell",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS61-072"
+    },
+    {
+        "Name": "Oracle XVIII Over Moon",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS61-073"
+    },
+    {
+        "Name": "Lucky Wing",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS61-074"
+    },
+    {
+        "Name": "Crazy Liquid",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS61-075"
+    },
+    {
+        "Name": "The PartnerMusha Oboro (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS61-CX01"
+    },
+    {
+        "Name": "The PartnerBug Gataru (w/ Secret)",
+        "Color": "Green",
+        "Type": "Contract Spirit",
+        "Rarity": "Contract X-Rare",
+        "Card_ID": "BS61-CX02"
+    },
+    {
+        "Name": "The OracleTwentyOnePillars I The Magician (w/ Secret)",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS61-X01"
+    },
+    {
+        "Name": "The BloodSlashOgreGeneral Oni-Oboro (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS61-X02"
+    },
+    {
+        "Name": "The PiscesStarDeity Pistella-Galleon (w/ Secret)",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS61-X03"
+    },
+    {
+        "Name": "The ShellBuzzSorceryMaster Elder-Gataru (w/ Secret)",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS61-X04"
+    },
+    {
+        "Name": "The GiantArmorSacredBeast Tepeyollotl (w/ Secret)",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS61-X05"
+    },
+    {
+        "Name": "The OracleTwentyOnePillars XVIII The Moon (w/ Secret)",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS61-X06"
+    },
+    {
+        "Name": "The ScorpioKaiser Scor-Emperor (w/ Secret)",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS61-X07"
+    },
+    {
+        "Name": "Mugendragon-the-Trinity-Star (w/ Secret)",
+        "Color": "Red/Yellow/Blue",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS61-X08"
+    },
+    {
+        "Name": "Grandwalker Tezcatlipoca (w/ Secret)",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS61-X09"
+    },
+    {
+        "Name": "The SixAbsoluteDeities Axanarl-of-Causation",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS61-XX01"
+    },
+    {
+        "Name": "The SixAbsoluteDeities Garnable-of-Universe",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "XX-Rare",
+        "Card_ID": "BS61-XX02"
+    }
+]

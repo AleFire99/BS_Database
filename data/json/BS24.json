@@ -1,0 +1,856 @@
+[
+    {
+        "Name": "Ryuuman-Claw",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-001"
+    },
+    {
+        "Name": "Vajiriaxe",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-002"
+    },
+    {
+        "Name": "The FistBeast Kingroo",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-003"
+    },
+    {
+        "Name": "Ryuuman-Phoenix",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-004"
+    },
+    {
+        "Name": "Allocanonsaurus",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-005"
+    },
+    {
+        "Name": "Ryuuman-Vulca",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-006"
+    },
+    {
+        "Name": "Steam-Tricera",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-007"
+    },
+    {
+        "Name": "Eclipse-Dragon",
+        "Color": "Red",
+        "Type": "Spirit/Burst",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-008"
+    },
+    {
+        "Name": "Flame-Gundragna",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-009"
+    },
+    {
+        "Name": "Ryuuman-Blade",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS24-010"
+    },
+    {
+        "Name": "One Eyed Demon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-011"
+    },
+    {
+        "Name": "GasRabbit",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-012"
+    },
+    {
+        "Name": "ThirdEyes-Snake",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-013"
+    },
+    {
+        "Name": "Tsuchigudemon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-014"
+    },
+    {
+        "Name": "Batknight",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS24-015"
+    },
+    {
+        "Name": "Mezudemon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-016"
+    },
+    {
+        "Name": "Cursegargoyle",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-017"
+    },
+    {
+        "Name": "The HellBeastKing Oselo",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-018"
+    },
+    {
+        "Name": "The DeadSnakeDragon Kanon",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-019"
+    },
+    {
+        "Name": "Axemoth",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-020"
+    },
+    {
+        "Name": "Yoroikarasu",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-021"
+    },
+    {
+        "Name": "Yoroifukurou",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-022"
+    },
+    {
+        "Name": "Saberhornet",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-023"
+    },
+    {
+        "Name": "Swordpuma",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-024"
+    },
+    {
+        "Name": "Kanabun",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-025"
+    },
+    {
+        "Name": "Swordcoyote",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-026"
+    },
+    {
+        "Name": "Knighteagle",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS24-027"
+    },
+    {
+        "Name": "Scorpionknight",
+        "Color": "Green",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-028"
+    },
+    {
+        "Name": "The MilleniumBeast Behemoth-Cedar",
+        "Color": "Green/Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-029"
+    },
+    {
+        "Name": "Automaticgunner",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-030"
+    },
+    {
+        "Name": "AquaAnemonefish",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-031"
+    },
+    {
+        "Name": "Cyber-Shepherd",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-032"
+    },
+    {
+        "Name": "Groshlizard",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-033"
+    },
+    {
+        "Name": "The 90th Tank Mobile",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-034"
+    },
+    {
+        "Name": "Garnetdragon",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS24-035"
+    },
+    {
+        "Name": "Burst Turtle",
+        "Color": "White",
+        "Type": "Spirit/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS24-036"
+    },
+    {
+        "Name": "Scrapmammoth",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-037"
+    },
+    {
+        "Name": "The SkyFortressEmperor King-Fortress",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-038"
+    },
+    {
+        "Name": "Wyvernberyl",
+        "Color": "White",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-039"
+    },
+    {
+        "Name": "Watchino",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-040"
+    },
+    {
+        "Name": "KodaMouse",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-041"
+    },
+    {
+        "Name": "The Diva Asia",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS24-042"
+    },
+    {
+        "Name": "The Diva Marika",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-043"
+    },
+    {
+        "Name": "Cocatrice",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-044"
+    },
+    {
+        "Name": "The Diva Coco",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-045"
+    },
+    {
+        "Name": "The Knight Pentan",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-046"
+    },
+    {
+        "Name": "The WingedBeast WingBehemoth",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-047"
+    },
+    {
+        "Name": "The Diva Mirefa",
+        "Color": "Yellow",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-048"
+    },
+    {
+        "Name": "Drian",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-049"
+    },
+    {
+        "Name": "Quartz-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-050"
+    },
+    {
+        "Name": "The GiantNavigator Tobby",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-051"
+    },
+    {
+        "Name": "Riot-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-052"
+    },
+    {
+        "Name": "Caravel-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-053"
+    },
+    {
+        "Name": "The PirateGiant Kidd",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-054"
+    },
+    {
+        "Name": "Bearcentaurus",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-055"
+    },
+    {
+        "Name": "Galleon-Golem",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-056"
+    },
+    {
+        "Name": "The SharkDrake Sharkhydra",
+        "Color": "Blue",
+        "Type": "Spirit",
+        "Rarity": "Common",
+        "Card_ID": "BS24-057"
+    },
+    {
+        "Name": "Ultimate-Dragsaurus",
+        "Color": "Red",
+        "Type": "Ultimate",
+        "Rarity": "Common",
+        "Card_ID": "BS24-058"
+    },
+    {
+        "Name": "Ultimate-Pteratomahawk",
+        "Color": "Red",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-059"
+    },
+    {
+        "Name": "The UltimateBishop Levia",
+        "Color": "Red",
+        "Type": "Ultimate",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS24-060"
+    },
+    {
+        "Name": "Ultimate-Sha-Zoo",
+        "Color": "Purple",
+        "Type": "Ultimate",
+        "Rarity": "Common",
+        "Card_ID": "BS24-061"
+    },
+    {
+        "Name": "Ultimate-Darkwitch",
+        "Color": "Purple",
+        "Type": "Ultimate",
+        "Rarity": "Common",
+        "Card_ID": "BS24-062"
+    },
+    {
+        "Name": "Ultimate-Zo-Goin",
+        "Color": "Purple",
+        "Type": "Ultimate",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-063"
+    },
+    {
+        "Name": "Ultimate-Quetzalcoatl",
+        "Color": "Purple",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-064"
+    },
+    {
+        "Name": "Ultimate-Zigawasp",
+        "Color": "Green",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-065"
+    },
+    {
+        "Name": "Ultimate-Geo",
+        "Color": "Green",
+        "Type": "Ultimate",
+        "Rarity": "Common",
+        "Card_ID": "BS24-066"
+    },
+    {
+        "Name": "Ultimate-Trenton",
+        "Color": "Green",
+        "Type": "Ultimate",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-067"
+    },
+    {
+        "Name": "Ultimate-Embla",
+        "Color": "White",
+        "Type": "Ultimate",
+        "Rarity": "Common",
+        "Card_ID": "BS24-068"
+    },
+    {
+        "Name": "Ultimate-Fenrir",
+        "Color": "White",
+        "Type": "Ultimate",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-069"
+    },
+    {
+        "Name": "Ultimate-Freyr",
+        "Color": "White",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-070"
+    },
+    {
+        "Name": "Ultimate-Koristal",
+        "Color": "Yellow",
+        "Type": "Ultimate",
+        "Rarity": "Common",
+        "Card_ID": "BS24-071"
+    },
+    {
+        "Name": "Ultimate-Angu",
+        "Color": "Yellow",
+        "Type": "Ultimate",
+        "Rarity": "Common",
+        "Card_ID": "BS24-072"
+    },
+    {
+        "Name": "Ultimate-Sophia",
+        "Color": "Yellow",
+        "Type": "Ultimate",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS24-073"
+    },
+    {
+        "Name": "Ultimate-Empereur",
+        "Color": "Yellow",
+        "Type": "Ultimate",
+        "Rarity": "Common",
+        "Card_ID": "BS24-074"
+    },
+    {
+        "Name": "Ultimate-Rock Golem",
+        "Color": "Blue",
+        "Type": "Ultimate",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-075"
+    },
+    {
+        "Name": "Ultimate-Mongoku",
+        "Color": "Blue",
+        "Type": "Ultimate",
+        "Rarity": "Common",
+        "Card_ID": "BS24-076"
+    },
+    {
+        "Name": "Ultimate-Iron Golem",
+        "Color": "Blue",
+        "Type": "Ultimate",
+        "Rarity": "Common",
+        "Card_ID": "BS24-077"
+    },
+    {
+        "Name": "Ultimate-Randolph",
+        "Color": "Blue",
+        "Type": "Ultimate",
+        "Rarity": "Master Rare",
+        "Card_ID": "BS24-078"
+    },
+    {
+        "Name": "Pterfighter",
+        "Color": "Red",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS24-079"
+    },
+    {
+        "Name": "ArmoredHarley",
+        "Color": "Purple",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS24-080"
+    },
+    {
+        "Name": "Kuwagatank",
+        "Color": "Green",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS24-081"
+    },
+    {
+        "Name": "Busterfalcon21",
+        "Color": "White",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS24-082"
+    },
+    {
+        "Name": "WingArrow",
+        "Color": "Yellow",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS24-083"
+    },
+    {
+        "Name": "Lobs-Arms",
+        "Color": "Blue",
+        "Type": "Brave",
+        "Rarity": "Common",
+        "Card_ID": "BS24-084"
+    },
+    {
+        "Name": "The Prelude to Destruction",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS24-085"
+    },
+    {
+        "Name": "The Burnt Out Battlefield",
+        "Color": "Red",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS24-086"
+    },
+    {
+        "Name": "The Hell City Caina",
+        "Color": "Purple",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-087"
+    },
+    {
+        "Name": "The Ancient Battlefield of Ten Thousand Spears",
+        "Color": "Purple/White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS24-088"
+    },
+    {
+        "Name": "The Twisting Dangaro Mountains",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-089"
+    },
+    {
+        "Name": "The Fruit of Life Rookery",
+        "Color": "Green",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS24-090"
+    },
+    {
+        "Name": "The Fortress Metropolis of Eternal Snow",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS24-091"
+    },
+    {
+        "Name": "The Icy Ruins Sky Rio",
+        "Color": "White",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS24-092"
+    },
+    {
+        "Name": "The Stage Where Angels Descended",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS24-093"
+    },
+    {
+        "Name": "The Sealed Witchcraft Library",
+        "Color": "Yellow",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS24-094"
+    },
+    {
+        "Name": "The Sapphire Sculpture",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Common",
+        "Card_ID": "BS24-095"
+    },
+    {
+        "Name": "The Forgotten Triumphal Arch",
+        "Color": "Blue",
+        "Type": "Nexus",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-096"
+    },
+    {
+        "Name": "Brave Destruction",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS24-097"
+    },
+    {
+        "Name": "Judgment Call",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS24-098"
+    },
+    {
+        "Name": "Flame Breeze",
+        "Color": "Red",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-099"
+    },
+    {
+        "Name": "Demon's Puppet",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS24-100"
+    },
+    {
+        "Name": "Soul Burst",
+        "Color": "Purple",
+        "Type": "Magic/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS24-101"
+    },
+    {
+        "Name": "Death Massacre",
+        "Color": "Purple",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-102"
+    },
+    {
+        "Name": "Cycle Power",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS24-103"
+    },
+    {
+        "Name": "Binding Creeper",
+        "Color": "Green",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-104"
+    },
+    {
+        "Name": "Shadow Leaf",
+        "Color": "Green",
+        "Type": "Magic/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS24-105"
+    },
+    {
+        "Name": "Ultimate Wall",
+        "Color": "White",
+        "Type": "Magic/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS24-106"
+    },
+    {
+        "Name": "Dream Nebula",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-107"
+    },
+    {
+        "Name": "Suppresion",
+        "Color": "White",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-108"
+    },
+    {
+        "Name": "Battle Cancel",
+        "Color": "Yellow",
+        "Type": "Magic/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS24-109"
+    },
+    {
+        "Name": "Saint Breeze",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Rare",
+        "Card_ID": "BS24-110"
+    },
+    {
+        "Name": "Ultimate Plasma",
+        "Color": "Yellow",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-111"
+    },
+    {
+        "Name": "Clear Edge",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Uncommon",
+        "Card_ID": "BS24-112"
+    },
+    {
+        "Name": "Overdrive",
+        "Color": "Blue",
+        "Type": "Magic",
+        "Rarity": "Common",
+        "Card_ID": "BS24-113"
+    },
+    {
+        "Name": "Break Grind",
+        "Color": "Blue",
+        "Type": "Magic/Burst",
+        "Rarity": "Common",
+        "Card_ID": "BS24-114"
+    },
+    {
+        "Name": "The ConvictionDownfallDragon﻿ Judgment-Dragonis",
+        "Color": "Red",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS24-X01"
+    },
+    {
+        "Name": "The NetherThreeGiants Queen-Merduk",
+        "Color": "Purple",
+        "Type": "Spirit",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS24-X02"
+    },
+    {
+        "Name": "Ultimate-Siegfrieden",
+        "Color": "Red/White",
+        "Type": "Ultimate",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS24-X03"
+    },
+    {
+        "Name": "Ultimate-Desperado",
+        "Color": "Purple",
+        "Type": "Ultimate",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS24-X04"
+    },
+    {
+        "Name": "Ultimate-Kaiseratlas",
+        "Color": "Green",
+        "Type": "Ultimate",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS24-X05"
+    },
+    {
+        "Name": "The UltimateGiantDeity Ultimate-Thor",
+        "Color": "White",
+        "Type": "Ultimate",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS24-X06"
+    },
+    {
+        "Name": "Ultimate-Mikafar",
+        "Color": "Yellow",
+        "Type": "Ultimate",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS24-X07"
+    },
+    {
+        "Name": "Ultimate-Castle Golem",
+        "Color": "Blue",
+        "Type": "Ultimate",
+        "Rarity": "X-Rare",
+        "Card_ID": "BS24-X08"
+    }
+]
