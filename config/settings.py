@@ -6,5 +6,8 @@ BASE_SET_URL = r"https://battle-spirits.fandom.com/wiki/"  # Base URL for the se
 
 # Folder to save the images
 IMAGE_FOLDER_PATH = r"C:\Users\AleFire\Desktop\Projects\BS_Database\data\images"
-
 JSON_FOLDER_PATH = r"C:\Users\AleFire\Desktop\Projects\BS_Database\data\json"
+
+# Batspi scraper URL
+
+BATSPI_URL = r"https://batspi.com/index.php?ゴラドン"
