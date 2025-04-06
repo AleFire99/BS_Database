@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+from typing import Optional
 from bs4 import BeautifulSoup
 from deep_translator import GoogleTranslator
 import re
@@ -9,20 +10,27 @@ IMAGE_PATH = "data/images"
 
 # Function to translate Japanese text to English
 def translate(text):
-    return GoogleTranslator(source='ja', target='en').translate(text)
+    try:
+        return GoogleTranslator(source='ja', target='en').translate(text)
+    except Exception as e:
+        return f"Error: {str(e)}"
 
-# Function to extract card name and ID
-def extract_card_name_and_id(soup):
-    # Extract card number from the <span class="cardno"> element
-    card_id_tag = soup.find("span", class_="cardno")
-    if card_id_tag:
-        card_id = card_id_tag.get_text(strip=True)
-        # Extract the card name from the "h3" element as before
-        name_tag = soup.find("h3", id="content_1_0")
-        if name_tag:
-            name_text = name_tag.get_text(strip=True)
-            return name_text, card_id  # Return the name and the card ID (from <span>)
-    return None, None
+def extract_card_name(soup: BeautifulSoup) -> Optional[str]:
+    """
+    Extract the card name from the HTML soup.
+
+    Parameters:
+    soup (BeautifulSoup): Parsed HTML content of the card page.
+
+    Returns:
+    Optional[str]: The extracted card name, or None if not found.
+    """
+    title_tag = soup.find("h1", class_="title")
+    if title_tag:
+        link_tag = title_tag.find("a")
+        if link_tag:
+            return link_tag.get_text(strip=True)
+    return None
 
 # Function to extract spirit type info and core requirements
 def extract_spirit_info_and_core_requirements(lines):
@@ -38,15 +46,40 @@ def extract_spirit_info_and_core_requirements(lines):
         # Extract cost (second part)
         cost = int(parts[0].split("(")[0])
 
-        # Extract reduction (inside parentheses), set None if 0
-        reduction_value = int(parts[0].split("(")[1].strip(")"))
-        reduction = None if reduction_value == 0 else reduction_value
-
         # Extract symbol (third value) and translate it
         symbol = translate(parts[1])
 
+        # Extract reduction (inside parentheses)
+        reduction_raw = parts[0].split("(")[1].strip(")")
+
+        # Case 1: reduction is 0
+        if reduction_raw == "0":
+            reduction = None
+
+        # Case 2: simple number like "3"
+        elif re.match(r"^\d+$", reduction_raw):
+            count = int(reduction_raw)
+            reduction = [symbol] * count if count > 0 else None
+
+        # Case 3: mixed reduction like "2 紫, 1 神"
+        else:
+            reduction = []
+            parts_split = [s.strip() for s in reduction_raw.split(",")]
+            for part in parts_split:
+                match = re.match(r"(\d+)\s*(.+)", part)
+                if match:
+                    count, color_jp = int(match[1]), match[2]
+                    color_en = translate(color_jp)
+                    reduction.extend([color_en] * count)
+
+
         # Extract family (fourth value) and translate it
-        family = translate(parts[2]) if len(parts) > 2 else None
+        # Extract family (fourth value) and translate it as a list
+        family = (
+            [fam.strip() for fam in translate(parts[2]).split("/")]
+            if len(parts) > 2 else None
+        )
+
 
     # Extract levels and structure them properly
     levels_text = " ".join([line for line in lines if "Lv" in line])
@@ -69,7 +102,9 @@ def extract_spirit_info_and_core_requirements(lines):
     return cost, reduction, symbol, family, spirit_type, core_requirements
 
 # Function to save the card data into a JSON file
-def save_card_data_to_json(card_data, set_name, card_id, json_folder_path):
+def save_card_data_to_json(card_data, card_id, json_folder_path):
+
+    set_name = card_id.split("-")[0]
     # Construct the full folder path
     json_folder_path = os.path.join(json_folder_path, "card_json", set_name)
 
@@ -85,16 +120,18 @@ def save_card_data_to_json(card_data, set_name, card_id, json_folder_path):
     print(f"Card data successfully saved to {json_file_path}!")
 
 # Function to scrape and process card data
-def scrape_card_data(URL, json_folder_path):
+def scrape_card_data(card_id, URL, json_folder_path):
+    # Construct the URL dynamically with the card_id
+
     # Scrape the webpage
     response = requests.get(URL)
     response.encoding = "utf-8"
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Extract card name and ID
-    name, card_id = extract_card_name_and_id(soup)
-    if not name or not card_id:
-        print("Error: Could not extract card name and ID.")
+    # Extract card name
+    name = extract_card_name(soup)
+    if not name:
+        print("Error: Could not extract card name.")
         return
 
     # Extract the set name from the card ID (e.g., "BS01" from "BS01-001")
@@ -102,6 +139,7 @@ def scrape_card_data(URL, json_folder_path):
 
     # Extract the main card details
     pre_tag = soup.find("pre")
+
     if pre_tag:
         lines = pre_tag.text.strip().split("\n")
         cost, reduction, symbol, family, spirit_type, core_requirements = extract_spirit_info_and_core_requirements(lines)
@@ -125,4 +163,14 @@ def scrape_card_data(URL, json_folder_path):
     }
 
     # Save the card data into a JSON file
-    save_card_data_to_json(card_data, set_name, card_id, json_folder_path)
+    save_card_data_to_json(card_data, card_id, json_folder_path)
+
+def main():
+    card_id = "BS01-027"  # Replace with any valid card ID
+    base_url = "https://batspi.com/card"  # Replace with the actual base URL
+    json_folder_path = "data/json"  # Folder to store the JSON output
+
+    scrape_card_data(card_id, base_url, json_folder_path)
+
+if __name__ == "__main__":
+    main()

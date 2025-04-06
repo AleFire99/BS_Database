@@ -1,51 +1,38 @@
 import requests
-from bs4 import BeautifulSoup
+from typing import List, Tuple
 import re
+from bs4 import BeautifulSoup
+from config.settings import BATSPI_URL
 
-def extract_links(url):
+def extract_links(url: str) -> List[Tuple[str, str]]:
     """
-    Extract all the links with BS identifiers from a webpage.
+    Extract card IDs and links from the provided URL of a card list page.
 
-    Parameters:
-    url (str): The URL of the webpage to scrape.
+    Args:
+        url (str): The URL of the card list page.
 
     Returns:
-    list: A list of tuples with the BS identifier and the corresponding link.
+        List[Tuple[str, str]]: A list of (card_id, full_url) tuples.
     """
-    try:
-        # Fetch the page content
-        response = requests.get(url)
+    # Fetch the HTML content of the page
+    response = requests.get(url)
+    response.encoding = "utf-8"  # Ensure proper encoding
 
-        # Check if the request was successful
-        if response.status_code == 200:
-            # Parse the HTML content
-            soup = BeautifulSoup(response.content, 'html.parser')
+    # Parse the HTML content with BeautifulSoup
+    soup = BeautifulSoup(response.text, "html.parser")
+    
+    card_links: List[Tuple[str, str]] = []
 
-            # Extract all the <p> tags
-            p_tags = soup.find_all('p')
+    # Get all <p> tags that contain card entries
+    for p in soup.find_all("p"):
+        text = p.get_text()
+        matches = re.findall(r"(BS\d{2}-\d{3})", text)  # Find card IDs
+        a_tags = p.find_all("a", href=True)
 
-            # Prepare a list to store the results
-            result = []
+        for match, a in zip(matches, a_tags):
+            card_id: str = match
+            relative_link: str = a["href"]
+            full_link: str = BATSPI_URL + relative_link
+            card_links.append((card_id, full_link))
 
-            # Loop through each <p> tag
-            for p in p_tags:
-                # Extract all <a> tags inside the <p> tag
-                a_tags = p.find_all('a')
-
-                # Loop through each <a> tag
-                for a_tag in a_tags:
-                    # Look for the BS identifier (e.g., BS01-001) in the text content of the <p> tag
-                    bs_identifier_match = re.search(r'BS\d{2}-\d{3}', p.text)
-
-                    # If we find a BS identifier and a corresponding <a> tag
-                    if bs_identifier_match:
-                        link = "https://batspi.com/" + a_tag['href']
-                        result.append(link)
-
-            return result
-        else:
-            print(f"Failed to retrieve the page. Status code: {response.status_code}")
-            return []
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return []
+    return card_links

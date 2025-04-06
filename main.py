@@ -1,9 +1,12 @@
 import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 from config.settings import BASE_SET_URL, JSON_FOLDER_PATH, BATSPI_URL
-from scripts.json_set_scraper import scrape_battle_spirits
-from scripts.card_scraper import scrape_card_data
+from scripts.scraper.json_set_scraper import scrape_battle_spirits
+from scripts.scraper.card_scraper import scrape_card_data
 from scripts.extract_card_links import extract_links
+from scripts.db.db_manager import Base, load_json_cards
 
 
 def extract_images():
@@ -28,7 +31,7 @@ def main():
 
         # Loop through the URLs and process them
         for url in urls:
-            url = "https://batspi.com/" + url.strip()  # Remove any leading/trailing whitespaces
+            url = BATSPI_URL + url.strip()  # Remove any leading/trailing whitespaces
             if url:  # Skip empty lines
                 print(f"Processing URL: {url}")
                 
@@ -38,9 +41,11 @@ def main():
                 # Print out the links
                 if links:
                     print("Extracted Links:")
-                    for link in links:
+                    for BS_IDs, link in links:
                         # Call the function to scrape and save the card data
-                        scrape_card_data(link, JSON_FOLDER_PATH)
+                        #print(f"Scraping and saving data for link: {link}")
+                        print(f"BS_IDs: {BS_IDs}")
+                        scrape_card_data(BS_IDs, link, JSON_FOLDER_PATH)
                 else:
                     print(f"No links found for {url}.")
             else:
@@ -53,4 +58,13 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    engine = create_engine('sqlite:///battle_spirits.db')
+    Base.metadata.create_all(engine)
+
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    root_folder = r"C:\Users\AleFire\Desktop\Projects\BS_Database\data\json\card_json"
+    load_json_cards(root_folder, session)
+
+    print("✅ Done!")
