@@ -35,6 +35,20 @@ Run the CLI:
 uv run bsdb --help
 ```
 
+## Usage
+
+Paths and URLs come from `BSDB_*` settings (see [Configuration](docs/configuration.md)).
+
+| Command | Description |
+| --- | --- |
+| `bsdb [--log-level L] [--version]` | Global options; `--log-level` overrides `BSDB_LOG_LEVEL` |
+| `bsdb scrape [--refresh-urls] [--set BSxx ...]` | Scrape batspi.com card pages into card JSON (and image paths) |
+| `bsdb normalize` | Normalize family names and types in the card JSON, in place |
+| `bsdb build [--db PATH]` | Build the SQLite database from the card JSON (appends to an existing DB, skipping duplicates) |
+| `bsdb images [--sets 19-71]` | Download card images from the fandom wiki (inclusive set range) |
+
+A typical run is `scrape`, `normalize`, `build`, with `images` independent of the others.
+
 ## Documentation
 
 - [Contributing](CONTRIBUTING.md)

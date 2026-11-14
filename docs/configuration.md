@@ -20,6 +20,8 @@ Settings are defined in `src/bs_database/settings.py` (`Settings`, built on pyda
 | `BSDB_REQUEST_DELAY` | `0.0` | Delay between HTTP requests, in seconds (must be >= 0) |
 | `BSDB_LOG_LEVEL` | `INFO` | Root log level |
 
+`bsdb --log-level LEVEL` overrides `BSDB_LOG_LEVEL` for a single run.
+
 Paths derived from `data_dir` are only derived when not set explicitly.
 
 ## `.env` example
