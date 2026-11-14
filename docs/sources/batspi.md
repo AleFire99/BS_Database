@@ -257,7 +257,7 @@ The block is plain text, one logical line per `\n`. Observed grammar (live 2026-
 | 1 Type | `<type>` | `スピリット`, `ネクサス`, `マジック`, `ブレイヴ`, `アルティメット`; with a restriction suffix `ネクサス(制限カード<1>)`, `スピリット(制限カード<1>)`; a trailing space occurs after the type on some cards (`BS31-XX02`) |
 | 2 Cost | `<cost>(<reduction>)/<colour>[/<family>]` | see below |
 | 3 Levels | `<cores>Lv<n> <BP> …` | see below |
-| Effects | text lines | headings `Lv1・Lv2『timing』` (the level separator is either `・` U+30FB or half-width `･` U+FF65, sometimes both on one page; parsers must accept both), `Lv2`, keyword brackets `【…】`, `《…》`, `〔…〕`, markers `◆`, `■` |
+| Effects | text lines | headings `Lv1・Lv2『timing』` (a card's own `<pre>` uses `・` U+30FB in every fixture; the half-width `･` U+FF65 appears only in the related-cards listing, so a parser that reads the listing must accept both), `Lv2`, keyword brackets `【…】`, `《…》`, `〔…〕`, markers `◆`, `■` |
 | Symbol | `シンボル：<symbol>` | `赤`, `白`, `神`, `極`, `なし` |
 | Credits | `コンセプト：<name>`, `イラスト：<name>` | `コンセプト：` appears only on some cards (Brave, Ultimate, some reprints); `イラスト：` can repeat with a product in brackets: `イラスト：SUNRISE D.I.D.(最強銀河究極ゼロバトルスピリッツウエハース/〃～疾風の王者～/〃～宇宙の覇者～)` |
 | Flavor | `フレーバーテキスト：` then lines | Absent on the Magic fixture, the 創界神 Nexus and the Ultimate in `SD67-CP01`; may end with an attribution `―星文学者リリア『八十八星夜話』鳳凰座―` |
@@ -293,7 +293,7 @@ Level line variants:
 | Nexus | [card_nexus.html](../../tests/fixtures/html/card_nexus.html) (`ゼウスの雷火山`) | levels without BP, effect headings `Lv1・Lv2『このネクサスの配置時』`, `Lv2` |
 | Magic | [card_magic.html](../../tests/fixtures/html/card_magic.html) (`ジャベリンドロー`) | no level line, keyword `【ミラージュ：コスト2(1)(このカードは手札からセットできる)】`, `【セット中】『…』`, then `メイン：` on its own line followed by the effect text |
 | Brave | `砲凰竜フェニック・キャノン` (`BS10-062`, `BS38-RV022`) | cost with reduction, `<1>Lv1 3000 <0>合体+3000`, effect `Lv1『このブレイヴの召喚時』`, `合体条件：コスト3以上`, `【合体時】【激突】『このスピリットのアタック時』`, `シンボル：なし`, `コンセプト：`; `BS38-RV022` has `右合体条件：コスト5以上` and `左合体条件：コスト3以上` and `シンボル：赤` |
-| Ultimate | `アルティメット・ジークフリード` (`SD19-X01`, `SD67-CP01`) | `<1>Lv3 10000 <3>Lv4 14000 <5>Lv5 20000`, `【召喚条件：自分の赤スピリット1体以上】`, `【Uトリガー】Lv3･Lv4･Lv5『このアルティメットのアタック時』` plus a reminder in `（Uトリガー：…）`, `Lv4･Lv5：フラッシュ【真・覚醒】『このアルティメットのアタック時』`, `シンボル：極`. `SD67-CP01` adds `フラッシュ《契約煌臨：極契約＆C3以上》『自分のターン』`, `OC条件：カウント5以上` and `【OC中】Lv3・Lv4『…』` |
+| Ultimate | `アルティメット・ジークフリード` (`SD19-X01`, `SD67-CP01`) | `<1>Lv3 10000 <3>Lv4 14000 <5>Lv5 20000`, `【召喚条件：自分の赤スピリット1体以上】`, `【Uトリガー】Lv3・Lv4・Lv5『このアルティメットのアタック時』` plus a reminder in `（Uトリガー：…）`, `Lv4・Lv5：フラッシュ【真・覚醒】『このアルティメットのアタック時』`, `シンボル：極`. `SD67-CP01` adds `フラッシュ《契約煌臨：極契約＆C3以上》『自分のターン』`, `OC条件：カウント5以上` and `【OC中】Lv3・Lv4『…』` |
 | 創界神 Nexus | `創界神アポローン` (`BS44-X07`) | type `ネクサス`, family `創界神・オリン`, `《神託》〔星竜/界渡/化神＆コスト3以上〕`, lines beginning `◆`, `【神技：2】Lv1・Lv2：フラッシュ『お互いのアタックステップ』`, `【神域】Lv2『自分のアタックステップ』`, `シンボル：神`, no flavor text |
 | 転醒 (flip) | `赤の世界／赤き神龍皇` (`BS52-TX01(A)`, `(B)`) | two pre blocks per number. Face A is a Nexus with `Lv1《転醒：自分のカウント5以下(転醒は同時に使えない)》`; face B is a Spirit `6()/赤/起幻・古竜` with `この面に裏返ったとき、…` and `Lv1『このスピリットの転醒時』`. Page title uses `／` between the two names |
 
@@ -331,7 +331,7 @@ Each item of [field-inventory.md](../data-model/field-inventory.md) marked `pend
 | Brave `fusion_bp` | The bonus after `合体+`, a separate value from the level BP (`合体+3000`) | same |
 | Ultimate `level` / `cores` / `bp` | Level line `<1>Lv3 10000 <3>Lv4 14000 <5>Lv5 20000`: levels start at 3; the sampled card runs to Lv5, and Lv6 exists on other Ultimates (seen in the related-cards listing of the same page, `<10>Lv6 50000`); cores 1, 3, 5; BP 10000, 14000, 20000. Contract Ultimate: `OC<5+>+6000` | `SD19-X01`, `SD67-CP01` |
 | Ultimate `summon_conditions` | A line in brackets: `【召喚条件：自分の赤スピリット1体以上】`, `【召喚条件：魂状態/煌臨元を含む自分の赤スピリット/アルティメット1体以上】` | same |
-| Ultimate `ultimate_trigger` | The block exists: `【Uトリガー】Lv3･Lv4･Lv5『このアルティメットのアタック時』` followed by the hit effect and a reminder in full-width brackets `（Uトリガー：…）` | same |
+| Ultimate `ultimate_trigger` | The block exists: `【Uトリガー】Lv3・Lv4・Lv5『このアルティメットのアタック時』` followed by the hit effect and a reminder in full-width brackets `（Uトリガー：…）` | same |
 | Brave and Ultimate `<pre>` layout | As in the field-type table above | same |
 | Risk "older eras differ" | The formats of the cost line, level line and `シンボル：` line were the same on every sampled card from BS01 to BS72; what varies is the content (see the table of eras) | all pages |
 
