@@ -27,13 +27,19 @@ flowchart TD
     budget -->|yes| wait["Wait at least request_delay"]
     wait --> fetch["GET with the project User-Agent"]
     fetch --> status{"Response"}
-    status -->|200| store["Write HTML and metadata to the cache"]
+    status -->|200| challenge{"Challenge page content?"}
+    challenge -->|yes| stop
+    challenge -->|no| store["Write HTML and metadata to the cache"]
     store --> parse
-    status -->|404| skip
-    status -->|429 or 5xx| retry["Back off and retry, at most 3 times"]
-    retry --> wait
-    status -->|403 or challenge| stop
+    status -->|"404 or other status"| skip
+    status -->|"429, 5xx or timeout"| retries{"Retries left (max 3)?"}
+    retries -->|no| skip
+    retries -->|yes| backoff["Back off 5, 15 or 45 s (or Retry-After, max 300 s)"]
+    backoff --> budget
+    status -->|403| stop
 ```
+
+Before the first URL of a run, robots.txt is fetched. If that fails (any status other than 200 or 404), the run stops.
 
 ## 3. Rules
 
@@ -44,6 +50,8 @@ flowchart TD
 - In addition, the scraper **must not** request:
   - PukiWiki action pages: any URL with `cmd=` or `plugin=`, for example `cmd=edit`, `cmd=listadd` or `cmd=rss`.
   - Search URLs with `word=`.
+  - `NextCard.php` (previous/next card links) and the bulletin board under `bbs/`.
+  - In short, only `index.php?<page name>` URLs without further parameters are fetched.
   - These pages are not card data, and the index links to some of them ([batspi.md §3](batspi.md#3-url-patterns)).
 - If robots.txt cannot be fetched (any status other than 200 or 404), the run **must** stop.
 
@@ -51,11 +59,11 @@ flowchart TD
 
 - Requests are sequential, one at a time. No parallel connections.
 - Delay between requests:
-  - **At least 3 seconds** by default (setting `request_delay`, default `3.0`).
-  - The setting **must not** accept values below `1.0`.
+  - Setting `request_delay`, **default `3.0` seconds**. The default is the recommended value; the setting may be lowered to a hard floor of `1.0` and **must not** accept anything below it.
+  - Backoff waits (§3.5) come on top of the delay.
   - The surveys of #51 and #52 used 3 to 5 s.
 - Request budget:
-  - At most **1,000 network requests per run** by default (setting `max_requests`). Cache hits do not count.
+  - At most **1,000 network requests per run** by default (setting `max_requests`). Cache hits do not count; retries do.
   - When the budget is used up, the run stops cleanly; the next run resumes from the cache.
 - At the default rate, a full first crawl of about 6,500 card pages takes about 5.5 hours, split over several runs. Later runs are fast because of the cache.
 
@@ -86,7 +94,7 @@ flowchart TD
 | --- | --- |
 | 200 | Cache and parse |
 | 404 | Log and skip; do not retry within the run |
-| 429, 500, 502, 503, 504, timeout | Retry at most 3 times with backoff of 5, 15 and 45 s. If a `Retry-After` header is present and longer, use it instead. After the last failure, log and skip |
+| 429, 500, 502, 503, 504, timeout | Retry at most 3 times with backoff of 5, 15 and 45 s. If a `Retry-After` header is present and longer, use it instead, capped at 300 s; a longer `Retry-After` stops the run. After the last failure, log and skip |
 | 403, a Cloudflare or other challenge page, a CAPTCHA | **Stop the run.** No retry, no change of client, no bypass of any kind |
 | Any other status | Log and skip |
 
@@ -114,7 +122,7 @@ Conditions:
   ```
 
 - **Takedown.** A rights holder can ask for removal by opening an issue at <https://github.com/AleFire99/BS_Database/issues>. The project removes the requested content from the next release and stops publishing it.
-- **No source HTML.** Raw pages from the cache are never published. Test fixtures under `tests/fixtures/html/` are the exception: a small, size-limited set of pages, documented in their README ([#54](https://github.com/AleFire99/BS_Database/issues/54)).
+- **No source HTML.** Raw pages from the cache are never published. Test fixtures under `tests/fixtures/html/` are the exception: a small, size-limited set of pages, documented in their README ([#54](https://github.com/AleFire99/BS_Database/issues/54)). The takedown route covers them too.
 - **Fandom text** is CC-BY-SA ([fandom.md §3](fandom.md#3-licence)). It is not used in v1. If it is ever used, the share-alike terms apply to the derived text.
 - **Official-site content** is not fetched or redistributed ([official.md §2](official.md#2-reuse-note)).
 
@@ -124,7 +132,7 @@ This is the project's position, not legal advice.
 
 | # | Requirement | Setting or behaviour |
 | --- | --- | --- |
-| R1 | One shared HTTP client used by every scraper, with no direct `requests.get` calls. Today there are 5 such calls in `src/bs_database/scrapers/` | `http` module |
+| R1 | One shared HTTP client used by every scraper, with no direct `requests.get` calls. Today there are 7 such calls in 5 modules of `src/bs_database/scrapers/` | `http` module |
 | R2 | robots.txt check per run, plus the deny list | §3.1 |
 | R3 | `request_delay` default `3.0`, minimum `1.0`; `max_requests` default `1000` | [settings.py](../../src/bs_database/settings.py) |
 | R4 | `user_agent` setting with the fixed format | §3.3 |
