@@ -373,9 +373,9 @@ Every fetched card page had at least one image, including the oldest (`BS01-001`
 
 ## 8. Candidate fixtures for #54
 
-Pages that would extend the fixture set. The existing fixtures are kept: `index.html`, `set.html` (`契約編：環 第1章：廻帰再醒`, BS72), `card_spirit.html`, `card_nexus.html`, `card_magic.html` (all BS72 era). The candidates fill the gaps listed in the field inventory. Choosing, trimming and committing them is #54. Sizes are the raw HTML sizes on 2026-11-14 (the existing fixtures are 100 to 260 KB each).
+Pages that would extend the fixture set. The existing fixtures are kept: `index.html`, `set.html` (`契約編：環 第1章：廻帰再醒`, BS72), `card_spirit.html`, `card_nexus.html`, `card_magic.html` (all BS72 era). The candidates fill the gaps listed in the field inventory. Choosing, trimming and committing them was done in #54: all candidates are committed under `tests/fixtures/html/` (see its [README](../../tests/fixtures/html/README.md)), and the `ダブルドロー` page name was confirmed (its own `<pre>` has both `メイン：` and `フラッシュ：`). Sizes are the raw HTML sizes on 2026-11-14 (the existing fixtures are 100 to 260 KB each).
 
-| Candidate (page name) | Kind and era | Reason | Size |
+| Candidate (page name) | Kind and era | Reason | Size (raw) |
 | --- | --- | --- | --- |
 | `砲凰竜フェニック・キャノン` | Brave, `BS10-062` and `BS38-RV022` | Only Brave sampled: fusion token, fusion conditions, two numbers, erratum blocks, 13 images | 152 KB |
 | `アルティメット・ジークフリード` | Ultimate, `SD19-X01` and `SD67-CP01` | Only Ultimate sampled: summon condition, U trigger, overclock | 138 KB |
