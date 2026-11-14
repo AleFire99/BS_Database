@@ -11,6 +11,7 @@ dependencies = [
     "requests>=2.34.2",
     "selenium>=4.52.0",
     "sqlalchemy>=2.1.8",
+    "typer>=0.29.1",
     "webdriver-manager>=4.1.2",
 ]
 
@@ -20,6 +21,9 @@ build-backend = "uv_build"
 
 [tool.uv]
 package = true
+
+[project.scripts]
+bsdb = "bs_database.cli:app"
 
 [dependency-groups]
 dev = [
