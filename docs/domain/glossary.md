@@ -67,6 +67,13 @@ Reprints and promos are only partially captured by the repository (`Notes` commi
 
 Rarity (レアリティ) marks print scarcity (for example C, U, R, M-class labels). Not captured today; the exact rarity scale and per-print variation are to verify in E4.
 
+## Database versions
+
+| Term | Description |
+| --- | --- |
+| Schema version | SemVer of the table layout, stored in `schema_meta` and encoded in `PRAGMA user_version` (see [ADR 0003](../adr/0003-naming-and-schema-versioning.md)). |
+| Data version | Release tag of a built database (the git tag); independent of the schema version. |
+
 ## Sources
 
 | Source | Language | Used for |
