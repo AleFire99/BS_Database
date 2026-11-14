@@ -57,15 +57,26 @@ Format `BSNN-NNN`: set code plus collector number, e.g. `BS05-048` is card 48 of
 | --- | --- | --- |
 | Set / booster | ブースター | Main numbered expansions, coded `BSNN`. |
 | Starter deck | スタートデッキ | Preconstructed deck products (to verify in E4 how they are coded). |
-| Promo | プロモーション | Promotional cards distributed outside boosters. |
-| Reprint | 再録 | Card printed again in another set, possibly with a new ID. |
+| Promo | プロモーション | Promotional cards distributed outside boosters. Modelled as a printing in a product of the promo distribution type, with the number reused or a P-number (format pending #9); see [ADR 0004](../adr/0004-card-printing-identity.md). |
+| Reprint | 再録 | Card printed again in another product. It can keep its number and change finish or art (e.g. BS72-069 in BS72 and BS74). Modelled as a new printing of the same card number; a new number is a new card number of the same card. See [ADR 0004](../adr/0004-card-printing-identity.md). |
+| Product | 収録/掲載/配布 | Anything a card is released in: booster, starter deck, promo distribution, magazine, collaboration. A booster set is a product with a code such as `BS72`; distributions may have no code. Has a release date. See [ADR 0004](../adr/0004-card-printing-identity.md). |
 | Chapter | 章 | batspi.com groups sets by era and chapter (e.g. `契約編：環 第1章`, the "Contract Saga"). |
 
-Reprints and promos are only partially captured by the repository (`Notes` commit history mentions scraped promos and reprints) and are not modelled in the DB.
+Reprints and promos are not modelled in the current DB; the target model is in [ADR 0004](../adr/0004-card-printing-identity.md).
 
 ## Rarity
 
-Rarity (レアリティ) marks print scarcity (for example C, U, R, M-class labels). Not captured today; the exact rarity scale and per-print variation are to verify in E4.
+Rarity (レアリティ) marks print scarcity (for example C, U, R, M-class labels; batspi writes `<C>`, `<R>`). It belongs to a printing, not to a card, and is a lookup table in the target model ([ADR 0004](../adr/0004-card-printing-identity.md)). Not captured in the current DB; the exact rarity scale is pending #9.
+
+## Identity terms
+
+| Term | JP | Description |
+| --- | --- | --- |
+| Card | | Gameplay identity: name, text and stats. One card can have several card numbers (rule pending #9). See [ADR 0004](../adr/0004-card-printing-identity.md). |
+| Card number | カード番号 | Printed number such as `BS72-069`. Belongs to exactly one card and can appear on several printings. |
+| Printing | | One physical printing: a card number in one product and variant, with its own rarity, illustrator and image. |
+| Variant | | Finish or art version of a printing within a product: normal, secret (`SECRETあり`), full art (`フルアート版`), promo art. The full list is pending #9. |
+| Block icon | ブロックアイコン | Era or legality icon on a card (e.g. `12`, `A`); stored on the card by default, per card or per number pending #9. |
 
 ## Database versions
 
