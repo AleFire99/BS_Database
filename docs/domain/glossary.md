@@ -38,7 +38,7 @@ A **colour** (赤, 紫, 緑, 白, 黄, 青) says which colours a card belongs to
 | Term | JP | Description |
 | --- | --- | --- |
 | Cost | コスト | Number of cores paid to play the card. |
-| Reduction | 軽減 | Symbols that can offset part of the cost; written in parentheses, e.g. `0(0)`, `2(1)`, `3(2 紫, 1 神)`. Scraped to JSON by the legacy pipeline (colour only, the god symbol is lost) and not stored in the legacy DB; the target model stores it in `card_reductions`, keyed by symbol. |
+| Reduction | 軽減 | Symbols that can offset part of the cost; written in parentheses, e.g. `0(0)`, `2(1)`, `5(赤2白2)`, `4(赤2神1)`: a plain number, or colour glyphs with counts joined without separator (`全` stands for any colour); see [coverage-matrix.md](../sources/coverage-matrix.md#card_reductions). Scraped to JSON by the legacy pipeline (colour only, the god symbol is lost) and not stored in the legacy DB; the target model stores it in `card_reductions`, keyed by symbol. |
 | Core | コア | Resource unit; cores are placed on Spirits to raise their level. |
 | Core requirement | | Per level: number of cores needed, with the resulting BP. Stored in the legacy DB as `(level, cores, battlePoints)`; the target table is `card_levels` (`level`, `cores`, `battle_points`). |
 | Level | レベル (Lv) | Stage of a Spirit or Nexus, unlocked by cores on it. |
