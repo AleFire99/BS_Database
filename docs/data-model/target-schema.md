@@ -2,6 +2,282 @@
 
 This is the design document for the new normalized schema. It is extended by [#30](https://github.com/AleFire99/BS_Database/issues/30) (gameplay attributes), [#31](https://github.com/AleFire99/BS_Database/issues/31) (effects, i18n, provenance, images) and [#32](https://github.com/AleFire99/BS_Database/issues/32). It is **not** the build source: the DDL and SQLAlchemy models are owned by [#12](https://github.com/AleFire99/BS_Database/issues/12). Naming follows [ADR 0003](../adr/0003-naming-and-schema-versioning.md). Items marked "pending #9" depend on the source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9)).
 
+## Overview
+
+The model has 33 tables: 32 entities connected by foreign keys plus the single-row `schema_meta` ([ADR 0003](../adr/0003-naming-and-schema-versioning.md)). The two diagrams below are the whole-model view; the sections after them describe each area in detail with column tables.
+
+### Complete ER diagram
+
+Key columns only (PK, FK, UK). Every relationship of the area diagrams is drawn here. The translation foreign keys (`en_source_id`, `en_status_id`) are shown on each table that has them; `family_aliases` has `translation_source_id` only. `schema_meta` has no relationships.
+
+```mermaid
+erDiagram
+    card_types ||--o{ cards : "classifies"
+    cards ||--|{ card_numbers : "has"
+    card_numbers ||--|{ printings : "printed as"
+    products ||--o{ printings : "contains"
+    product_types ||--o{ products : "classifies"
+    rarities |o--o{ printings : "rates"
+    variants ||--o{ printings : "finishes"
+    cards ||--o{ card_colors : "has"
+    colors ||--o{ card_colors : "used in"
+    cards ||--o{ card_symbols : "has"
+    cards ||--o{ card_reductions : "has"
+    symbols ||--o{ card_symbols : "used in"
+    symbols ||--o{ card_reductions : "used in"
+    colors |o--o{ symbols : "colours"
+    cards ||--o{ card_levels : "has"
+    cards ||--o{ card_families : "has"
+    families ||--o{ card_families : "used in"
+    families ||--o{ family_aliases : "known as"
+    cards ||--o| brave_details : "extends"
+    cards ||--o| ultimate_details : "extends"
+    cards ||--o{ card_effects : "has"
+    effect_kinds ||--o{ card_effects : "classifies"
+    card_effects ||--o{ card_effect_levels : "applies at"
+    card_levels ||--o{ card_effect_levels : "activates"
+    card_effects ||--o{ card_effect_keywords : "uses"
+    keywords ||--o{ card_effect_keywords : "used in"
+    translation_sources |o--o{ cards : "sourced"
+    translation_statuses ||--o{ cards : "states"
+    translation_sources |o--o{ card_effects : "sourced"
+    translation_statuses ||--o{ card_effects : "states"
+    translation_sources |o--o{ families : "sourced"
+    translation_statuses ||--o{ families : "states"
+    translation_sources ||--o{ family_aliases : "sourced"
+    translation_sources |o--o{ products : "sourced"
+    translation_statuses ||--o{ products : "states"
+    translation_sources |o--o{ brave_details : "sourced"
+    translation_statuses ||--o{ brave_details : "states"
+    translation_sources |o--o{ ultimate_details : "sourced"
+    translation_statuses ||--o{ ultimate_details : "states"
+    sources ||--o{ source_pages : "serves"
+    cards ||--o{ card_source_pages : "built from"
+    source_pages ||--o{ card_source_pages : "feeds"
+    products ||--o{ product_source_pages : "built from"
+    source_pages ||--o{ product_source_pages : "feeds"
+    printings ||--o{ printing_images : "shown by"
+    image_sizes ||--o{ printing_images : "sizes"
+
+    cards {
+        integer id PK
+        integer card_type_id FK
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    card_types {
+        integer id PK
+        text code UK
+    }
+    card_numbers {
+        integer id PK
+        text number UK
+        integer card_id FK
+    }
+    printings {
+        integer id PK
+        integer card_number_id FK
+        integer product_id FK
+        integer variant_id FK
+        integer rarity_id FK
+    }
+    products {
+        integer id PK
+        text code UK
+        integer product_type_id FK
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    product_types {
+        integer id PK
+        text code UK
+    }
+    rarities {
+        integer id PK
+        text code UK
+    }
+    variants {
+        integer id PK
+        text code UK
+    }
+    colors {
+        integer id PK
+        text code UK
+    }
+    card_colors {
+        integer card_id PK, FK
+        integer color_id PK, FK
+    }
+    symbols {
+        integer id PK
+        text code UK
+        integer color_id FK
+    }
+    card_symbols {
+        integer card_id PK, FK
+        integer symbol_id PK, FK
+    }
+    card_reductions {
+        integer card_id PK, FK
+        integer symbol_id PK, FK
+    }
+    card_levels {
+        integer id PK
+        integer card_id FK
+    }
+    families {
+        integer id PK
+        text code UK
+        text name_ja UK
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    family_aliases {
+        integer id PK
+        integer family_id FK
+        integer translation_source_id FK
+    }
+    card_families {
+        integer card_id PK, FK
+        integer family_id PK, FK
+    }
+    brave_details {
+        integer card_id PK, FK
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    ultimate_details {
+        integer card_id PK, FK
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    card_effects {
+        integer id PK
+        integer card_id FK
+        integer effect_kind_id FK
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    effect_kinds {
+        integer id PK
+        text code UK
+    }
+    card_effect_levels {
+        integer card_effect_id PK, FK
+        integer card_level_id PK, FK
+    }
+    keywords {
+        integer id PK
+        text code UK
+    }
+    card_effect_keywords {
+        integer card_effect_id PK, FK
+        integer keyword_id PK, FK
+    }
+    translation_sources {
+        integer id PK
+        text code UK
+    }
+    translation_statuses {
+        integer id PK
+        text code UK
+    }
+    sources {
+        integer id PK
+        text code UK
+    }
+    source_pages {
+        integer id PK
+        integer source_id FK
+        text url UK
+    }
+    card_source_pages {
+        integer card_id PK, FK
+        integer source_page_id PK, FK
+    }
+    product_source_pages {
+        integer product_id PK, FK
+        integer source_page_id PK, FK
+    }
+    image_sizes {
+        integer id PK
+        text code UK
+    }
+    printing_images {
+        integer id PK
+        integer printing_id FK
+        integer image_size_id FK
+    }
+    schema_meta {
+        integer id PK
+    }
+```
+
+### Domain class diagram
+
+The domain view, not the table view. The five card types are one row each in `card_types`; their specific data lives in `card_levels`, `card_effects` and, for Brave and Ultimate, in the side tables `brave_details` and `ultimate_details`. The specialisation arrows therefore show domain concepts, not subclass tables: there is no table per type. Attribute lists are abridged.
+
+```mermaid
+classDiagram
+    class Card {
+        name_ja
+        name_en
+        cost
+        flavor_text_ja
+        block_icon
+    }
+    class CardNumber {
+        number
+    }
+    class Printing {
+        illustrator
+    }
+    class Product {
+        code
+        name_ja
+        release_date
+        series
+    }
+    class Level {
+        level
+        cores
+        battle_points
+    }
+    class Effect {
+        position
+        kind
+        timing_ja
+        text_ja
+    }
+    class Family {
+        name_ja
+        name_en
+    }
+    class Spirit
+    class Nexus
+    class Magic
+    class Brave {
+        fusion_condition_ja
+        fusion_bp_bonus
+    }
+    class Ultimate {
+        summon_condition_ja
+    }
+
+    Card <|-- Spirit : card_types.code = spirit
+    Card <|-- Nexus : nexus
+    Card <|-- Magic : magic
+    Card <|-- Brave : brave, brave_details
+    Card <|-- Ultimate : ultimate, ultimate_details
+    Card "1" --> "1..*" CardNumber : numbered
+    CardNumber "1" --> "1..*" Printing : printed as
+    Product "1" --> "0..*" Printing : contains
+    Card "1" --> "0..*" Level : card_levels
+    Card "1" --> "0..*" Effect : card_effects
+    Effect "0..*" --> "0..*" Level : applies at
+    Card "0..*" --> "0..*" Family : card_families
+```
+
 ## Identity
 
 Card versus printing identity, as decided in [ADR 0004](../adr/0004-card-printing-identity.md): a **card** is the gameplay identity, a **card number** (`BS72-069`) belongs to exactly one card, and a **printing** is one number in one product and variant.
@@ -353,7 +629,7 @@ Other names for a family, so a machine translation can be mapped back to the pre
 | `lang` | TEXT | NOT NULL, CHECK `lang` IN (`ja`, `en`) | ISO 639-1 language code. Language codes are the one allowed CHECK-list exception to the lookup rule of [ADR 0003](../adr/0003-naming-and-schema-versioning.md). |
 | `translation_source_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_sources.id` | Where the alias comes from: `machine`, `fandom`, `manual` or `official`. |
 
-Table constraint: `UNIQUE (family_id, alias, lang)`. Seeded from the 40 `MT = preferred EN` pairs in `data/family_mapping.txt` (source `machine`; for example `Rebirth = Reptile Beast`: the alias `Rebirth` points to the family whose preferred name is `Reptile Beast`) and from the machine-translated names in the legacy `families` table.
+Table constraint: `UNIQUE (family_id, alias, lang)`. Seeded from the 41 `MT = preferred EN` pairs in `data/family_mapping.txt` (source `machine`; for example `Rebirth = Reptile Beast`: the alias `Rebirth` points to the family whose preferred name is `Reptile Beast`) and from the machine-translated names in the legacy `families` table.
 
 ### card_families
 
@@ -953,3 +1229,417 @@ The page links `BS72-007.jpg` and `BS72-007-2.jpg`, each as a small `<img>` and 
 ### Out of scope for v1
 
 Q&A (ADR 0003), the batspi effect-category tags (カード効果 and 発揮タイミング tags outside the `<pre>`, a possible future source) and structured effects.
+
+## BSS_app deviations
+
+Summary of where this model departs from the sister project [BSS_app](https://github.com/AleFire99/BSS_app). The full name mapping, with every BSS_app table, is in [ADR 0003](../adr/0003-naming-and-schema-versioning.md#bss_app--bs_database).
+
+| Deviation | BSS_app | BS_Database | Reason |
+| --- | --- | --- | --- |
+| Naming style | PascalCase, backtick-quoted, `<Singular>ID` keys | lower snake_case plural, `id` keys, no quoting | Python and SQLAlchemy idiom, continuity with the legacy schema (ADR 0003). |
+| Card identity | `Cards.CardID` TEXT primary key (`BSS01-001`) | `cards` + `card_numbers.number` UNIQUE + `printings` | Surrogate keys; reprints, promos and variants without duplicating the card ([ADR 0004](../adr/0004-card-printing-identity.md)). |
+| Rarity | free text `Cards.Rarity` | `rarities` lookup, `printings.rarity_id` | Enum-like values are lookups; rarity belongs to the printing. |
+| Sets | `Sets` | `products` + `product_types` | Promos, magazines and distributions are releases too. |
+| Subtypes | `Subtypes`, `CardSubtypes` | `families`, `card_families`, `family_aliases` | Game term (系統); Japanese name is the identity, machine translations become aliases. |
+| Reductions | `CardReductions(ColorID)` | `card_reductions(symbol_id)` | Reductions include the god symbol 神, which is not a colour. |
+| Levels | `Core` (`BP`, `Cores`) | `card_levels` (`battle_points`, `cores`) | Plural rule, readable names; `battle_points` NULL for Nexus. |
+| Effects | `Effects`, `Conditions`, `Steps`, `EffectSteps` | `card_effects` as text, `card_effect_levels`, `card_effect_keywords`; structured tables deferred | Text-first effects in v1 ([ADR 0005](../adr/0005-text-first-effects-and-translations.md)); a structured model can be added later. |
+| Keyword modifier | `EffectKeywords.Modifier` | `card_effect_keywords.parameter_ja` | Kept as printed text, not structured. |
+| Languages | no i18n | `_ja`/`_en` columns plus `translation_sources` and `translation_statuses` | Japanese source is kept; translation provenance is tracked (ADR 0005). |
+| Provenance and images | none | `sources`, `source_pages`, link tables, `printing_images`, `image_sizes` | Reproducible builds and per-printing images. |
+| Versioning | none | `PRAGMA user_version` and `schema_meta` | Cheap compatibility check (ADR 0003). |
+| Q&A | `QA_cards`, `QA_keywords` | none | Out of scope for v1. |
+
+## DDL draft
+
+This is a **draft for review, not the build source**. The real DDL and the SQLAlchemy models, including the `naming_convention`, are owned by [#12](https://github.com/AleFire99/BS_Database/issues/12) and may differ. The draft exists to check that the column tables above are consistent and that the [sample cards](samples.md) can be loaded; it runs unchanged in SQLite. Notes on the choices:
+
+- `PRAGMA user_version = 100` is schema `0.1.0` under the `major * 10000 + minor * 100 + patch` encoding of ADR 0003.
+- Constraints are named `pk_`, `fk_`, `uq_`, `ck_` and `ix_` followed by `<table>_<cols>`. Primary keys are table constraints on an `INTEGER` column, which SQLite still treats as the rowid alias.
+- `en_status_id` and `variant_id` default to `1`, which assumes the lookup seed inserts `pending` and `normal` first (id 1). The build, not the schema, guarantees that order.
+- A foreign key in SQLite cannot check that a `card_levels` row belongs to the same card as the `card_effects` row, nor that a `brave_details` card has type `brave`; the build checks both.
+- Indexes are added on foreign key columns that no primary key or unique constraint already leads with. The translation foreign keys point at tiny lookups and are not indexed.
+
+```sql
+PRAGMA foreign_keys = ON;
+PRAGMA user_version = 100;
+
+-- Versioning (ADR 0003): exactly one row.
+CREATE TABLE schema_meta (
+    id INTEGER NOT NULL,
+    schema_version TEXT NOT NULL,
+    data_version TEXT NOT NULL,
+    built_at TEXT NOT NULL,
+    source_snapshot TEXT,
+    generator TEXT NOT NULL,
+    CONSTRAINT pk_schema_meta_id PRIMARY KEY (id),
+    CONSTRAINT ck_schema_meta_id CHECK (id = 1)
+);
+
+-- Lookups
+CREATE TABLE translation_statuses (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    CONSTRAINT pk_translation_statuses_id PRIMARY KEY (id),
+    CONSTRAINT uq_translation_statuses_code UNIQUE (code)
+);
+
+CREATE TABLE translation_sources (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    CONSTRAINT pk_translation_sources_id PRIMARY KEY (id),
+    CONSTRAINT uq_translation_sources_code UNIQUE (code)
+);
+
+CREATE TABLE card_types (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    CONSTRAINT pk_card_types_id PRIMARY KEY (id),
+    CONSTRAINT uq_card_types_code UNIQUE (code)
+);
+
+CREATE TABLE colors (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    CONSTRAINT pk_colors_id PRIMARY KEY (id),
+    CONSTRAINT uq_colors_code UNIQUE (code)
+);
+
+CREATE TABLE symbols (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    color_id INTEGER,
+    CONSTRAINT pk_symbols_id PRIMARY KEY (id),
+    CONSTRAINT uq_symbols_code UNIQUE (code),
+    CONSTRAINT fk_symbols_color_id FOREIGN KEY (color_id) REFERENCES colors (id)
+);
+CREATE INDEX ix_symbols_color_id ON symbols (color_id);
+
+CREATE TABLE product_types (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    CONSTRAINT pk_product_types_id PRIMARY KEY (id),
+    CONSTRAINT uq_product_types_code UNIQUE (code)
+);
+
+CREATE TABLE rarities (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    sort_order INTEGER NOT NULL,
+    CONSTRAINT pk_rarities_id PRIMARY KEY (id),
+    CONSTRAINT uq_rarities_code UNIQUE (code)
+);
+
+CREATE TABLE variants (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    CONSTRAINT pk_variants_id PRIMARY KEY (id),
+    CONSTRAINT uq_variants_code UNIQUE (code)
+);
+
+CREATE TABLE effect_kinds (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    CONSTRAINT pk_effect_kinds_id PRIMARY KEY (id),
+    CONSTRAINT uq_effect_kinds_code UNIQUE (code)
+);
+
+CREATE TABLE keywords (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    CONSTRAINT pk_keywords_id PRIMARY KEY (id),
+    CONSTRAINT uq_keywords_code UNIQUE (code)
+);
+
+CREATE TABLE image_sizes (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    CONSTRAINT pk_image_sizes_id PRIMARY KEY (id),
+    CONSTRAINT uq_image_sizes_code UNIQUE (code)
+);
+
+CREATE TABLE sources (
+    id INTEGER NOT NULL,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    base_url TEXT NOT NULL,
+    CONSTRAINT pk_sources_id PRIMARY KEY (id),
+    CONSTRAINT uq_sources_code UNIQUE (code)
+);
+
+-- Data entities
+CREATE TABLE cards (
+    id INTEGER NOT NULL,
+    card_type_id INTEGER NOT NULL,
+    cost INTEGER NOT NULL,
+    name_ja TEXT NOT NULL,
+    name_en TEXT,
+    flavor_text_ja TEXT,
+    flavor_text_en TEXT,
+    en_source_id INTEGER,
+    en_status_id INTEGER NOT NULL DEFAULT 1,
+    block_icon TEXT,
+    CONSTRAINT pk_cards_id PRIMARY KEY (id),
+    CONSTRAINT fk_cards_card_type_id FOREIGN KEY (card_type_id) REFERENCES card_types (id),
+    CONSTRAINT fk_cards_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
+    CONSTRAINT fk_cards_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id),
+    CONSTRAINT ck_cards_cost CHECK (cost >= 0)
+);
+CREATE INDEX ix_cards_card_type_id ON cards (card_type_id);
+
+CREATE TABLE card_numbers (
+    id INTEGER NOT NULL,
+    number TEXT NOT NULL,
+    card_id INTEGER NOT NULL,
+    CONSTRAINT pk_card_numbers_id PRIMARY KEY (id),
+    CONSTRAINT uq_card_numbers_number UNIQUE (number),
+    CONSTRAINT fk_card_numbers_card_id FOREIGN KEY (card_id) REFERENCES cards (id)
+);
+CREATE INDEX ix_card_numbers_card_id ON card_numbers (card_id);
+
+CREATE TABLE products (
+    id INTEGER NOT NULL,
+    code TEXT,
+    name_ja TEXT NOT NULL,
+    name_en TEXT,
+    product_type_id INTEGER NOT NULL,
+    release_date TEXT,
+    series TEXT,
+    en_source_id INTEGER,
+    en_status_id INTEGER NOT NULL DEFAULT 1,
+    CONSTRAINT pk_products_id PRIMARY KEY (id),
+    CONSTRAINT uq_products_code UNIQUE (code),
+    CONSTRAINT fk_products_product_type_id FOREIGN KEY (product_type_id) REFERENCES product_types (id),
+    CONSTRAINT fk_products_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
+    CONSTRAINT fk_products_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id)
+);
+CREATE INDEX ix_products_product_type_id ON products (product_type_id);
+
+CREATE TABLE printings (
+    id INTEGER NOT NULL,
+    card_number_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    variant_id INTEGER NOT NULL DEFAULT 1,
+    rarity_id INTEGER,
+    illustrator TEXT,
+    CONSTRAINT pk_printings_id PRIMARY KEY (id),
+    CONSTRAINT uq_printings_card_number_id_product_id_variant_id UNIQUE (card_number_id, product_id, variant_id),
+    CONSTRAINT fk_printings_card_number_id FOREIGN KEY (card_number_id) REFERENCES card_numbers (id),
+    CONSTRAINT fk_printings_product_id FOREIGN KEY (product_id) REFERENCES products (id),
+    CONSTRAINT fk_printings_variant_id FOREIGN KEY (variant_id) REFERENCES variants (id),
+    CONSTRAINT fk_printings_rarity_id FOREIGN KEY (rarity_id) REFERENCES rarities (id)
+);
+CREATE INDEX ix_printings_product_id ON printings (product_id);
+CREATE INDEX ix_printings_variant_id ON printings (variant_id);
+CREATE INDEX ix_printings_rarity_id ON printings (rarity_id);
+
+CREATE TABLE printing_images (
+    id INTEGER NOT NULL,
+    printing_id INTEGER NOT NULL,
+    image_size_id INTEGER NOT NULL,
+    path TEXT NOT NULL,
+    source_url TEXT NOT NULL,
+    sha256 TEXT,
+    width INTEGER,
+    height INTEGER,
+    mime_type TEXT,
+    CONSTRAINT pk_printing_images_id PRIMARY KEY (id),
+    CONSTRAINT uq_printing_images_printing_id_image_size_id UNIQUE (printing_id, image_size_id),
+    CONSTRAINT fk_printing_images_printing_id FOREIGN KEY (printing_id) REFERENCES printings (id),
+    CONSTRAINT fk_printing_images_image_size_id FOREIGN KEY (image_size_id) REFERENCES image_sizes (id),
+    CONSTRAINT ck_printing_images_width CHECK (width > 0),
+    CONSTRAINT ck_printing_images_height CHECK (height > 0)
+);
+CREATE INDEX ix_printing_images_image_size_id ON printing_images (image_size_id);
+
+-- Gameplay attributes
+CREATE TABLE card_colors (
+    card_id INTEGER NOT NULL,
+    color_id INTEGER NOT NULL,
+    CONSTRAINT pk_card_colors_card_id_color_id PRIMARY KEY (card_id, color_id),
+    CONSTRAINT fk_card_colors_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
+    CONSTRAINT fk_card_colors_color_id FOREIGN KEY (color_id) REFERENCES colors (id)
+);
+CREATE INDEX ix_card_colors_color_id ON card_colors (color_id);
+
+CREATE TABLE card_symbols (
+    card_id INTEGER NOT NULL,
+    symbol_id INTEGER NOT NULL,
+    count INTEGER NOT NULL,
+    CONSTRAINT pk_card_symbols_card_id_symbol_id PRIMARY KEY (card_id, symbol_id),
+    CONSTRAINT fk_card_symbols_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
+    CONSTRAINT fk_card_symbols_symbol_id FOREIGN KEY (symbol_id) REFERENCES symbols (id),
+    CONSTRAINT ck_card_symbols_count CHECK (count >= 1)
+);
+CREATE INDEX ix_card_symbols_symbol_id ON card_symbols (symbol_id);
+
+CREATE TABLE card_reductions (
+    card_id INTEGER NOT NULL,
+    symbol_id INTEGER NOT NULL,
+    count INTEGER NOT NULL,
+    CONSTRAINT pk_card_reductions_card_id_symbol_id PRIMARY KEY (card_id, symbol_id),
+    CONSTRAINT fk_card_reductions_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
+    CONSTRAINT fk_card_reductions_symbol_id FOREIGN KEY (symbol_id) REFERENCES symbols (id),
+    CONSTRAINT ck_card_reductions_count CHECK (count >= 1)
+);
+CREATE INDEX ix_card_reductions_symbol_id ON card_reductions (symbol_id);
+
+CREATE TABLE card_levels (
+    id INTEGER NOT NULL,
+    card_id INTEGER NOT NULL,
+    level INTEGER NOT NULL,
+    cores INTEGER NOT NULL,
+    battle_points INTEGER,
+    CONSTRAINT pk_card_levels_id PRIMARY KEY (id),
+    CONSTRAINT uq_card_levels_card_id_level UNIQUE (card_id, level),
+    CONSTRAINT fk_card_levels_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
+    CONSTRAINT ck_card_levels_level CHECK (level >= 1),
+    CONSTRAINT ck_card_levels_cores CHECK (cores >= 0),
+    CONSTRAINT ck_card_levels_battle_points CHECK (battle_points >= 0)
+);
+
+CREATE TABLE families (
+    id INTEGER NOT NULL,
+    code TEXT,
+    name_ja TEXT NOT NULL,
+    name_en TEXT,
+    en_source_id INTEGER,
+    en_status_id INTEGER NOT NULL DEFAULT 1,
+    CONSTRAINT pk_families_id PRIMARY KEY (id),
+    CONSTRAINT uq_families_code UNIQUE (code),
+    CONSTRAINT uq_families_name_ja UNIQUE (name_ja),
+    CONSTRAINT fk_families_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
+    CONSTRAINT fk_families_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id)
+);
+
+CREATE TABLE family_aliases (
+    id INTEGER NOT NULL,
+    family_id INTEGER NOT NULL,
+    alias TEXT NOT NULL,
+    lang TEXT NOT NULL,
+    translation_source_id INTEGER NOT NULL,
+    CONSTRAINT pk_family_aliases_id PRIMARY KEY (id),
+    CONSTRAINT uq_family_aliases_family_id_alias_lang UNIQUE (family_id, alias, lang),
+    CONSTRAINT fk_family_aliases_family_id FOREIGN KEY (family_id) REFERENCES families (id),
+    CONSTRAINT fk_family_aliases_translation_source_id FOREIGN KEY (translation_source_id) REFERENCES translation_sources (id),
+    CONSTRAINT ck_family_aliases_lang CHECK (lang IN ('ja', 'en'))
+);
+
+CREATE TABLE card_families (
+    card_id INTEGER NOT NULL,
+    family_id INTEGER NOT NULL,
+    CONSTRAINT pk_card_families_card_id_family_id PRIMARY KEY (card_id, family_id),
+    CONSTRAINT fk_card_families_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
+    CONSTRAINT fk_card_families_family_id FOREIGN KEY (family_id) REFERENCES families (id)
+);
+CREATE INDEX ix_card_families_family_id ON card_families (family_id);
+
+CREATE TABLE brave_details (
+    card_id INTEGER NOT NULL,
+    fusion_condition_ja TEXT,
+    fusion_condition_en TEXT,
+    fusion_bp_bonus INTEGER,
+    en_source_id INTEGER,
+    en_status_id INTEGER NOT NULL DEFAULT 1,
+    CONSTRAINT pk_brave_details_card_id PRIMARY KEY (card_id),
+    CONSTRAINT fk_brave_details_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
+    CONSTRAINT fk_brave_details_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
+    CONSTRAINT fk_brave_details_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id)
+);
+
+CREATE TABLE ultimate_details (
+    card_id INTEGER NOT NULL,
+    summon_condition_ja TEXT,
+    summon_condition_en TEXT,
+    en_source_id INTEGER,
+    en_status_id INTEGER NOT NULL DEFAULT 1,
+    CONSTRAINT pk_ultimate_details_card_id PRIMARY KEY (card_id),
+    CONSTRAINT fk_ultimate_details_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
+    CONSTRAINT fk_ultimate_details_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
+    CONSTRAINT fk_ultimate_details_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id)
+);
+
+-- Effects and keywords
+CREATE TABLE card_effects (
+    id INTEGER NOT NULL,
+    card_id INTEGER NOT NULL,
+    position INTEGER NOT NULL,
+    effect_kind_id INTEGER NOT NULL,
+    timing_ja TEXT,
+    timing_en TEXT,
+    text_ja TEXT NOT NULL,
+    text_en TEXT,
+    en_source_id INTEGER,
+    en_status_id INTEGER NOT NULL DEFAULT 1,
+    CONSTRAINT pk_card_effects_id PRIMARY KEY (id),
+    CONSTRAINT uq_card_effects_card_id_position UNIQUE (card_id, position),
+    CONSTRAINT fk_card_effects_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
+    CONSTRAINT fk_card_effects_effect_kind_id FOREIGN KEY (effect_kind_id) REFERENCES effect_kinds (id),
+    CONSTRAINT fk_card_effects_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
+    CONSTRAINT fk_card_effects_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id),
+    CONSTRAINT ck_card_effects_position CHECK (position >= 1)
+);
+CREATE INDEX ix_card_effects_effect_kind_id ON card_effects (effect_kind_id);
+
+CREATE TABLE card_effect_levels (
+    card_effect_id INTEGER NOT NULL,
+    card_level_id INTEGER NOT NULL,
+    CONSTRAINT pk_card_effect_levels_card_effect_id_card_level_id PRIMARY KEY (card_effect_id, card_level_id),
+    CONSTRAINT fk_card_effect_levels_card_effect_id FOREIGN KEY (card_effect_id) REFERENCES card_effects (id),
+    CONSTRAINT fk_card_effect_levels_card_level_id FOREIGN KEY (card_level_id) REFERENCES card_levels (id)
+);
+CREATE INDEX ix_card_effect_levels_card_level_id ON card_effect_levels (card_level_id);
+
+CREATE TABLE card_effect_keywords (
+    card_effect_id INTEGER NOT NULL,
+    keyword_id INTEGER NOT NULL,
+    parameter_ja TEXT,
+    CONSTRAINT pk_card_effect_keywords_card_effect_id_keyword_id PRIMARY KEY (card_effect_id, keyword_id),
+    CONSTRAINT fk_card_effect_keywords_card_effect_id FOREIGN KEY (card_effect_id) REFERENCES card_effects (id),
+    CONSTRAINT fk_card_effect_keywords_keyword_id FOREIGN KEY (keyword_id) REFERENCES keywords (id)
+);
+CREATE INDEX ix_card_effect_keywords_keyword_id ON card_effect_keywords (keyword_id);
+
+-- Provenance
+CREATE TABLE source_pages (
+    id INTEGER NOT NULL,
+    source_id INTEGER NOT NULL,
+    url TEXT NOT NULL,
+    fetched_at TEXT NOT NULL,
+    content_sha256 TEXT NOT NULL,
+    parser_version TEXT NOT NULL,
+    CONSTRAINT pk_source_pages_id PRIMARY KEY (id),
+    CONSTRAINT uq_source_pages_url UNIQUE (url),
+    CONSTRAINT fk_source_pages_source_id FOREIGN KEY (source_id) REFERENCES sources (id)
+);
+CREATE INDEX ix_source_pages_source_id ON source_pages (source_id);
+
+CREATE TABLE card_source_pages (
+    card_id INTEGER NOT NULL,
+    source_page_id INTEGER NOT NULL,
+    CONSTRAINT pk_card_source_pages_card_id_source_page_id PRIMARY KEY (card_id, source_page_id),
+    CONSTRAINT fk_card_source_pages_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
+    CONSTRAINT fk_card_source_pages_source_page_id FOREIGN KEY (source_page_id) REFERENCES source_pages (id)
+);
+CREATE INDEX ix_card_source_pages_source_page_id ON card_source_pages (source_page_id);
+
+CREATE TABLE product_source_pages (
+    product_id INTEGER NOT NULL,
+    source_page_id INTEGER NOT NULL,
+    CONSTRAINT pk_product_source_pages_product_id_source_page_id PRIMARY KEY (product_id, source_page_id),
+    CONSTRAINT fk_product_source_pages_product_id FOREIGN KEY (product_id) REFERENCES products (id),
+    CONSTRAINT fk_product_source_pages_source_page_id FOREIGN KEY (source_page_id) REFERENCES source_pages (id)
+);
+CREATE INDEX ix_product_source_pages_source_page_id ON product_source_pages (source_page_id);
+```
