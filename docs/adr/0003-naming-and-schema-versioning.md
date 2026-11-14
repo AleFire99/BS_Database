@@ -45,7 +45,7 @@ Use **option 2**: snake_case conventions, keeping the BSS_app entity split but n
   - The primary key is `id INTEGER PRIMARY KEY` (a rowid alias).
   - The only exception is pure junction tables (only foreign keys plus optional attributes such as a count): they use a composite primary key of their foreign key columns, as in BSS_app.
   - Foreign keys are `<referenced_singular>_id`.
-  - Natural keys are UNIQUE constraints and never primary keys (for example `printings.number`, `sets.code`).
+  - Natural keys are UNIQUE constraints and never primary keys (for example `card_numbers.number`, `products.code`; see [ADR 0004](0004-card-printing-identity.md)).
   - The legacy `cards.card_id` (TEXT print number) is retired because it clashes with the foreign key convention.
 - **Constraint and index names:** `pk_`, `fk_`, `uq_`, `ck_` or `ix_` followed by `<table>_<cols>`. Implemented as a SQLAlchemy `naming_convention` in #12.
 - **Quoting:** none required. Avoid reserved words as bare table names (`order`, `set`); plural names such as `sets` are safe. Columns such as `level` are legal unquoted in SQLite, but each such case is flagged in review.
@@ -57,10 +57,10 @@ The concepts (lookups, junctions, reductions with a count, per-level rows, effec
 
 | BSS_app | BS_Database | Reason for the deviation |
 | --- | --- | --- |
-| `Cards` (`CardID` TEXT PK, e.g. `BSS01-001`) | `cards` plus `printings` (`id` integer PK, `number` UNIQUE on printings) | Surrogate keys (Gate A); the printing number becomes a UNIQUE natural key. Exact split finalised in #29. |
-| `Cards.Rarity` (free TEXT) | `rarities` lookup, `printings.rarity_id` (tentative, #29) | Enum-like values use lookup tables. |
+| `Cards` (`CardID` TEXT PK, e.g. `BSS01-001`) | `cards`, `card_numbers` (`number` UNIQUE) and `printings`, see [ADR 0004](0004-card-printing-identity.md) | Surrogate keys (Gate A); one number can have several printings, so the number is a UNIQUE natural key on `card_numbers`. |
+| `Cards.Rarity` (free TEXT) | `rarities` lookup, `printings.rarity_id` ([ADR 0004](0004-card-printing-identity.md)) | Enum-like values use lookup tables. |
 | `CardTypes` | `card_types` | Case and key style; `Name` becomes a stable `code` plus display names. |
-| `Sets` | `sets` | Case and key style; `Name` (e.g. `BSS01`) becomes a UNIQUE `code` plus display names. |
+| `Sets` | `products` (+ `product_types`), see [ADR 0004](0004-card-printing-identity.md) | Promos, magazines and distributions are releases too, so a set is one product type; `Name` (e.g. `BSS01`) becomes a UNIQUE `code` plus display names. |
 | `Colors` | `colors` | Case and key style; `Name` becomes a stable `code` plus display names. |
 | `Symbols` (`ColorID`) | `symbols` (`color_id`) | Case and key style only. |
 | `Subtypes` | `families` (tentative, #29) | Battle Spirits calls them families (系統); the legacy schema already uses `families`. |

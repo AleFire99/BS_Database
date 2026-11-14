@@ -14,7 +14,7 @@ The batspi.com card pages show that a number is not a printing. Evidence from th
 - **Variants within one slot.** [card_spirit.html](../../tests/fixtures/html/card_spirit.html) (BS72-007) is `<R> (SECRETあり)`. The page table says "2枚" and links `BS72-007.jpg` and `BS72-007-2.jpg`.
 - **Block icon.** Every `収録` entry carries `ブロックアイコン:<12>`, and the card section lists `ブロックアイコン/12`. It is an era or legality attribute.
 - **Product categories.** The heading is `収録/掲載/配布` (included / published in a magazine / distributed), and each product has a release date (for example `2025年05月17日`).
-- **Legacy.** Only `BSnn-nnn` numbers exist, one row per number. The same name is reported under different numbers (Scorpio, `BS02-031` and `BS33-056`). Whether that is one card reprinted under a new number or two cards is **pending [#9](https://github.com/AleFire99/BS_Database/issues/9)**. This was not re-verified here: the tracked `battle_spirits.db` is an empty file in the current checkout.
+- **Legacy.** Only `BSnn-nnn` numbers exist, one row per number. The same name appears under different numbers: in the legacy database (v0.1.0), Scorpio `BS02-031` is cost 4 with Lv1–3 (1000/3000/6000 BP) and `BS33-056` is cost 5 with Lv1–2 (4000/7000 BP). Same name does not imply same card, so these are two `cards` rows. Whether a card can ever be reprinted under a new number with identical stats and text is **pending [#9](https://github.com/AleFire99/BS_Database/issues/9)**.
 
 This ADR **supersedes the Gate A wording** "printing number UNIQUE on printings" (used in [ADR 0003](0003-naming-and-schema-versioning.md)): the evidence above shows one number on several printings. Owner decision on [#29](https://github.com/AleFire99/BS_Database/issues/29), Gate B, 2026-11-14.
 
@@ -148,7 +148,7 @@ The page says `<R> (SECRETあり)` and links two images. Which image is the secr
 - The database guarantees that a number maps to exactly one card. Linking several numbers to one card is a data decision made in the build (pending #9), not a schema change.
 - `variant_id` is NOT NULL (default `normal`) so the composite UNIQUE works in SQLite.
 - `card_numbers` is near 1:1 with `cards`, so most cards carry one extra row.
-- ADR 0003 mentions `printings.number`; it should read `card_numbers.number`. That edit is allowed while ADR 0003 is Proposed and is left to a follow-up.
+- ADR 0003's natural-key example now reads `card_numbers.number` instead of `printings.number` (edited while ADR 0003 is Proposed).
 - Open items for #9: card identity across different numbers, the rarity scale, the variant list, the promo number format, and whether `block_icon` is per card or per number.
 - DDL is written in [#12](https://github.com/AleFire99/BS_Database/issues/12), gameplay attributes in [#30](https://github.com/AleFire99/BS_Database/issues/30), effects, i18n, provenance and image details in [#31](https://github.com/AleFire99/BS_Database/issues/31).
 
