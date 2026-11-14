@@ -1,6 +1,6 @@
 # 0007. Source of truth per field and conflict resolution
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-14
 
 ## Context

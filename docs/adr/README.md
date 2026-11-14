@@ -9,5 +9,5 @@ One ADR per decision, using the [template](0000-template.md). Numbers are sequen
 | [0003](0003-naming-and-schema-versioning.md) | Naming conventions, BSS_app alignment and schema versioning | Proposed | 2026-11-14 |
 | [0004](0004-card-printing-identity.md) | Card vs printing identity, ID scheme and rarity | Proposed | 2026-11-14 |
 | [0005](0005-text-first-effects-and-translations.md) | Text-first effects and translation storage | Proposed | 2026-11-14 |
-| [0006](0006-scraping-and-redistribution-policy.md) | Scraping and redistribution policy | Proposed | 2026-11-14 |
-| [0007](0007-source-of-truth.md) | Source of truth per field and conflict resolution | Proposed | 2026-11-14 |
+| [0006](0006-scraping-and-redistribution-policy.md) | Scraping and redistribution policy | Accepted | 2026-11-14 |
+| [0007](0007-source-of-truth.md) | Source of truth per field and conflict resolution | Accepted | 2026-11-14 |
