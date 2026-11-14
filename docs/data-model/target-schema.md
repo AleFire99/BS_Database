@@ -47,27 +47,24 @@ erDiagram
     product_types {
         integer id PK
         text code UK
-        text name_ja
-        text name_en
+        text name
     }
     rarities {
         integer id PK
         text code UK
-        text name_ja
-        text name_en
+        text name
         integer sort_order
     }
     variants {
         integer id PK
         text code UK
-        text name_ja
-        text name_en
+        text name
     }
 ```
 
 ### cards
 
-The gameplay identity: one row per distinct card. Gameplay columns (type, cost, colors, families, levels) are added by #30, effects and i18n details by #31.
+The gameplay identity: one row per distinct card. Gameplay columns (type, cost) and the related tables (colors, symbols, families, levels) are described in [Gameplay attributes](#gameplay-attributes); effects and i18n details are added by #31.
 
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
@@ -118,14 +115,13 @@ Anything a card is released in. A booster set is a product; there is no separate
 
 ### product_types
 
-Lookup, following the lookup convention of ADR 0003.
+Lookup, following the lookup convention of ADR 0003: `code` plus one English `name`, no Japanese name column.
 
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | |
 | `code` | TEXT | NOT NULL, UNIQUE | Planned: `booster`, `starter`, `promo`, `magazine`, `collab`, `other`. Final list pending #9. |
-| `name_ja` | TEXT | NOT NULL | |
-| `name_en` | TEXT | | |
+| `name` | TEXT | NOT NULL | English display name. |
 
 ### rarities
 
@@ -133,8 +129,7 @@ Lookup, following the lookup convention of ADR 0003.
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | |
 | `code` | TEXT | NOT NULL, UNIQUE | `C` and `R` seen in batspi `<C>`, `<R>`; other codes and the full scale are pending #9. |
-| `name_ja` | TEXT | NOT NULL | e.g. `コモン`, `レア`. |
-| `name_en` | TEXT | | |
+| `name` | TEXT | NOT NULL | English display name, e.g. `Common`, `Rare`. |
 | `sort_order` | INTEGER | NOT NULL | Display order from common to rare. |
 
 ### variants
@@ -143,8 +138,7 @@ Lookup, following the lookup convention of ADR 0003.
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | |
 | `code` | TEXT | NOT NULL, UNIQUE | Planned: `normal`, `secret`, `full_art`, `promo_art`, parallel. The full list is pending #9. |
-| `name_ja` | TEXT | NOT NULL | e.g. `フルアート版`. |
-| `name_en` | TEXT | | |
+| `name` | TEXT | NOT NULL | English display name, e.g. `Full art`. The source text `フルアート版` is mapped to `full_art` by the loader. |
 
 ## Gameplay attributes
 
