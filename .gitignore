@@ -1,5 +1,7 @@
-images/
-json/
+/images/
+/data/images/
+/json/
+/data/json/
 .venv/
 __pycache__/
 .pytest_cache/
