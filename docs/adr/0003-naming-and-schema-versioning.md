@@ -43,6 +43,7 @@ Use **option 2**: snake_case conventions, keeping the BSS_app entity split but n
   - Lookup rows have a stable `code` (for example `red`) plus display names.
 - **Keys:**
   - The primary key is `id INTEGER PRIMARY KEY` (a rowid alias).
+  - The only exception is pure junction tables (only foreign keys plus optional attributes such as a count): they use a composite primary key of their foreign key columns, as in BSS_app.
   - Foreign keys are `<referenced_singular>_id`.
   - Natural keys are UNIQUE constraints and never primary keys (for example `printings.number`, `sets.code`).
   - The legacy `cards.card_id` (TEXT print number) is retired because it clashes with the foreign key convention.
@@ -58,9 +59,9 @@ The concepts (lookups, junctions, reductions with a count, per-level rows, effec
 | --- | --- | --- |
 | `Cards` (`CardID` TEXT PK, e.g. `BSS01-001`) | `cards` plus `printings` (`id` integer PK, `number` UNIQUE on printings) | Surrogate keys (Gate A); the printing number becomes a UNIQUE natural key. Exact split finalised in #29. |
 | `Cards.Rarity` (free TEXT) | `rarities` lookup, `printings.rarity_id` (tentative, #29) | Enum-like values use lookup tables. |
-| `CardTypes` | `card_types` | Case and key style only. |
-| `Sets` | `sets` | Case and key style only; `code` is UNIQUE. |
-| `Colors` | `colors` | Case and key style only; stable `code`. |
+| `CardTypes` | `card_types` | Case and key style; `Name` becomes a stable `code` plus display names. |
+| `Sets` | `sets` | Case and key style; `Name` (e.g. `BSS01`) becomes a UNIQUE `code` plus display names. |
+| `Colors` | `colors` | Case and key style; `Name` becomes a stable `code` plus display names. |
 | `Symbols` (`ColorID`) | `symbols` (`color_id`) | Case and key style only. |
 | `Subtypes` | `families` (tentative, #29) | Battle Spirits calls them families (系統); the legacy schema already uses `families`. |
 | `Keywords` | `keywords` | Case and key style only. |
@@ -69,7 +70,7 @@ The concepts (lookups, junctions, reductions with a count, per-level rows, effec
 | `CardColors` | `card_colors` | Case and key style only. |
 | `CardSymbols` | `card_symbols` | Case and key style only. |
 | `CardSubtypes` | `card_families` | Follows the rename of `Subtypes`. |
-| `CardReductions` (`CardID`, `ColorID`, `Count`) | `card_reductions` (`card_id`, `color_id`, `count`) | Case only; `count` is a legal column name. Final in #30. |
+| `CardReductions` (`CardID`, `ColorID`, `Count`) | `card_reductions` (`card_id`, `color_id`, `count`) | Case only; `count` is a legal column name. Whether it hangs off the card or the printing is final in #30. |
 | `Core` (`CoreID`, `CardID`, `Level`, `BP`, `Cores`) | `card_levels` (tentative, #30) | Singular table name breaks the plural rule; `BP` becomes `battle_points`, `Cores` becomes a clearer name chosen in #30. |
 | `Effects` (`EffectID`, `CardID`, `ConditionID`, `Description`) | `effects` (tentative, #31) | Case and key style; `Description` becomes the text-first effect text, with the exact column set decided in #31. |
 | `EffectLevels` (`EffectID`, `CoreID`) | `effect_levels` (tentative, #31) | References `card_levels` instead of `Core`. |
@@ -82,8 +83,8 @@ If BSS_app tooling is ever shared, compatibility views can map the names without
 
 ### Schema versioning
 
-- `PRAGMA user_version` holds `major * 10000 + minor * 100 + patch`. Consumers can check it with one integer read. Example: schema `1.2.0` is stored as `10200`, and `0.3.7` as `307`.
-- A single-row `schema_meta` table records the details:
+- `PRAGMA user_version` holds `major * 10000 + minor * 100 + patch`, so minor and patch are capped at 99. Consumers can check it with one integer read. Example: schema `1.2.0` is stored as `10200`, and `0.3.7` as `307`.
+- A single-row `schema_meta` table records the details. It is a deliberate exception to the plural rule (it holds one record, not a collection), and the single row is enforced with `id INTEGER PRIMARY KEY CHECK (id = 1)`:
 
 | Column | Type | Meaning | Example |
 | --- | --- | --- | --- |
