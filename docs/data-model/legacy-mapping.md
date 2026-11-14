@@ -103,7 +103,7 @@ Not emitted by the legacy JSON at all (see the [gap list](#6-gap-list)): effects
 | --- | --- | --- |
 | Each `MT = preferred` line (41 non-empty lines: `Rebirth = Reptile Beast`) | `family_aliases` row with `lang` = `en` and `translation_source_id` = `machine`, `alias` = left side | The left side is a machine-translation output; the right side is the preferred English name and goes to `families.name_en`. Keys are matched in lower case ([normalize.py:17-25](../../src/bs_database/normalize.py#L17)); alias lookup keeps the same behaviour. |
 | Right side of each line | `families.name_en` | Becomes the preferred display name; `en_status_id` = `reviewed` (a person wrote the pair) and `en_source_id` = `manual`. |
-| Hardcoded `snake` to `Dark Snake` rule ([normalize.py:63-64](../../src/bs_database/normalize.py#L63)) | dropped as code; one alias row (`Snake`) in the data | Rules in code are replaced by data in `family_aliases`. |
+| Hardcoded substring rule: any family containing `snake` becomes `Dark Snake` ([normalize.py:63-64](../../src/bs_database/normalize.py#L63)) | dropped as code; replaced by explicit `family_aliases` rows for the affected names | Rules in code are replaced by data in `family_aliases`. |
 | Heuristics: article stripping, `title()` and plural stripping ([normalize.py:70-85](../../src/bs_database/normalize.py#L70)), splitting of `Different X`, `New X`, `Next Generation of X` ([:40-49](../../src/bs_database/normalize.py#L40)) | dropped | Lossy rules that exist only because the source is machine-translated. With the Japanese family as the identity they are not needed; #11 reviews the remaining names. |
 
 ## 5. Other legacy artefacts

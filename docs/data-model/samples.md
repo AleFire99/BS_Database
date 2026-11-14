@@ -12,6 +12,8 @@ The ids are explicit and match the worked examples of [ADR 0004](../adr/0004-car
 | [BS11-051](#brave-bs11-051-evil-fisher) | Brave | legacy-only data, `brave_details` with placeholders | legacy database |
 | [BS24-078](#ultimate-bs24-078-ultimate-randolph) | Ultimate | legacy-only data, levels 3 and 4 | legacy database |
 
+"Legacy database" means the `battle_spirits.db` snapshot tracked until release v0.1.0 (`git show v0.1.0:battle_spirits.db > legacy.db`); it is no longer tracked in the repository.
+
 Items that depend on the source analysis are **pending #9**. Values that are placeholders rather than data are written in square brackets, for example `[PENDING #9] ...`, so they cannot be mistaken for real text.
 
 ## Lookup seed
