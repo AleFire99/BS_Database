@@ -20,49 +20,49 @@ def extract_card_infos(url):
         return []
 
     soup = BeautifulSoup(response.content, "html.parser")
-    
+
     # Find all tables that match the criteria
     tables = soup.find_all("table", {"align": "center", "border": "1"})
-    
+
     # Check if any tables were found
     if not tables:
         print("No tables found on the page.")
         return []
-    
+
     # # If there's exactly one table, skip processing
     # if len(tables) == 1:
     #     print("Only one table found. Skipping the process.")
     #     return []
-    
+
     # Process the tables that are selected
     for idx, table in enumerate(tables):            # Use tables[1:] to skip the first table
         print(f"Processing table {idx + 1}")  # Correct table numbering
         # Continue processing each table as needed
-    
+
         rows = table.find_all("tr")[1:]  # Skip the header row
         links = []
-    
+
         for idx, row in enumerate(rows):
             # Ensure the row has at least two <td> elements
             td_elements = row.find_all("td")
             if len(td_elements) < 2:
                 print(f"Skipping row {idx + 1}: less than 2 <td> elements.")
                 continue
-            
+
             # Extract the code from the first column
             code = td_elements[0].get_text(strip=True)
-        
+
             # Attempt to extract the link from the second column
             link_tag = td_elements[1].find("a")
             if link_tag and "href" in link_tag.attrs:
                 href = link_tag["href"]
-        
+
                 # If the href is already a full URL, use it directly
                 if href.startswith("http"):
                     full_url = href
                 else:
                     full_url = BASE_URL + href  # Concatenate with BASE_URL if it's a relative URL
-                
+
                 # Store both the code and the link
                 links.append((code, full_url))
             else:
@@ -87,7 +87,7 @@ def download_card_image(card_url, card_id, folder):
     if image_tag:
         # First check for data-src, then fall back to src if necessary
         image_url = image_tag.get("data-src") or image_tag.get("src")
-        
+
         # Check if the image URL is a valid image (not a base64 data URI)
         if not image_url or image_url.startswith('data:image'):
             print(f"Skipping base64 or invalid image for: {card_url}")

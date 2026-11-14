@@ -34,7 +34,7 @@ def main():
             url = BATSPI_URL + url.strip()  # Remove any leading/trailing whitespaces
             if url:  # Skip empty lines
                 print(f"Processing URL: {url}")
-                
+
                 # Call the extract_links function from the module
                 links = extract_links(url)
 
@@ -50,7 +50,7 @@ def main():
                     print(f"No links found for {url}.")
             else:
                 print("Skipping empty URL line.")
-                
+
     except FileNotFoundError:
         print("Error: url.txt file not found.")
     except Exception as e:
