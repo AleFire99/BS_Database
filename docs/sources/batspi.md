@@ -206,3 +206,131 @@ The card number is the identity key on batspi.com: it is the text in front of th
 Promo prefixes: the page `プロモーションカード` is organised by number family. Its section headings (live 2026-11-14) are: `Pナンバー`, `CPナンバー`, `RVナンバー`, `PBナンバー`, `PXナンバー`, `Xナンバー`, `EXナンバー`, `BS-SPナンバー`, `LMナンバー`, `SJナンバー`, `KAナンバー`, `KFナンバー`, `GXナンバー`, `BSCOナンバー`, `BSHナンバー`, `EXGナンバー`, `ナンバーなし`. The sub-headings include numbers by campaign year (`P13ナンバー`, `P14ナンバー<1>`, … `P25ナンバー<12>`, `RP26ナンバー<A>`) and variants such as `BS-CPナンバー<2>`, `BSC-CPナンバー<2>`, `CB-CPナンバー<4>`, `SD-CPナンバー<9>`, `RBS-CPナンバー<A>`. Entry formats seen in the list: `P001`, `P20-19`, `PB18-…`, `PX14-…`, `SJ12-…`, `LM13-…`, `KA12-01`, `KF-01`, `BSCO-001`, `BSH-001`, `EXG2-001`, `EX001`, `X009`. The section `ナンバーなし` is for cards without a number (not sampled in detail).
 
 A card name is not unique across numbers, and one card page serves several numbers (next section). The number prefix does not always match the set: a `BS##-RV###` or `BSC##` card appears in the lists of unrelated products.
+
+## 6. Card pages
+
+### Page structure
+
+A card page is a PukiWiki page named after the card. Elements seen on all sampled card pages (live 2026-11-14, and the three card fixtures):
+
+| Element | Selector or marker | Content |
+| --- | --- | --- |
+| Title | `<h1 class="title">` | The page name (the card's Japanese name) |
+| Print headings | `<h3>` at the top of the body | One per printed number: `<Japanese name>/<English name> <number>`, for example `ゴラドン/Goradon <BS01-001>`; the Japanese name may be split by spaces and carry ruby readings (`砲凰竜 (ほうおうりゅう) フェニック・キャノン/The GunDragon Phoenix-Cannon <BS10-062>`) |
+| Image gallery | `<ul class="ppy-imglist">` | One `<li>` per image, with the full image link, a `small/` thumbnail and a caption (number, product, optional rarity note) |
+| Card number | `<span class="cardno">` | The number, one element per number on the page |
+| Card data | `<pre>` | The card text, one block per printed number (below) |
+| Intro text | `<p>` after the pre blocks | Free-form commentary with links to related cards |
+| `h4 収録` | after the intro | For each number, the products that contain it, each with `<rarity>` and a note, for example `契約編：環 第1章：廻帰再醒 <R> (SECRETあり)` |
+| `h4 収録/掲載/配布 ブロックアイコン` | after `収録` | One line per product: `[BS72] <product link> ブロックアイコン:<12> 2025年05月17日` (set code, block icon, release date) |
+| `h4 公式Q&A` | after the block icons | Official rulings; each answer is also in a `<pre>` block, which is **not** a card block |
+| `h4 関連リンク` | near the end | Link to the official card list (`battlespirits.com/cardlist/…freewords=<number>`), attribute and category links, and the "related cards" list (ajax, paginated) |
+| Optional | `h4 リバイバル`, `h4 アニメにおいて`, `h4 サイクル一覧`, `h4 設定画` | Not present on every page |
+
+The `Last-modified` stamp is at the foot of every page (for example `Last-modified: 2025-06-24 (火) 23:32:36` on the Spirit fixture).
+
+### One page, several printed numbers
+
+A page holds every number that shares the card name. The Spirit fixture has one number (`BS72-007`) with two images (`BS72-007.jpg` and the parallel `BS72-007-2.jpg`, caption `シークレット`). Other sampled pages hold several:
+
+| Page | Numbers on the page | `<pre>` blocks that start with a type line |
+| --- | --- | --- |
+| `ゴラドン` | `BS01-001`, `BSC22-001` | 2; the second print has different BP (`<1>Lv1 2000 <3>Lv2 5000` against `<1>Lv1 1000 <3>Lv2 3000`) and an added `コンセプト：丸山浩` line |
+| `焔竜翼人マ・ドー` | `P001`, `EX001`, `P20-19` | 3; the third has a family `起幻・竜人・翼竜` and an effect text the first two do not have |
+| `砲凰竜フェニック・キャノン` | `BS10-062`, `BS38-RV022` | 2, plus one block per erratum |
+| `赤の世界／赤き神龍皇` | `BS52-TX01(A)`, `BS52-TX01(B)`, `BS73-TCP01(A)`, `BS73-TCP01(B)` | 4 (the two faces of each number) |
+| `アルティメット・ジークフリード` | `SD19-X01`, `SD67-CP01` | 2 |
+
+Consequences for a parser:
+
+- The `<pre>` blocks and the `<h3>` print headings are in the same order. The pairing by position is the only link between a number and its text; the pre block carries no number itself.
+- The first `<pre>` of the page is not enough: it is only the first printed number. The scraper of [batspi_card.py](../../src/bs_database/scrapers/batspi_card.py) reads `soup.find("pre")`, so it sees only the first print.
+- Extra `<pre>` blocks appear after a card block under a collapsed label `(エラッタ前) ▼` ("before the erratum"). They hold the old wording, may contain only the changed lines (the first one on the Brave page is two lines long) and do not start with a type line. The Q&A answers are `<pre>` blocks too (`はい、破壊できます。…`). A card block is identified by a first line that is a card type.
+- The same print can differ between numbers in cost, BP, family and text, so each number is a separate printing with its own data. How this maps to card and printing is decided in [ADR 0004](../adr/0004-card-printing-identity.md), not here.
+
+### The `<pre>` block
+
+The block is plain text, one logical line per `\n`. Observed grammar (live 2026-11-14 and fixtures):
+
+| Line | Format | Variants seen |
+| --- | --- | --- |
+| 1 Type | `<type>` | `スピリット`, `ネクサス`, `マジック`, `ブレイヴ`, `アルティメット`; with a restriction suffix `ネクサス(制限カード<1>)`, `スピリット(制限カード<1>)`; a trailing space occurs after the type on some cards (`BS31-XX02`) |
+| 2 Cost | `<cost>(<reduction>)/<colour>[/<family>]` | see below |
+| 3 Levels | `<cores>Lv<n> <BP> …` | see below |
+| Effects | text lines | headings `Lv1・Lv2『timing』`, `Lv2`, keyword brackets `【…】`, `《…》`, `〔…〕`, markers `◆`, `■` |
+| Symbol | `シンボル：<symbol>` | `赤`, `白`, `神`, `極`, `なし` |
+| Credits | `コンセプト：<name>`, `イラスト：<name>` | `コンセプト：` appears only on some cards (Brave, Ultimate, some reprints); `イラスト：` can repeat with a product in brackets: `イラスト：SUNRISE D.I.D.(最強銀河究極ゼロバトルスピリッツウエハース/〃～疾風の王者～/〃～宇宙の覇者～)` |
+| Flavor | `フレーバーテキスト：` then lines | Absent on the Magic fixture, the 創界神 Nexus and the Ultimate in `SD67-CP01`; may end with an attribution `―星文学者リリア『八十八星夜話』鳳凰座―` |
+
+Cost line variants (live 2026-11-14 and fixtures):
+
+| Form | Example | Meaning observed |
+| --- | --- | --- |
+| `N(M)` | `3(2)`, `6(3)`, `0(0)` | cost N, M reduction symbols without colour tag |
+| `N(<colour><n>…)` | `5(赤2白2)`, `4(赤2神1)`, `4(赤1紫1)` (Magic `BS54-067`, from the flattened listing) | colour and symbol counts joined without separator or space |
+| `N(全<n>…)` | `6(全1極3)` | `全` = any colour, `極` = the ultimate symbol |
+| `N()` | `6()` | empty reduction (the awakened Spirit side of a flip card) |
+
+The glossary's example `3(2 紫, 1 神)` was not seen in any page. The colour field is a single token: `赤`, or several colours concatenated, `赤紫`, `赤紫緑白黄青` (in the flattened listing of Magic cards). The family field uses `・` between families: `眷属・武迅`, `異魔神・星魂・機竜`, `極契約・新生・古竜`, `創界神・オリン`, `起幻・竜人・翼竜`. Older Magic cards have no family field: `マジック4(2)/赤` (`BS01-117`, in the flattened listing of the Magic fixture).
+
+Level line variants:
+
+| Form | Example | Type |
+| --- | --- | --- |
+| `<c>Lv<n> <BP>` repeated | `<1>Lv1 3000 <3>Lv2 7000`, `<1>Lv1 3000 <2>Lv2 4000 <5>Lv3 7000` | Spirit |
+| `<c>Lv<n>` repeated, no BP | `<0>Lv1 <1>Lv2`, `<0>Lv1 <5>Lv2`, `<0>Lv1` | Nexus |
+| one level with BP | `<1>Lv1 6000` | awakened Spirit side |
+| level plus fusion | `<1>Lv1 3000 <0>合体+3000` | Brave |
+| Ultimate levels | `<1>Lv3 10000 <3>Lv4 14000 <5>Lv5 20000` | Ultimate |
+| overclock | `<1>Lv3 10000 <3>Lv4 14000 OC<5+>+6000` | contract Ultimate |
+| absent | no level line | Magic (the Magic fixture goes from the cost line to the effects) |
+
+### Fields per card type
+
+| Type | Page (live 2026-11-14 unless noted) | Layout |
+| --- | --- | --- |
+| Spirit | [card_spirit.html](../../tests/fixtures/html/card_spirit.html) (`BS72-007`), `ゴラドン` | type, cost, levels, effects (`Lv1・Lv2『…』`), `シンボル：赤`, credits, flavor text. `BS01-001` has no effect lines |
+| Nexus | [card_nexus.html](../../tests/fixtures/html/card_nexus.html) (`ゼウスの雷火山`) | levels without BP, effect headings `Lv1・Lv2『このネクサスの配置時』`, `Lv2` |
+| Magic | [card_magic.html](../../tests/fixtures/html/card_magic.html) (`ジャベリンドロー`) | no level line, keyword `【ミラージュ：コスト2(1)(このカードは手札からセットできる)】`, `【セット中】『…』`, then `メイン：` on its own line followed by the effect text |
+| Brave | `砲凰竜フェニック・キャノン` (`BS10-062`, `BS38-RV022`) | cost with reduction, `<1>Lv1 3000 <0>合体+3000`, effect `Lv1『このブレイヴの召喚時』`, `合体条件：コスト3以上`, `【合体時】【激突】『このスピリットのアタック時』`, `シンボル：なし`, `コンセプト：`; `BS38-RV022` has `右合体条件：コスト5以上` and `左合体条件：コスト3以上` and `シンボル：赤` |
+| Ultimate | `アルティメット・ジークフリード` (`SD19-X01`, `SD67-CP01`) | `<1>Lv3 10000 <3>Lv4 14000 <5>Lv5 20000`, `【召喚条件：自分の赤スピリット1体以上】`, `【Uトリガー】Lv3・Lv4・Lv5『このアルティメットのアタック時』` plus a reminder in `（Uトリガー：…）`, `Lv4・Lv5：フラッシュ【真・覚醒】『このアルティメットのアタック時』`, `シンボル：極`. `SD67-CP01` adds `フラッシュ《契約煌臨：極契約＆C3以上》『自分のターン』`, `OC条件：カウント5以上` and `【OC中】Lv3・Lv4『…』` |
+| 創界神 Nexus | `創界神アポローン` (`BS44-X07`) | type `ネクサス`, family `創界神・オリン`, `《神託》〔星竜/界渡/化神＆コスト3以上〕`, lines beginning `◆`, `【神技：2】Lv1・Lv2：フラッシュ『お互いのアタックステップ』`, `【神域】Lv2『自分のアタックステップ』`, `シンボル：神`, no flavor text |
+| 転醒 (flip) | `赤の世界／赤き神龍皇` (`BS52-TX01(A)`, `(B)`) | two pre blocks per number. Face A is a Nexus with `Lv1《転醒：自分のカウント5以下(転醒は同時に使えない)》`; face B is a Spirit `6()/赤/起幻・古竜` with `この面に裏返ったとき、…` and `Lv1『このスピリットの転醒時』`. Page title uses `／` between the two names |
+
+A line-level reading rule that holds for every sampled card: the lines between the level line and `シンボル：` are effects, and a heading line starts with `Lv`, `【`, `《` or `『` (not all effects have a level prefix; a Nexus `Lv2` heading may have no timing).
+
+### Differences between eras
+
+| Era (sampled card) | What differs from the BS72 fixtures |
+| --- | --- |
+| BS01 (`BS01-001` ゴラドン) | The h3 has an English name (`ゴラドン/Goradon`). A vanilla Spirit: no effect lines. No `コンセプト：` on the first print, added on the `BSC22-001` revival print. Cost `0(0)`, family `爬獣` |
+| BS10 (`BS10-062`) | Brave with `<0>合体+3000`, `合体条件：`, `コンセプト：`. Flavor text ends with an attribution. The page keeps the pre-erratum block |
+| BS31 to BS38 (`BS31-XX02`, `BS38-RV022`) | Keyword with a colour list: `Lv1・Lv2【超装甲：赤/紫/緑/白/黄/青】`. `XX` rare cost `0(0)` with a text rule that sets the cost to 8 (`このカードをコスト8にする`). Trailing space on the type line. The English name is in the h3 for `BS10-062` and `BS38-RV022` but not for `BS31-XX02` |
+| BS44 (`BS44-X07`) | 創界神 Nexus: family `創界神・オリン`, symbol `神`, `◆` bullets, `【神技：2】`, `【神域】`, no flavor text |
+| BS52 (`BS52-TX01`) | Flip card: two faces per number, type suffix `(制限カード<1>)`, empty reduction `6()` on the back |
+| BS72 (fixtures) | Contract-era text: reduction `4(赤2神1)`, `契約神`, `創界神ネクサス` references, `【ミラージュ：…】` on Magic |
+| BS75 | Not sampled (set page only). The numbers follow the same `BS##-###` scheme |
+
+Not seen in any fetched card block: `Lv6`, a Nexus with BP, `フラッシュ：` in a Magic.
+
+### Answers to the pending items of the field inventory
+
+Each item of [field-inventory.md](../data-model/field-inventory.md) marked `pending #9`, answered from the pages above. The inventory itself is not edited here; the edit belongs to [#55](https://github.com/AleFire99/BS_Database/issues/55).
+
+| Item | Answer | Evidence |
+| --- | --- | --- |
+| `name_en` | The wiki has an English name on older cards, in the `<h3>` as `<JP>/<EN> <number>` (`ゴラドン/Goradon`, `The GunDragon Phoenix-Cannon`, `The FlameWingDragon Ma-Dwo`). Modern cards have none (`光爪 の 武芸者 ヘルハウンド`, `創界神 アポローン`). The fandom column is out of scope for this task | Card pages fetched live 2026-11-14 |
+| `card_type` Brave | `ブレイヴ` on line 1 | `BS10-062` page |
+| `card_type` Ultimate | `アルティメット` on line 1 | `SD19-X01` page |
+| `keyword_blocks` | Confirmed beyond Magic: `【合体時】【激突】` (Brave), `【召喚条件：…】`, `【Uトリガー】` (Ultimate), `【超装甲：…】`, `【神技：2】`, `【神域】`, `《神託》〔…〕`, `《転醒：…》`, `【根幻回帰】` (flip) | pages above |
+| `rarity` (batspi) | Already confirmed. On card pages `<R>`, `<X>` with notes such as `(SECRETあり)`; on set pages the token follows the name (`R`, `X`, `M`, `XV`) | `収録` section, set pages |
+| `flash_effect` | **Not confirmed in a card's own `<pre>`.** No fetched Magic block has `フラッシュ：`. The flattened related-card listing shows `メイン：…フラッシュ：…` in that order on one card (`BS01-117` ダブルドロー), so main and flash coexist; the layout of the real `<pre>` is unverified. A non-Magic card uses `フラッシュ【…】` and `フラッシュ《…》` as a timing label (Ultimate) | [card_magic.html](../../tests/fixtures/html/card_magic.html), `SD19-X01`, `SD67-CP01` |
+| Brave `level` / `cores` / `bp` | One level row `<1>Lv1 3000`: cores 1, BP 3000 (the Brave's own BP). A second token `<0>合体+3000` has 0 cores and a `+3000` BP bonus given on combining | `BS10-062`, `BS38-RV022` |
+| Brave `fusion_cost` | No separate cost is printed. The only cost is the summon cost on the cost line (`5(赤2白2)`); the `<0>` in the fusion token is a core count | same |
+| Brave `fusion_condition` | A line `合体条件：コスト3以上` ("cost 3 or more"); `BS38-RV022` has two lines, `右合体条件：コスト5以上` and `左合体条件：コスト3以上` (right and left fusion) | same |
+| Brave `fusion_bp` | The bonus after `合体+`, a separate value from the level BP (`合体+3000`) | same |
+| Ultimate `level` / `cores` / `bp` | Level line `<1>Lv3 10000 <3>Lv4 14000 <5>Lv5 20000`: levels start at 3 and run to 5 in the sampled cards (Lv6 was not seen); cores 1, 3, 5; BP 10000, 14000, 20000. Contract Ultimate: `OC<5+>+6000` | `SD19-X01`, `SD67-CP01` |
+| Ultimate `summon_conditions` | A line in brackets: `【召喚条件：自分の赤スピリット1体以上】`, `【召喚条件：魂状態/煌臨元を含む自分の赤スピリット/アルティメット1体以上】` | same |
+| Ultimate `ultimate_trigger` | The block exists: `【Uトリガー】Lv3・Lv4・Lv5『このアルティメットのアタック時』` followed by the hit effect and a reminder in full-width brackets `（Uトリガー：…）` | same |
+| Brave and Ultimate `<pre>` layout | As in the field-type table above | same |
+| Risk "older eras differ" | The formats of the cost line, level line and `シンボル：` line were the same on every sampled card from BS01 to BS72; what varies is the content (see the table of eras) | all pages |
