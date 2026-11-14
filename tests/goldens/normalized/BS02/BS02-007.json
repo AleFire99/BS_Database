@@ -1,0 +1,13 @@
+{
+    "name": "Next only",
+    "card_id": "BS02-007",
+    "type": "Spirit",
+    "cost": 2,
+    "reduction": "",
+    "symbol": "Green",
+    "family": [
+        "Next Generation"
+    ],
+    "core_requirements": [],
+    "image": "h.jpg"
+}

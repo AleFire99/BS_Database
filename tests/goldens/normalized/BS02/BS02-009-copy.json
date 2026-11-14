@@ -1,0 +1,19 @@
+{
+    "name": "Dup A",
+    "card_id": "BS02-009",
+    "type": "Spirit",
+    "cost": 1,
+    "reduction": "",
+    "symbol": "Red",
+    "family": [
+        "Dragon"
+    ],
+    "core_requirements": [
+        {
+            "level": 1,
+            "battlePoints": 1000,
+            "cores": 1
+        }
+    ],
+    "image": "dup.jpg"
+}
