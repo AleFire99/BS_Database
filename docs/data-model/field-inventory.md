@@ -17,7 +17,7 @@ Inventory of the card fields each source offers, per card type, compared with wh
 | batspi.com set page (JP) | Card numbers `BSNN-NNN` with names and links to card pages | [set.html](../../tests/fixtures/html/set.html) | [batspi_links.py](../../src/bs_database/scrapers/batspi_links.py) (regex `BS\d{2}-\d{3}`, line 138) |
 | batspi.com card-list index (JP) | Links to set pages | [index.html](../../tests/fixtures/html/index.html) | [batspi_sets.py](../../src/bs_database/scrapers/batspi_sets.py) |
 | fandom wiki set page (EN) | Table with `Number`, `Name`, `Rarity` columns | [fandom_set_BS47.html](../../tests/fixtures/html/fandom_set_BS47.html) | [fandom_sets.py](../../src/bs_database/scrapers/fandom_sets.py) (headers from the first row, line 43) |
-| fandom wiki card page (EN) | Card image (`img.mw-file-element`) | [fandom_card.html](../../tests/fixtures/html/fandom_card.html), [fandom_image.png](../../tests/fixtures/html/fandom_image.png) | [fandom_images.py](../../src/bs_database/scrapers/fandom_images.py) (line 211) |
+| fandom wiki card page (EN) | Card image (`img.mw-file-element`) | [fandom_card.html](../../tests/fixtures/html/fandom_card.html), [fandom_image.png](../../tests/fixtures/html/fandom_image.png) | [fandom_images.py:66](../../src/bs_database/scrapers/fandom_images.py#L66) |
 
 Caveats:
 
@@ -46,7 +46,7 @@ Lv1・Lv2『自分のアタックステップ開始時』
 | Field | Meaning | Example (JP) | Source | Parsed today? | Stored today? | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | `name_jp` | Card name in Japanese | 光爪の武芸者ヘルハウンド | batspi `<h1 class="title">` link | Read then immediately machine-translated, JP is not kept ([:31-38](../../src/bs_database/scrapers/batspi_card.py#L31), [:133](../../src/bs_database/scrapers/batspi_card.py#L133)) | no (only the English translation) | confirmed |
-| `name_en` | English name | none in fixtures | fandom set table `Name` column; today a Google machine translation of the JP name | Machine translation only ([:133](../../src/bs_database/scrapers/batspi_card.py#L133)); fandom `Name` kept in the set JSON but not used by the loader | `cards.name` (machine-translated) | confirmed (fandom column synthetic) |
+| `name_en` | English name | none in fixtures | fandom set table `Name` column; today a Google machine translation of the JP name | Machine translation only ([:133](../../src/bs_database/scrapers/batspi_card.py#L133)); fandom `Name` kept in the set JSON but not used by the loader | `cards.name` (machine-translated) | pending #9: fandom `Name` column only seen in a synthetic fixture |
 | `card_number` | `BSNN-NNN` identifier | BS72-007 | batspi set page text; card page table and image file name (`BS72-007.jpg`); fandom `Number` column (normalized to `Card_ID`, [fandom_sets.py:53-58](../../src/bs_database/scrapers/fandom_sets.py#L53)) | Passed in by the caller, not read from the card page ([:104](../../src/bs_database/scrapers/batspi_card.py#L104)) | `cards.card_id` (unique) | confirmed |
 | `card_type` | Spirit, Nexus, Magic, Brave, Ultimate | スピリット, ネクサス, マジック | `<pre>` line 1 | Yes, machine-translated ([:61](../../src/bs_database/scrapers/batspi_card.py#L61)) then normalized in [normalize.py](../../src/bs_database/normalize.py) (`normalize_type`) | `cards.type_id` -> `card_types.name` | confirmed (Spirit, Nexus, Magic); Brave and Ultimate pending #9 |
 | `cost` | Total cost in cores | 4 | `<pre>` line 2, number before `(` | Yes ([:62](../../src/bs_database/scrapers/batspi_card.py#L62)) | `cards.cost` | confirmed |
@@ -60,7 +60,7 @@ Lv1・Lv2『自分のアタックステップ開始時』
 | `flavor_text` | Flavor text | ルーの下に集った武芸者たちは… | `<pre>` after `フレーバーテキスト：` (Spirit and Nexus; absent in Magic fixture) | no | no | confirmed (Spirit, Nexus) |
 | `rarity` | Rarity per set | `<R> (SECRETあり)`, `<C>`, `<C> … (フルアート版)` | batspi "収録" section; fandom set table `Rarity` column (synthetic fixture) | no (fandom column is kept in the set JSON only, [fandom_sets.py:51](../../src/bs_database/scrapers/fandom_sets.py#L51)) | no | confirmed (batspi); fandom pending #9 |
 | `set_product` | Set(s) or product(s) the card is printed in | 契約編：環 第1章：廻帰再醒 (Nexus lists chapters 1 and 3) | batspi "収録" section; set code from the card number prefix | Set code only, derived from the card number ([:115](../../src/bs_database/scrapers/batspi_card.py#L115)) | only inside `image` path and `card_id` prefix | confirmed |
-| `image` | Card image(s), including alternate or secret art | `/card/BS7/small/BS72-007.jpg`, `…-2.jpg`; "2枚" in the page table | batspi `<img>`; fandom `img.mw-file-element` | Path is built, not read: `data/images/<set>/<card_id>.jpg` ([:130](../../src/bs_database/scrapers/batspi_card.py#L130)); fandom download in [fandom_images.py:201-231](../../src/bs_database/scrapers/fandom_images.py#L201) | `cards.image` (a path string, stored whether or not a file exists) | confirmed |
+| `image` | Card image(s), including alternate or secret art | `/card/BS7/small/BS72-007.jpg`, `…-2.jpg`; "2枚" in the page table | batspi `<img>`; fandom `img.mw-file-element` | Path is built, not read: `data/images/<set>/<card_id>.jpg` ([:130](../../src/bs_database/scrapers/batspi_card.py#L130)); fandom download in [fandom_images.py:58-88](../../src/bs_database/scrapers/fandom_images.py#L58) | `cards.image` (a path string, stored whether or not a file exists) | confirmed |
 | `source_url` | Page the data came from | `fixtures.json` URLs | the scrape input | Received as argument `url`, not written to the JSON ([:104](../../src/bs_database/scrapers/batspi_card.py#L104)) | no | confirmed |
 
 Fields in this table: 17.
@@ -91,11 +91,11 @@ Fields: 2. Fixture line: `<0>Lv1 <1>Lv2`. Nexus has no BP in the fixture.
 | Field | Meaning | Example (JP) | Source | Parsed today? | Stored today? | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | `main_effect` | Effect used in the main step, label `メイン：` | `メイン：` then the draw text | `<pre>`, Magic fixture | no | no | confirmed |
-| `flash_effect` | Effect usable in the flash timing, label `フラッシュ：` | none in fixtures | expected in `<pre>` | no | no | pending #9: confirm the label and whether a card can have both main and flash |
+| `flash_effect` | Effect usable in the flash timing, label `フラッシュ：` | `フラッシュ：` in related-card text of [card_magic.html](../../tests/fixtures/html/card_magic.html), including one card with both `メイン：` and `フラッシュ：` | batspi `<pre>` | no | no | pending #9: label and main + flash coexistence seen in related-card blocks; confirm the layout in a card's own `<pre>` |
 | `set_keyword` | Set-type keyword (Mirage) with its own cost and reduction | `【ミラージュ：コスト2(1)(このカードは手札からセットできる)】` | `<pre>`, Magic fixture | no | no | confirmed (one card) |
 | `set_effects` | Effects active while the card is set, label `【セット中】` plus timing | `【セット中】『自分のアタックステップ開始時』` | `<pre>`, Magic fixture | no | no | confirmed (one card) |
 
-Fields: 4. The Magic `<pre>` also contains official Q&A answers after the illustrators (for example `はい、なります。`). They are noise for card fields and need filtering.
+Fields: 4. The Magic page also has an official Q&A section (for example `はい、なります。`). It sits outside the `<pre>` block, so it does not affect card fields, but it is a possible future source for rulings.
 
 ### 3.4 Brave
 
@@ -155,7 +155,7 @@ Feeds [#29](https://github.com/AleFire99/BS_Database/issues/29) to [#32](https:/
 ### Parsed lossily
 
 - `name_jp`: translated, original discarded.
-- `colors`: stored in a field called `symbol`; multicolour cards get no `card_colors` rows, and White is missing from the lookup ([db.py:98-105](../../src/bs_database/db.py#L98)).
+- `colors`: stored in a field called `symbol`; multicolour cards get no `card_colors` rows, and White is missing from the lookup, while Black is mapped but has no `colors` row ([db.py:98-105](../../src/bs_database/db.py#L98)).
 - `reduction` with colours and 神 (`赤2神1`): produces an empty list.
 - Nexus level lines: no rows, because the regex expects a BP.
 
