@@ -27,7 +27,7 @@ Use ADRs (option 3), one file per decision, numbered sequentially, based on [000
 
 - Each significant decision requires a short ADR in the same PR as the change.
 - Superseded decisions stay in the repository with an updated status.
-- The SQLite vs MongoDB choice will be recorded as a future ADR in E3.
+- The SQLite vs MongoDB choice will be recorded as a future ADR in E3 (now [0002](0002-storage-technology.md)).
 
 ## Links
 

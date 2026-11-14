@@ -10,7 +10,7 @@ BS_Database builds a complete, normalized database of the Japanese Battle Spirit
 Facts that shape the choice:
 
 - The data is strongly relational. Cards, printings, sets, colors, symbols, families, levels and effects are linked through many junctions, and lookup values are shared across thousands of rows (see [current-schema.md](../data-model/current-schema.md)).
-- The volume is small: about 6.4k cards today, growing by a few hundred per set.
+- The volume is small: about 6.4k cards in the legacy build, growing incrementally with each new set.
 - The sister project [BSS_app](https://github.com/AleFire99/BSS_app) uses a SQLite schema consumed by a Telegram bot and a mobile app.
 - The database is built offline in batch by one process and read by many consumers.
 - Effects will be stored text-first in v1 (Gate A decision on #8), so no schemaless document model is needed for effect structures.
