@@ -257,3 +257,51 @@ Table: `printing_images` and the lookup `image_sizes`. The policy is **URLs only
 | `sha256`, `mime_type` | `absent` by policy (no download) | `absent` | `not fetched` | NULL in v1 |
 | `path` | `absent`: no file is stored, so there is no path | `absent` | `not fetched` | The DDL draft has `path` NOT NULL; see the gap list |
 | `id` | `derived` | | | Surrogate key |
+
+## 7. Gap list
+
+Fields where no source gives a usable value, or only a derived or machine-translated one. Proposed handling uses four options: **derive** (compute it in the loader), **null** (leave it empty and keep it nullable), **translate in #11**, or **later epic** (needs a decision or a source that is out of scope now). None of them changes the schema; where a column or seed value would be needed, the gap says so and leaves the decision open.
+
+| # | Field | Gap | Proposed handling |
+| --- | --- | --- | --- |
+| 1 | `cards.name_en` | Printed only on older pages and promos (`card_brave.html`, `card_spirit_bs01.html`, `card_magic_flash.html`, `card_promo.html`); absent on the contract-era, flip, XX, Ultimate and 創界神 fixtures. fandom is dropped | Take it from the `<h3>` where present, otherwise null, then translate in #11 |
+| 2 | `flavor_text_en`, `card_effects.text_en` and `timing_en`, `brave_details.fusion_condition_en`, `ultimate_details.summon_condition_en`, `families.name_en`, `products.name_en` | No source has English text | Translate in #11 |
+| 3 | `translation_sources` for the English `<h3>` name | The codes `official`, `fandom`, `manual`, `machine` do not name "English name printed on batspi" | Later epic: owner choice in ADR 0007 or #11 (a new lookup row, no schema change) |
+| 4 | `printings.illustrator` | `absent` on the first block of `card_magic_flash.html`; a credit may be tied to a product (`イラスト：平坂康也(契約編：環 第3章：覇極来臨)` @ `card_nexus.html`) or not | Null when no line; keep the bracketed product as written |
+| 5 | `printings.variant_id` | Variants are free-text notes after the rarity, an open list (`(特別仕様)` @ `card_spirit_xx_bs31.html`, `(金色仕様・2013/11/28頃発送)` @ `card_ultimate.html`) | Derive for the known notes; leave others as the default variant and log them for #10 |
+| 6 | `printings.rarity_id` | Absent for distributions with no rarity (`バトルスキーイベント提供記念品` @ `card_magic.html`); on set pages a missing token means common | Null for distributions; derive `C` from the set-page rule |
+| 7 | `products.code` | Absent for distributions and the wafer set (`set_wafer.html`); not printed on `set_bs01.html` and `set_bs52.html` | Derive from the number prefix where possible, otherwise null |
+| 8 | `products.release_date` | Absent for distributions (`バトスピショップバトル` @ `card_promo.html`); two date formats | Convert to ISO-8601, otherwise null |
+| 9 | `products.product_type_id`, `series` | Not fields on any page, only header text | Derive in the loader |
+| 10 | `cards.block_icon` | Printed per product and absent on older entries (`(BS01-001)` @ `card_spirit_bs01.html`); the target puts it on the card | Null when absent; whether it belongs to `printings` is for a later epic |
+| 11 | `symbols` seed | Glyphs `極` (`シンボル：極` @ `card_ultimate.html`), `全` (`6(全1極3)` @ `card_ultimate.html`), `EX赤` (`シンボル：EX赤` @ `card_magic_flash.html`) and `なし` are not in the planned list `red`..`god` | Later epic: extend the seed in #12; `全` is a wildcard in reductions, not an icon |
+| 12 | `card_reductions` for plain `(N)` on a multicolour card | The own-colour rule is untested: no multicolour card with a plain number is in the fixtures | Later epic: check with a wider sample in #10 |
+| 13 | `card_symbols.count` | A doubled glyph was not seen (`シンボル：緑青` @ `card_flip.html` is two symbols) | Derive 1 per glyph and re-check in #10 |
+| 14 | `card_colors` for several colours | Seen only in related listings (`赤紫緑白黄青` @ `card_flip.html`), never in a card's own block | Derive by splitting characters; confirm in #10 |
+| 15 | `cards.cost` for `XX` rares | Printed `0(0)`, effective cost 8 by a text rule (`card_spirit_xx_bs31.html`) | Store the printed cost; the rule stays in the effect text |
+| 16 | `card_effects.effect_kind_id` | Headers with no planned kind: `《転醒：…》`, `【根幻回帰】`, `【神技：2】`, `【神域】`, `【Uトリガー】`, `【OC中】`, `OC条件：`, and unheaded lines | Derive as `other` ([effect_kinds](../data-model/target-schema.md#effect_kinds)); the keyword list is for #11 |
+| 17 | Fields on the page with no column | `コンセプト：` (`card_brave.html`, `card_ultimate.html`, `card_spirit_bs01.html`); the restriction suffix `(制限カード<1>)` (`card_flip.html`); the overclock token `OC<5+>+6000` (`card_ultimate.html`); the wiki's `Last-modified` stamp | Later epic; do not parse them into other columns |
+| 18 | Flip cards | Two faces per number, with `(A)` and `(B)` in the number (`BS52-TX01(A)` @ `card_flip.html`); no face concept in the target | Later epic: owner choice in ADR 0007 or a follow-up to ADR 0004 |
+| 19 | Pre-erratum and `体験会でのスペック` blocks | `<pre>` blocks that are not a printed number (`card_brave.html`, `card_magic_flash.html`) | Skip them in #10; keep the current wording only |
+| 20 | `printing_images.path`, `sha256`, `mime_type`, `width`, `height` | No download under the URL-only policy; the DDL draft has `path` NOT NULL | Null where nullable; `path` is a conflict between the DDL draft and [ADR 0006](../adr/0006-scraping-and-redistribution-policy.md), for #12 and #13 |
+| 21 | `printing_images.printing_id` | The link is a caption and a file suffix; some captions have no product (`SD19-X01-4.jpg` @ `card_ultimate.html`) | Derive from the caption where possible, otherwise leave the image unlinked |
+| 22 | Official detail view | Effect text, symbols, illustrators and flavor text were never fetched | Later epic (official is survey only) |
+| 23 | Products without a set page | Promo number groups, `ナンバーなし` and the special packs were not sampled ([batspi.md §9](batspi.md#9-not-sampled-and-open-risks)) | Later epic: sample before #10 |
+
+## 8. Input for ADR 0007
+
+Fields where the sources overlap or disagree, so that the source-of-truth ADR ([#56](https://github.com/AleFire99/BS_Database/issues/56)) can decide which one wins. This list states the facts; it does not pick a side.
+
+| Field | Sources and values | Conflict |
+| --- | --- | --- |
+| `cards.name_en` | batspi `<h3>` `Goradon` @ `card_spirit_bs01.html`; fandom `Name` column (legacy, `not fetched`); machine translation of `name_ja` (legacy `cards.name`) | Three possible origins for one value; the fandom text is CC-BY-SA ([fandom.md §3](fandom.md#3-licence)), the batspi wiki has no stated licence |
+| `printings.rarity_id` | batspi per product (`<R>` @ `card_spirit.html`) and per set-page token; official `.number .rarity` (one value per number); fandom `Rarity` (legacy) | Per-product against per-number; the sets can disagree for reprints |
+| `cards.cost`, `card_colors`, `card_families`, `card_types` | batspi `<pre>` line 2; official `.costVal`, `.type .attribute`, `.type .system`, `.type .category` | Full overlap; the official site is the only independent check, and the markup was only surveyed |
+| `card_reductions` | batspi parentheses (`4(赤2神1)` @ `card_spirit.html`); official `.alleviationVal` icons, counts not checked | Same data in two encodings, one unverified |
+| `card_numbers.number` | batspi `BS72-007`, faces `BS52-TX01(A)` @ `card_flip.html`; official `.number .num` with reprint prefixes such as `26R` | The number schemes are not the same set; official `freewords=BS01` also returns `26RBS01-001` |
+| `products.release_date` | batspi set page `2025年5月17日発売` @ `set.html`; batspi card page `2025年05月17日` @ `card_spirit.html` | Two places and two formats inside batspi; official unknown |
+| `products.code`, `products.name_ja` | batspi set page; official `prodid` product names such as `[CB31]...` | Naming of the same product differs between sites |
+| Values that differ between numbers of one name | `<1>Lv1 1000 <3>Lv2 3000` against `<1>Lv1 2000 <3>Lv2 5000` @ `card_spirit_bs01.html`; a third print with another family and effect text @ `card_promo.html` | Same name, different gameplay values: input for [ADR 0004](../adr/0004-card-printing-identity.md) rather than for a source choice |
+| `flavor_text_ja` per number | The two numbers of `card_magic_flash.html` differ: the first has `フレーバーテキスト：(バトルスピリッツ メモリアルカードダスセット Hero Ver.)`, the second has none | The target keeps it on the card; the page has it per number |
+| Current wording against pre-erratum wording | `(エラッタ前) ▼` @ `card_brave.html` | batspi keeps both; only the current one is a card text |
+| `printing_images.source_url` | batspi `/card/BS7/BS72-007.jpg` @ `card_spirit.html`; official `/images/cardlist/<number>.webp`; fandom (synthetic fixture only) | Which host the stored URL points to; the policy allows URLs only |
