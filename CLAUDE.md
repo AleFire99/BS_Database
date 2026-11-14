@@ -19,7 +19,7 @@ Full human-readable version: [CONTRIBUTING.md](CONTRIBUTING.md). Board: GitHub P
 
 A complete, normalized database of the **Japanese Battle Spirits** TCG (sets, cards, families, cores, effects, images), distributed as a versioned release artefact. The sister project [BSS_app](https://github.com/AleFire99/BSS_app) does the same for Battle Spirits Saga, with a SQLite schema, a Telegram bot and a mobile app, and is the reference for conventions.
 
-Current state: a **legacy prototype** that is being restructured. See the roadmap epics #7–#14 and [docs/architecture/overview.md](docs/architecture/overview.md) for known issues.
+Current state: the legacy scripts were restructured into the `bs_database` package with the `bsdb` CLI (epic #7), behaviour-preserving. Next: data model (#8), sources (#9), scraper rewrite (#10) and the rest of the roadmap #11–#14; see [docs/architecture/overview.md](docs/architecture/overview.md) for known issues.
 
 ## Commands
 
