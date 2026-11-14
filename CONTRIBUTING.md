@@ -24,6 +24,12 @@ This repo follows an issue-driven gitflow with human approval gates. Claude Code
 
 Task branches use `task/`, not a nested `feature/<epic>/<task>` name, because Git cannot hold both `feature/x` and `feature/x/y` as refs. `main` and `dev` are protected by GitHub rulesets: a PR is required, the required checks must be green, and force-pushes and deletion are blocked. Locally, the `git-guard` hook blocks commits and pushes on them.
 
+**Merging into `dev`:**
+
+- If a feature branch is built from squashed `task/` PRs, merge it with a **merge commit**, so `dev` keeps one commit per sub-issue.
+- If a feature branch holds raw working commits (no `task/` branches, as with the bootstrap epic or small standalone work), **squash** it, and list the changes per sub-issue in the PR body.
+- `Closes #n` only auto-closes issues on merges into `main`, the default branch. After merging into `feature/*` or `dev`, close the issues explicitly.
+
 ```mermaid
 gitGraph
     commit id: "v0.1.0" tag: "v0.1.0"
