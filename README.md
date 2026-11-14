@@ -4,7 +4,7 @@ A Battle Spirits (JP) card database builder: scrape card data and images from pu
 
 ## Status
 
-Legacy prototype being restructured; see the roadmap below. The current state is documented in [docs/](docs/README.md), starting with the [architecture overview](docs/architecture/overview.md).
+The `bs_database` package and `bsdb` CLI replace the legacy scripts (E2 restructure; legacy code is at tag `v0.1.0`). See the roadmap below. The current state is documented in [docs/](docs/README.md), starting with the [architecture overview](docs/architecture/overview.md).
 
 ## Roadmap
 

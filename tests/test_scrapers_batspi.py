@@ -1,3 +1,9 @@
+"""Tests.
+
+Goldens in tests/goldens/ were generated from the legacy code at 5ae5646
+(legacy code removed in #23; see tag v0.1.0).
+"""
+
 import importlib
 import json
 import logging
