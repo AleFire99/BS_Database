@@ -7,10 +7,10 @@ Neutral domain glossary for the Japanese Battle Spirits trading card game (バ�
 | Term | JP | Description |
 | --- | --- | --- |
 | Spirit | スピリット | Creature-like card placed on the field; has cost, BP and levels. |
-| Nexus | ネクサス | Persistent non-creature card placed on the field; has levels but typically no BP (to verify in E4). |
+| Nexus | ネクサス | Persistent non-creature card placed on the field; has levels but no BP: the level line is `<0>Lv1 <1>Lv2` (confirmed in E4, [coverage matrix](../sources/coverage-matrix.md#card_levels)). |
 | Magic | マジック | One-shot effect card, played and then discarded. |
 | Brave | ブレイヴ | Card that is combined with a Spirit to enhance it. |
-| Ultimate | アルティメット | Powerful Spirit-like card with special summon conditions (to verify in E4). |
+| Ultimate | アルティメット | Powerful Spirit-like card with a summon condition `【召喚条件：…】`, levels from Lv3 and a `【Uトリガー】` ability (confirmed in E4, [coverage matrix](../sources/coverage-matrix.md#ultimate_details)). |
 
 The current database holds exactly these five types (from `Notes.md`).
 
@@ -117,7 +117,18 @@ Modelled text-first in [target-schema.md](../data-model/target-schema.md#effects
 
 ## Sources
 
-| Source | Language | Used for |
+| Source | Language | Status (v1) |
 | --- | --- | --- |
-| battle-spirits.fandom.com | EN | Set lists, images |
-| batspi.com | JP | Card pages (name, cost, symbol, family, levels), machine translated |
+| batspi.com | JP | The only source fetched; authoritative for every field ([batspi.md](../sources/batspi.md), [ADR 0007](../adr/0007-source-of-truth.md)) |
+| battle-spirits.fandom.com | EN | Dropped: behind a Cloudflare challenge ([fandom.md](../sources/fandom.md)) |
+| battlespirits.com (official, Bandai) | JP | Survey only; asks visitors not to reuse content ([official.md](../sources/official.md)) |
+
+| Term | JP | Description |
+| --- | --- | --- |
+| Source of truth | | The source and page location whose value wins for a field. In v1 this is always batspi, with a precedence inside the page: own `<pre>`, then the "収録" section, then the set page ([ADR 0007](../adr/0007-source-of-truth.md)). |
+| Own `<pre>` block | | The card-text block on a batspi card page that belongs to one printed number: the first `<pre>` after a print heading whose first line is a card type. |
+| 収録 section | 収録 | The part of a batspi card page that lists the products a number is printed in, with rarity, block icon and release date. |
+| Related-cards listing | | The paged list of other cards at the bottom of a batspi card page (`cmd=listadd`). It repeats other cards' data and is never used as a source. |
+| Pre-erratum text | エラッタ前 | Card wording before an official correction, shown on batspi under `(エラッタ前) ▼`. Only the current wording is a card text. |
+| Raw-HTML cache | | Local copy of every fetched page with its URL and fetch time, under `data/cache/html`. Parsers read only from it; it is never published ([policy.md](../sources/policy.md#34-cache)). |
+| Fixture | | A trimmed, committed copy of a source page used by the offline tests, listed in `tests/fixtures/html/fixtures.json` ([README](../../tests/fixtures/html/README.md)). |
