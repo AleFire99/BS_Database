@@ -1,6 +1,6 @@
 # Scraping and redistribution policy
 
-This is the normative policy for fetching card data and publishing what the pipeline builds. The scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)) must implement it, and every later change to the pipeline must keep to it. The redistribution decision is recorded in [ADR 0006](../adr/0006-scraping-and-redistribution-policy.md) (Status: Proposed). Evidence comes from the source dossiers: [batspi.md](batspi.md), [official.md](official.md) and [fandom.md](fandom.md), all surveyed on 2026-11-14. Policy task: [#53](https://github.com/AleFire99/BS_Database/issues/53).
+This is the normative policy for fetching card data and publishing what the pipeline builds. The scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)) must implement it, and every later change to the pipeline must keep to it. The redistribution decision is recorded in [ADR 0006](../adr/0006-scraping-and-redistribution-policy.md) (Status: Accepted). Evidence comes from the source dossiers: [batspi.md](batspi.md), [official.md](official.md) and [fandom.md](fandom.md), all surveyed on 2026-11-14. Policy task: [#53](https://github.com/AleFire99/BS_Database/issues/53).
 
 The words **must**, **must not** and **may** are binding.
 
