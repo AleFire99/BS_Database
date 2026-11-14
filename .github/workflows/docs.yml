@@ -1,0 +1,30 @@
+name: Docs
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    name: docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Markdown lint
+        uses: DavidAnson/markdownlint-cli2-action@v25
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Validate mermaid diagrams
+        env:
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
+        run: .github/scripts/check-mermaid.sh
+      - name: Check relative links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --no-progress --include-fragments '**/*.md'
+          fail: true
