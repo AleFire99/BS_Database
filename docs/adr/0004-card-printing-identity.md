@@ -47,7 +47,7 @@ Use **option B** (owner choice, Gate B). Detailed columns are in [target-schema.
 - **`card_numbers`**: `id`, `number` (UNIQUE, e.g. `BS72-069`), `card_id`. A number belongs to exactly one card. A card can have several numbers. Different numbers are linked to one card only if text and stats are identical; otherwise they are separate cards (errata or remake). The final rule is **pending #9**.
 - **`products`**: anything a card is released in. `code` is UNIQUE where not null (e.g. `BS72`) and null for distributions without a code; plus `name_ja`, `name_en`, `product_type_id`, `release_date`, and a nullable `series` text for the chapter grouping (契約編：環). A booster set *is* a product; there is no separate `sets` table.
 - **`product_types`**: lookup with `code` and an English `name` (no Japanese name column; booster, starter or deck, promo distribution, magazine, collab, other). Exact list pending #9.
-- **`printings`**: one physical printing: `card_number_id`, `product_id`, `variant_id` (NOT NULL, default `normal`), `rarity_id` (nullable: distribution entries show no rarity, pending #9), `illustrator` text, `image` reference (detail in #31). `UNIQUE(card_number_id, product_id, variant_id)`.
+- **`printings`**: one physical printing: `card_number_id`, `product_id`, `variant_id` (NOT NULL, default `normal`), `rarity_id` (nullable: distribution entries show no rarity, pending #9), `illustrator` text. Images are not a column: they live in `printing_images` (one row per printing and size, [#31](https://github.com/AleFire99/BS_Database/issues/31), [ADR 0005](0005-text-first-effects-and-translations.md)). `UNIQUE(card_number_id, product_id, variant_id)`.
 - **`rarities`**: lookup with `code` (`C` and `R` seen in batspi `<C>`/`<R>`; other codes pending #9), an English `name` (no Japanese name column) and `sort_order`. The Japanese `<C>`/`<R>` text is mapped to the code by the loader. The scale is pending #9.
 - **`variants`**: lookup with `code` and an English `name` (no Japanese name column; the loader maps `フルアート版` to `full_art`). Codes: `normal`, `secret`, `full_art`, `promo_art`, parallel, .... The list is pending #9.
 - **Reprint**: a new `printings` row for the same `card_numbers` row (another product and/or variant). A reprint under a new number is a new `card_numbers` row for the same card.
@@ -135,12 +135,12 @@ The distribution entry shows no rarity, so `rarity_id` is nullable (pending #9).
 
 `printings` (BS72 is product 1):
 
-| id | card_number_id | product_id | variant | rarity | illustrator | image |
-| --- | --- | --- | --- | --- | --- | --- |
-| 5 | 3 (BS72-007) | 1 (BS72) | normal | R | 伊藤正市 | `BS72-007.jpg` |
-| 6 | 3 (BS72-007) | 1 (BS72) | secret | pending #9 | 伊藤正市 | `BS72-007-2.jpg` |
+| id | card_number_id | product_id | variant | rarity | illustrator |
+| --- | --- | --- | --- | --- | --- |
+| 5 | 3 (BS72-007) | 1 (BS72) | normal | R | 伊藤正市 |
+| 6 | 3 (BS72-007) | 1 (BS72) | secret | pending #9 | 伊藤正市 |
 
-The page says `<R> (SECRETあり)` and links two images. Which image is the secret art, and the rarity code of the secret printing, are pending #9 and #31.
+The images `BS72-007.jpg` and `BS72-007-2.jpg` are rows of `printing_images` (see [target-schema.md](../data-model/target-schema.md#images)). The page says `<R> (SECRETあり)` and links two images. Which image is the secret art, and the rarity code of the secret printing, are pending #9 and #31.
 
 ## Consequences
 
@@ -150,7 +150,7 @@ The page says `<R> (SECRETあり)` and links two images. Which image is the secr
 - `card_numbers` is near 1:1 with `cards`, so most cards carry one extra row.
 - ADR 0003's natural-key example now reads `card_numbers.number` instead of `printings.number` (edited while ADR 0003 is Proposed).
 - Open items for #9: card identity across different numbers, the rarity scale, the variant list, the promo number format, and whether `block_icon` is per card or per number.
-- DDL is written in [#12](https://github.com/AleFire99/BS_Database/issues/12), gameplay attributes in [#30](https://github.com/AleFire99/BS_Database/issues/30), effects, i18n, provenance and image details in [#31](https://github.com/AleFire99/BS_Database/issues/31).
+- DDL is written in [#12](https://github.com/AleFire99/BS_Database/issues/12), gameplay attributes in [#30](https://github.com/AleFire99/BS_Database/issues/30), effects, i18n, provenance and image details (`printing_images`) in [#31](https://github.com/AleFire99/BS_Database/issues/31).
 
 ## Links
 

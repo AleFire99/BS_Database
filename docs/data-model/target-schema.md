@@ -33,7 +33,6 @@ erDiagram
         integer variant_id FK
         integer rarity_id FK
         text illustrator
-        text image
     }
     products {
         integer id PK
@@ -64,13 +63,17 @@ erDiagram
 
 ### cards
 
-The gameplay identity: one row per distinct card. Gameplay columns (type, cost) and the related tables (colors, symbols, families, levels) are described in [Gameplay attributes](#gameplay-attributes); effects and i18n details are added by #31.
+The gameplay identity: one row per distinct card. Gameplay columns (type, cost) and the related tables (colors, symbols, families, levels) are described in [Gameplay attributes](#gameplay-attributes); effects, text and translation columns are in [Effects and keywords](#effects-and-keywords) and [Multilingual text](#multilingual-text).
 
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | Surrogate key. |
 | `name_ja` | TEXT | NOT NULL | Japanese card name (batspi page title). |
-| `name_en` | TEXT | | English name; sourcing and fallback rules in #31. |
+| `name_en` | TEXT | | English name; NULL until translated. Source and status in `en_source_id` and `en_status_id` below; see [Multilingual text](#multilingual-text). |
+| `flavor_text_ja` | TEXT | | Flavor text as printed (`フレーバーテキスト：` in the `<pre>`). NULL when the card has none (the Magic fixture has none). On the card, not the printing; whether it varies per printing is pending #9. |
+| `flavor_text_en` | TEXT | | English flavor text; NULL until translated. |
+| `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Where the English texts of this row come from; NULL while there is no English text. |
+| `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of this row; defaults to `pending`. |
 | `block_icon` | TEXT | | Block icon (`12`, `A`, ...). Placed on the card by default; per card or per number is pending #9. |
 
 Whether numbers with the same name but different numbers are one card is pending #9. The planned rule: link them only if text and stats are identical.
@@ -95,9 +98,8 @@ One physical printing of a number in a product.
 | `variant_id` | INTEGER | NOT NULL, FOREIGN KEY to `variants.id` | Defaults to the `normal` variant; NOT NULL because SQLite treats NULLs as distinct in UNIQUE. |
 | `rarity_id` | INTEGER | FOREIGN KEY to `rarities.id` | Nullable: distribution entries on batspi show no rarity (pending #9). |
 | `illustrator` | TEXT | | Plain text for now; normalised later if needed. |
-| `image` | TEXT | | Image reference; detailed in #31. |
 
-Table constraint: `UNIQUE (card_number_id, product_id, variant_id)`.
+Table constraint: `UNIQUE (card_number_id, product_id, variant_id)`. Images are not a column of `printings`: they are rows of [printing_images](#printing_images).
 
 ### products
 
@@ -112,6 +114,8 @@ Anything a card is released in. A booster set is a product; there is no separate
 | `product_type_id` | INTEGER | NOT NULL, FOREIGN KEY to `product_types.id` | |
 | `release_date` | TEXT | | ISO-8601 date; NULL when the source gives none. |
 | `series` | TEXT | | Chapter or saga grouping (`契約編：環`), a plain column, no table. |
+| `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `name_en`; NULL while untranslated. |
+| `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of `name_en`; defaults to `pending`. |
 
 ### product_types
 
@@ -142,7 +146,7 @@ Lookup, following the lookup convention of ADR 0003: `code` plus one English `na
 
 ## Gameplay attributes
 
-Added by [#30](https://github.com/AleFire99/BS_Database/issues/30). Gameplay attributes are identical across printings of a card (a reprint keeps its number and text; only rarity and art change, see ADR 0004), so they hang off `cards`, never off `card_numbers` or `printings`. Effects, keywords and alternate costs such as `【ミラージュ：コスト2(1)】` belong to [#31](https://github.com/AleFire99/BS_Database/issues/31) and are not modelled here.
+Added by [#30](https://github.com/AleFire99/BS_Database/issues/30). Gameplay attributes are identical across printings of a card (a reprint keeps its number and text; only rarity and art change, see ADR 0004), so they hang off `cards`, never off `card_numbers` or `printings`. Effects, keywords and alternate costs such as `【ミラージュ：コスト2(1)】` belong to [#31](https://github.com/AleFire99/BS_Database/issues/31) and are modelled in [Effects and keywords](#effects-and-keywords), not here.
 
 Lookup tables (`card_types`, `colors`, `symbols`, `rarities`, `variants`, `product_types`) carry a stable `code` and one English `name`. They have **no Japanese name column**: the Japanese source text is translated to a `code` by the loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)), see [JP source to code](#jp-source-to-code). Data entities (`cards`, `families`, `products`) keep `name_ja` so a bad machine translation can be redone.
 
@@ -218,7 +222,7 @@ erDiagram
         integer family_id FK
         text alias
         text lang
-        text source
+        integer translation_source_id FK
     }
     card_families {
         integer card_id PK
@@ -316,7 +320,7 @@ Per-level rows. Hangs off the card, not the printing.
 
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
-| `id` | INTEGER | PRIMARY KEY | Referenced by effects in #31 (`effect_levels`). |
+| `id` | INTEGER | PRIMARY KEY | Referenced by [card_effect_levels](#card_effect_levels). |
 | `card_id` | INTEGER | NOT NULL, FOREIGN KEY to `cards.id` | |
 | `level` | INTEGER | NOT NULL, CHECK `level` >= 1 | Flagged in review as a column name (ADR 0003); legal unquoted in SQLite. |
 | `cores` | INTEGER | NOT NULL, CHECK `cores` >= 0 | Cores needed on the card to reach this level (the `<n>` in `<3>Lv2`). |
@@ -334,6 +338,8 @@ Family (系統) tags. The Japanese text is the identity; the English name is the
 | `code` | TEXT | UNIQUE | Stable slug of the preferred English name; NULL until assigned (SQLite allows several NULLs). |
 | `name_ja` | TEXT | NOT NULL, UNIQUE | e.g. `眷属`, `武迅`. |
 | `name_en` | TEXT | | Preferred English name, e.g. `Reptile Beast` for `爬獣`. |
+| `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `name_en`; NULL while untranslated. |
+| `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of `name_en`; defaults to `pending`. |
 
 ### family_aliases
 
@@ -344,10 +350,10 @@ Other names for a family, so a machine translation can be mapped back to the pre
 | `id` | INTEGER | PRIMARY KEY | |
 | `family_id` | INTEGER | NOT NULL, FOREIGN KEY to `families.id` | |
 | `alias` | TEXT | NOT NULL | |
-| `lang` | TEXT | NOT NULL, CHECK `lang` IN (`ja`, `en`) | |
-| `source` | TEXT | NOT NULL | `machine_translation`, `fandom` or `manual`. |
+| `lang` | TEXT | NOT NULL, CHECK `lang` IN (`ja`, `en`) | ISO 639-1 language code. Language codes are the one allowed CHECK-list exception to the lookup rule of [ADR 0003](../adr/0003-naming-and-schema-versioning.md). |
+| `translation_source_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_sources.id` | Where the alias comes from: `machine`, `fandom`, `manual` or `official`. |
 
-Table constraint: `UNIQUE (family_id, alias, lang)`. Seeded from the 40 `MT = preferred EN` pairs in `data/family_mapping.txt` (for example `Rebirth = Reptile Beast`: the alias `Rebirth` points to the family whose preferred name is `Reptile Beast`) and from the machine-translated names in the legacy `families` table.
+Table constraint: `UNIQUE (family_id, alias, lang)`. Seeded from the 40 `MT = preferred EN` pairs in `data/family_mapping.txt` (source `machine`; for example `Rebirth = Reptile Beast`: the alias `Rebirth` points to the family whose preferred name is `Reptile Beast`) and from the machine-translated names in the legacy `families` table.
 
 ### card_families
 
@@ -370,6 +376,8 @@ Families are segment 3 of the cost line, separated by `・`. Magic and Nexus car
 | `fusion_condition_ja` | TEXT | | Fusion condition as printed. Pending #9. |
 | `fusion_condition_en` | TEXT | | Translation. Pending #9. |
 | `fusion_bp_bonus` | INTEGER | | NULL when absent. Pending #9. |
+| `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `fusion_condition_en`. Pending #9. |
+| `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status; defaults to `pending`. Pending #9. |
 
 ### ultimate_details
 
@@ -380,6 +388,8 @@ Families are segment 3 of the cost line, separated by `・`. Magic and Nexus car
 | `card_id` | INTEGER | PRIMARY KEY, FOREIGN KEY to `cards.id` | The card must have type `ultimate`. |
 | `summon_condition_ja` | TEXT | | Summon condition as printed. Pending #9. |
 | `summon_condition_en` | TEXT | | Translation. Pending #9. |
+| `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `summon_condition_en`. Pending #9. |
+| `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status; defaults to `pending`. Pending #9. |
 
 Side tables instead of nullable columns on `cards`: `cards` stays free of type-specific NULL columns, and a new type with its own attributes (for example a 創界神ネクサス) adds a side table without touching `cards`. The cost is one extra join for those types.
 
@@ -444,7 +454,7 @@ The `<pre>` lines come from the fixtures in `tests/fixtures/html/`. Ids are illu
 | `武迅` | `families` `武迅`; one `card_families` row |
 | (no level line) | no `card_levels` rows |
 | (no `シンボル：` line) | no `card_symbols` rows |
-| `【ミラージュ：コスト2(1)…】` | not a cost: an alternate cost, left to #31 |
+| `【ミラージュ：コスト2(1)…】` | not a cost: an alternate cost, kept as text in [Effects and keywords](#effects-and-keywords) |
 
 ### JP source to code
 
@@ -484,3 +494,462 @@ Other rarities and variants, and the exact spelling of colours and Brave/Ultimat
 | `card_families` | `card_families` | Same shape. |
 | reductions (JSON only) | `card_reductions` | Now stored, including 神. |
 | `cards.type_id` -> `card_types.name` | `cards.card_type_id` -> `card_types.code` | |
+
+## Effects and keywords
+
+Added by [#31](https://github.com/AleFire99/BS_Database/issues/31), decided in [ADR 0005](../adr/0005-text-first-effects-and-translations.md). Effects are **text-first** (Gate A of epic #8): each effect block of the `<pre>` is stored as printed, with its timing kept as text. Conditions, costs and actions are not parsed in v1. A structured model in the style of BSS_app (`Steps`, `Conditions`, `EffectSteps`) is a future, additive extension that would reference `card_effects` rows; it is not built now.
+
+Effects hang off `cards`, like the gameplay attributes, because a reprint keeps its text. `cards`, `card_levels` and `printings` are shown with key columns only.
+
+```mermaid
+erDiagram
+    cards ||--o{ card_effects : "has"
+    effect_kinds ||--o{ card_effects : "classifies"
+    card_effects ||--o{ card_effect_levels : "applies at"
+    card_levels ||--o{ card_effect_levels : "activates"
+    cards ||--o{ card_levels : "has"
+    card_effects ||--o{ card_effect_keywords : "uses"
+    keywords ||--o{ card_effect_keywords : "used in"
+
+    cards {
+        integer id PK
+        text name_ja
+    }
+    card_levels {
+        integer id PK
+        integer card_id FK
+        integer level
+    }
+    card_effects {
+        integer id PK
+        integer card_id FK
+        integer position
+        integer effect_kind_id FK
+        text timing_ja
+        text timing_en
+        text text_ja
+        text text_en
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    effect_kinds {
+        integer id PK
+        text code UK
+        text name
+    }
+    card_effect_levels {
+        integer card_effect_id PK, FK
+        integer card_level_id PK, FK
+    }
+    keywords {
+        integer id PK
+        text code UK
+        text name
+    }
+    card_effect_keywords {
+        integer card_effect_id PK, FK
+        integer keyword_id PK, FK
+        text parameter_ja
+    }
+```
+
+### card_effects
+
+One row per effect block in the `<pre>`, in printed order.
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `card_id` | INTEGER | NOT NULL, FOREIGN KEY to `cards.id` | |
+| `position` | INTEGER | NOT NULL, CHECK `position` >= 1 | Order of the block on the card. |
+| `effect_kind_id` | INTEGER | NOT NULL, FOREIGN KEY to `effect_kinds.id` | Kind of block. |
+| `timing_ja` | TEXT | | The timing as printed, brackets included (`『自分のアタックステップ』`). NULL when the block has none. Kept as text, not parsed. |
+| `timing_en` | TEXT | | English timing; NULL until translated. |
+| `text_ja` | TEXT | NOT NULL | The effect text as printed: the lines of the block after its header, joined with line breaks. For a `keyword_block` it is the whole `【…】` line. A block ends at the next effect header or at the first of `シンボル：`, `イラスト：` or `フレーバーテキスト：`. |
+| `text_en` | TEXT | | English text; NULL until translated. |
+| `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `timing_en` and `text_en`; NULL while untranslated. |
+| `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Defaults to `pending`. |
+
+Table constraint: `UNIQUE (card_id, position)`. How blocks are segmented in older eras, and in Brave and Ultimate cards, is pending #9: only the three fixtures were checked.
+
+### effect_kinds
+
+Lookup (`code` plus English `name`, no Japanese name column).
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `code` | TEXT | NOT NULL, UNIQUE | Planned: `level` (a `LvN` header with a timing), `constant` (a `LvN` header with no timing), `main` (`メイン：`), `flash` (`フラッシュ：`), `set_active` (`【セット中】`), `keyword_block` (a `【…】` line), `other`. `flash` is seen only in related-card blocks (pending #9); Brave and Ultimate blocks are pending #9. |
+| `name` | TEXT | NOT NULL | English display name. |
+
+The kind is derived by the loader from the block header. Whether `level` and `constant` should be one kind is a judgment call; the split follows the two shapes in the fixtures.
+
+### card_effect_levels
+
+Pure junction table. Which levels a block applies to. `Lv1・Lv2` gives two rows. A block with no rows applies to every level or is not level-scoped (Magic). The foreign key to `card_levels` keeps the levels consistent with the card (as BSS_app `EffectLevels`).
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `card_effect_id` | INTEGER | FOREIGN KEY to `card_effects.id` | Part of the composite PRIMARY KEY. |
+| `card_level_id` | INTEGER | FOREIGN KEY to `card_levels.id` | Part of the composite PRIMARY KEY. The level must belong to the same card as the effect; checked by the build (a plain foreign key cannot enforce it). |
+
+### keywords
+
+Lookup of keyword abilities written as `【…】`.
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `code` | TEXT | NOT NULL, UNIQUE | Only `mirage` (`ミラージュ`) is seen in the fixtures. The list is built from the source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9), [#11](https://github.com/AleFire99/BS_Database/issues/11)) and can grow without a schema change. |
+| `name` | TEXT | NOT NULL | English display name, e.g. `Mirage`. |
+
+### card_effect_keywords
+
+Pure junction table with one extra column. Which keywords a block declares.
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `card_effect_id` | INTEGER | FOREIGN KEY to `card_effects.id` | Part of the composite PRIMARY KEY. |
+| `keyword_id` | INTEGER | FOREIGN KEY to `keywords.id` | Part of the composite PRIMARY KEY. |
+| `parameter_ja` | TEXT | | The parameter as printed, e.g. `コスト2(1)` for Mirage. NULL for a keyword with none. |
+
+The extra column makes this more than a pure junction, but the composite key stays because a keyword appears once per block. Text-first: the alternate cost `コスト2(1)` is **not** split into numbers in v1. The reminder text `(このカードは手札からセットできる)` stays in `card_effects.text_ja`.
+
+### Worked examples (effects)
+
+The blocks come from the `<pre>` of the fixtures in `tests/fixtures/html/`. Ids are illustrative and continue the ids used in [ADR 0004](../adr/0004-card-printing-identity.md): Nexus BS72-069 is card 1, Magic BS72-075 is card 2, Spirit BS72-007 is card 3. Level ids follow [card_levels](#card_levels). Long texts are shortened with `…`; the stored `text_ja` is the full block text. `en_status_id` is `pending` and `en_source_id` NULL in every row, as nothing is translated yet. Effect kinds are shown by code.
+
+#### Spirit BS72-007
+
+`card_levels` (card 3): id 1 = Lv1, id 2 = Lv2.
+
+`card_effects` (card 3):
+
+| id | position | effect_kind | timing_ja | text_ja (start) |
+| --- | --- | --- | --- | --- |
+| 1 | 1 | `level` | `『自分のアタックステップ開始時』` | 自分の「契約神ルー」すべてのブレイヴ1つにつき、… |
+| 2 | 2 | `level` | `『自分のアタックステップ』` | 系統：「武迅」を持つ自分のスピリットがアタックしたとき、… |
+
+`card_effect_levels`:
+
+| card_effect_id | card_level_id | Source header |
+| --- | --- | --- |
+| 1 | 1 (Lv1) | `Lv1・Lv2` |
+| 1 | 2 (Lv2) | `Lv1・Lv2` |
+| 2 | 2 (Lv2) | `Lv2` |
+
+`card_effect_keywords`: none. Flavor text goes to `cards.flavor_text_ja` (`ルーの下に集った武芸者たちは、…`).
+
+#### Nexus BS72-069
+
+`card_levels` (card 1): id 3 = Lv1, id 4 = Lv2.
+
+`card_effects` (card 1):
+
+| id | position | effect_kind | timing_ja | text_ja (start) |
+| --- | --- | --- | --- | --- |
+| 3 | 1 | `level` | `『このネクサスの配置時』` | 自分のネクサスが「ゼウス」だけのとき、…(3 lines) |
+| 4 | 2 | `constant` | NULL | 系統：「眷属」/「締皇」を持つ自分の赤のスピリットすべては、… |
+
+`card_effect_levels`:
+
+| card_effect_id | card_level_id | Source header |
+| --- | --- | --- |
+| 3 | 3 (Lv1) | `Lv1・Lv2` |
+| 3 | 4 (Lv2) | `Lv1・Lv2` |
+| 4 | 4 (Lv2) | `Lv2`, no timing |
+
+`card_effect_keywords`: none. Flavor text goes to `cards.flavor_text_ja` (`噴火すると、周囲に雷火を落とすオリン随一の山。…`, including the closing `―『創世書記』神世界図125―`).
+
+#### Magic BS72-075
+
+The Magic fixture has no level line, so no `card_effect_levels` rows and no flavor text.
+
+`card_effects` (card 2):
+
+| id | position | effect_kind | timing_ja | text_ja (start) |
+| --- | --- | --- | --- | --- |
+| 5 | 1 | `keyword_block` | NULL | `【ミラージュ：コスト2(1)(このカードは手札からセットできる)】` |
+| 6 | 2 | `set_active` | `『自分のアタックステップ開始時』` | 相手の手元にあるカードの色3色につき、…(2 lines) |
+| 7 | 3 | `main` | NULL | 自分はデッキから2枚ドローする。…(4 lines) |
+
+`card_effect_keywords`:
+
+| card_effect_id | keyword | parameter_ja |
+| --- | --- | --- |
+| 5 | `mirage` | `コスト2(1)` |
+
+The `メイン：` label is not part of `text_ja`: it becomes the kind `main`. Whether `【セット中】` is a block kind or a keyword of its own is pending #9 (the fixture shows it as a header with a timing, so it is a kind here). The `フラッシュ：` label is seen only in related-card blocks, not in a card's own `<pre>` (pending #9).
+
+## Multilingual text
+
+Pattern decided in [ADR 0005](../adr/0005-text-first-effects-and-translations.md), option 1. Every translatable text has a Japanese source column `X_ja` (NOT NULL where the source always has it) and an English column `X_en` (NULL until translated). Each row with English text carries two foreign keys that describe it.
+
+```mermaid
+erDiagram
+    translation_sources ||--o{ cards : "sourced"
+    translation_statuses ||--o{ cards : "states"
+    translation_sources ||--o{ card_effects : "sourced"
+    translation_statuses ||--o{ card_effects : "states"
+    translation_sources ||--o{ families : "sourced"
+    translation_statuses ||--o{ families : "states"
+    translation_sources ||--o{ family_aliases : "sourced"
+    translation_sources ||--o{ products : "sourced"
+    translation_statuses ||--o{ products : "states"
+    translation_sources ||--o{ brave_details : "sourced"
+    translation_statuses ||--o{ brave_details : "states"
+    translation_sources ||--o{ ultimate_details : "sourced"
+    translation_statuses ||--o{ ultimate_details : "states"
+
+    cards {
+        integer id PK
+        text name_ja
+        text name_en
+        text flavor_text_ja
+        text flavor_text_en
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    card_effects {
+        integer id PK
+        text text_ja
+        text text_en
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    families {
+        integer id PK
+        text name_ja
+        text name_en
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    family_aliases {
+        integer id PK
+        integer translation_source_id FK
+    }
+    products {
+        integer id PK
+        text name_ja
+        text name_en
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    brave_details {
+        integer card_id PK, FK
+        text fusion_condition_ja
+        text fusion_condition_en
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    ultimate_details {
+        integer card_id PK, FK
+        text summon_condition_ja
+        text summon_condition_en
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    translation_sources {
+        integer id PK
+        text code UK
+        text name
+    }
+    translation_statuses {
+        integer id PK
+        text code UK
+        text name
+    }
+```
+
+The same two columns are on `products`, `brave_details` and `ultimate_details`; `family_aliases` has `translation_source_id` only. Gameplay and identity diagrams above omit these columns; this diagram is where every translation foreign key is drawn.
+
+### translation_sources
+
+Lookup: where an English text came from.
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `code` | TEXT | NOT NULL, UNIQUE | `official`, `fandom`, `manual`, `machine`. Also used by `family_aliases.translation_source_id`. |
+| `name` | TEXT | NOT NULL | English display name. |
+
+### translation_statuses
+
+Lookup: how far a translation has come.
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `code` | TEXT | NOT NULL, UNIQUE | `pending` (not translated yet), `machine` (machine translated, not reviewed), `reviewed` (checked by a person or taken from an official or wiki source), `failed` (the translation did not work). |
+| `name` | TEXT | NOT NULL | English display name. |
+
+### Rules
+
+- The Japanese text is the source of truth and is never overwritten by a translation.
+- A failed translation is `X_en` NULL with the status `failed`. An error string is **never** stored as text; this fixes the legacy `Error: …` and `Aaaaaa` names.
+- `en_source_id` and `en_status_id` describe the row, not a single column: on `cards`, one pair covers `name_en` and `flavor_text_en`. If a row needs different sources for two texts, the model must change (accepted for v1, see ADR 0005).
+- `en_source_id` is NULL while there is no English text. `en_status_id` is NOT NULL with the default `pending`. Names on lookups are English only, as in [ADR 0003](../adr/0003-naming-and-schema-versioning.md).
+- A third language would add `_xx` columns; it is out of scope.
+- Full-text search (FTS5) over `cards.name_*` and `card_effects.text_*` is a build option for [#12](https://github.com/AleFire99/BS_Database/issues/12), not designed here.
+
+## Provenance
+
+Which source pages a row was built from, so a build can be reproduced and an error traced back to its page. The raw HTML cache that fills these tables is defined in [#9](https://github.com/AleFire99/BS_Database/issues/9) and [#10](https://github.com/AleFire99/BS_Database/issues/10). `schema_meta.source_snapshot` ([ADR 0003](../adr/0003-naming-and-schema-versioning.md)) identifies the cache snapshot as a whole; these tables identify single pages.
+
+```mermaid
+erDiagram
+    sources ||--o{ source_pages : "serves"
+    cards ||--o{ card_source_pages : "built from"
+    source_pages ||--o{ card_source_pages : "feeds"
+    products ||--o{ product_source_pages : "built from"
+    source_pages ||--o{ product_source_pages : "feeds"
+
+    sources {
+        integer id PK
+        text code UK
+        text name
+        text base_url
+    }
+    source_pages {
+        integer id PK
+        integer source_id FK
+        text url UK
+        text fetched_at
+        text content_sha256
+        text parser_version
+    }
+    card_source_pages {
+        integer card_id PK, FK
+        integer source_page_id PK, FK
+    }
+    product_source_pages {
+        integer product_id PK, FK
+        integer source_page_id PK, FK
+    }
+    cards {
+        integer id PK
+    }
+    products {
+        integer id PK
+    }
+```
+
+### sources
+
+Lookup of the sites the data comes from.
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `code` | TEXT | NOT NULL, UNIQUE | `batspi` (batspi.com, Japanese card pages) and `fandom` (battle-spirits.fandom.com, English wiki). |
+| `name` | TEXT | NOT NULL | English display name. |
+| `base_url` | TEXT | NOT NULL | Site root, used to resolve relative links such as `/card/BS7/small/BS72-007.jpg`. |
+
+### source_pages
+
+One row per fetched page.
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `source_id` | INTEGER | NOT NULL, FOREIGN KEY to `sources.id` | |
+| `url` | TEXT | NOT NULL, UNIQUE | Page address. |
+| `fetched_at` | TEXT | NOT NULL | ISO-8601 UTC timestamp of the fetch. |
+| `content_sha256` | TEXT | NOT NULL | Hash of the raw HTML in the cache. |
+| `parser_version` | TEXT | NOT NULL | Version of the parser that read the page. |
+
+### card_source_pages
+
+Pure junction table. The pages a card was built from.
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `card_id` | INTEGER | FOREIGN KEY to `cards.id` | Part of the composite PRIMARY KEY. |
+| `source_page_id` | INTEGER | FOREIGN KEY to `source_pages.id` | Part of the composite PRIMARY KEY. |
+
+### product_source_pages
+
+Pure junction table. The pages a product was built from (for example a set list page).
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `product_id` | INTEGER | FOREIGN KEY to `products.id` | Part of the composite PRIMARY KEY. |
+| `source_page_id` | INTEGER | FOREIGN KEY to `source_pages.id` | Part of the composite PRIMARY KEY. |
+
+The build always has at least one source page per card; whether that is enforced in the schema or by a build check is left to [#12](https://github.com/AleFire99/BS_Database/issues/12).
+
+## Images
+
+Images belong to the printing, not to the card: BS72-007 has two images for its normal and its secret printing (see [ADR 0004](../adr/0004-card-printing-identity.md)). `printing_images` replaces the legacy `cards.image` path string and the earlier `printings.image` column.
+
+```mermaid
+erDiagram
+    printings ||--o{ printing_images : "shown by"
+    image_sizes ||--o{ printing_images : "sizes"
+
+    printings {
+        integer id PK
+        integer card_number_id FK
+        integer product_id FK
+        integer variant_id FK
+    }
+    image_sizes {
+        integer id PK
+        text code UK
+        text name
+    }
+    printing_images {
+        integer id PK
+        integer printing_id FK
+        integer image_size_id FK
+        text path
+        text source_url
+        text sha256
+        integer width
+        integer height
+        text mime_type
+    }
+```
+
+### image_sizes
+
+Lookup (`code` plus English `name`).
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `code` | TEXT | NOT NULL, UNIQUE | `small` is the `<img>` under `/card/BS7/small/`, `large` is the linked file under `/card/BS7/` (both seen in the fixtures). Whether more sizes exist is pending #9. |
+| `name` | TEXT | NOT NULL | English display name. |
+
+### printing_images
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `printing_id` | INTEGER | NOT NULL, FOREIGN KEY to `printings.id` | |
+| `image_size_id` | INTEGER | NOT NULL, FOREIGN KEY to `image_sizes.id` | Size of the file. |
+| `path` | TEXT | NOT NULL | Path relative to the release artefact. The layout is decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). |
+| `source_url` | TEXT | NOT NULL | Where the file was downloaded from. |
+| `sha256` | TEXT | | Hash of the file; NULL until downloaded. |
+| `width` | INTEGER | CHECK `width` > 0 | Pixels; NULL until downloaded (not read from the page). Pending #9. |
+| `height` | INTEGER | CHECK `height` > 0 | Pixels; NULL until downloaded. Pending #9. |
+| `mime_type` | TEXT | | e.g. `image/jpeg`; NULL until downloaded. |
+
+Table constraint: `UNIQUE (printing_id, image_size_id)`. Storage, download and versioning of the files are decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). A row says where an image is and where it came from; it does not require the file to be in the artefact.
+
+### Worked example (BS72-007)
+
+The page links `BS72-007.jpg` and `BS72-007-2.jpg`, each as a small `<img>` and a larger link. Printing ids are those of [ADR 0004](../adr/0004-card-printing-identity.md) (5 = normal, 6 = secret). Which image is the secret art is pending #9 (see ADR 0004), so the mapping below is an assumption: the plain file to the normal printing and the `-2` file to the secret printing.
+
+| id | printing_id | image_size | source_url (relative) |
+| --- | --- | --- | --- |
+| 1 | 5 (normal) | `small` | `/card/BS7/small/BS72-007.jpg` |
+| 2 | 5 (normal) | `large` | `/card/BS7/BS72-007.jpg` |
+| 3 | 6 (secret) | `small` | `/card/BS7/small/BS72-007-2.jpg` |
+| 4 | 6 (secret) | `large` | `/card/BS7/BS72-007-2.jpg` |
+
+`path`, `sha256`, `width`, `height` and `mime_type` are filled by the image download of #13 and are not in the fixtures.
+
+### Out of scope for v1
+
+Q&A (ADR 0003), the batspi effect-category tags (カード効果 and 発揮タイミング tags outside the `<pre>`, a possible future source) and structured effects.

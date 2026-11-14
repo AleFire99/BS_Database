@@ -88,6 +88,26 @@ Rarity (レアリティ) marks print scarcity (for example C, U, R, M-class labe
 | Variant | | Finish or art version of a printing within a product: normal, secret (`SECRETあり`), full art (`フルアート版`), promo art. The full list is pending #9. |
 | Block icon | ブロックアイコン | Era or legality icon on a card (e.g. `12`, `A`); stored on the card by default, per card or per number pending #9. |
 
+## Effects and text
+
+Modelled text-first in [target-schema.md](../data-model/target-schema.md#effects-and-keywords) and [ADR 0005](../adr/0005-text-first-effects-and-translations.md): effect text is stored as printed, not parsed.
+
+| Term | JP | Description |
+| --- | --- | --- |
+| Effect | 効果 | One effect block of a card's `<pre>`: an optional level scope (`Lv1・Lv2`), an optional timing and the text. Stored in `card_effects`. Block segmentation across eras and in Brave and Ultimate cards is pending #9. |
+| Timing | 発揮タイミング | When an effect is used, written in `『…』` after the level scope, e.g. `『自分のアタックステップ開始時』`. Kept as text in `card_effects.timing_ja`; a block can have none (a Nexus `Lv2` constant effect). The batspi 発揮タイミング tags outside the `<pre>` are not modelled. |
+| Keyword | | Keyword ability written as `【…】`, e.g. `【ミラージュ：…】` or `【セット中】`. Modelled as the lookup `keywords` plus an optional parameter text. Only Mirage is seen in the fixtures; the full list is pending #9. |
+| Mirage | ミラージュ | Keyword seen on the Magic fixture: `【ミラージュ：コスト2(1)(このカードは手札からセットできる)】`. The page Q&A says a card marked Mirage is placed face up in the Burst area and keeps its effects while there. The alternate cost `コスト2(1)` is stored as text, not as numbers. Rules wording to verify in #9. |
+| Flavor text | フレーバーテキスト | Story text under `フレーバーテキスト：` in the `<pre>`; no game effect. Seen on the Spirit and Nexus fixtures, absent on the Magic one. Stored on the card (`flavor_text_ja`, `flavor_text_en`); whether it varies per printing is pending #9. |
+| Main / Flash | メイン / フラッシュ | Labels of Magic effects (`メイン：`, `フラッシュ：`). `メイン：` is seen in the Magic fixture; `フラッシュ：` only in related-card blocks, so its layout is pending #9. |
+
+## Translation and provenance
+
+| Term | JP | Description |
+| --- | --- | --- |
+| Provenance | | Which source page a card or product was built from, with fetch time, content hash and parser version. Stored in `sources`, `source_pages` and the `card_source_pages` and `product_source_pages` junctions; see [target-schema.md](../data-model/target-schema.md#provenance). |
+| Translation status | | State of an English text: `pending`, `machine`, `reviewed` or `failed`, stored per row with a translation source (`official`, `fandom`, `manual`, `machine`). A failed translation is NULL text with status `failed`, never an error string. See [target-schema.md](../data-model/target-schema.md#multilingual-text). |
+
 ## Database versions
 
 | Term | Description |

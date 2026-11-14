@@ -8,3 +8,4 @@ One ADR per decision, using the [template](0000-template.md). Numbers are sequen
 | [0002](0002-storage-technology.md) | Storage technology: SQLite | Proposed | 2026-11-14 |
 | [0003](0003-naming-and-schema-versioning.md) | Naming conventions, BSS_app alignment and schema versioning | Proposed | 2026-11-14 |
 | [0004](0004-card-printing-identity.md) | Card vs printing identity, ID scheme and rarity | Proposed | 2026-11-14 |
+| [0005](0005-text-first-effects-and-translations.md) | Text-first effects and translation storage | Proposed | 2026-11-14 |
