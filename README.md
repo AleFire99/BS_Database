@@ -29,6 +29,12 @@ uv sync
 uv run pre-commit install --hook-type pre-commit --hook-type commit-msg
 ```
 
+Run the CLI:
+
+```bash
+uv run bsdb --help
+```
+
 ## Documentation
 
 - [Contributing](CONTRIBUTING.md)
