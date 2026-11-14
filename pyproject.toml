@@ -14,8 +14,12 @@ dependencies = [
     "webdriver-manager>=4.1.2",
 ]
 
+[build-system]
+requires = ["uv_build>=0.12.0,<0.13"]
+build-backend = "uv_build"
+
 [tool.uv]
-package = false
+package = true
 
 [dependency-groups]
 dev = [
@@ -40,8 +44,8 @@ select = ["E", "F", "W", "I", "UP", "B", "SIM"]
 
 [tool.mypy]
 python_version = "3.12"
-files = ["tests"]  # add "src" once the E2 refactor lands
+files = ["src", "tests"]
 strict = true
 
 [tool.coverage.run]
-source = ["tests"]  # switch to "src" after the E2 refactor
+source = ["src"]
