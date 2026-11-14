@@ -86,11 +86,11 @@ sequenceDiagram
 | --- | --- | --- | --- |
 | `main.py` | Orchestration; `__main__` creates the DB and loads JSON | `data/extracted_urls.txt`, JSON folder | `battle_spirits.db` |
 | `config/settings.py` | URL and path constants | none | `BASE_URL`, `BASE_SET_URL`, `IMAGE_FOLDER_PATH`, `JSON_FOLDER_PATH`, `BATSPI_URL` |
-| `scripts/set_link_extractor.py` | Collect set page links from the batspi card list (runs at import) | `https://batspi.com/index.php?カードリスト` | `extracted_urls.txt` (cwd) |
-| `scripts/extract_card_links.py` | Extract `(card_id, link)` pairs from a set page | set page URL | list of tuples |
-| `scripts/scraper/card_scraper.py` | Parse a batspi card page, translate fields, write JSON | card page URL | `data/json/card_json/BSxx/BSxx-NNN.json` |
-| `scripts/scraper/json_set_scraper.py` | Parse set tables from the EN wiki | `BASE_SET_URL + BSxx` | `data/json/set_json/BSxx.json` |
-| `scripts/scraper/image_scraper.py` | Download card images from the EN wiki | wiki set and card pages | `data/images/BSxx/<card_id>.jpg` |
+| `scripts/set_link_extractor.py` | Collect set page links from the batspi card list (runs at import) | `https://batspi.com/index.php?カードリスト` | `extracted_urls.txt` (cwd). Ported to `bs_database.scrapers.batspi_sets` with explicit URL/path parameters; no import-time run any more (legacy removed in #23) |
+| `scripts/extract_card_links.py` | Extract `(card_id, link)` pairs from a set page | set page URL | list of tuples. Ported to `bs_database.scrapers.batspi_links` with explicit URL/path parameters; takes `batspi_url` explicitly (legacy removed in #23) |
+| `scripts/scraper/card_scraper.py` | Parse a batspi card page, translate fields, write JSON | card page URL | `data/json/card_json/BSxx/BSxx-NNN.json`. Ported to `bs_database.scrapers.batspi_card` with explicit URL/path parameters; kept quirks: translation failures return `"Error: ..."`; an unspaced mixed reduction gives `[]` (legacy removed in #23) |
+| `scripts/scraper/json_set_scraper.py` | Parse set tables from the EN wiki | `BASE_SET_URL + BSxx` | `data/json/set_json/BSxx.json`. Ported to `bs_database.scrapers.fandom_sets` with explicit URL/path parameters; needs the wiki `<tbody>` (legacy removed in #23) |
+| `scripts/scraper/image_scraper.py` | Download card images from the EN wiki | wiki set and card pages | `data/images/BSxx/<card_id>.jpg`. Ported to `bs_database.scrapers.fandom_images` with explicit URL/path parameters; kept quirks: only the last table is returned; set loop builds `<set_url><nn>` without `BS`; no rate limiting (legacy removed in #23) |
 | `json_editor.py` | Normalize family names, type, image path in place (runs at import) | card JSON tree, `data/family_mapping.txt` | rewritten JSON files. Logic ported to `bs_database.normalize` (legacy removed in #23) |
 | `scripts/db/db_manager.py` | SQLAlchemy models, JSON loader, color derivation | card JSON tree | SQLite rows. Logic ported to `bs_database.db` (legacy removed in #23) |
 | `data/family_mapping.txt` | Manual `machine translation = canonical name` overrides | n/a | used by `json_editor.py` |
