@@ -91,8 +91,8 @@ sequenceDiagram
 | `scripts/scraper/card_scraper.py` | Parse a batspi card page, translate fields, write JSON | card page URL | `data/json/card_json/BSxx/BSxx-NNN.json` |
 | `scripts/scraper/json_set_scraper.py` | Parse set tables from the EN wiki | `BASE_SET_URL + BSxx` | `data/json/set_json/BSxx.json` |
 | `scripts/scraper/image_scraper.py` | Download card images from the EN wiki | wiki set and card pages | `data/images/BSxx/<card_id>.jpg` |
-| `json_editor.py` | Normalize family names, type, image path in place (runs at import) | card JSON tree, `data/family_mapping.txt` | rewritten JSON files |
-| `scripts/db/db_manager.py` | SQLAlchemy models, JSON loader, color derivation | card JSON tree | SQLite rows |
+| `json_editor.py` | Normalize family names, type, image path in place (runs at import) | card JSON tree, `data/family_mapping.txt` | rewritten JSON files. Logic ported to `bs_database.normalize` (legacy removed in #23) |
+| `scripts/db/db_manager.py` | SQLAlchemy models, JSON loader, color derivation | card JSON tree | SQLite rows. Logic ported to `bs_database.db` (legacy removed in #23) |
 | `data/family_mapping.txt` | Manual `machine translation = canonical name` overrides | n/a | used by `json_editor.py` |
 | `example_query.sql` | Sample SQL queries | n/a | n/a |
 | `Notes.md` | Informal notes (card type list) | n/a | n/a |
