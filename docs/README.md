@@ -13,6 +13,7 @@ This folder documents the current state of BS_Database (the `bs_database` packag
 | [data-model/legacy-mapping.md](data-model/legacy-mapping.md) | Every legacy table, column, JSON key and artefact mapped to the target schema or dropped, plus the gap list |
 | [data-model/samples.md](data-model/samples.md) | Hand-modelled sample cards as SQL inserts against the DDL draft |
 | [domain/glossary.md](domain/glossary.md) | Battle Spirits domain glossary (EN/JP) |
+| [sources/batspi.md](sources/batspi.md) | batspi.com source catalogue: robots rules, URL patterns, categories, card number schemes, `<pre>` format per card type, image URLs, candidate fixtures |
 | [configuration.md](configuration.md) | Settings and `BSDB_*` environment variables |
 | [adr/README.md](adr/README.md) | Architecture Decision Records index |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | How to contribute (workflow, commits, tooling) |
