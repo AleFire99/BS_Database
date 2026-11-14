@@ -37,11 +37,11 @@ The card text and names belong to the card maker (Bandai); batspi.com is a fan w
 
 ## Refresh
 
-Fetching follows the [scraping policy](../../../docs/sources/policy.md): robots.txt check, deny list, policy User-Agent, at least 3 s between requests, stop on 403 or a challenge page.
+Fetching follows the [scraping policy](../../../docs/sources/policy.md): robots.txt check, deny list, policy User-Agent, at least 3 s between requests, stop on 403 or a challenge page. It is stricter than the policy: it makes no retries (a 429 or 5xx page is skipped), and it stops if robots.txt is not 200. The manifest is saved even when a run stops early.
 
 ```bash
 uv run python tests/tools/fixture_fetch.py --raw-dir <dir outside the repo> \
     "card_brave.html|砲凰竜フェニック・キャノン|card|ブレイヴ"
 ```
 
-Each argument is `FILE|PAGE NAME|KIND|CARD TYPE`. Add `--partial` to allow a partial page, or `--offline` to trim again from the raw pages in `--raw-dir` with no request. The tool is run by hand and never imported by tests.
+Each argument is `FILE|PAGE NAME|KIND|CARD TYPE`. Add `--partial` to allow a partial page, or `--offline` to trim again from the raw pages in `--raw-dir` with no request. The tool is run by hand. Its robots.txt and deny-list logic is covered by `tests/test_fixture_fetch_tool.py`.

@@ -2,7 +2,8 @@
 
 Run by hand, never imported by tests. Follows ``docs/sources/policy.md``: robots.txt check,
 deny list, policy User-Agent, at least 3 s between requests, stop on a 403 or a challenge page,
-no images.
+no images. Stricter than the policy: no retries (a 429 or 5xx page is skipped) and a robots.txt
+that is not 200 stops the run. The manifest is saved even when a run stops early.
 
 Each page is given as ``FILE|PAGE NAME|KIND|CARD TYPE`` (the card type may be empty)::
 
@@ -150,48 +151,53 @@ def main(argv: list[str]) -> int:
         robots.modified()
 
     manifest = load_manifest()
-    for spec in args.specs:
-        name, page, kind, card_type = spec.split("|")
-        url = page_url(page)
-        raw_path = args.raw_dir / name
-        if not args.offline:
-            try:
-                check_allowed(url, robots, query_prefixes)
-            except StopRun as exc:
-                print(f"error: {exc}", file=sys.stderr)
-                return 1
-            time.sleep(DELAY)
-            resp = session.get(url, timeout=30)
-            requests_made += 1
-            print(f"GET {page} -> {resp.status_code}")
-            if resp.status_code == 403 or is_challenge(resp.text):
-                print("error: 403 or challenge page, stopping", file=sys.stderr)
-                return 1
-            if resp.status_code != 200:
-                print(f"skip {page}: status {resp.status_code}", file=sys.stderr)
-                continue
-            raw_path.write_bytes(resp.content)
-        raw = raw_path.read_bytes().decode("utf-8")
-        trimmed = trim(raw)
-        entry: dict[str, Any] = {
-            "url": url,
-            "fetched": date.today().isoformat(),
-            "source": "batspi",
-            "kind": kind,
-        }
-        if card_type:
-            entry["card_type"] = card_type
-        entry["trimmed"] = True
-        if len(trimmed.encode("utf-8")) > args.max_bytes:
-            if not args.partial:
-                print(f"error: {name} is over {args.max_bytes} bytes", file=sys.stderr)
-                return 1
-            trimmed = trim_partial(trimmed, args.max_bytes - 10_000)
-            entry["partial"] = True
-        (HTML_DIR / name).write_text(trimmed, encoding="utf-8")
-        manifest[name] = entry
-        print(f"wrote {name}: {len(trimmed.encode('utf-8')) / 1024:.1f} KB")
-    save_manifest(manifest)
+    try:
+        for spec in args.specs:
+            name, page, kind, card_type = spec.split("|")
+            url = page_url(page)
+            raw_path = args.raw_dir / name
+            if not args.offline:
+                try:
+                    check_allowed(url, robots, query_prefixes)
+                except StopRun as exc:
+                    print(f"error: {exc}", file=sys.stderr)
+                    return 1
+                time.sleep(DELAY)
+                resp = session.get(url, timeout=30)
+                requests_made += 1
+                print(f"GET {page} -> {resp.status_code}")
+                if resp.status_code == 403 or is_challenge(resp.text):
+                    print("error: 403 or challenge page, stopping", file=sys.stderr)
+                    return 1
+                if resp.status_code != 200:
+                    print(f"skip {page}: status {resp.status_code}", file=sys.stderr)
+                    continue
+                raw_path.write_bytes(resp.content)
+            raw = raw_path.read_bytes().decode("utf-8")
+            trimmed = trim(raw)
+            entry: dict[str, Any] = {
+                "url": url,
+                "fetched": date.today().isoformat(),
+                "source": "batspi",
+                "kind": kind,
+            }
+            if card_type:
+                entry["card_type"] = card_type
+            entry["trimmed"] = True
+            if len(trimmed.encode("utf-8")) > args.max_bytes:
+                if not args.partial:
+                    print(f"error: {name} is over {args.max_bytes} bytes", file=sys.stderr)
+                    return 1
+                trimmed = trim_partial(trimmed, args.max_bytes - 10_000)
+                entry["partial"] = True
+            (HTML_DIR / name).write_text(trimmed, encoding="utf-8")
+            manifest[name] = entry
+            print(f"wrote {name}: {len(trimmed.encode('utf-8')) / 1024:.1f} KB")
+    except requests.RequestException as exc:
+        print(f"error: request failed, stopping: {exc}", file=sys.stderr)
+        return 1
+    finally:
+        save_manifest(manifest)
     print(f"live requests: {requests_made}")
     return 0
 
