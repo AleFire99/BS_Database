@@ -25,10 +25,13 @@ The current database holds exactly these five types (from `Notes.md`).
 | Yellow | 黄 | |
 | Blue | 青 | |
 | Multicolor | 多色 | Card with more than one color; in the DB appears as a long symbol string. |
-| Symbol | シンボル | Color icon(s) on a card; used today as the only color source. |
+| Symbol | シンボル | Icon printed on a card or used to reduce a cost. Distinct from a colour: the god symbol is a symbol without a colour. Modelled in `symbols`, `card_symbols` and `card_reductions`; see [Symbol vs colour](#symbol-vs-colour). The old pipeline used it as the only colour source. |
+| God symbol | 神 | Symbol that belongs to no colour; appears in cost reductions such as `4(赤2神1)`. Code `god`, `symbols.color_id` is NULL. See [target-schema.md](../data-model/target-schema.md#symbols). |
 | Black / other | | Appears only in code (`black`); existence as a game color is to verify in E4. |
 
-Some Japanese colors in cost reductions (e.g. `神`) are not ordinary colors and are mistranslated (to verify in E4).
+### Symbol vs colour
+
+A **colour** (赤, 紫, 緑, 白, 黄, 青) says which colours a card belongs to; it comes from segment 2 of the cost line (`4(赤2神1)/赤/眷属・武迅`) and is stored in `card_colors`. A **symbol** is an icon: the ones printed on the card (`シンボル：赤`, `card_symbols`) and the ones that reduce its cost (the parentheses of the cost line, `card_reductions`). Symbols include the six colours plus the god symbol 神, which is why reductions are keyed by symbol and not by colour. See [Gameplay attributes](../data-model/target-schema.md#gameplay-attributes). Multi-symbol `シンボル：` lines and plain `(N)` reductions on multicolour cards are pending #9.
 
 ## Cost, reduction and cores
 
@@ -42,6 +45,13 @@ Some Japanese colors in cost reductions (e.g. `神`) are not ordinary colors and
 | BP | BP (ビーピー) | Battle Points, the combat strength of a Spirit at a given level. |
 
 On batspi.com the scraped line format is `<cores>LvN BP`, e.g. `<3>Lv2 3000`.
+
+## Brave and Ultimate terms
+
+| Term | JP | Description |
+| --- | --- | --- |
+| Fusion (Brave) | 合体 | Combining a Brave with a Spirit. Modelled as a 1:1 text side table, [brave_details](../data-model/target-schema.md#brave_details) (fusion condition and optional BP bonus). The exact printed fields are pending #9 (to verify in E4). |
+| Summon condition (Ultimate) | 召喚条件 | Condition to summon an Ultimate. Modelled as text in [ultimate_details](../data-model/target-schema.md#ultimate_details). Pending #9 (to verify in E4). |
 
 ## Families (系統)
 
