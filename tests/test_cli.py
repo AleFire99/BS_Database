@@ -1,5 +1,9 @@
+import json
 import logging
+import shutil
+import sqlite3
 from collections.abc import Iterator
+from pathlib import Path
 
 import pytest
 from typer.testing import CliRunner
@@ -64,3 +68,52 @@ def test_env_log_level_used_by_default(
 def test_invalid_log_level_fails(restore_logging: None) -> None:
     result = runner.invoke(app, ["--log-level", "NOPE", "ping"])
     assert result.exit_code != 0
+
+
+FIXTURES = Path(__file__).parent / "fixtures"
+GOLDEN = Path(__file__).parent / "goldens" / "db.json"
+
+
+@pytest.fixture
+def data_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, restore_logging: None) -> Path:
+    data = tmp_path / "data"
+    shutil.copytree(FIXTURES / "card_json", data / "json" / "card_json")
+    shutil.copy(FIXTURES / "family_mapping.txt", data / "family_mapping.txt")
+    monkeypatch.setenv("BSDB_DATA_DIR", str(data))
+    return data
+
+
+def test_commands_listed_with_help() -> None:
+    result = runner.invoke(app, ["--help"])
+    assert result.exit_code == 0
+    for name in ("normalize", "build"):
+        assert name in result.output
+        assert runner.invoke(app, [name, "--help"]).exit_code == 0
+
+
+def _assert_matches_golden(db: Path) -> None:
+    golden = json.loads(GOLDEN.read_text(encoding="utf-8"))
+    con = sqlite3.connect(db)
+    for table, count in golden["counts"].items():
+        assert con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0] == count, table
+    for table in ("card_types", "colors", "families"):
+        names = sorted(r[0] for r in con.execute(f"SELECT name FROM {table}"))
+        assert names == golden[f"{table}_names"], table
+    con.close()
+
+
+def test_normalize_then_build_matches_golden(data_dir: Path) -> None:
+    result = runner.invoke(app, ["normalize"])
+    assert result.exit_code == 0, result.output
+    result = runner.invoke(app, ["build"])
+    assert result.exit_code == 0, result.output
+    _assert_matches_golden(data_dir / "battle_spirits.db")
+
+
+def test_build_db_option(data_dir: Path, tmp_path: Path) -> None:
+    runner.invoke(app, ["normalize"])
+    target = tmp_path / "custom.db"
+    result = runner.invoke(app, ["build", "--db", str(target)])
+    assert result.exit_code == 0, result.output
+    _assert_matches_golden(target)
+    assert not (data_dir / "battle_spirits.db").exists()
