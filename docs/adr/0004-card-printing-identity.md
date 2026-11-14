@@ -47,8 +47,8 @@ Use **option B** (owner choice, Gate B). Detailed columns are in [target-schema.
 - **`card_numbers`**: `id`, `number` (UNIQUE, e.g. `BS72-069`), `card_id`. A number belongs to exactly one card. A card can have several numbers. Different numbers are linked to one card only if text and stats are identical; otherwise they are separate cards (errata or remake). The final rule is **pending #9**.
 - **`products`**: anything a card is released in. `code` is UNIQUE where not null (e.g. `BS72`) and null for distributions without a code; plus `name_ja`, `name_en`, `product_type_id`, `release_date`, and a nullable `series` text for the chapter grouping (契約編：環). A booster set *is* a product; there is no separate `sets` table.
 - **`product_types`**: lookup (booster, starter or deck, promo distribution, magazine, collab, other). Exact list pending #9.
-- **`printings`**: one physical printing: `card_number_id`, `product_id`, `variant_id` (NOT NULL, default `normal`), `rarity_id`, `illustrator` text, `image` reference (detail in #31). `UNIQUE(card_number_id, product_id, variant_id)`.
-- **`rarities`**: lookup with `code` (C, U, R, M, ... from batspi `<C>`/`<R>`), `name_ja`, `name_en`, `sort_order`. The scale is pending #9.
+- **`printings`**: one physical printing: `card_number_id`, `product_id`, `variant_id` (NOT NULL, default `normal`), `rarity_id` (nullable: distribution entries show no rarity, pending #9), `illustrator` text, `image` reference (detail in #31). `UNIQUE(card_number_id, product_id, variant_id)`.
+- **`rarities`**: lookup with `code` (`C` and `R` seen in batspi `<C>`/`<R>`; other codes pending #9), `name_ja`, `name_en`, `sort_order`. The scale is pending #9.
 - **`variants`**: lookup (`normal`, `secret`, `full_art`, `promo_art`, parallel, ...). The list is pending #9.
 - **Reprint**: a new `printings` row for the same `card_numbers` row (another product and/or variant). A reprint under a new number is a new `card_numbers` row for the same card.
 - **Promo**: a `printings` row whose product has the promo distribution type. The number is reused or a P-number; the format is pending #9.

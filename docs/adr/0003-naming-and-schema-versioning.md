@@ -11,7 +11,7 @@ Facts that shape the choice:
 
 - The legacy schema (see [current-schema.md](../data-model/current-schema.md)) is already snake_case and plural, but it is inconsistent: `cards.card_id` is a TEXT print number that clashes with the `<table>_id` foreign key pattern, and `core_requirements.battlePoints` is camelCase.
 - The sister project [BSS_app](https://github.com/AleFire99/BSS_app) uses PascalCase plural tables quoted with backticks, `<Singular>ID` integer primary keys (except `Cards.CardID`, a TEXT such as `BSS01-001`), free-text `Cards.Rarity`, no schema versioning and no i18n.
-- Gate A decisions on #8: SQLite ([ADR 0002](0002-storage-technology.md)), snake_case plural tables with `id` primary keys, text-first effects, and surrogate integer primary keys with the printing number as a UNIQUE column on printings.
+- Gate A decisions on #8: SQLite ([ADR 0002](0002-storage-technology.md)), snake_case plural tables with `id` primary keys, text-first effects, and surrogate integer primary keys with the printing number as a UNIQUE column on printings (refined by [ADR 0004](0004-card-printing-identity.md): the number is UNIQUE on `card_numbers`).
 - Each release rebuilds the database from scratch (ADR 0002), so in-place migrations are not needed.
 
 ## Decision drivers
@@ -53,7 +53,7 @@ Use **option 2**: snake_case conventions, keeping the BSS_app entity split but n
 
 ### BSS_app → BS_Database
 
-The concepts (lookups, junctions, reductions with a count, per-level rows, effects linked to levels and keywords) are kept. Names follow the rules above. Entities not yet designed have tentative names, finalised in [#29](https://github.com/AleFire99/BS_Database/issues/29), [#30](https://github.com/AleFire99/BS_Database/issues/30) and [#31](https://github.com/AleFire99/BS_Database/issues/31).
+The concepts (lookups, junctions, reductions with a count, per-level rows, effects linked to levels and keywords) are kept. Names follow the rules above. Entities not yet designed have tentative names, finalised in [#30](https://github.com/AleFire99/BS_Database/issues/30) and [#31](https://github.com/AleFire99/BS_Database/issues/31).
 
 | BSS_app | BS_Database | Reason for the deviation |
 | --- | --- | --- |
@@ -63,7 +63,7 @@ The concepts (lookups, junctions, reductions with a count, per-level rows, effec
 | `Sets` | `products` (+ `product_types`), see [ADR 0004](0004-card-printing-identity.md) | Promos, magazines and distributions are releases too, so a set is one product type; `Name` (e.g. `BSS01`) becomes a UNIQUE `code` plus display names. |
 | `Colors` | `colors` | Case and key style; `Name` becomes a stable `code` plus display names. |
 | `Symbols` (`ColorID`) | `symbols` (`color_id`) | Case and key style only. |
-| `Subtypes` | `families` (tentative, #29) | Battle Spirits calls them families (系統); the legacy schema already uses `families`. |
+| `Subtypes` | `families` (tentative, #30) | Battle Spirits calls them families (系統); the legacy schema already uses `families`. |
 | `Keywords` | `keywords` | Case and key style only. |
 | `Steps` | `steps` (tentative, #31) | Case only. Effects are text-first in v1, so this may be deferred. |
 | `Conditions` | `conditions` (tentative, #31) | Case only. Effects are text-first in v1, so this may be deferred. |

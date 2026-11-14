@@ -132,7 +132,7 @@ Lookup, following the lookup convention of ADR 0003.
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | |
-| `code` | TEXT | NOT NULL, UNIQUE | `C`, `U`, `R`, `M`, ... from batspi `<C>`, `<R>`. The full scale is pending #9. |
+| `code` | TEXT | NOT NULL, UNIQUE | `C` and `R` seen in batspi `<C>`, `<R>`; other codes and the full scale are pending #9. |
 | `name_ja` | TEXT | NOT NULL | e.g. `コモン`, `レア`. |
 | `name_en` | TEXT | | |
 | `sort_order` | INTEGER | NOT NULL | Display order from common to rare. |
