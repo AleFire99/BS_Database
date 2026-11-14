@@ -12,3 +12,5 @@ htmlcov/
 node_modules/
 .tmp-mermaid/
 .env
+/battle_spirits.db
+/data/*.db
