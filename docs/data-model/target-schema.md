@@ -225,13 +225,13 @@ erDiagram
         integer family_id PK
     }
     brave_details {
-        integer card_id PK
+        integer card_id PK, FK
         text fusion_condition_ja
         text fusion_condition_en
         integer fusion_bp_bonus
     }
     ultimate_details {
-        integer card_id PK
+        integer card_id PK, FK
         text summon_condition_ja
         text summon_condition_en
     }
@@ -420,7 +420,7 @@ The `<pre>` lines come from the fixtures in `tests/fixtures/html/`. Ids are illu
 | Line | Target rows |
 | --- | --- |
 | `ネクサス` | `card_types.code = nexus` |
-| `3(2)` | `cards.cost = 3`; `card_reductions`: (red, 2), the plain `2` resolved to the card's own colour (single colour here) |
+| `3(2)` | `cards.cost = 3`; `card_reductions`: (red, 2), the plain `2` resolved to the card's own colour (single colour here; assumed, pending #9) |
 | `/赤/` | `card_colors`: red |
 | `皇獣` | `families` `皇獣`; one `card_families` row |
 | `<0>Lv1` | `card_levels`: level 1, cores 0, battle_points NULL |
@@ -439,7 +439,7 @@ The `<pre>` lines come from the fixtures in `tests/fixtures/html/`. Ids are illu
 | Line | Target rows |
 | --- | --- |
 | `マジック` | `card_types.code = magic` |
-| `4(2)` | `cards.cost = 4`; `card_reductions`: (red, 2) |
+| `4(2)` | `cards.cost = 4`; `card_reductions`: (red, 2) (assumed: plain `2` = own colour, pending #9) |
 | `/赤/` | `card_colors`: red |
 | `武迅` | `families` `武迅`; one `card_families` row |
 | (no level line) | no `card_levels` rows |
@@ -453,11 +453,11 @@ The loader (#12) maps Japanese source text to lookup codes. The mapping is code,
 | Lookup | JP source | Code | Seen in |
 | --- | --- | --- | --- |
 | `colors` / `symbols` | 赤 | `red` | fixtures |
-| `colors` / `symbols` | 紫 | `purple` | legacy data |
-| `colors` / `symbols` | 緑 | `green` | legacy data |
-| `colors` / `symbols` | 白 | `white` | legacy data |
-| `colors` / `symbols` | 黄 | `yellow` | legacy data |
-| `colors` / `symbols` | 青 | `blue` | legacy data |
+| `colors` / `symbols` | 紫 | `purple` | glossary, to verify #9 |
+| `colors` / `symbols` | 緑 | `green` | glossary, to verify #9 |
+| `colors` / `symbols` | 白 | `white` | glossary, to verify #9 |
+| `colors` / `symbols` | 黄 | `yellow` | glossary, to verify #9 |
+| `colors` / `symbols` | 青 | `blue` | glossary, to verify #9 |
 | `symbols` | 神 | `god` | fixture (reduction) |
 | `card_types` | スピリット | `spirit` | fixtures |
 | `card_types` | ネクサス | `nexus` | fixtures |
