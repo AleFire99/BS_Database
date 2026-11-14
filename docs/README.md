@@ -12,6 +12,11 @@ This folder documents the current state of BS_Database (the `bs_database` packag
 | [data-model/target-schema.md](data-model/target-schema.md) | Target schema design: identity, gameplay, effects, text, provenance, images, complete ER and DDL draft |
 | [data-model/legacy-mapping.md](data-model/legacy-mapping.md) | Every legacy table, column, JSON key and artefact mapped to the target schema or dropped, plus the gap list |
 | [data-model/samples.md](data-model/samples.md) | Hand-modelled sample cards as SQL inserts against the DDL draft |
+| [sources/batspi.md](sources/batspi.md) | batspi.com source catalogue: robots rules, URL patterns, categories, card number schemes, `<pre>` format per card type, image URLs, candidate fixtures |
+| [sources/fandom.md](sources/fandom.md) | Fandom wiki dossier: Cloudflare access evidence, CC-BY-SA licence, verdict dropped for v1 |
+| [sources/official.md](sources/official.md) | Official Bandai site survey: URLs, reuse note, card markup, fields mapped to the inventory |
+| [sources/coverage-matrix.md](sources/coverage-matrix.md) | Field coverage matrix: every target-schema column against batspi, the official site and fandom with fixture-backed samples, the gap list and the conflict inputs for ADR 0007 |
+| [sources/policy.md](sources/policy.md) | Scraping and redistribution policy: robots, rate, User-Agent, cache, errors, attribution, requirements for #10 |
 | [domain/glossary.md](domain/glossary.md) | Battle Spirits domain glossary (EN/JP) |
 | [configuration.md](configuration.md) | Settings and `BSDB_*` environment variables |
 | [adr/README.md](adr/README.md) | Architecture Decision Records index |
