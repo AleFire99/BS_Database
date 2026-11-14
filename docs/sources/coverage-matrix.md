@@ -23,6 +23,8 @@ For every column of the [target schema](../data-model/target-schema.md) (the [DD
 
 Notation in the cells: `` `sample` @ `file.html` `` is a value found in that fixture. Samples are matched against the decoded text of the file: `<` and `>` appear as `&lt;` and `&gt;` in the HTML, `<br />` is a line break, and a name that carries ruby readings is split by `<rb>`/`<rt>` elements. Official cells never cite a fixture, so the best status they can have is `unknown (listed in the result list)`.
 
+Scope rule: every column of the DDL draft is covered. Surrogate `id` columns and foreign keys are `derived` by the build and are listed only where the link itself needs a source (for example which printing an image shows). Lookup tables seeded by the project (`code`/`name` pairs) are `derived`.
+
 ### The fixtures used
 
 | File | Page | Notes |
@@ -67,7 +69,7 @@ Tables: `cards`, `card_numbers`, `printings`, `products`, `product_types`, `rari
 
 | Column | batspi | official | fandom | Notes for #10 |
 | --- | --- | --- | --- | --- |
-| `number` | `confirmed`: `<span class="cardno">BS72-007</span>` @ `card_spirit.html`. Other forms: `P001`, `EX001`, `P20-19` @ `card_promo.html`; `BS31-XX02` @ `card_spirit_xx_bs31.html`; `SD19-X01` @ `card_ultimate.html`; `BS38-RV022` @ `card_brave.html`; `BS44-X07` @ `card_nexus_soukaishin.html`; faces `BS52-TX01(A)` @ `card_flip.html` | `unknown` (listed): `.number .num`, includes reprint prefixes such as `26R` | `not fetched`: legacy `Number` column | The `<h3>` heading carries the number only on pages with several numbers (`<BS10-062>` @ `card_brave.html`); a single-number page has a bare name heading with no number (`card_nexus.html`, `card_spirit.html`). The `cardno` spans also occur in the related-card listing (`card_brave.html` has nine), so take the first span per print, or the number in the image caption (`BS72-007/契約編：環 第1章：廻帰再醒`). A flip number has a face suffix `(A)`/`(B)` that the `収録` list drops (`転醒編 第1章：輪廻転生 <転醒X>` follows `BS52-TX01` @ `card_flip.html`) |
+| `number` | `confirmed`: `<span class="cardno">BS72-007</span>` @ `card_spirit.html`. Other forms: `P001`, `EX001`, `P20-19` @ `card_promo.html`; `BS31-XX02` @ `card_spirit_xx_bs31.html`; `SD19-X01` @ `card_ultimate.html`; `BS38-RV022` @ `card_brave.html`; `BS44-X07` @ `card_nexus_soukaishin.html`; faces `BS52-TX01(A)` @ `card_flip.html` | `unknown` (listed): `.number .num`, includes reprint prefixes such as `26R` | `not fetched`: legacy `Number` column | The `<h3>` heading carries the number only on pages with several numbers (`<BS10-062>` @ `card_brave.html`); a single-number page has a bare name heading with no number (`card_nexus.html`, `card_spirit.html`). The `cardno` spans also occur in the related-card listing (`card_brave.html` has nine), so take the first span per print, or the number in the image caption (`BS72-007`, a line break, then `契約編：環 第1章：廻帰再醒`). A flip number has a face suffix `(A)`/`(B)` that the `収録` list drops (`転醒編 第1章：輪廻転生 <転醒X>` follows `BS52-TX01` @ `card_flip.html`) |
 | `id`, `card_id` | `derived` | | | `card_id` comes from the pairing of `<h3>` and card block by position, then from [ADR 0004](../adr/0004-card-printing-identity.md) |
 
 ### printings
@@ -163,7 +165,7 @@ Tables: `card_types`, `colors`, `symbols`, `card_colors`, `card_symbols`, `card_
 | --- | --- | --- | --- | --- |
 | `card_families` and `families.name_ja` (segment 3 of line 2) | `confirmed`: `眷属・武迅` @ `card_spirit.html`; `皇獣` @ `card_nexus.html`; `創界神・オリン` @ `card_nexus_soukaishin.html`; `起幻・眷属・古竜` @ `card_flip.html`; `極契約・新生・古竜` @ `card_ultimate.html`. `absent` on `card_magic_flash.html` (`4(2)/赤`, no third segment) | `unknown` (listed): `.type .system`, also a `system[]` filter with 351 options | `not fetched` | Families are separated by `・`. A third segment can be missing (older Magic). A family name can be a placeholder (`系統A` in the `体験会でのスペック` block @ `card_magic_flash.html`) |
 | `families.name_en`, `families.code` | `absent` | `absent` | `not fetched` | English names come from `data/family_mapping.txt` and machine translation (#11) |
-| `family_aliases` | `absent` | `absent` | `not fetched` | Seeded from the legacy mapping, not from a source |
+| `family_aliases.alias`, `family_aliases.lang`, `family_aliases.family_id`, `family_aliases.translation_source_id` | `absent` | `absent` | `not fetched` | Seeded from the legacy mapping (`data/family_mapping.txt`), not from a source |
 | `en_source_id`, `en_status_id` | `derived` | | | Not source data |
 
 ### brave_details
@@ -226,7 +228,7 @@ Tables: `translation_sources`, `translation_statuses`, and the `_en` columns and
 | `cards.flavor_text_en`, `card_effects.text_en`, `card_effects.timing_en`, `brave_details.fusion_condition_en`, `ultimate_details.summon_condition_en` | `absent`: the pages are Japanese only | `absent` | `not fetched` | Machine translation (#11) is the only route in v1 |
 | `families.name_en` | `absent` | `absent` | `not fetched` | `data/family_mapping.txt` (41 `MT = preferred EN` pairs) and machine translation |
 | `products.name_en` | `absent` | `unknown` | `not fetched` | Machine translation (#11) |
-| `translation_sources.code` | `derived`: `official`, `fandom`, `manual`, `machine`; the English name on an old batspi `<h3>` has no listed code in the target schema (it comes from the wiki, not from the card maker) | | | See the gap list |
+| `translation_sources.code`, `translation_sources.name` | `derived`: `official`, `fandom`, `manual`, `machine`; the English name on an old batspi `<h3>` has no listed code in the target schema (it comes from the wiki, not from the card maker) | | | See the gap list |
 | `translation_statuses.code` | `derived`: `pending`, `machine`, `reviewed`, `failed`, set by the pipeline | | | Not source data |
 
 ## 5. Provenance
@@ -235,13 +237,14 @@ Tables: `sources`, `source_pages`, `card_source_pages`, `product_source_pages`. 
 
 | Column | batspi | official | fandom | Notes for #10 |
 | --- | --- | --- | --- | --- |
-| `sources.code`, `sources.name` | `derived`: `batspi`. The manifest records `"source": "batspi"` @ `fixtures.json` | `absent` from the planned codes (`batspi`, `fandom`) | `derived`: `fandom` (dropped for v1) | A seed table |
+| `sources.code`, `sources.name` | `derived`: `batspi`. The manifest records `"source": "batspi"` @ `fixtures.json` | no `sources` row planned in v1 (survey only) | `derived`: `fandom` (dropped for v1) | A seed table |
 | `sources.base_url` | `confirmed`: URLs start with `https://batspi.com/index.php?` @ `fixtures.json`; image paths are relative (`/card/BS7/BS72-007.jpg` @ `card_spirit.html`) | `unknown`: `https://www.battlespirits.com/cardlist/` ([official.md §1](official.md#1-urls-and-policy-status-2026-11-14)) | `not fetched`: the manifest has the synthetic `https://battle-spirits.fandom.com/wiki/Card_A` @ `fixtures.json` | Resolve relative image links against `base_url` |
 | `source_pages.url` | `confirmed`: the `url` field of every batspi entry in `fixtures.json`, percent-encoded (for example `https://batspi.com/index.php?%E5%85%89%E7%88%AA%E3%81%AE%E6%AD%A6%E8%8A%B8%E8%80%85%E3%83%98%E3%83%AB%E3%83%8F%E3%82%A6%E3%83%B3%E3%83%89` @ `fixtures.json`) | `unknown`: a card detail is `./detail_iframe.php?card_no=<number>`, not fetched | `not fetched` | The page name is the card name, so a renamed page changes the URL |
 | `source_pages.fetched_at` | `confirmed` as a date only: `"fetched": "2026-11-14"` @ `fixtures.json` | `unknown` | `not fetched` | The manifest has no time; the real cache records an ISO-8601 UTC timestamp |
 | `source_pages.content_sha256`, `source_pages.parser_version` | `derived` by the cache and the parser | | | Not on any page |
 | `card_source_pages`, `product_source_pages` | `derived` by the build. A card page lists a link to the official card: `cardlist/index.php?search=true&freewords=BS72-007` @ `card_spirit.html` | `unknown` | `not fetched` | The official link is a cross-reference built from the number, present on the untrimmed pages only |
 | Page date (no column) | `confirmed` on untrimmed pages: `Last-modified: 2025-06-24 (火) 23:32:36` @ `card_spirit.html`. `absent` on trimmed pages (the `#lastmodified` element is removed) | `unknown` | `not fetched` | The target schema has no column for the wiki's own modification date |
+| `schema_meta` (`schema_version`, `data_version`, `built_at`, `source_snapshot`, `generator`) | `derived` by the build | `absent` | `not fetched` | Build metadata, no source. `source_snapshot` can carry the newest `fetched` date of the cached pages |
 
 ## 6. Images
 
@@ -251,7 +254,7 @@ Table: `printing_images` and the lookup `image_sizes`. The policy is **URLs only
 | --- | --- | --- | --- | --- |
 | `source_url` (large) | `confirmed`: `/card/BS7/BS72-007.jpg` @ `card_spirit.html`; `/card/BS5/BS52-TX01A.jpg` @ `card_flip.html`; `/card/ETC/EX001.jpg` @ `card_promo.html`; `/card/SD/SD19-X01-2.jpg` @ `card_ultimate.html`; `/card/BS0/BS01-001.jpg` @ `card_spirit_bs01.html` | `unknown`: `/images/cardlist/<number>.webp` is documented as a location only ([official.md §3](official.md#3-rendering-and-card-markup)) | `not fetched`: the synthetic fixture has `https://static.wikia.nocookie.net/bs/images/a/a1/BS47-001.png/revision/latest` @ `fandom_card.html` | The `<a>` target of the gallery item is the full image. The directory rule is in [batspi.md §7](batspi.md#7-images) |
 | `source_url` (small) | `confirmed`: `/card/BS7/small/BS72-007.jpg` @ `card_spirit.html` | `absent` | `not fetched` | The nested `<img>` of the same item |
-| `image_size_id` | `derived`: `small` is the `<img>`, `large` the linked file | `absent` | `not fetched` | Only these two sizes were seen |
+| `image_size_id`, `image_sizes.code`, `image_sizes.name` | `derived`: `small` is the `<img>`, `large` the linked file | `absent` | `not fetched` | Only these two sizes were seen |
 | `printing_id` (which printing an image shows) | `confirmed` as caption text, number then product then optional note: `シークレット` for the second file `/card/BS7/BS72-007-2.jpg` @ `card_spirit.html`; the count `2枚` @ `card_spirit.html`. Some captions have only the number: `SD19-X01-4.jpg` @ `card_ultimate.html` | `unknown` | `not fetched` | The file suffix `-N` is the order in which prints were added to the wiki, not a rarity or era order. A flip face is a letter before the suffix (`BS52-TX01A-2.jpg` @ `card_flip.html`) |
 | `width`, `height` | `confirmed` only as the HTML attributes of the small `<img>`: `width="205" height="300"` @ `card_spirit.html`. These are display attributes, not file properties | `unknown` | `not fetched` | Do not store them as the file size. The artefact stores no file |
 | `sha256`, `mime_type` | `absent` by policy (no download) | `absent` | `not fetched` | NULL in v1 |
