@@ -1,0 +1,20 @@
+{
+    "name": "Next Gen",
+    "card_id": "BS01-002",
+    "type": "Spirit",
+    "cost": 4,
+    "reduction": "",
+    "symbol": "Purple",
+    "family": [
+        "Dragon",
+        "Next Generation"
+    ],
+    "core_requirements": [
+        {
+            "level": 1,
+            "battlePoints": 5000,
+            "cores": 2
+        }
+    ],
+    "image": "images/BS01/BS01-002.jpg"
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Empty family",
+    "card_id": "BS02-001",
+    "type": "Spirit",
+    "cost": 3,
+    "reduction": "",
+    "symbol": "Yellow",
+    "family": [],
+    "core_requirements": [],
+    "image": "a.jpg"
+}

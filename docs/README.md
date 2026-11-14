@@ -1,14 +1,15 @@
 # Documentation index
 
-This folder documents the **current, legacy** state of BS_Database (a Battle Spirits card scraper and SQLite builder) and the decisions that shape its restructuring. It is the baseline for the roadmap epics listed in the [top-level README](../README.md).
+This folder documents the current state of BS_Database (the `bs_database` package: Battle Spirits card scrapers, normalizer and SQLite builder) and the decisions that shape it. It is the baseline for the roadmap epics listed in the [top-level README](../README.md).
 
 ## Contents
 
 | Document | Description |
 | --- | --- |
-| [architecture/overview.md](architecture/overview.md) | Current pipeline, components, known issues and tech debt |
+| [architecture/overview.md](architecture/overview.md) | Package layout, CLI flow, components, known issues and tech debt |
 | [data-model/current-schema.md](data-model/current-schema.md) | Current SQLite schema, SQLAlchemy models, row counts, gaps |
 | [domain/glossary.md](domain/glossary.md) | Battle Spirits domain glossary (EN/JP) |
+| [configuration.md](configuration.md) | Settings and `BSDB_*` environment variables |
 | [adr/README.md](adr/README.md) | Architecture Decision Records index |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | How to contribute (workflow, commits, tooling) |
 | [../CLAUDE.md](../CLAUDE.md) | Guidance for Claude Code in this repository |

@@ -34,3 +34,9 @@ jobs:
         run: uv run mypy
       - name: Pytest
         run: uv run pytest --cov --cov-report=term-missing
+      - name: No absolute user paths
+        run: |
+          if git grep -nE '[A-Za-z]:\\Users\\|/home/[a-z]|/Users/[A-Za-z]' -- '*.py' '*.toml' '*.yml' '*.yaml' '*.cfg' '*.ini' ':!.github/workflows/ci.yml'; then
+            echo "::error::absolute user path found"
+            exit 1
+          fi
