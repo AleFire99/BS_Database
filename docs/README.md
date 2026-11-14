@@ -7,9 +7,11 @@ This folder documents the current state of BS_Database (the `bs_database` packag
 | Document | Description |
 | --- | --- |
 | [architecture/overview.md](architecture/overview.md) | Package layout, CLI flow, components, known issues and tech debt |
-| [data-model/current-schema.md](data-model/current-schema.md) | Current SQLite schema, SQLAlchemy models, row counts, gaps |
+| [data-model/current-schema.md](data-model/current-schema.md) | **Legacy** SQLite schema, SQLAlchemy models, row counts, gaps (superseded by the target schema, kept for the #12 migration) |
 | [data-model/field-inventory.md](data-model/field-inventory.md) | Card fields per type and source: what exists, what is parsed, what is stored |
-| [data-model/target-schema.md](data-model/target-schema.md) | Target schema design: card, card number and printing identity (extended by #30, #31, #32) |
+| [data-model/target-schema.md](data-model/target-schema.md) | Target schema design: identity, gameplay, effects, text, provenance, images, complete ER and DDL draft |
+| [data-model/legacy-mapping.md](data-model/legacy-mapping.md) | Every legacy table, column, JSON key and artefact mapped to the target schema or dropped, plus the gap list |
+| [data-model/samples.md](data-model/samples.md) | Hand-modelled sample cards as SQL inserts against the DDL draft |
 | [domain/glossary.md](domain/glossary.md) | Battle Spirits domain glossary (EN/JP) |
 | [configuration.md](configuration.md) | Settings and `BSDB_*` environment variables |
 | [adr/README.md](adr/README.md) | Architecture Decision Records index |
