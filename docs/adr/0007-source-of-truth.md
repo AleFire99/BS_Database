@@ -64,9 +64,9 @@ Option 1. batspi.com is the single source of truth in v1. Inside batspi the foll
 | Field group | Authoritative | Fallback | Notes |
 | --- | --- | --- | --- |
 | `name_ja`, card type, cost, reductions, colours, symbols, families, levels and BP, Brave and Ultimate fields, effects, flavor text | Own `<pre>` (and the page title for `name_ja`) | none, NULL | No official cross-check in v1 |
-| `name_en` | The English name in the batspi `<h3>`, with `translation_source = official` (it is the official Bandai English name, transcribed by the wiki) | Machine translation in #11, with `translation_source = machine` | Fandom is not used |
+| `name_en` | The English name in the batspi `<h3>`, with `translation_source = official` and status `reviewed` (it is the official Bandai English name, transcribed by the wiki) | Machine translation in #11, with `translation_source = machine` | Fandom is not used |
 | Other `_en` text (effects, flavor, families) | Machine translation in #11 (`machine`, status `machine`) | NULL with status `failed` | Reviewed text may replace it later (`manual`) |
-| Card number | The `cardno` span of the print heading | The image caption | Official prefixes such as `26R` are not adopted |
+| Card number | The `cardno` span (the number also appears as text in the `<h3>`, for example `<BS01-001>`) | The image caption | Official prefixes such as `26R` are not adopted |
 | Rarity | The "収録" section on the card page, per product | The rarity token on the set page | Rarity is per printing ([ADR 0004](0004-card-printing-identity.md)) |
 | Product name and code | The set page title. The code is taken from the card-number prefix | NULL for products without a code (distributions, wafers) | |
 | Release date | The set page (`YYYY年M月D日発売`) | The card page "収録" date (`YYYY年MM月DD日`) | Normalised to ISO 8601, otherwise NULL |
@@ -78,7 +78,7 @@ Option 1. batspi.com is the single source of truth in v1. Inside batspi the foll
 - When two batspi locations give different values for the same field and printing, the higher-precedence value wins.
 - The parser logs a warning with the card number, the field and both values.
 - No conflict is resolved silently.
-- Some numbers of one card name carry different gameplay values or text (for example two BP lines on `ゴラドン`). That is not a source conflict but an identity question. It is left to [#63](https://github.com/AleFire99/BS_Database/issues/63) (ADR 0004 amendment under #12). Until then the parser keeps the values per number and reports the case.
+- Some numbers of one card name carry different gameplay values or text (for example two BP lines on `ゴラドン`, or flavor text on only one number of `ダブルドロー` in `card_magic_flash.html`). That is not a source conflict but an identity question. It is left to [#63](https://github.com/AleFire99/BS_Database/issues/63) (ADR 0004 amendment under #12). Until then the parser keeps the values per number and reports the case.
 
 ## Consequences
 

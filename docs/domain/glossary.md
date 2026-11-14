@@ -1,6 +1,6 @@
 # Battle Spirits glossary
 
-Neutral domain glossary for the Japanese Battle Spirits trading card game (バトルスピリッツ). Statements marked "(to verify in E4)" are not yet confirmed against an authoritative source and must be checked during source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9)).
+Neutral domain glossary for the Japanese Battle Spirits trading card game (バトルスピリッツ). Statements that were marked "to verify in E4" were checked during the source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9)) against the batspi fixtures; see the [coverage matrix](../sources/coverage-matrix.md).
 
 ## Card types
 
@@ -122,6 +122,8 @@ Modelled text-first in [target-schema.md](../data-model/target-schema.md#effects
 | batspi.com | JP | The only source fetched; authoritative for every field ([batspi.md](../sources/batspi.md), [ADR 0007](../adr/0007-source-of-truth.md)) |
 | battle-spirits.fandom.com | EN | Dropped: behind a Cloudflare challenge ([fandom.md](../sources/fandom.md)) |
 | battlespirits.com (official, Bandai) | JP | Survey only; asks visitors not to reuse content ([official.md](../sources/official.md)) |
+
+## Source terms
 
 | Term | JP | Description |
 | --- | --- | --- |
