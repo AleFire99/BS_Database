@@ -88,7 +88,7 @@ def data_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, restore_logging: N
 def test_commands_listed_with_help() -> None:
     result = runner.invoke(app, ["--help"])
     assert result.exit_code == 0
-    for name in ("scrape", "normalize", "build"):
+    for name in ("scrape", "normalize", "build", "images"):
         assert name in result.output
         assert runner.invoke(app, [name, "--help"]).exit_code == 0
 
@@ -199,3 +199,34 @@ def test_scrape_default_dirs_keep_legacy_image_paths(
     )
     assert runner.invoke(app, ["scrape"]).exit_code == 0
     assert seen == ["data/images/BS01/BS01-001.jpg"]
+
+
+def test_images_range_and_settings(data_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    calls: list[tuple[Any, ...]] = []
+    monkeypatch.setattr(
+        "bs_database.cli.download_set_images", lambda *a, **k: calls.append((*a, k))
+    )
+    result = runner.invoke(app, ["images", "--sets", "47-48"])
+    assert result.exit_code == 0, result.output
+    assert calls == [
+        (
+            range(47, 49),
+            "https://battle-spirits.fandom.com/wiki/",
+            "https://battle-spirits.fandom.com",
+            str(data_dir / "images"),
+            {},
+        )
+    ]
+
+
+def test_images_default_range(data_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    got: list[range] = []
+    monkeypatch.setattr("bs_database.cli.download_set_images", lambda nums, *a: got.append(nums))
+    assert runner.invoke(app, ["images"]).exit_code == 0
+    assert got == [range(19, 72)]
+
+
+@pytest.mark.parametrize("value", ["abc", "19", "1-2-3", "9-3"])
+def test_images_malformed_range(data_dir: Path, value: str) -> None:
+    result = runner.invoke(app, ["images", "--sets", value])
+    assert result.exit_code == 2

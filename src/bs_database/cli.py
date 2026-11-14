@@ -13,6 +13,7 @@ from bs_database.normalize import normalize_tree
 from bs_database.scrapers.batspi_card import scrape_card_data
 from bs_database.scrapers.batspi_links import extract_links
 from bs_database.scrapers.batspi_sets import extract_set_urls
+from bs_database.scrapers.fandom_images import download_set_images
 from bs_database.settings import Settings
 
 logger = logging.getLogger(__name__)
@@ -57,6 +58,18 @@ def main(
     settings = Settings()
     ctx.obj = settings
     configure_logging(log_level or settings.log_level)
+
+
+def _parse_range(value: str) -> range:
+    """Parse ``"19-71"`` into ``range(19, 72)`` (inclusive bounds)."""
+    try:
+        start_s, end_s = value.split("-")
+        start, end = int(start_s), int(end_s)
+    except ValueError:
+        raise typer.BadParameter(f"expected a range like 19-71, got {value!r}") from None
+    if start > end:
+        raise typer.BadParameter(f"range start is greater than end: {value!r}")
+    return range(start, end + 1)
 
 
 def _settings(ctx: typer.Context) -> Settings:
@@ -123,3 +136,21 @@ def scrape(
             scrape_card_data(
                 card_id, link, str(settings.json_dir), image_root=str(settings.images_dir)
             )
+
+
+@app.command()
+def images(
+    ctx: typer.Context,
+    sets: Annotated[
+        str, typer.Option("--sets", help="Inclusive set-number range, e.g. 19-71.")
+    ] = "19-71",
+) -> None:
+    """Download card images from the fandom wiki."""
+    settings = _settings(ctx)
+    set_numbers = _parse_range(sets)
+    download_set_images(
+        set_numbers,
+        settings.fandom_set_url,
+        settings.fandom_base_url,
+        str(settings.images_dir),
+    )
