@@ -1,6 +1,6 @@
 # NNNN. Title of the decision
 
-- Status: Proposed | Accepted | Deprecated | Superseded by [NNNN](NNNN-title.md)
+- Status: Proposed | Accepted | Deprecated | Superseded by `NNNN-title.md`
 - Date: YYYY-MM-DD
 
 ## Context
