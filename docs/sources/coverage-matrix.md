@@ -59,7 +59,7 @@ Tables: `cards`, `card_numbers`, `printings`, `products`, `product_types`, `rari
 | `name_en` | `confirmed` on older cards, in the `<h3>` after `/`: `The GunDragon Phoenix-Cannon` @ `card_brave.html`; `Goradon` @ `card_spirit_bs01.html`; `Double Draw` @ `card_magic_flash.html`; `The FlameWingDragon Ma-Dwo` @ `card_promo.html`. `absent` on `card_spirit.html`, `card_nexus.html`, `card_magic.html`, `card_ultimate.html`, `card_nexus_soukaishin.html`, `card_flip.html` and `card_spirit_xx_bs31.html` (no `/<EN>` part) | `absent`: the result list is Japanese only | `not fetched`: the legacy scraper read a `Name` column from the set table ([fandom.md §2](fandom.md#2-what-the-wiki-offers)); the only fixture is synthetic (`Alpha Dragon` @ `fandom_set_BS47.html`) | The English name is only on some pages and some `<h3>` (the `<h3>` of `card_ultimate.html` has none). Never treat a missing English name as an error. Machine translation is the fallback (#11) |
 | `flavor_text_ja` | `confirmed`: line `フレーバーテキスト：` followed by the text @ `card_spirit.html`. `absent` on `card_magic.html`, `card_nexus_soukaishin.html` and the `SD67-CP01` block of `card_ultimate.html` | `unknown`: effect and flavor text are not in the result list | `not fetched` | The text is hard-wrapped by the wiki: `その武器` and `で戦うのは大型のスピリット。` @ `card_spirit.html` are one sentence on two lines. It may end with an attribution `―星文学者リリア『八十八星夜話』鳳凰座―` @ `card_brave.html`. It can carry a product note on the same line, `フレーバーテキスト：(バトルスピリッツ メモリアルカードダスセット Hero Ver.)` @ `card_magic_flash.html`, and it differs between the two numbers of that page (the second block has none), so it is per printed number |
 | `flavor_text_en` | `absent` (Japanese only) | `absent` | `not fetched` | Machine translation in #11 |
-| `en_source_id`, `en_status_id` | `derived` by the build (see section 3, multilingual text) | `absent` | `not fetched` | Not source data |
+| `en_source_id`, `en_status_id` | `derived` by the build (see section 4, multilingual text) | `absent` | `not fetched` | Not source data |
 | `block_icon` | `confirmed`: `ブロックアイコン:<12>` @ `card_spirit.html`, in the line `[BS72]` + product + icon + date. It is per product, not per card: `ブロックアイコン:<5>` for `BS44` and `ブロックアイコン:<6>` for `SD51` on the same number @ `card_nexus_soukaishin.html`. `absent` on older entries: `(BS01-001)` followed by `2008年09月13日` and no icon @ `card_spirit_bs01.html`; and on distributions such as `バトスピショップバトル` @ `card_promo.html` | `unknown`: `block_icon[]` is a search filter ([official.md §3](official.md#3-rendering-and-card-markup)), the value per card was not read | `not fetched` | The icon is on the product line of the `h4 収録/掲載/配布 ブロックアイコン` section. The icon is optional on that line |
 | `id`, `card_type_id` | `derived` | | | `id` is a surrogate key; `card_type_id` is covered by [card_types](#cards-gameplay-columns-and-card_types) |
 
@@ -180,3 +180,80 @@ Tables: `card_types`, `colors`, `symbols`, `card_colors`, `card_symbols`, `card_
 | --- | --- | --- | --- | --- |
 | `summon_condition_ja` | `confirmed`: `【召喚条件：自分の赤スピリット1体以上】` @ `card_ultimate.html`; `【召喚条件：魂状態/煌臨元を含む自分の赤スピリット/アルティメット1体以上】` @ `card_ultimate.html` | `unknown` | `not fetched` | The whole `【…】` line is the value. A related line `OC条件：カウント5以上` @ `card_ultimate.html` has no column |
 | `summon_condition_en`, `en_source_id`, `en_status_id` | `absent` / `derived` | `absent` | `not fetched` | Machine translation in #11 |
+
+## 3. Effects and keywords
+
+Tables: `card_effects`, `effect_kinds`, `card_effect_levels`, `keywords`, `card_effect_keywords`. Effects are text-first ([ADR 0005](../adr/0005-text-first-effects-and-translations.md)): a block is stored as printed. The lines between the level line and `シンボル：` are effects; a header line starts with `Lv`, `【`, `《` or `『`, and a block ends at the next header or at `シンボル：`, `イラスト：` or `フレーバーテキスト：`.
+
+### card_effects, effect_kinds
+
+| Column | batspi | official | fandom | Notes for #10 |
+| --- | --- | --- | --- | --- |
+| `text_ja` | `confirmed`: `自分のネクサスが「ゼウス」だけのとき、自分のデッキを上から3枚オープンできる。` @ `card_nexus.html` (a block of three lines); `自分はデッキから2枚ドローする。` @ `card_magic.html` | `unknown`: effect text is not in the result list | `not fetched` | Join the lines of the block with line breaks. Keep the reminder text in brackets, for example `（Uトリガー：相手のデッキの1枚目をトラッシュに置く。そのカードのコストが、このアルティメットより低ければヒットとする）` @ `card_ultimate.html` |
+| `timing_ja` | `confirmed`: `『自分のアタックステップ開始時』` in `Lv1・Lv2『自分のアタックステップ開始時』` @ `card_spirit.html`; `『このスピリットの転醒/アタック時』` @ `card_flip.html`. `absent` on a bare header: `Lv1・Lv2` followed by `このネクサスのシンボルは赤としても扱う。` @ `card_nexus_soukaishin.html` | `unknown` | `not fetched` | Keep the brackets. A timing can follow a keyword: `【Uトリガー】Lv3・Lv4・Lv5『このアルティメットのアタック時』` @ `card_ultimate.html` |
+| `effect_kind_id` | `derived` from the header. Seen: a level header with a timing (`Lv1・Lv2『自分のアタックステップ開始時』` @ `card_spirit.html`); a level header with no timing (`Lv2` @ `card_nexus.html`); `メイン：` @ `card_magic.html`; `フラッシュ：` @ `card_magic_flash.html`, in the card's own block (the planned `flash` kind was seen only in related listings before); `【セット中】『自分のアタックステップ開始時』` @ `card_magic.html`; a keyword line `【ミラージュ：コスト2(1)(このカードは手札からセットできる)】` @ `card_magic.html` | `absent` | `not fetched` | Headers with no planned kind (they would be `other`): `Lv1《転醒：自分のカウント5以下(転醒は同時に使えない)》` @ `card_flip.html`; `Lv1【根幻回帰】` @ `card_flip.html`; `【神技：2】Lv1・Lv2：フラッシュ『お互いのアタックステップ』` @ `card_nexus_soukaishin.html`; `【神域】Lv2『自分のアタックステップ』` @ `card_nexus_soukaishin.html`; `Lv4・Lv5：フラッシュ【真・覚醒】『このアルティメットのアタック時』` @ `card_ultimate.html`; `フラッシュ《契約煌臨：極契約＆C3以上》『自分のターン』` @ `card_ultimate.html`; `【OC中】Lv3・Lv4『このアルティメットのアタック時』` @ `card_ultimate.html`; `OC条件：カウント5以上` @ `card_ultimate.html` |
+| `position` | `derived`: printed order | | | |
+| `text_en`, `timing_en`, `en_source_id`, `en_status_id` | `absent` / `derived` | `absent` | `not fetched` | Machine translation in #11 |
+| `effect_kinds.code`, `effect_kinds.name` | `derived`: seed table | `absent` | `absent` | |
+
+Effect lines that come before the first header and have no level scope: `自分の白以外のスピリットがいる間、このカードをコスト8にする。` @ `card_spirit_xx_bs31.html`; `このカードの軽減シンボルは紫/緑/白/黄/青としても扱う。` @ `card_promo.html`; `このブレイヴは、疲労せず、スピリット状態のとき、アタックとブロックができない。` @ `card_brave.html`. Bullets and markers inside a block: `◆` and `〔重複不可〕` @ `card_nexus_soukaishin.html`, `〔ターンに1回：同名〕` @ `card_ultimate.html`.
+
+Pre-erratum blocks sit under a collapsed label `(エラッタ前) ▼` @ `card_brave.html`. They hold the old wording (for example `【合体時】【激突】『このスピリットの合体アタック時』`, two lines) and may not start with a type line. They are not a printing and must not become a second effect list.
+
+### card_effect_levels
+
+| Column | batspi | official | fandom | Notes for #10 |
+| --- | --- | --- | --- | --- |
+| `card_level_id` (levels of the header) | `confirmed`: `Lv1・Lv2` @ `card_spirit.html`; `Lv3・Lv4・Lv5` @ `card_ultimate.html`; `Lv1・Lv2・Lv3` @ `card_flip.html`; a single `Lv2` @ `card_nexus.html`. The half-width separator `･` (U+FF65) occurs too, but in the fixtures only in related listings: `Lv1･Lv2【超装甲：赤/紫/緑/白/黄/青】` @ `card_spirit_xx_bs31.html` | `unknown` | `not fetched` | Accept both `・` (U+30FB) and `･` (U+FF65). The batspi catalogue says the live pages mix them; the fixtures' own blocks use `・` only. The level can also come after a keyword or before a colon (`【神技：2】Lv1・Lv2：フラッシュ`). A Magic has no level rows |
+| `card_effect_id` | `derived` | | | |
+
+### keywords, card_effect_keywords
+
+| Column | batspi | official | fandom | Notes for #10 |
+| --- | --- | --- | --- | --- |
+| `keywords.code`, `keywords.name` | `derived`: the bracketed name is read from the block, the code and English name are the loader's. Names seen: `ミラージュ` @ `card_magic.html`; `超装甲` @ `card_spirit_xx_bs31.html`; `激突` and `合体時` @ `card_brave.html`; `神技` and `神域` @ `card_nexus_soukaishin.html`; `Uトリガー` and `真・覚醒` @ `card_ultimate.html`; `根幻回帰` @ `card_flip.html` | `unknown` | `not fetched` | Four bracket shapes occur: `【…】`, `《…》`, `〔…〕` and `『…』`. `『…』` is a timing, `〔…〕` holds a cost, a restriction or a filter, `【…】` and `《…》` a keyword or a label. Which of them are keywords is for #11 |
+| `card_effect_keywords.parameter_ja` | `confirmed`: `コスト2(1)` in `【ミラージュ：コスト2(1)(このカードは手札からセットできる)】` @ `card_magic.html`; `赤/紫/緑/白/黄/青` in `【超装甲：赤/紫/緑/白/黄/青】` @ `card_spirit_xx_bs31.html`; `2` in `【神技：2】` @ `card_nexus_soukaishin.html`; `自分のカウント5以下` in `《転醒：自分のカウント5以下(転醒は同時に使えない)》` @ `card_flip.html` | `unknown` | `not fetched` | The text after the colon up to the closing bracket. Brave `【合体時】【激突】` has two keywords on one line |
+
+The batspi effect-category tags outside the `<pre>` (カード効果 and 発揮タイミング) are out of scope for v1.
+
+## 4. Multilingual text
+
+Tables: `translation_sources`, `translation_statuses`, and the `_en` columns and status keys of the other tables. The Japanese text comes from batspi and is never overwritten ([target-schema rules](../data-model/target-schema.md#rules)).
+
+| Column | batspi | official | fandom | Notes for #10 |
+| --- | --- | --- | --- | --- |
+| `cards.name_en` | `confirmed` on some pages only (see [cards](#cards)) | `absent`: Japanese only | `not fetched` | See the gap list |
+| `cards.flavor_text_en`, `card_effects.text_en`, `card_effects.timing_en`, `brave_details.fusion_condition_en`, `ultimate_details.summon_condition_en` | `absent`: the pages are Japanese only | `absent` | `not fetched` | Machine translation (#11) is the only route in v1 |
+| `families.name_en` | `absent` | `absent` | `not fetched` | `data/family_mapping.txt` (41 `MT = preferred EN` pairs) and machine translation |
+| `products.name_en` | `absent` | `unknown` | `not fetched` | Machine translation (#11) |
+| `translation_sources.code` | `derived`: `official`, `fandom`, `manual`, `machine`; the English name on an old batspi `<h3>` has no listed code in the target schema (it comes from the wiki, not from the card maker) | | | See the gap list |
+| `translation_statuses.code` | `derived`: `pending`, `machine`, `reviewed`, `failed`, set by the pipeline | | | Not source data |
+
+## 5. Provenance
+
+Tables: `sources`, `source_pages`, `card_source_pages`, `product_source_pages`. These describe the pipeline rather than the pages, so most columns are `derived` at fetch time.
+
+| Column | batspi | official | fandom | Notes for #10 |
+| --- | --- | --- | --- | --- |
+| `sources.code`, `sources.name` | `derived`: `batspi`. The manifest records `"source": "batspi"` @ `fixtures.json` | `absent` from the planned codes (`batspi`, `fandom`) | `derived`: `fandom` (dropped for v1) | A seed table |
+| `sources.base_url` | `confirmed`: URLs start with `https://batspi.com/index.php?` @ `fixtures.json`; image paths are relative (`/card/BS7/BS72-007.jpg` @ `card_spirit.html`) | `unknown`: `https://www.battlespirits.com/cardlist/` ([official.md §1](official.md#1-urls-and-policy-status-2026-11-14)) | `not fetched`: the manifest has the synthetic `https://battle-spirits.fandom.com/wiki/Card_A` @ `fixtures.json` | Resolve relative image links against `base_url` |
+| `source_pages.url` | `confirmed`: the `url` field of every batspi entry in `fixtures.json`, percent-encoded (for example `https://batspi.com/index.php?%E5%85%89%E7%88%AA%E3%81%AE%E6%AD%A6%E8%8A%B8%E8%80%85%E3%83%98%E3%83%AB%E3%83%8F%E3%82%A6%E3%83%B3%E3%83%89` @ `fixtures.json`) | `unknown`: a card detail is `./detail_iframe.php?card_no=<number>`, not fetched | `not fetched` | The page name is the card name, so a renamed page changes the URL |
+| `source_pages.fetched_at` | `confirmed` as a date only: `"fetched": "2026-11-14"` @ `fixtures.json` | `unknown` | `not fetched` | The manifest has no time; the real cache records an ISO-8601 UTC timestamp |
+| `source_pages.content_sha256`, `source_pages.parser_version` | `derived` by the cache and the parser | | | Not on any page |
+| `card_source_pages`, `product_source_pages` | `derived` by the build. A card page lists a link to the official card: `cardlist/index.php?search=true&freewords=BS72-007` @ `card_spirit.html` | `unknown` | `not fetched` | The official link is a cross-reference built from the number, present on the untrimmed pages only |
+| Page date (no column) | `confirmed` on untrimmed pages: `Last-modified: 2025-06-24 (火) 23:32:36` @ `card_spirit.html`. `absent` on trimmed pages (the `#lastmodified` element is removed) | `unknown` | `not fetched` | The target schema has no column for the wiki's own modification date |
+
+## 6. Images
+
+Table: `printing_images` and the lookup `image_sizes`. The policy is **URLs only**: the pipeline does not download card images and the artefact does not contain them ([policy.md §3.6](policy.md#36-images), [ADR 0006](../adr/0006-scraping-and-redistribution-policy.md)). So every column that needs the file (`sha256`, `mime_type`, real `width` and `height`) has no value in v1.
+
+| Column | batspi | official | fandom | Notes for #10 |
+| --- | --- | --- | --- | --- |
+| `source_url` (large) | `confirmed`: `/card/BS7/BS72-007.jpg` @ `card_spirit.html`; `/card/BS5/BS52-TX01A.jpg` @ `card_flip.html`; `/card/ETC/EX001.jpg` @ `card_promo.html`; `/card/SD/SD19-X01-2.jpg` @ `card_ultimate.html`; `/card/BS0/BS01-001.jpg` @ `card_spirit_bs01.html` | `unknown`: `/images/cardlist/<number>.webp` is documented as a location only ([official.md §3](official.md#3-rendering-and-card-markup)) | `not fetched`: the synthetic fixture has `https://static.wikia.nocookie.net/bs/images/a/a1/BS47-001.png/revision/latest` @ `fandom_card.html` | The `<a>` target of the gallery item is the full image. The directory rule is in [batspi.md §7](batspi.md#7-images) |
+| `source_url` (small) | `confirmed`: `/card/BS7/small/BS72-007.jpg` @ `card_spirit.html` | `absent` | `not fetched` | The nested `<img>` of the same item |
+| `image_size_id` | `derived`: `small` is the `<img>`, `large` the linked file | `absent` | `not fetched` | Only these two sizes were seen |
+| `printing_id` (which printing an image shows) | `confirmed` as caption text, number then product then optional note: `シークレット` for the second file `/card/BS7/BS72-007-2.jpg` @ `card_spirit.html`; the count `2枚` @ `card_spirit.html`. Some captions have only the number: `SD19-X01-4.jpg` @ `card_ultimate.html` | `unknown` | `not fetched` | The file suffix `-N` is the order in which prints were added to the wiki, not a rarity or era order. A flip face is a letter before the suffix (`BS52-TX01A-2.jpg` @ `card_flip.html`) |
+| `width`, `height` | `confirmed` only as the HTML attributes of the small `<img>`: `width="205" height="300"` @ `card_spirit.html`. These are display attributes, not file properties | `unknown` | `not fetched` | Do not store them as the file size. The artefact stores no file |
+| `sha256`, `mime_type` | `absent` by policy (no download) | `absent` | `not fetched` | NULL in v1 |
+| `path` | `absent`: no file is stored, so there is no path | `absent` | `not fetched` | The DDL draft has `path` NOT NULL; see the gap list |
+| `id` | `derived` | | | Surrogate key |
