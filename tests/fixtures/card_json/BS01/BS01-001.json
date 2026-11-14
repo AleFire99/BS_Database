@@ -1,0 +1,22 @@
+{
+    "name": "Red Dragon",
+    "card_id": "BS01-001",
+    "type": "Spirit (Attribute)",
+    "cost": 3,
+    "reduction": "Red 1",
+    "symbol": "Red",
+    "family": "Dragon, Beast and Ogres",
+    "core_requirements": [
+        {
+            "level": 1,
+            "battlePoints": 3000,
+            "cores": 1
+        },
+        {
+            "level": 2,
+            "battlePoints": 6000,
+            "cores": 3
+        }
+    ],
+    "image": "images\\BS01\\BS01-001.jpg"
+}

@@ -1,0 +1,13 @@
+{
+    "name": "Lower symbol",
+    "card_id": "BS02-004",
+    "type": "Spirit",
+    "cost": 3,
+    "reduction": "",
+    "symbol": "PURPLE",
+    "family": [
+        "Wizard"
+    ],
+    "core_requirements": [],
+    "image": "d.jpg"
+}
