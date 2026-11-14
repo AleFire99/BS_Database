@@ -1,0 +1,65 @@
+name: PR Lint
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  pr-lint:
+    name: pr-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Conventional PR title
+        uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            refactor
+            test
+            ci
+            chore
+            build
+            perf
+            style
+            revert
+            data
+      - name: Issue link and branch rules
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const head = pr.head.ref;
+            const base = pr.base.ref;
+            const errors = [];
+
+            const isDependabot = pr.user.login === 'dependabot[bot]' || head.startsWith('dependabot/');
+            if (!isDependabot) {
+              const re = /(close[sd]?|fix(e[sd])?|resolve[sd]?) #[0-9]+/i;
+              if (!re.test(pr.body || '')) {
+                errors.push('PR body must link an issue, e.g. "Closes #123".');
+              }
+            }
+
+            const rules = [
+              [/^main$/, [/^release\//, /^hotfix\//]],
+              [/^dev$/, [/^feature\//, /^release\//, /^hotfix\//, /^dependabot\//]],
+              [/^feature\//, [/^task\//]],
+            ];
+            const rule = rules.find(([b]) => b.test(base));
+            if (!rule) {
+              errors.push(`Base branch "${base}" is not allowed.`);
+            } else if (!rule[1].some((h) => h.test(head))) {
+              errors.push(`Branch "${head}" may not target "${base}".`);
+            }
+
+            if (errors.length) {
+              core.setFailed(errors.join('\n'));
+            }

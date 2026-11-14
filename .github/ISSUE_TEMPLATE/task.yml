@@ -1,0 +1,49 @@
+name: Task
+description: A unit of work under an epic
+title: ""
+labels: ["type:task"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - scraper
+        - translation
+        - db
+        - images
+        - docs
+        - infra
+    validations:
+      required: true
+  - type: input
+    id: parent
+    attributes:
+      label: Parent epic #
+      description: Issue number of the parent epic
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: Technical approach
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+    validations:
+      required: true
+  - type: textarea
+    id: test_plan
+    attributes:
+      label: Test plan
+    validations:
+      required: false

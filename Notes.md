@@ -1,5 +1,6 @@
 # Type of cards
-- spirit 
+
+- spirit
 - nexus
 - magic
 - brave

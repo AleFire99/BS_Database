@@ -20,7 +20,7 @@ def extract_links(url: str) -> List[Tuple[str, str]]:
 
     # Parse the HTML content with BeautifulSoup
     soup = BeautifulSoup(response.text, "html.parser")
-    
+
     card_links: List[Tuple[str, str]] = []
 
     # Get all <p> tags that contain card entries

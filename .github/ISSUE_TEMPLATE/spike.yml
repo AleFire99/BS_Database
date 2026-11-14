@@ -1,0 +1,50 @@
+name: Spike
+description: Time-boxed investigation
+title: ""
+labels: ["type:spike"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - scraper
+        - translation
+        - db
+        - images
+        - docs
+        - infra
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options
+    validations:
+      required: false
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Evaluation criteria
+    validations:
+      required: false
+  - type: input
+    id: timebox
+    attributes:
+      label: Timebox
+      description: e.g. 4h
+    validations:
+      required: true
+  - type: input
+    id: output
+    attributes:
+      label: Expected output
+      description: ADR number, e.g. ADR-0007
+    validations:
+      required: false

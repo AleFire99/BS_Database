@@ -39,7 +39,7 @@ def extract_spirit_info_and_core_requirements(lines):
     cost, reduction, symbol, family, spirit_type = None, None, None, None, None
     if spirit_info:
         parts = spirit_info.split("/")  # Split into parts
-        
+
         # Extract spirit type (first value) and translate it
         spirit_type = translate(lines[0].strip())  # This is the dynamic part for "Spirit"
 
@@ -87,7 +87,7 @@ def extract_spirit_info_and_core_requirements(lines):
 
     # Regex pattern to extract multiple level structures: <core>LvX BP
     matches = re.findall(r"<(\d+)>Lv(\d+)\s+(\d+)", levels_text)
-    
+
     for match in matches:
         cores = int(match[0])  # Number inside <>, e.g., "3"
         level_num = int(match[1])  # Level number after "Lv", e.g., "1"

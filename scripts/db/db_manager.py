@@ -97,7 +97,7 @@ def get_colors_from_symbol(symbol):
 def insert_card(data, session):
     # Check if the card already exists by its card_id
     existing_card = session.query(Card).filter_by(card_id=data['card_id']).first()
-    
+
     # If the card already exists, return it and don't insert again
     if existing_card:
         print(f"Card with card_id {data['card_id']} already exists. Skipping insert.")
@@ -128,7 +128,7 @@ def insert_card(data, session):
     if 'family' in data and data['family']:
         for fam_name in data['family']:
             family = get_or_create(session, Family, name=fam_name)
-            
+
             # Check if the card already has this family associated
             if family not in card.families:
                 card.families.append(family)
