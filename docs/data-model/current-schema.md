@@ -1,5 +1,7 @@
 # Current database schema
 
+> **Legacy schema.** This page documents the legacy `battle_spirits.db` schema. It is superseded by the [target schema](target-schema.md) ([ADR 0002](../adr/0002-storage-technology.md), [ADR 0003](../adr/0003-naming-and-schema-versioning.md), [ADR 0004](../adr/0004-card-printing-identity.md), [ADR 0005](../adr/0005-text-first-effects-and-translations.md)) and is kept only as a reference for the migration in [#12](https://github.com/AleFire99/BS_Database/issues/12). Where each legacy table, column and JSON key ends up is in [legacy-mapping.md](legacy-mapping.md).
+
 Schema of `battle_spirits.db`, matching the SQLAlchemy models in `src/bs_database/db.py`. SQLite, created via `Base.metadata.create_all`.
 
 ## Entity-relationship diagram

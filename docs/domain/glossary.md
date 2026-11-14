@@ -21,10 +21,10 @@ The current database holds exactly these five types (from `Notes.md`).
 | Red | 赤 | |
 | Purple | 紫 | |
 | Green | 緑 | |
-| White | 白 | Missing from the current `colors` table (bug). |
+| White | 白 | Missing from the legacy `colors` table (bug); included in the target `colors` lookup. |
 | Yellow | 黄 | |
 | Blue | 青 | |
-| Multicolor | 多色 | Card with more than one color; in the DB appears as a long symbol string. |
+| Multicolor | 多色 | Card with more than one color; the legacy DB shows it as a long symbol string, the target model as several `card_colors` rows. |
 | Symbol | シンボル | Icon printed on a card or used to reduce a cost. Distinct from a colour: the god symbol is a symbol without a colour. Modelled in `symbols`, `card_symbols` and `card_reductions`; see [Symbol vs colour](#symbol-vs-colour). The old pipeline used it as the only colour source. |
 | God symbol | 神 | Symbol that belongs to no colour; appears in cost reductions such as `4(赤2神1)`. Code `god`, `symbols.color_id` is NULL. See [target-schema.md](../data-model/target-schema.md#symbols). |
 | Black / other | | Appears only in code (`black`); existence as a game color is to verify in E4. |
@@ -38,9 +38,9 @@ A **colour** (赤, 紫, 緑, 白, 黄, 青) says which colours a card belongs to
 | Term | JP | Description |
 | --- | --- | --- |
 | Cost | コスト | Number of cores paid to play the card. |
-| Reduction | 軽減 | Symbols that can offset part of the cost; written in parentheses, e.g. `0(0)`, `2(1)`, `3(2 紫, 1 神)`. Scraped to JSON but not stored in the DB. |
+| Reduction | 軽減 | Symbols that can offset part of the cost; written in parentheses, e.g. `0(0)`, `2(1)`, `3(2 紫, 1 神)`. Scraped to JSON by the legacy pipeline (colour only, the god symbol is lost) and not stored in the legacy DB; the target model stores it in `card_reductions`, keyed by symbol. |
 | Core | コア | Resource unit; cores are placed on Spirits to raise their level. |
-| Core requirement | | Per level: number of cores needed, with the resulting BP. Stored as `(level, cores, battlePoints)`. |
+| Core requirement | | Per level: number of cores needed, with the resulting BP. Stored in the legacy DB as `(level, cores, battlePoints)`; the target table is `card_levels` (`level`, `cores`, `battle_points`). |
 | Level | レベル (Lv) | Stage of a Spirit or Nexus, unlocked by cores on it. |
 | BP | BP (ビーピー) | Battle Points, the combat strength of a Spirit at a given level. |
 
@@ -72,11 +72,11 @@ Format `BSNN-NNN`: set code plus collector number, e.g. `BS05-048` is card 48 of
 | Product | 収録/掲載/配布 | Anything a card is released in: booster, starter deck, promo distribution, magazine, collaboration. A booster set is a product with a code such as `BS72`; distributions may have no code. Has a release date. See [ADR 0004](../adr/0004-card-printing-identity.md). |
 | Chapter | 章 | batspi.com groups sets by era and chapter (e.g. `契約編：環 第1章`, the "Contract Saga"). |
 
-Reprints and promos are not modelled in the current DB; the target model is in [ADR 0004](../adr/0004-card-printing-identity.md).
+Reprints and promos are not modelled in the legacy DB; the target model is in [ADR 0004](../adr/0004-card-printing-identity.md).
 
 ## Rarity
 
-Rarity (レアリティ) marks print scarcity (for example C, U, R, M-class labels; batspi writes `<C>`, `<R>`). It belongs to a printing, not to a card, and is a lookup table in the target model ([ADR 0004](../adr/0004-card-printing-identity.md)). Not captured in the current DB; the exact rarity scale is pending #9.
+Rarity (レアリティ) marks print scarcity (for example C, U, R, M-class labels; batspi writes `<C>`, `<R>`). It belongs to a printing, not to a card, and is a lookup table in the target model ([ADR 0004](../adr/0004-card-printing-identity.md)). Not captured in the legacy DB; the exact rarity scale is pending #9.
 
 ## Identity terms
 

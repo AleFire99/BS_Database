@@ -759,6 +759,8 @@ Other rarities and variants, and the exact spelling of colours and Brave/Ultimat
 
 ### Legacy mapping
 
+This table summarises the gameplay columns only. The complete mapping of every legacy column and JSON key, with the gap list, is in [legacy-mapping.md](legacy-mapping.md).
+
 | Legacy (current-schema.md) | Target | Note |
 | --- | --- | --- |
 | `core_requirements` | `card_levels` | Renamed. |
