@@ -334,3 +334,73 @@ Each item of [field-inventory.md](../data-model/field-inventory.md) marked `pend
 | Ultimate `ultimate_trigger` | The block exists: `【Uトリガー】Lv3・Lv4・Lv5『このアルティメットのアタック時』` followed by the hit effect and a reminder in full-width brackets `（Uトリガー：…）` | same |
 | Brave and Ultimate `<pre>` layout | As in the field-type table above | same |
 | Risk "older eras differ" | The formats of the cost line, level line and `シンボル：` line were the same on every sampled card from BS01 to BS72; what varies is the content (see the table of eras) | all pages |
+
+## 7. Images
+
+Image URLs only; no image file was downloaded for this catalogue. Facts from the card pages fetched live on 2026-11-14 and from the fixtures.
+
+### URL rules
+
+| Part | Rule | Examples |
+| --- | --- | --- |
+| Host and root | `https://batspi.com/card/` | |
+| Full image | `/card/<dir>/<file>.jpg` | `/card/BS7/BS72-007.jpg` |
+| Thumbnail | `/card/<dir>/small/<file>.jpg`; the `<img>` has `width="205" height="300"` | `/card/BS7/small/BS72-007.jpg` |
+| `<dir>` | The number prefix with the set number cut to its first digit for `BS` and `CB`: `BS01` → `BS0`, `BS10` → `BS1`, `BS38` → `BS3`, `BS44` → `BS4`, `BS52` → `BS5`, `BS72` → `BS7`, `CB34` → `CB3`. Other prefixes keep one directory: `BSC##` → `BSC`, `SD##` → `SD`, `P…`, `EX…` → `ETC`, `26R…` → `26R` | `/card/BSC/BSC22-001.jpg`, `/card/SD/SD19-X01.jpg`, `/card/ETC/P001.jpg`, `/card/26R/26RSD01-013.jpg` |
+| `<file>` | The card number, plus an optional suffix `-<n>` for a further print of the same number | `BS72-007-2.jpg` |
+| Flip card faces | The face letter without brackets, after the number and before `-<n>` | `BS52-TX01A.jpg`, `BS52-TX01B-2.jpg` |
+
+The `<dir>` rule was derived from 165 distinct full-size image paths on the sampled pages (`BS0`, `BS1`, `BS2`, `BS3`, `BS4`, `BS5`, `BS6`, `BS7`, `BSC`, `CB0` to `CB3`, `SD`, `ETC`, `26R`). It was not tested for `LM`, `PB`, `PX`, `SJ`, `KA`, `KF`, `GX`, `BSCO`, `BSH`, `EXG` numbers.
+
+The image paths are relative to the site root in the gallery markup. The `<a>` target is the full image and the nested `<img>` the thumbnail.
+
+### Captions and variants
+
+The gallery caption is `<number><br /><product>[<br /><note>]`. The suffix `-<n>` is the order in which prints were added to the wiki, not a rarity or era order:
+
+| Page | Files | Captions |
+| --- | --- | --- |
+| `光爪の武芸者ヘルハウンド` (fixture) | `BS72-007.jpg`, `BS72-007-2.jpg` | product `契約編：環 第1章：廻帰再醒`; the second has the note `シークレット` |
+| `砲凰竜フェニック・キャノン` | 8 files for `BS10-062` (`-2` to `-8`), 5 for `BS38-RV022` | one product per file, including promo sets and decks; `BS38-RV022-2.jpg` has only the number |
+| `アルティメット・ジークフリード` | `SD19-X01.jpg` (event bonus) and `SD19-X01-2.jpg` to `SD19-X01-9.jpg`, `SD67-CP01.jpg` | `-4`, `-6`, `-7`, `-8` have no product caption |
+| `赤の世界／赤き神龍皇` | `BS52-TX01A.jpg` … `BS73-TCP01B-2.jpg` | 10 files |
+
+The block under the gallery shows a count per number (`BS72-007<br>2枚`), which matches the number of `<li>` entries.
+
+### Coverage
+
+Every fetched card page had at least one image, including the oldest (`BS01-001`: 3 images for `BS01-001` and 1 for `BSC22-001`) and the promo (`P001`: 3). The pages sampled do not show a card without an image. Whether every number on a set page has an image was not checked, since that needs one card fetch per number. Image licences are those of the footer note in the licence section above.
+
+## 8. Candidate fixtures for #54
+
+Pages that would extend the fixture set. The existing fixtures are kept: `index.html`, `set.html` (`契約編：環 第1章：廻帰再醒`, BS72), `card_spirit.html`, `card_nexus.html`, `card_magic.html` (all BS72 era). The candidates fill the gaps listed in the field inventory. Choosing, trimming and committing them is #54. Sizes are the raw HTML sizes on 2026-11-14 (the existing fixtures are 100 to 260 KB each).
+
+| Candidate (page name) | Kind and era | Reason | Size |
+| --- | --- | --- | --- |
+| `砲凰竜フェニック・キャノン` | Brave, `BS10-062` and `BS38-RV022` | Only Brave sampled: fusion token, fusion conditions, two numbers, erratum blocks, 13 images | 152 KB |
+| `アルティメット・ジークフリード` | Ultimate, `SD19-X01` and `SD67-CP01` | Only Ultimate sampled: summon condition, U trigger, overclock | 138 KB |
+| `創界神アポローン` | 創界神 Nexus, `BS44-X07` | Nexus type with `創界神` family, symbol `神`, no flavor | 114 KB |
+| `赤の世界／赤き神龍皇` | Flip (転醒), `BS52-TX01` | Two faces, `(A)`/`(B)` numbers, type suffix, empty reduction | 161 KB |
+| `ゴラドン` | Spirit, `BS01-001` | Oldest era, English name in the heading, two numbers with different BP | 111 KB |
+| `六絶神 鉄壁のクロム・リゼルファー` | XX rare, `BS31-XX02` | Keyword with colour list, rule text `コスト8にする`, trailing space on the type line | 119 KB |
+| `焔竜翼人マ・ドー` | Promo, `P001`, `EX001`, `P20-19` | Promo numbers, three blocks with differing text | 110 KB |
+| `ダブルドロー` (not fetched; name from the Magic listing, to be confirmed) | Magic, `BS01-117`, `BSC22-117` | Magic whose own `<pre>` should contain both `メイン：` and `フラッシュ：` | unknown |
+| `第一弾` | Set page, `BS01` | Oldest era set page: no card type headings with colours, `BS01-X01` to `X04`, a missing number | 112 KB |
+| `転醒編 第1章：輪廻転生` | Set page, `BS52` | Awakening-era sections (`転醒Xレア`), rarity breakdown header | 127 KB |
+| `コラボスターター【ガンダム ～OPERATION UC～】` | Starter set page, `SD54` | Copy counts `(3)`, `差し替えカード` section | 98 KB |
+| `バトルスピリッツ ウエハース ～蛇皇襲来～` | Reprint-only set page | No own prefix, notes in parentheses after the rarity | 105 KB |
+| `コラボブースター【仮面ライダー ～善悪の選択～】` | Collab booster set page, `CB34` | `CB##` prefix, `CB17-X06` reuse | 130 KB |
+| `プロモーションカード` | Promo list | One page with about 1,400 numbers and many prefixes; the largest page seen | 451 KB |
+
+Each page is a card or set page that robots.txt allows. Trimming is likely needed for the large ones, since the markup is mostly navigation and ad scripts.
+
+## 9. Not sampled and open risks
+
+- **Eras and products not fetched**: BS75 card pages, `SD`, `CB` and `LM` card pages (only the set pages), the starter cards of `SD29`, premium sets, figure collections, DVD box sets, tournament prize cards and the bonus categories of the index.
+- **Magic `フラッシュ：` in its own `<pre>`**: unverified (see the answers table).
+- **Image directories** for prefixes other than those listed in the images section: unverified.
+- **Licence**: no content licence was found; the open question goes to [#53](https://github.com/AleFire99/BS_Database/issues/53).
+- **Index drift**: link counts, set numbers and `Last-modified` stamps are dated snapshots (the index fixture is stamped 2026-02-05; the sampled set pages 2023 to 2026).
+- **Duplicate and changing names**: one page serves all printings with the same name, and a page name can change on the wiki. A `cmd=edit` link marks a card name that has no page yet.
+- **Reading order**: the pairing of `<h3>` print headings and card `<pre>` blocks is positional. A page with a missing or extra block would break it. This was consistent on the five multi-number pages listed in the card page section, but only a bigger sample can show an exception.
+- **Tokens, reverse sides and other odd layouts** (for example cards printed on both sides other than flip cards) were not found in the sample and may exist.
