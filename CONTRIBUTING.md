@@ -182,6 +182,7 @@ uv sync                                    # creates .venv from uv.lock
 uv run pre-commit install --hook-type pre-commit --hook-type commit-msg
 uv run pre-commit run --all-files          # ruff, uv-lock, markdownlint, whitespace, …
 uv run pytest
+uv run bsdb --help                         # dev loop: run the CLI from the working tree
 ```
 
 Add dependencies with `uv add <pkg>` (or `uv add --dev <pkg>` for dev tools) and commit `uv.lock`.

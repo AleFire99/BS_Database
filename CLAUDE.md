@@ -32,20 +32,18 @@ uv run pre-commit run --all-files
 .github/scripts/check-mermaid.sh         # render-check all mermaid blocks (needs Chrome)
 ```
 
-## Layout (legacy, until E2 #7)
+## Layout
 
 | Path | Role |
 | --- | --- |
-| `main.py` | Entry point; currently only loads card JSON into `battle_spirits.db` |
-| `scripts/scraper/` | `json_set_scraper.py` (fandom set tables), `card_scraper.py` (batspi.com card pages + JP→EN machine translation), `image_scraper.py` |
-| `scripts/extract_card_links.py`, `scripts/set_link_extractor.py` | batspi.com link discovery |
-| `scripts/db/db_manager.py` | SQLAlchemy models and JSON → SQLite loader |
-| `json_editor.py`, `data/family_mapping.txt` | Family-name normalization |
-| `config/settings.py` | URLs and **hardcoded Windows paths** (to be replaced in E2) |
-| `battle_spirits.db` | Legacy build output, still tracked (to be untracked in E2) |
+| `src/bs_database/cli.py` | Typer app, entry point `bsdb` (`scrape`, `normalize`, `build`, `images`) |
+| `src/bs_database/settings.py`, `log.py` | `BSDB_*` settings and logging setup |
+| `src/bs_database/scrapers/` | `batspi_sets`, `batspi_links`, `batspi_card` (batspi.com + JP→EN machine translation), `fandom_sets`, `fandom_images` |
+| `src/bs_database/normalize.py` | Family-name and type normalization (uses `data/family_mapping.txt`) |
+| `src/bs_database/db.py` | SQLAlchemy models and JSON → SQLite loader (`build_db`) |
+| `tests/` | pytest suite; `tests/goldens/` and `tests/fixtures/` come from the legacy code (tag `v0.1.0`); `tests/tools/db_counts.py` prints per-table row counts |
+| `battle_spirits.db` | Build output, untracked and git-ignored |
 | `docs/` | Architecture, data model (ER), domain glossary, ADRs |
-
-The legacy paths are excluded from ruff and mypy until E2. Do not refactor legacy code outside an approved task.
 
 ## Data sources
 
