@@ -52,9 +52,32 @@ def page_url(page: str) -> str:
     return f"{BASE}index.php?{quote(page, safe='')}"
 
 
-def check_allowed(url: str, robots: urllib.robotparser.RobotFileParser) -> None:
+def split_robots(text: str) -> tuple[list[str], list[str]]:
+    """Return ``(lines for urllib.robotparser, raw Disallow prefixes ending in "?")``.
+
+    ``urllib.robotparser`` normalises the rule ``/?`` to ``/`` and would block the whole site,
+    so such rules are checked here by plain prefix match instead.
+    """
+    lines: list[str] = []
+    prefixes: list[str] = []
+    for line in text.splitlines():
+        key, _, value = line.partition(":")
+        value = value.strip()
+        if key.strip().lower() == "disallow" and value.endswith("?") and "&" not in value:
+            prefixes.append(value)
+        else:
+            lines.append(line)
+    return lines, prefixes
+
+
+def check_allowed(
+    url: str, robots: urllib.robotparser.RobotFileParser, query_prefixes: list[str]
+) -> None:
     if any(marker in url for marker in DENY_MARKERS):
         raise StopRun(f"deny list: {url}")
+    rest = url.removeprefix(BASE.rstrip("/"))
+    if any(rest.startswith(prefix) for prefix in query_prefixes):
+        raise StopRun(f"robots.txt disallows: {url}")
     if not robots.can_fetch(USER_AGENT, url):
         raise StopRun(f"robots.txt disallows: {url}")
 
@@ -114,6 +137,7 @@ def main(argv: list[str]) -> int:
     session.headers["User-Agent"] = USER_AGENT
     robots = urllib.robotparser.RobotFileParser()
     requests_made = 0
+    query_prefixes: list[str] = []
     if not args.offline:
         resp = session.get(f"{BASE}robots.txt", timeout=30)
         requests_made += 1
@@ -121,7 +145,9 @@ def main(argv: list[str]) -> int:
         if resp.status_code != 200:
             print("error: robots.txt not fetched, stopping", file=sys.stderr)
             return 1
-        robots.parse(resp.text.splitlines())
+        robot_lines, query_prefixes = split_robots(resp.text)
+        robots.parse(robot_lines)
+        robots.modified()
 
     manifest = load_manifest()
     for spec in args.specs:
@@ -130,7 +156,7 @@ def main(argv: list[str]) -> int:
         raw_path = args.raw_dir / name
         if not args.offline:
             try:
-                check_allowed(url, robots)
+                check_allowed(url, robots, query_prefixes)
             except StopRun as exc:
                 print(f"error: {exc}", file=sys.stderr)
                 return 1
