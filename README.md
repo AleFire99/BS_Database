@@ -39,6 +39,7 @@ uv run bsdb --help
 
 - [Contributing](CONTRIBUTING.md)
 - [Docs index](docs/README.md)
+- [Configuration](docs/configuration.md)
 
 ## Related projects
 

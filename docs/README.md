@@ -9,6 +9,7 @@ This folder documents the **current, legacy** state of BS_Database (a Battle Spi
 | [architecture/overview.md](architecture/overview.md) | Current pipeline, components, known issues and tech debt |
 | [data-model/current-schema.md](data-model/current-schema.md) | Current SQLite schema, SQLAlchemy models, row counts, gaps |
 | [domain/glossary.md](domain/glossary.md) | Battle Spirits domain glossary (EN/JP) |
+| [configuration.md](configuration.md) | Settings and `BSDB_*` environment variables |
 | [adr/README.md](adr/README.md) | Architecture Decision Records index |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | How to contribute (workflow, commits, tooling) |
 | [../CLAUDE.md](../CLAUDE.md) | Guidance for Claude Code in this repository |
