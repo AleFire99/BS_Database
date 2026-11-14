@@ -1,6 +1,6 @@
 # Current database schema
 
-Schema of `battle_spirits.db` as inspected, matching the SQLAlchemy models in `scripts/db/db_manager.py`. SQLite, created via `Base.metadata.create_all`.
+Schema of `battle_spirits.db`, matching the SQLAlchemy models in `src/bs_database/db.py`. SQLite, created via `Base.metadata.create_all`.
 
 ## Entity-relationship diagram
 
@@ -109,7 +109,7 @@ classDiagram
 
 ## Row counts
 
-Counted on the committed `battle_spirits.db`.
+Counts are from the last tracked DB snapshot (untracked in #23). Regenerate with `uv run python tests/tools/db_counts.py <db>`.
 
 | Table | Rows | Sample |
 | --- | --- | --- |
@@ -126,7 +126,7 @@ Cards by type: Spirit 4303, Magic 891, Nexus 642, Brave 353, Ultimate 184. The d
 ## Observations on stored values
 
 - `cards.symbol` holds raw translated text, not an enum. Besides single colors (`red`, `Blue`, ...) it contains values such as `Blue and red`, `Green Red`, and `Red purple green white yellow blue` (14 cards). Inconsistent casing means `Blue` and `blue` are different strings.
-- `colors` has no `White` row: the symbol-to-color map in `get_colors_from_symbol` contains `black` instead of `white`, so white cards and all multicolor cards get no `card_colors` rows.
+- `colors` has no `White` row: the symbol-to-color map in `get_colors_from_symbol` (`bs_database.db`) contains `black` instead of `white`, so white cards and all multicolor cards get no `card_colors` rows.
 - `core_requirements.battlePoints` is camelCase, unlike every other column.
 - No `NOT NULL` constraints besides primary keys, and SQLite foreign keys are not enforced unless `PRAGMA foreign_keys=ON`.
 

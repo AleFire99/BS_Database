@@ -1,0 +1,16 @@
+{
+  "card_id": "BS72-069",
+  "core_requirements": [],
+  "cost": 3,
+  "family": [
+    "EN皇獣"
+  ],
+  "image": "data/images/BS72/BS72-069.jpg",
+  "name": "ENゼウスの雷火山",
+  "reduction": [
+    "EN赤",
+    "EN赤"
+  ],
+  "symbol": "EN赤",
+  "type": "ENネクサス"
+}

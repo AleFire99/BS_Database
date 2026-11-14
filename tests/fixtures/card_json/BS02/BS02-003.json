@@ -1,0 +1,17 @@
+{
+    "name": "Unknown symbol",
+    "card_id": "BS02-003",
+    "type": "Spirit",
+    "cost": 3,
+    "reduction": "",
+    "symbol": "Rainbow",
+    "family": "Wizard",
+    "core_requirements": [
+        {
+            "level": 1,
+            "battlePoints": 1000,
+            "cores": 1
+        }
+    ],
+    "image": "c.jpg"
+}

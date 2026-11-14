@@ -1,0 +1,14 @@
+{
+    "name": "Prefixes",
+    "card_id": "BS01-006",
+    "type": "Magic",
+    "cost": 1,
+    "reduction": "",
+    "symbol": "Black",
+    "family": [
+        "The Imperial Beast",
+        "A Warrior",
+        "And Fairies"
+    ],
+    "image": "i6.jpg"
+}

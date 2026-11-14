@@ -1,0 +1,14 @@
+{
+    "name": "New Hero",
+    "card_id": "BS01-003",
+    "type": "Brave",
+    "cost": 2,
+    "reduction": "",
+    "symbol": "Green",
+    "family": [
+        "Hero",
+        "Incarnate"
+    ],
+    "core_requirements": [],
+    "image": "images/BS01/BS01-003.jpg"
+}

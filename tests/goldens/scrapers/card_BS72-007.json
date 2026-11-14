@@ -1,0 +1,24 @@
+{
+  "card_id": "BS72-007",
+  "core_requirements": [
+    {
+      "battlePoints": 3000,
+      "cores": 1,
+      "level": 1
+    },
+    {
+      "battlePoints": 7000,
+      "cores": 3,
+      "level": 2
+    }
+  ],
+  "cost": 4,
+  "family": [
+    "EN眷属・武迅"
+  ],
+  "image": "data/images/BS72/BS72-007.jpg",
+  "name": "EN光爪の武芸者ヘルハウンド",
+  "reduction": [],
+  "symbol": "EN赤",
+  "type": "ENスピリット"
+}
