@@ -8,6 +8,7 @@ This folder documents the current state of BS_Database (the `bs_database` packag
 | --- | --- |
 | [architecture/overview.md](architecture/overview.md) | Package layout, CLI flow, components, known issues and tech debt |
 | [data-model/current-schema.md](data-model/current-schema.md) | Current SQLite schema, SQLAlchemy models, row counts, gaps |
+| [data-model/field-inventory.md](data-model/field-inventory.md) | Card fields per type and source: what exists, what is parsed, what is stored |
 | [domain/glossary.md](domain/glossary.md) | Battle Spirits domain glossary (EN/JP) |
 | [configuration.md](configuration.md) | Settings and `BSDB_*` environment variables |
 | [adr/README.md](adr/README.md) | Architecture Decision Records index |
