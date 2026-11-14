@@ -1,0 +1,34 @@
+# Config read by the global wf-* Claude Code skills (repo: AleFire99/claude-workflow).
+# A repo opts into the workflow by having this file.
+workflow_version: 0.1.0          # claude-workflow version this repo was bootstrapped with
+project:
+  owner: AleFire99
+  number: 3                      # https://github.com/users/AleFire99/projects/3
+branches:
+  production: main
+  integration: dev
+  prefixes:
+    feature: feature/            # feature/<epic#>-<slug>  from dev      -> dev (merge commit)
+    task: task/                  # task/<sub#>-<slug>      from feature/ -> feature/ (squash)
+    release: release/            # release/X.Y.Z           from dev      -> main (+ back-merge)
+    hotfix: hotfix/              # hotfix/<#>-<slug>       from main     -> main + dev
+status:                          # Project "Status" options, in board order
+  backlog: Backlog
+  ready: Ready
+  plan_review: Plan Review       # gates A, B
+  in_progress: In Progress
+  impl_review: Impl Review       # gates C, D
+  in_review: In Review           # PR open / CI
+  done: Done
+labels:
+  awaiting_approval: status:awaiting-approval
+  epic: type:epic
+  task: type:task
+  areas: [scraper, translation, db, images, docs, infra]
+checks:                          # required status checks (rulesets)
+  - lint-test
+  - docs
+  - pr-lint
+  - commitlint
+python:
+  manager: uv
