@@ -1,7 +1,7 @@
 """Fandom scraper tests.
 
 The wiki is behind a Cloudflare challenge, so the fixtures are synthetic pages. The goldens are
-produced by running the untouched legacy scrapers on them (tests/tools/generate_scraper_goldens.py).
+generated from the legacy code at 5ae5646 (legacy code removed in #23; see tag v0.1.0).
 Inline HTML snippets cover edge cases only.
 """
 
