@@ -222,7 +222,7 @@ erDiagram
         integer family_id FK
         text alias
         text lang
-        text source
+        integer translation_source_id FK
     }
     card_families {
         integer card_id PK
@@ -350,10 +350,10 @@ Other names for a family, so a machine translation can be mapped back to the pre
 | `id` | INTEGER | PRIMARY KEY | |
 | `family_id` | INTEGER | NOT NULL, FOREIGN KEY to `families.id` | |
 | `alias` | TEXT | NOT NULL | |
-| `lang` | TEXT | NOT NULL, CHECK `lang` IN (`ja`, `en`) | |
-| `source` | TEXT | NOT NULL | `machine_translation`, `fandom` or `manual`. |
+| `lang` | TEXT | NOT NULL, CHECK `lang` IN (`ja`, `en`) | ISO 639-1 language code. Language codes are the one allowed CHECK-list exception to the lookup rule of [ADR 0003](../adr/0003-naming-and-schema-versioning.md). |
+| `translation_source_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_sources.id` | Where the alias comes from: `machine`, `fandom`, `manual` or `official`. |
 
-Table constraint: `UNIQUE (family_id, alias, lang)`. Seeded from the 40 `MT = preferred EN` pairs in `data/family_mapping.txt` (for example `Rebirth = Reptile Beast`: the alias `Rebirth` points to the family whose preferred name is `Reptile Beast`) and from the machine-translated names in the legacy `families` table.
+Table constraint: `UNIQUE (family_id, alias, lang)`. Seeded from the 40 `MT = preferred EN` pairs in `data/family_mapping.txt` (source `machine`; for example `Rebirth = Reptile Beast`: the alias `Rebirth` points to the family whose preferred name is `Reptile Beast`) and from the machine-translated names in the legacy `families` table.
 
 ### card_families
 
@@ -565,7 +565,7 @@ One row per effect block in the `<pre>`, in printed order.
 | `effect_kind_id` | INTEGER | NOT NULL, FOREIGN KEY to `effect_kinds.id` | Kind of block. |
 | `timing_ja` | TEXT | | The timing as printed, brackets included (`『自分のアタックステップ』`). NULL when the block has none. Kept as text, not parsed. |
 | `timing_en` | TEXT | | English timing; NULL until translated. |
-| `text_ja` | TEXT | NOT NULL | The effect text as printed: the lines of the block after its header, joined with line breaks. For a `keyword_block` it is the whole `【…】` line. |
+| `text_ja` | TEXT | NOT NULL | The effect text as printed: the lines of the block after its header, joined with line breaks. For a `keyword_block` it is the whole `【…】` line. A block ends at the next effect header or at the first of `シンボル：`, `イラスト：` or `フレーバーテキスト：`. |
 | `text_en` | TEXT | | English text; NULL until translated. |
 | `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `timing_en` and `text_en`; NULL while untranslated. |
 | `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Defaults to `pending`. |
@@ -693,6 +693,13 @@ erDiagram
     translation_statuses ||--o{ card_effects : "states"
     translation_sources ||--o{ families : "sourced"
     translation_statuses ||--o{ families : "states"
+    translation_sources ||--o{ family_aliases : "sourced"
+    translation_sources ||--o{ products : "sourced"
+    translation_statuses ||--o{ products : "states"
+    translation_sources ||--o{ brave_details : "sourced"
+    translation_statuses ||--o{ brave_details : "states"
+    translation_sources ||--o{ ultimate_details : "sourced"
+    translation_statuses ||--o{ ultimate_details : "states"
 
     cards {
         integer id PK
@@ -717,6 +724,31 @@ erDiagram
         integer en_source_id FK
         integer en_status_id FK
     }
+    family_aliases {
+        integer id PK
+        integer translation_source_id FK
+    }
+    products {
+        integer id PK
+        text name_ja
+        text name_en
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    brave_details {
+        integer card_id PK, FK
+        text fusion_condition_ja
+        text fusion_condition_en
+        integer en_source_id FK
+        integer en_status_id FK
+    }
+    ultimate_details {
+        integer card_id PK, FK
+        text summon_condition_ja
+        text summon_condition_en
+        integer en_source_id FK
+        integer en_status_id FK
+    }
     translation_sources {
         integer id PK
         text code UK
@@ -729,7 +761,7 @@ erDiagram
     }
 ```
 
-`products`, `brave_details` and `ultimate_details` carry the same two columns (see their tables). The diagram shows three of the tables only.
+The same two columns are on `products`, `brave_details` and `ultimate_details`; `family_aliases` has `translation_source_id` only. Gameplay and identity diagrams above omit these columns; this diagram is where every translation foreign key is drawn.
 
 ### translation_sources
 
@@ -738,7 +770,7 @@ Lookup: where an English text came from.
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | |
-| `code` | TEXT | NOT NULL, UNIQUE | `official`, `fandom`, `manual`, `machine`. |
+| `code` | TEXT | NOT NULL, UNIQUE | `official`, `fandom`, `manual`, `machine`. Also used by `family_aliases.translation_source_id`. |
 | `name` | TEXT | NOT NULL | English display name. |
 
 ### translation_statuses
@@ -853,6 +885,7 @@ Images belong to the printing, not to the card: BS72-007 has two images for its 
 ```mermaid
 erDiagram
     printings ||--o{ printing_images : "shown by"
+    image_sizes ||--o{ printing_images : "sizes"
 
     printings {
         integer id PK
@@ -860,10 +893,15 @@ erDiagram
         integer product_id FK
         integer variant_id FK
     }
+    image_sizes {
+        integer id PK
+        text code UK
+        text name
+    }
     printing_images {
         integer id PK
         integer printing_id FK
-        text size
+        integer image_size_id FK
         text path
         text source_url
         text sha256
@@ -873,13 +911,23 @@ erDiagram
     }
 ```
 
+### image_sizes
+
+Lookup (`code` plus English `name`).
+
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `code` | TEXT | NOT NULL, UNIQUE | `small` is the `<img>` under `/card/BS7/small/`, `large` is the linked file under `/card/BS7/` (both seen in the fixtures). Whether more sizes exist is pending #9. |
+| `name` | TEXT | NOT NULL | English display name. |
+
 ### printing_images
 
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | |
 | `printing_id` | INTEGER | NOT NULL, FOREIGN KEY to `printings.id` | |
-| `size` | TEXT | NOT NULL, CHECK `size` IN (`small`, `large`) | `small` is the `<img>` under `/card/BS7/small/`, `large` is the linked file under `/card/BS7/` (both seen in the fixtures). Whether more sizes exist is pending #9. |
+| `image_size_id` | INTEGER | NOT NULL, FOREIGN KEY to `image_sizes.id` | Size of the file. |
 | `path` | TEXT | NOT NULL | Path relative to the release artefact. The layout is decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). |
 | `source_url` | TEXT | NOT NULL | Where the file was downloaded from. |
 | `sha256` | TEXT | | Hash of the file; NULL until downloaded. |
@@ -887,13 +935,13 @@ erDiagram
 | `height` | INTEGER | CHECK `height` > 0 | Pixels; NULL until downloaded. Pending #9. |
 | `mime_type` | TEXT | | e.g. `image/jpeg`; NULL until downloaded. |
 
-Table constraint: `UNIQUE (printing_id, size)`. Storage, download and versioning of the files are decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). A row says where an image is and where it came from; it does not require the file to be in the artefact.
+Table constraint: `UNIQUE (printing_id, image_size_id)`. Storage, download and versioning of the files are decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). A row says where an image is and where it came from; it does not require the file to be in the artefact.
 
 ### Worked example (BS72-007)
 
 The page links `BS72-007.jpg` and `BS72-007-2.jpg`, each as a small `<img>` and a larger link. Printing ids are those of [ADR 0004](../adr/0004-card-printing-identity.md) (5 = normal, 6 = secret). Which image is the secret art is pending #9 (see ADR 0004), so the mapping below is an assumption: the plain file to the normal printing and the `-2` file to the secret printing.
 
-| id | printing_id | size | source_url (relative) |
+| id | printing_id | image_size | source_url (relative) |
 | --- | --- | --- | --- |
 | 1 | 5 (normal) | `small` | `/card/BS7/small/BS72-007.jpg` |
 | 2 | 5 (normal) | `large` | `/card/BS7/BS72-007.jpg` |

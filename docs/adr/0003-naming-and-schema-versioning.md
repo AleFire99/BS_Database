@@ -49,11 +49,11 @@ Use **option 2**: snake_case conventions, keeping the BSS_app entity split but n
   - The legacy `cards.card_id` (TEXT print number) is retired because it clashes with the foreign key convention.
 - **Constraint and index names:** `pk_`, `fk_`, `uq_`, `ck_` or `ix_` followed by `<table>_<cols>`. Implemented as a SQLAlchemy `naming_convention` in #12.
 - **Quoting:** none required. Avoid reserved words as bare table names (`order`, `set`); plural names such as `sets` are safe. Columns such as `level` are legal unquoted in SQLite, but each such case is flagged in review.
-- **Enum-like values:** lookup tables with foreign keys instead of CHECK lists, so a new card type or rarity needs no schema change.
+- **Enum-like values:** lookup tables with foreign keys instead of CHECK lists, so a new card type or rarity needs no schema change. The one exception is ISO 639-1 language codes (for example `family_aliases.lang`), which may use a CHECK list.
 
 ### BSS_app → BS_Database
 
-The concepts (lookups, junctions, reductions with a count, per-level rows, effects linked to levels and keywords) are kept. Names follow the rules above. Names for the gameplay entities are final as of [#30](https://github.com/AleFire99/BS_Database/issues/30); effect entities are still tentative until [#31](https://github.com/AleFire99/BS_Database/issues/31).
+The concepts (lookups, junctions, reductions with a count, per-level rows, effects linked to levels and keywords) are kept. Names follow the rules above. Names for the gameplay entities are final as of [#30](https://github.com/AleFire99/BS_Database/issues/30); effect entities are final as of [#31](https://github.com/AleFire99/BS_Database/issues/31) (see [ADR 0005](0005-text-first-effects-and-translations.md)).
 
 | BSS_app | BS_Database | Reason for the deviation |
 | --- | --- | --- |
@@ -65,17 +65,17 @@ The concepts (lookups, junctions, reductions with a count, per-level rows, effec
 | `Symbols` (`ColorID`) | `symbols` (`color_id`) | Case and key style only. |
 | `Subtypes` | `families` (final, #30) | Battle Spirits calls them families (系統); the legacy schema already uses `families`. |
 | `Keywords` | `keywords` | Case and key style only. |
-| `Steps` | `steps` (tentative, #31) | Case only. Effects are text-first in v1, so this may be deferred. |
-| `Conditions` | `conditions` (tentative, #31) | Case only. Effects are text-first in v1, so this may be deferred. |
+| `Steps` | Deferred (ADR 0005) | Effects are text-first in v1. A future structured model would add `steps` as an additive extension. |
+| `Conditions` | Deferred (ADR 0005) | Effects are text-first in v1. A future structured model would add `conditions` as an additive extension. |
 | `CardColors` | `card_colors` | Case and key style only. |
 | `CardSymbols` | `card_symbols` | Case and key style only. |
 | `CardSubtypes` | `card_families` | Follows the rename of `Subtypes`. |
 | `CardReductions` (`CardID`, `ColorID`, `Count`) | `card_reductions` (`card_id`, `symbol_id`, `count`) | Hangs off the card, not the printing. Keyed by symbol instead of colour (deviation from BSS_app `ColorID`) because reductions include the god symbol 神, which is not a colour. `count` is a legal column name. |
 | `Core` (`CoreID`, `CardID`, `Level`, `BP`, `Cores`) | `card_levels` (`id`, `card_id`, `level`, `battle_points`, `cores`) (final, #30) | Singular table name breaks the plural rule; `BP` becomes `battle_points`, `Cores` becomes `cores`. `battle_points` is NULL for levels without BP (Nexus). |
-| `Effects` (`EffectID`, `CardID`, `ConditionID`, `Description`) | `effects` (tentative, #31) | Case and key style; `Description` becomes the text-first effect text, with the exact column set decided in #31. |
-| `EffectLevels` (`EffectID`, `CoreID`) | `effect_levels` (tentative, #31) | References `card_levels` instead of `Core`. |
-| `EffectKeywords` (`EffectID`, `KeywordID`, `Modifier`) | `effect_keywords` (tentative, #31) | Case and key style only. |
-| `EffectSteps` | `effect_steps` (tentative, #31) | Case only. May be deferred with text-first effects. |
+| `Effects` (`EffectID`, `CardID`, `ConditionID`, `Description`) | `card_effects` (final, #31) | One row per effect block; `Description` becomes `text_ja` / `text_en`, plus timing and kind. See [target-schema.md](../data-model/target-schema.md#effects-and-keywords). |
+| `EffectLevels` (`EffectID`, `CoreID`) | `card_effect_levels` (final, #31) | References `card_levels` instead of `Core`. |
+| `EffectKeywords` (`EffectID`, `KeywordID`, `Modifier`) | `card_effect_keywords` (final, #31) | Composite key; `Modifier` becomes `parameter_ja` (text, not structured). |
+| `EffectSteps` | Deferred (ADR 0005) | Effects are text-first in v1. |
 | `QA_cards` (`QA_cardID`…) | none | Out of scope for v1. |
 | `QA_keywords` (`QA_keyID`…) | none | Out of scope for v1. |
 
@@ -107,7 +107,7 @@ If BSS_app tooling is ever shared, compatibility views can map the names without
 - #28 to #32 and #12 follow these rules; a deviation needs an amendment to this ADR.
 - Names differ from BSS_app, so shared tooling needs a mapping or views.
 - The legacy tables and columns (`cards.card_id`, `battlePoints`) are renamed when the package schema is rebuilt in #12.
-- The tentative names in the table may change once #29 to #31 model the real entities. Those edits are allowed while this ADR is Proposed.
+- Names in the table were finalised by #29 to #31; further edits are allowed while this ADR is Proposed.
 - Consumers get a cheap integer compatibility check and a self-describing file.
 - The SQLAlchemy `naming_convention` and the `schema_meta` writer must be implemented in #12.
 
