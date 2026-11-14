@@ -5,5 +5,7 @@ One ADR per decision, using the [template](0000-template.md). Numbers are sequen
 | ADR | Title | Status | Date |
 | --- | --- | --- | --- |
 | [0001](0001-record-architecture-decisions.md) | Record architecture decisions | Accepted | 2026-11-14 |
-
-Planned: the SQLite vs MongoDB storage decision will be recorded as a future ADR during E3 (data model, [#8](https://github.com/AleFire99/BS_Database/issues/8)).
+| [0002](0002-storage-technology.md) | Storage technology: SQLite | Proposed | 2026-11-14 |
+| [0003](0003-naming-and-schema-versioning.md) | Naming conventions, BSS_app alignment and schema versioning | Proposed | 2026-11-14 |
+| [0004](0004-card-printing-identity.md) | Card vs printing identity, ID scheme and rarity | Proposed | 2026-11-14 |
+| [0005](0005-text-first-effects-and-translations.md) | Text-first effects and translation storage | Proposed | 2026-11-14 |
