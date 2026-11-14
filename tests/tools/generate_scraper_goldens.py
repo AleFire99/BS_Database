@@ -3,9 +3,10 @@
 Run from the repo root: ``uv run python tests/tools/generate_scraper_goldens.py``.
 ``requests.get`` serves the fixtures in ``tests/fixtures/html`` and the translator is replaced
 by a deterministic stub (``EN<text>``). Deleted together with the legacy modules in #23; the
-goldens stay. The fandom scrapers have no goldens (the wiki sits behind a bot challenge).
+goldens stay. The fandom pages are synthetic (the wiki sits behind a bot challenge).
 """
 
+import hashlib
 import importlib
 import json
 import os
@@ -51,7 +52,8 @@ def write(name: str, data: Any) -> None:
 
 
 def main() -> None:
-    sources: dict[str, str] = json.loads((HTML / "fixtures.json").read_text(encoding="utf-8"))
+    raw: dict[str, Any] = json.loads((HTML / "fixtures.json").read_text(encoding="utf-8"))
+    sources: dict[str, str] = {k: v if isinstance(v, str) else v["url"] for k, v in raw.items()}
     by_url = {url: (HTML / name).read_bytes() for name, url in sources.items()}
 
     def fake_get(url: str, *args: Any, **kwargs: Any) -> FakeResponse:
@@ -87,6 +89,32 @@ def main() -> None:
                     Path("out", "card_json", "BS72", f"{card_id}.json").read_text(encoding="utf-8")
                 )
                 write(f"card_{card_id}.json", data)
+
+            fandom_mod: Any = importlib.import_module("scripts.scraper.json_set_scraper")
+            fandom_mod.scrape_battle_spirits(sources["fandom_set_BS47.html"], "set_out/BS47.json")
+            write("fandom_set.json", json.loads(Path("set_out/BS47.json").read_text("utf-8")))
+
+            images_mod: Any = importlib.import_module("scripts.scraper.image_scraper")
+            infos = images_mod.extract_card_infos(sources["fandom_set_BS47.html"])
+            write("fandom_card_infos.json", [list(t) for t in infos])
+
+            Path("images/BS47").mkdir(parents=True)
+            downloads: dict[str, Any] = {}
+            for fixture, card_id in {
+                "fandom_card.html": "BS47-001",
+                "fandom_card_base64.html": "BS47-002",
+            }.items():
+                images_mod.download_card_image(sources[fixture], card_id, "images/BS47")
+                file = Path("images/BS47", f"{card_id}.jpg")
+                downloads[card_id] = (
+                    {
+                        "path": f"BS47/{card_id}.jpg",
+                        "sha256": hashlib.sha256(file.read_bytes()).hexdigest(),
+                    }
+                    if file.exists()
+                    else None
+                )
+            write("fandom_images.json", downloads)
         finally:
             os.chdir(old_cwd)
     assert index_url in by_url

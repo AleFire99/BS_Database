@@ -1,14 +1,16 @@
-"""Fandom scraper tests on synthetic HTML.
+"""Fandom scraper tests.
 
-The wiki is behind a Cloudflare challenge, so no real page could be saved as a fixture and
-there are no legacy-generated goldens (see the #21 report). Expected values here are derived
-from reading the legacy code.
+The wiki is behind a Cloudflare challenge, so the fixtures are synthetic pages. The goldens are
+produced by running the untouched legacy scrapers on them (tests/tools/generate_scraper_goldens.py).
+Inline HTML snippets cover edge cases only.
 """
 
+import hashlib
 import json
 import logging
 from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 import pytest
 import requests
@@ -164,3 +166,49 @@ def test_download_set_images_builds_urls_without_bs_prefix(serve: Serve, tmp_pat
     assert requested[0] == "https://wiki.example/wiki/47"
     assert (tmp_path / "BS47" / "BS47-5.jpg").read_bytes() == b"B"
     assert (tmp_path / "BS47" / "BS47-006.jpg").read_bytes() == b"B"
+
+
+GOLDENS = Path(__file__).parent / "goldens" / "scrapers"
+
+
+def golden(name: str) -> Any:
+    return json.loads((GOLDENS / name).read_text(encoding="utf-8"))
+
+
+def test_set_table_matches_golden(
+    serve: Serve, fixture_urls: dict[str, str], tmp_path: Path
+) -> None:
+    serve(None)
+    out = tmp_path / "set" / "BS47.json"
+    data = scrape_battle_spirits(fixture_urls["fandom_set_BS47.html"], str(out))
+    assert data == golden("fandom_set.json")
+    assert json.loads(out.read_text(encoding="utf-8")) == golden("fandom_set.json")
+
+
+def test_card_infos_match_golden(serve: Serve, fixture_urls: dict[str, str]) -> None:
+    serve(None)
+    infos = extract_card_infos(
+        fixture_urls["fandom_set_BS47.html"], "https://battle-spirits.fandom.com"
+    )
+    assert [list(t) for t in infos] == golden("fandom_card_infos.json")
+
+
+def test_image_downloads_match_golden(
+    serve: Serve, fixture_urls: dict[str, str], tmp_path: Path
+) -> None:
+    serve(None)
+    folder = tmp_path / "BS47"
+    folder.mkdir()
+    result: dict[str, Any] = {}
+    for fixture, card_id in (
+        ("fandom_card.html", "BS47-001"),
+        ("fandom_card_base64.html", "BS47-002"),
+    ):
+        download_card_image(fixture_urls[fixture], card_id, str(folder))
+        file = folder / f"{card_id}.jpg"
+        result[card_id] = (
+            {"path": f"BS47/{card_id}.jpg", "sha256": hashlib.sha256(file.read_bytes()).hexdigest()}
+            if file.exists()
+            else None
+        )
+    assert result == golden("fandom_images.json")

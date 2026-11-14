@@ -40,8 +40,8 @@ def no_network(monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.fixture(scope="session")
 def fixture_urls() -> dict[str, str]:
     """Fixture file name -> source URL."""
-    data: dict[str, str] = json.loads((HTML / "fixtures.json").read_text(encoding="utf-8"))
-    return data
+    raw: dict[str, Any] = json.loads((HTML / "fixtures.json").read_text(encoding="utf-8"))
+    return {k: v if isinstance(v, str) else v["url"] for k, v in raw.items()}
 
 
 @pytest.fixture
