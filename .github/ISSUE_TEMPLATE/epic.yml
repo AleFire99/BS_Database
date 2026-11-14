@@ -1,0 +1,67 @@
+name: Epic
+description: A large goal split into sub-issues
+title: "[Epic] "
+labels: ["type:epic"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - scraper
+        - translation
+        - db
+        - images
+        - docs
+        - infra
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+    validations:
+      required: false
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope (in / out)
+    validations:
+      required: true
+  - type: textarea
+    id: deliverables
+    attributes:
+      label: Deliverables
+      description: Sub-issues checklist, e.g. - [ ] #123
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks
+    validations:
+      required: false
+  - type: textarea
+    id: docs
+    attributes:
+      label: Docs to update
+    validations:
+      required: false
+  - type: textarea
+    id: agent_log
+    attributes:
+      label: Agent log
+    validations:
+      required: false

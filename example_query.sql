@@ -10,6 +10,6 @@ FROM families
 WHERE LOWER(name) LIKE LOWER('%Different %');
 
 SELECT c.name, f.name
-FROM cards c JOIN card_families cf ON c.id = cf.card_id 
+FROM cards c JOIN card_families cf ON c.id = cf.card_id
 JOIN families f ON cf.family_id = f.id
 WHERE c.card_id = "BS05-048";
