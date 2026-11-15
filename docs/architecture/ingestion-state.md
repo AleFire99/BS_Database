@@ -33,6 +33,7 @@ stateDiagram-v2
 ## Retry and attempts
 
 - `mark_failed(url, reason)` stores `failed_from`, `last_error`, and increments `attempts`.
+- `mark_failed(url, reason, permanent=True)` is for failures that retrying cannot fix (a 404, policy 3.5: "log and skip, no retry"). It sets `attempts` to `max_attempts`, so the page is exhausted at once: `retry` raises `RetriesExhausted`, `iter_pending` skips it and `iter_exhausted` reports it. The state machine does not change.
 - A successful `advance` resets `attempts` to 0 and clears the error.
 - `retry(url)` moves `failed` back to `failed_from`. When `attempts >= max_attempts` (constructor argument, default 3) it raises `RetriesExhausted`.
 - `max_attempts` counts failures of one page in the pipeline (3 failures, then exhausted). It is distinct from the HTTP retries of policy 3.5, which live in the HTTP client.

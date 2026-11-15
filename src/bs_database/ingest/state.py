@@ -218,15 +218,29 @@ class StateStore:
                 (new_state.value, content_sha256, self._stamp(), url),
             )
 
-    def mark_failed(self, url: str, reason: str) -> None:
-        """Record a failure of the stage the page was in; counts one attempt."""
+    def mark_failed(self, url: str, reason: str, *, permanent: bool = False) -> None:
+        """Record a failure of the stage the page was in; counts one attempt.
+
+        ``permanent=True`` (a 404, policy 3.5: no retry) sets the attempts to ``max_attempts``,
+        so the page is exhausted at once: reported by ``iter_exhausted``, never retried.
+        """
         with self._tx() as conn:
             current = self._locked_get(conn, url)
             check_transition(current.state, IngestState.FAILED)
+            attempts = (
+                self.max_attempts if permanent else min(current.attempts + 1, self.max_attempts)
+            )
             conn.execute(
-                "UPDATE pages SET state = ?, failed_from = ?, attempts = attempts + 1, "
+                "UPDATE pages SET state = ?, failed_from = ?, attempts = ?, "
                 "last_error = ?, updated_at = ? WHERE url = ?",
-                (IngestState.FAILED.value, current.state.value, reason, self._stamp(), url),
+                (
+                    IngestState.FAILED.value,
+                    current.state.value,
+                    attempts,
+                    reason,
+                    self._stamp(),
+                    url,
+                ),
             )
 
     def retry(self, url: str) -> None:

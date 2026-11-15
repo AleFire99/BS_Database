@@ -151,6 +151,20 @@ def test_failure_is_recorded(tmp_path: Path) -> None:
             store.mark_failed("u", "again")
 
 
+def test_permanent_failure_is_exhausted_at_once(tmp_path: Path) -> None:
+    with make_store(tmp_path / "s.db") as store:
+        store.upsert_discovered("u", PageKind.CARD)
+        store.mark_failed("u", "skipped: status 404", permanent=True)
+        rec = store.get("u")
+        assert rec.state is S.FAILED and rec.failed_from is S.DISCOVERED
+        assert rec.attempts == store.max_attempts
+        assert rec.last_error == "skipped: status 404"
+        with pytest.raises(RetriesExhausted):
+            store.retry("u")
+        assert [r.url for r in store.iter_exhausted()] == ["u"]
+        assert store.iter_pending() == []
+
+
 def test_retry_returns_to_failed_from_and_success_resets_attempts(tmp_path: Path) -> None:
     with make_store(tmp_path / "s.db") as store:
         store.upsert_discovered("u", PageKind.CARD)
