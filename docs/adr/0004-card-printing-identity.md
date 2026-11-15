@@ -45,7 +45,7 @@ Use **option B** (owner choice, Gate B). Detailed columns are in [target-schema.
 
 - **`cards`**: the gameplay identity, one row per distinct card (name, text, stats) with a surrogate `id`. `block_icon` sits here by default (pending #9 if it turns out to vary per number).
 - **`card_numbers`**: `id`, `number` (UNIQUE, e.g. `BS72-069`), `card_id`. A number belongs to exactly one card. A card can have several numbers. Different numbers are linked to one card only if text and stats are identical; otherwise they are separate cards (errata or remake). The final rule is **pending #9**.
-- **`products`**: anything a card is released in. `code` is UNIQUE where not null (e.g. `BS72`) and null for distributions without a code; plus `name_ja`, `name_en`, `product_type_id`, `release_date`, and a nullable `series` text for the chapter grouping (契約編：環). A booster set *is* a product; there is no separate `sets` table.
+- **`products`**: anything a card is released in. `code` is UNIQUE where not null (e.g. `BS72`) and null for distributions without a code; plus `name_jp`, `name_en`, `product_type_id`, `release_date`, and a nullable `series` text for the chapter grouping (契約編：環). A booster set *is* a product; there is no separate `sets` table.
 - **`product_types`**: lookup with `code` and an English `name` (no Japanese name column; booster, starter or deck, promo distribution, magazine, collab, other). Exact list pending #9.
 - **`printings`**: one physical printing: `card_number_id`, `product_id`, `variant_id` (NOT NULL, default `normal`), `rarity_id` (nullable: distribution entries show no rarity, pending #9), `illustrator` text. Images are not a column: they live in `printing_images` (one row per printing and size, [#31](https://github.com/AleFire99/BS_Database/issues/31), [ADR 0005](0005-text-first-effects-and-translations.md)). `UNIQUE(card_number_id, product_id, variant_id)`.
 - **`rarities`**: lookup with `code` (`C` and `R` seen in batspi `<C>`/`<R>`; other codes pending #9), an English `name` (no Japanese name column) and `sort_order`. The Japanese `<C>`/`<R>` text is mapped to the code by the loader. The scale is pending #9.
@@ -62,7 +62,7 @@ Row ids are illustrative. Product types, the mapping of illustrators to printing
 
 `cards`:
 
-| id | name_ja | block_icon |
+| id | name_jp | block_icon |
 | --- | --- | --- |
 | 1 | ゼウスの雷火山 | 12 |
 
@@ -74,7 +74,7 @@ Row ids are illustrative. Product types, the mapping of illustrators to printing
 
 `products`:
 
-| id | code | name_ja | product_type | release_date | series |
+| id | code | name_jp | product_type | release_date | series |
 | --- | --- | --- | --- | --- | --- |
 | 1 | BS72 | 第1章：廻帰再醒 | booster | 2025-05-17 | 契約編：環 |
 | 2 | BS74 | 第3章：覇極来臨 | booster | 2025-11-22 | 契約編：環 |
@@ -92,7 +92,7 @@ The page lists `藤原ひさし` and `平坂康也(契約編：環 第3章：覇
 
 `cards`:
 
-| id | name_ja | block_icon |
+| id | name_jp | block_icon |
 | --- | --- | --- |
 | 2 | ジャベリンドロー | 12 |
 
@@ -104,7 +104,7 @@ The page lists `藤原ひさし` and `平坂康也(契約編：環 第3章：覇
 
 `products` (BS72 is row 1 above):
 
-| id | code | name_ja | product_type | release_date | series |
+| id | code | name_jp | product_type | release_date | series |
 | --- | --- | --- | --- | --- | --- |
 | 3 | NULL | バトルスキーイベント提供記念品 | promo | NULL | NULL |
 
@@ -123,7 +123,7 @@ The distribution entry shows no rarity, so `rarity_id` is nullable (pending #9).
 
 `cards`:
 
-| id | name_ja | block_icon |
+| id | name_jp | block_icon |
 | --- | --- | --- |
 | 3 | 光爪の武芸者ヘルハウンド | 12 |
 

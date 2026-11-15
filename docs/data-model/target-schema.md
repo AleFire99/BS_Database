@@ -128,7 +128,7 @@ erDiagram
     families {
         integer id PK
         text code UK
-        text name_ja UK
+        text name_jp UK
         integer en_source_id FK
         integer en_status_id FK
     }
@@ -220,10 +220,10 @@ The domain view, not the table view. The five card types are one row each in `ca
 ```mermaid
 classDiagram
     class Card {
-        name_ja
+        name_jp
         name_en
         cost
-        flavor_text_ja
+        flavor_text_jp
         block_icon
     }
     class CardNumber {
@@ -234,7 +234,7 @@ classDiagram
     }
     class Product {
         code
-        name_ja
+        name_jp
         release_date
         series
     }
@@ -246,22 +246,22 @@ classDiagram
     class Effect {
         position
         kind
-        timing_ja
-        text_ja
+        timing_jp
+        text_jp
     }
     class Family {
-        name_ja
+        name_jp
         name_en
     }
     class Spirit
     class Nexus
     class Magic
     class Brave {
-        fusion_condition_ja
+        fusion_condition_jp
         fusion_bp_bonus
     }
     class Ultimate {
-        summon_condition_ja
+        summon_condition_jp
     }
 
     Card <|-- Spirit : card_types.code = spirit
@@ -293,7 +293,7 @@ erDiagram
 
     cards {
         integer id PK
-        text name_ja
+        text name_jp
         text name_en
         text block_icon
     }
@@ -313,7 +313,7 @@ erDiagram
     products {
         integer id PK
         text code UK
-        text name_ja
+        text name_jp
         text name_en
         integer product_type_id FK
         text release_date
@@ -344,9 +344,9 @@ The gameplay identity: one row per distinct card. Gameplay columns (type, cost) 
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | Surrogate key. |
-| `name_ja` | TEXT | NOT NULL | Japanese card name (batspi page title). |
+| `name_jp` | TEXT | NOT NULL | Japanese card name (batspi page title). |
 | `name_en` | TEXT | | English name; NULL until translated. Source and status in `en_source_id` and `en_status_id` below; see [Multilingual text](#multilingual-text). |
-| `flavor_text_ja` | TEXT | | Flavor text as printed (`フレーバーテキスト：` in the `<pre>`). NULL when the card has none (the Magic fixture has none). On the card, not the printing; whether it varies per printing is pending #9. |
+| `flavor_text_jp` | TEXT | | Flavor text as printed (`フレーバーテキスト：` in the `<pre>`). NULL when the card has none (the Magic fixture has none). On the card, not the printing; whether it varies per printing is pending #9. |
 | `flavor_text_en` | TEXT | | English flavor text; NULL until translated. |
 | `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Where the English texts of this row come from; NULL while there is no English text. |
 | `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of this row; defaults to `pending`. |
@@ -385,7 +385,7 @@ Anything a card is released in. A booster set is a product; there is no separate
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | |
 | `code` | TEXT | UNIQUE | e.g. `BS72`; NULL for distributions without a code (SQLite allows several NULLs). |
-| `name_ja` | TEXT | NOT NULL | e.g. `第1章：廻帰再醒`. |
+| `name_jp` | TEXT | NOT NULL | e.g. `第1章：廻帰再醒`. |
 | `name_en` | TEXT | | |
 | `product_type_id` | INTEGER | NOT NULL, FOREIGN KEY to `product_types.id` | |
 | `release_date` | TEXT | | ISO-8601 date; NULL when the source gives none. |
@@ -424,7 +424,7 @@ Lookup, following the lookup convention of ADR 0003: `code` plus one English `na
 
 Added by [#30](https://github.com/AleFire99/BS_Database/issues/30). Gameplay attributes are identical across printings of a card (a reprint keeps its number and text; only rarity and art change, see ADR 0004), so they hang off `cards`, never off `card_numbers` or `printings`. Effects, keywords and alternate costs such as `【ミラージュ：コスト2(1)】` belong to [#31](https://github.com/AleFire99/BS_Database/issues/31) and are modelled in [Effects and keywords](#effects-and-keywords), not here.
 
-Lookup tables (`card_types`, `colors`, `symbols`, `rarities`, `variants`, `product_types`) carry a stable `code` and one English `name`. They have **no Japanese name column**: the Japanese source text is translated to a `code` by the loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)), see [JP source to code](#jp-source-to-code). Data entities (`cards`, `families`, `products`) keep `name_ja` so a bad machine translation can be redone.
+Lookup tables (`card_types`, `colors`, `symbols`, `rarities`, `variants`, `product_types`) carry a stable `code` and one English `name`. They have **no Japanese name column**: the Japanese source text is translated to a `code` by the loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)), see [JP source to code](#jp-source-to-code). Data entities (`cards`, `families`, `products`) keep `name_jp` so a bad machine translation can be redone.
 
 ```mermaid
 erDiagram
@@ -447,7 +447,7 @@ erDiagram
         integer id PK
         integer card_type_id FK
         integer cost
-        text name_ja
+        text name_jp
         text name_en
     }
     card_types {
@@ -490,7 +490,7 @@ erDiagram
     families {
         integer id PK
         text code UK
-        text name_ja UK
+        text name_jp UK
         text name_en
     }
     family_aliases {
@@ -506,20 +506,20 @@ erDiagram
     }
     brave_details {
         integer card_id PK, FK
-        text fusion_condition_ja
+        text fusion_condition_jp
         text fusion_condition_en
         integer fusion_bp_bonus
     }
     ultimate_details {
         integer card_id PK, FK
-        text summon_condition_ja
+        text summon_condition_jp
         text summon_condition_en
     }
 ```
 
 ### cards (gameplay columns)
 
-Columns added by #30 to the identity table above (`name_ja`, `name_en` and `block_icon` are already described there).
+Columns added by #30 to the identity table above (`name_jp`, `name_en` and `block_icon` are already described there).
 
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
@@ -612,7 +612,7 @@ Family (系統) tags. The Japanese text is the identity; the English name is the
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | |
 | `code` | TEXT | UNIQUE | Stable slug of the preferred English name; NULL until assigned (SQLite allows several NULLs). |
-| `name_ja` | TEXT | NOT NULL, UNIQUE | e.g. `眷属`, `武迅`. |
+| `name_jp` | TEXT | NOT NULL, UNIQUE | e.g. `眷属`, `武迅`. |
 | `name_en` | TEXT | | Preferred English name, e.g. `Reptile Beast` for `爬獣`. |
 | `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `name_en`; NULL while untranslated. |
 | `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of `name_en`; defaults to `pending`. |
@@ -626,7 +626,7 @@ Other names for a family, so a machine translation can be mapped back to the pre
 | `id` | INTEGER | PRIMARY KEY | |
 | `family_id` | INTEGER | NOT NULL, FOREIGN KEY to `families.id` | |
 | `alias` | TEXT | NOT NULL | |
-| `lang` | TEXT | NOT NULL, CHECK `lang` IN (`ja`, `en`) | ISO 639-1 language code. Language codes are the one allowed CHECK-list exception to the lookup rule of [ADR 0003](../adr/0003-naming-and-schema-versioning.md). |
+| `lang` | TEXT | NOT NULL, CHECK `lang` IN (`jp`, `en`) | Internal language code (closed list: `jp`, `en`). Language codes are the one allowed CHECK-list exception to the lookup rule of [ADR 0003](../adr/0003-naming-and-schema-versioning.md). |
 | `translation_source_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_sources.id` | Where the alias comes from: `machine`, `fandom`, `manual` or `official`. |
 
 Table constraint: `UNIQUE (family_id, alias, lang)`. Seeded from the 41 `MT = preferred EN` pairs in `data/family_mapping.txt` (source `machine`; for example `Rebirth = Reptile Beast`: the alias `Rebirth` points to the family whose preferred name is `Reptile Beast`) and from the machine-translated names in the legacy `families` table.
@@ -649,7 +649,7 @@ Families are segment 3 of the cost line, separated by `・`. Magic and Nexus car
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
 | `card_id` | INTEGER | PRIMARY KEY, FOREIGN KEY to `cards.id` | The card must have type `brave`. |
-| `fusion_condition_ja` | TEXT | | Fusion condition as printed. Pending #9. |
+| `fusion_condition_jp` | TEXT | | Fusion condition as printed. Pending #9. |
 | `fusion_condition_en` | TEXT | | Translation. Pending #9. |
 | `fusion_bp_bonus` | INTEGER | | NULL when absent. Pending #9. |
 | `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `fusion_condition_en`. Pending #9. |
@@ -662,7 +662,7 @@ Families are segment 3 of the cost line, separated by `・`. Magic and Nexus car
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
 | `card_id` | INTEGER | PRIMARY KEY, FOREIGN KEY to `cards.id` | The card must have type `ultimate`. |
-| `summon_condition_ja` | TEXT | | Summon condition as printed. Pending #9. |
+| `summon_condition_jp` | TEXT | | Summon condition as printed. Pending #9. |
 | `summon_condition_en` | TEXT | | Translation. Pending #9. |
 | `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `summon_condition_en`. Pending #9. |
 | `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status; defaults to `pending`. Pending #9. |
@@ -791,7 +791,7 @@ erDiagram
 
     cards {
         integer id PK
-        text name_ja
+        text name_jp
     }
     card_levels {
         integer id PK
@@ -803,9 +803,9 @@ erDiagram
         integer card_id FK
         integer position
         integer effect_kind_id FK
-        text timing_ja
+        text timing_jp
         text timing_en
-        text text_ja
+        text text_jp
         text text_en
         integer en_source_id FK
         integer en_status_id FK
@@ -827,7 +827,7 @@ erDiagram
     card_effect_keywords {
         integer card_effect_id PK, FK
         integer keyword_id PK, FK
-        text parameter_ja
+        text parameter_jp
     }
 ```
 
@@ -841,9 +841,9 @@ One row per effect block in the `<pre>`, in printed order.
 | `card_id` | INTEGER | NOT NULL, FOREIGN KEY to `cards.id` | |
 | `position` | INTEGER | NOT NULL, CHECK `position` >= 1 | Order of the block on the card. |
 | `effect_kind_id` | INTEGER | NOT NULL, FOREIGN KEY to `effect_kinds.id` | Kind of block. |
-| `timing_ja` | TEXT | | The timing as printed, brackets included (`『自分のアタックステップ』`). NULL when the block has none. Kept as text, not parsed. |
+| `timing_jp` | TEXT | | The timing as printed, brackets included (`『自分のアタックステップ』`). NULL when the block has none. Kept as text, not parsed. |
 | `timing_en` | TEXT | | English timing; NULL until translated. |
-| `text_ja` | TEXT | NOT NULL | The effect text as printed: the lines of the block after its header, joined with line breaks. For a `keyword_block` it is the whole `【…】` line. A block ends at the next effect header or at the first of `シンボル：`, `イラスト：` or `フレーバーテキスト：`. |
+| `text_jp` | TEXT | NOT NULL | The effect text as printed: the lines of the block after its header, joined with line breaks. For a `keyword_block` it is the whole `【…】` line. A block ends at the next effect header or at the first of `シンボル：`, `イラスト：` or `フレーバーテキスト：`. |
 | `text_en` | TEXT | | English text; NULL until translated. |
 | `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `timing_en` and `text_en`; NULL while untranslated. |
 | `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Defaults to `pending`. |
@@ -889,13 +889,13 @@ Pure junction table with one extra column. Which keywords a block declares.
 | --- | --- | --- | --- |
 | `card_effect_id` | INTEGER | FOREIGN KEY to `card_effects.id` | Part of the composite PRIMARY KEY. |
 | `keyword_id` | INTEGER | FOREIGN KEY to `keywords.id` | Part of the composite PRIMARY KEY. |
-| `parameter_ja` | TEXT | | The parameter as printed, e.g. `コスト2(1)` for Mirage. NULL for a keyword with none. |
+| `parameter_jp` | TEXT | | The parameter as printed, e.g. `コスト2(1)` for Mirage. NULL for a keyword with none. |
 
-The extra column makes this more than a pure junction, but the composite key stays because a keyword appears once per block. Text-first: the alternate cost `コスト2(1)` is **not** split into numbers in v1. The reminder text `(このカードは手札からセットできる)` stays in `card_effects.text_ja`.
+The extra column makes this more than a pure junction, but the composite key stays because a keyword appears once per block. Text-first: the alternate cost `コスト2(1)` is **not** split into numbers in v1. The reminder text `(このカードは手札からセットできる)` stays in `card_effects.text_jp`.
 
 ### Worked examples (effects)
 
-The blocks come from the `<pre>` of the fixtures in `tests/fixtures/html/`. Ids are illustrative and continue the ids used in [ADR 0004](../adr/0004-card-printing-identity.md): Nexus BS72-069 is card 1, Magic BS72-075 is card 2, Spirit BS72-007 is card 3. Level ids follow [card_levels](#card_levels). Long texts are shortened with `…`; the stored `text_ja` is the full block text. `en_status_id` is `pending` and `en_source_id` NULL in every row, as nothing is translated yet. Effect kinds are shown by code.
+The blocks come from the `<pre>` of the fixtures in `tests/fixtures/html/`. Ids are illustrative and continue the ids used in [ADR 0004](../adr/0004-card-printing-identity.md): Nexus BS72-069 is card 1, Magic BS72-075 is card 2, Spirit BS72-007 is card 3. Level ids follow [card_levels](#card_levels). Long texts are shortened with `…`; the stored `text_jp` is the full block text. `en_status_id` is `pending` and `en_source_id` NULL in every row, as nothing is translated yet. Effect kinds are shown by code.
 
 #### Spirit BS72-007
 
@@ -903,7 +903,7 @@ The blocks come from the `<pre>` of the fixtures in `tests/fixtures/html/`. Ids 
 
 `card_effects` (card 3):
 
-| id | position | effect_kind | timing_ja | text_ja (start) |
+| id | position | effect_kind | timing_jp | text_jp (start) |
 | --- | --- | --- | --- | --- |
 | 1 | 1 | `level` | `『自分のアタックステップ開始時』` | 自分の「契約神ルー」すべてのブレイヴ1つにつき、… |
 | 2 | 2 | `level` | `『自分のアタックステップ』` | 系統：「武迅」を持つ自分のスピリットがアタックしたとき、… |
@@ -916,7 +916,7 @@ The blocks come from the `<pre>` of the fixtures in `tests/fixtures/html/`. Ids 
 | 1 | 2 (Lv2) | `Lv1・Lv2` |
 | 2 | 2 (Lv2) | `Lv2` |
 
-`card_effect_keywords`: none. Flavor text goes to `cards.flavor_text_ja` (`ルーの下に集った武芸者たちは、…`).
+`card_effect_keywords`: none. Flavor text goes to `cards.flavor_text_jp` (`ルーの下に集った武芸者たちは、…`).
 
 #### Nexus BS72-069
 
@@ -924,7 +924,7 @@ The blocks come from the `<pre>` of the fixtures in `tests/fixtures/html/`. Ids 
 
 `card_effects` (card 1):
 
-| id | position | effect_kind | timing_ja | text_ja (start) |
+| id | position | effect_kind | timing_jp | text_jp (start) |
 | --- | --- | --- | --- | --- |
 | 3 | 1 | `level` | `『このネクサスの配置時』` | 自分のネクサスが「ゼウス」だけのとき、…(3 lines) |
 | 4 | 2 | `constant` | NULL | 系統：「眷属」/「締皇」を持つ自分の赤のスピリットすべては、… |
@@ -937,7 +937,7 @@ The blocks come from the `<pre>` of the fixtures in `tests/fixtures/html/`. Ids 
 | 3 | 4 (Lv2) | `Lv1・Lv2` |
 | 4 | 4 (Lv2) | `Lv2`, no timing |
 
-`card_effect_keywords`: none. Flavor text goes to `cards.flavor_text_ja` (`噴火すると、周囲に雷火を落とすオリン随一の山。…`, including the closing `―『創世書記』神世界図125―`).
+`card_effect_keywords`: none. Flavor text goes to `cards.flavor_text_jp` (`噴火すると、周囲に雷火を落とすオリン随一の山。…`, including the closing `―『創世書記』神世界図125―`).
 
 #### Magic BS72-075
 
@@ -945,7 +945,7 @@ The Magic fixture has no level line, so no `card_effect_levels` rows and no flav
 
 `card_effects` (card 2):
 
-| id | position | effect_kind | timing_ja | text_ja (start) |
+| id | position | effect_kind | timing_jp | text_jp (start) |
 | --- | --- | --- | --- | --- |
 | 5 | 1 | `keyword_block` | NULL | `【ミラージュ：コスト2(1)(このカードは手札からセットできる)】` |
 | 6 | 2 | `set_active` | `『自分のアタックステップ開始時』` | 相手の手元にあるカードの色3色につき、…(2 lines) |
@@ -953,15 +953,15 @@ The Magic fixture has no level line, so no `card_effect_levels` rows and no flav
 
 `card_effect_keywords`:
 
-| card_effect_id | keyword | parameter_ja |
+| card_effect_id | keyword | parameter_jp |
 | --- | --- | --- |
 | 5 | `mirage` | `コスト2(1)` |
 
-The `メイン：` label is not part of `text_ja`: it becomes the kind `main`. Whether `【セット中】` is a block kind or a keyword of its own is pending #9 (the fixture shows it as a header with a timing, so it is a kind here). The `フラッシュ：` label is seen only in related-card blocks, not in a card's own `<pre>` (pending #9).
+The `メイン：` label is not part of `text_jp`: it becomes the kind `main`. Whether `【セット中】` is a block kind or a keyword of its own is pending #9 (the fixture shows it as a header with a timing, so it is a kind here). The `フラッシュ：` label is seen only in related-card blocks, not in a card's own `<pre>` (pending #9).
 
 ## Multilingual text
 
-Pattern decided in [ADR 0005](../adr/0005-text-first-effects-and-translations.md), option 1. Every translatable text has a Japanese source column `X_ja` (NOT NULL where the source always has it) and an English column `X_en` (NULL until translated). Each row with English text carries two foreign keys that describe it.
+Pattern decided in [ADR 0005](../adr/0005-text-first-effects-and-translations.md), option 1. Every translatable text has a Japanese source column `X_jp` (NOT NULL where the source always has it) and an English column `X_en` (NULL until translated). Each row with English text carries two foreign keys that describe it.
 
 ```mermaid
 erDiagram
@@ -981,23 +981,23 @@ erDiagram
 
     cards {
         integer id PK
-        text name_ja
+        text name_jp
         text name_en
-        text flavor_text_ja
+        text flavor_text_jp
         text flavor_text_en
         integer en_source_id FK
         integer en_status_id FK
     }
     card_effects {
         integer id PK
-        text text_ja
+        text text_jp
         text text_en
         integer en_source_id FK
         integer en_status_id FK
     }
     families {
         integer id PK
-        text name_ja
+        text name_jp
         text name_en
         integer en_source_id FK
         integer en_status_id FK
@@ -1008,21 +1008,21 @@ erDiagram
     }
     products {
         integer id PK
-        text name_ja
+        text name_jp
         text name_en
         integer en_source_id FK
         integer en_status_id FK
     }
     brave_details {
         integer card_id PK, FK
-        text fusion_condition_ja
+        text fusion_condition_jp
         text fusion_condition_en
         integer en_source_id FK
         integer en_status_id FK
     }
     ultimate_details {
         integer card_id PK, FK
-        text summon_condition_ja
+        text summon_condition_jp
         text summon_condition_en
         integer en_source_id FK
         integer en_status_id FK
@@ -1246,7 +1246,7 @@ Summary of where this model departs from the sister project [BSS_app](https://gi
 | Reductions | `CardReductions(ColorID)` | `card_reductions(symbol_id)` | Reductions include the god symbol 神, which is not a colour. |
 | Levels | `Core` (`BP`, `Cores`) | `card_levels` (`battle_points`, `cores`) | Plural rule, readable names; `battle_points` NULL for Nexus. |
 | Effects | `Effects`, `Conditions`, `Steps`, `EffectSteps` | `card_effects` as text, `card_effect_levels`, `card_effect_keywords`; structured tables deferred | Text-first effects in v1 ([ADR 0005](../adr/0005-text-first-effects-and-translations.md)); a structured model can be added later. |
-| Keyword modifier | `EffectKeywords.Modifier` | `card_effect_keywords.parameter_ja` | Kept as printed text, not structured. |
+| Keyword modifier | `EffectKeywords.Modifier` | `card_effect_keywords.parameter_jp` | Kept as printed text, not structured. |
 | Languages | no i18n | `_ja`/`_en` columns plus `translation_sources` and `translation_statuses` | Japanese source is kept; translation provenance is tracked (ADR 0005). |
 | Provenance and images | none | `sources`, `source_pages`, link tables, `printing_images`, `image_sizes` | Reproducible builds and per-printing images. |
 | Versioning | none | `PRAGMA user_version` and `schema_meta` | Cheap compatibility check (ADR 0003). |
@@ -1385,9 +1385,9 @@ CREATE TABLE cards (
     id INTEGER NOT NULL,
     card_type_id INTEGER NOT NULL,
     cost INTEGER NOT NULL,
-    name_ja TEXT NOT NULL,
+    name_jp TEXT NOT NULL,
     name_en TEXT,
-    flavor_text_ja TEXT,
+    flavor_text_jp TEXT,
     flavor_text_en TEXT,
     en_source_id INTEGER,
     en_status_id INTEGER NOT NULL DEFAULT 1,
@@ -1413,7 +1413,7 @@ CREATE INDEX ix_card_numbers_card_id ON card_numbers (card_id);
 CREATE TABLE products (
     id INTEGER NOT NULL,
     code TEXT,
-    name_ja TEXT NOT NULL,
+    name_jp TEXT NOT NULL,
     name_en TEXT,
     product_type_id INTEGER NOT NULL,
     release_date TEXT,
@@ -1514,13 +1514,13 @@ CREATE TABLE card_levels (
 CREATE TABLE families (
     id INTEGER NOT NULL,
     code TEXT,
-    name_ja TEXT NOT NULL,
+    name_jp TEXT NOT NULL,
     name_en TEXT,
     en_source_id INTEGER,
     en_status_id INTEGER NOT NULL DEFAULT 1,
     CONSTRAINT pk_families_id PRIMARY KEY (id),
     CONSTRAINT uq_families_code UNIQUE (code),
-    CONSTRAINT uq_families_name_ja UNIQUE (name_ja),
+    CONSTRAINT uq_families_name_jp UNIQUE (name_jp),
     CONSTRAINT fk_families_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
     CONSTRAINT fk_families_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id)
 );
@@ -1535,7 +1535,7 @@ CREATE TABLE family_aliases (
     CONSTRAINT uq_family_aliases_family_id_alias_lang UNIQUE (family_id, alias, lang),
     CONSTRAINT fk_family_aliases_family_id FOREIGN KEY (family_id) REFERENCES families (id),
     CONSTRAINT fk_family_aliases_translation_source_id FOREIGN KEY (translation_source_id) REFERENCES translation_sources (id),
-    CONSTRAINT ck_family_aliases_lang CHECK (lang IN ('ja', 'en'))
+    CONSTRAINT ck_family_aliases_lang CHECK (lang IN ('jp', 'en'))
 );
 
 CREATE TABLE card_families (
@@ -1549,7 +1549,7 @@ CREATE INDEX ix_card_families_family_id ON card_families (family_id);
 
 CREATE TABLE brave_details (
     card_id INTEGER NOT NULL,
-    fusion_condition_ja TEXT,
+    fusion_condition_jp TEXT,
     fusion_condition_en TEXT,
     fusion_bp_bonus INTEGER,
     en_source_id INTEGER,
@@ -1562,7 +1562,7 @@ CREATE TABLE brave_details (
 
 CREATE TABLE ultimate_details (
     card_id INTEGER NOT NULL,
-    summon_condition_ja TEXT,
+    summon_condition_jp TEXT,
     summon_condition_en TEXT,
     en_source_id INTEGER,
     en_status_id INTEGER NOT NULL DEFAULT 1,
@@ -1578,9 +1578,9 @@ CREATE TABLE card_effects (
     card_id INTEGER NOT NULL,
     position INTEGER NOT NULL,
     effect_kind_id INTEGER NOT NULL,
-    timing_ja TEXT,
+    timing_jp TEXT,
     timing_en TEXT,
-    text_ja TEXT NOT NULL,
+    text_jp TEXT NOT NULL,
     text_en TEXT,
     en_source_id INTEGER,
     en_status_id INTEGER NOT NULL DEFAULT 1,
@@ -1606,7 +1606,7 @@ CREATE INDEX ix_card_effect_levels_card_level_id ON card_effect_levels (card_lev
 CREATE TABLE card_effect_keywords (
     card_effect_id INTEGER NOT NULL,
     keyword_id INTEGER NOT NULL,
-    parameter_ja TEXT,
+    parameter_jp TEXT,
     CONSTRAINT pk_card_effect_keywords_card_effect_id_keyword_id PRIMARY KEY (card_effect_id, keyword_id),
     CONSTRAINT fk_card_effect_keywords_card_effect_id FOREIGN KEY (card_effect_id) REFERENCES card_effects (id),
     CONSTRAINT fk_card_effect_keywords_keyword_id FOREIGN KEY (keyword_id) REFERENCES keywords (id)

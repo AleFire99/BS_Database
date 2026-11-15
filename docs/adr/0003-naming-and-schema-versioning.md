@@ -39,7 +39,7 @@ Use **option 2**: snake_case conventions, keeping the BSS_app entity split but n
 - **Columns:** lower snake_case, singular (`battle_points`, not `battlePoints`).
   - Booleans are named `is_…` or `has_…`.
   - Timestamps are named `…_at` and stored as ISO-8601 UTC TEXT.
-  - Language suffixes (`name_ja`, `name_en`) are used only on data entities: `cards`, `families`, `products` and effect text. The Japanese source text is kept there so a bad machine translation can be redone.
+  - Language suffixes (`name_jp`, `name_en`) are used only on data entities: `cards`, `families`, `products` and effect text. The Japanese source text is kept there so a bad machine translation can be redone.
   - Lookup rows have a stable `code` (for example `red`) plus a single English `name`. They have no `_ja`/`_en` columns; the loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)) maps Japanese source text to the `code` (see [target-schema.md](../data-model/target-schema.md#jp-source-to-code)).
 - **Keys:**
   - The primary key is `id INTEGER PRIMARY KEY` (a rowid alias).
@@ -60,7 +60,7 @@ The concepts (lookups, junctions, reductions with a count, per-level rows, effec
 | `Cards` (`CardID` TEXT PK, e.g. `BSS01-001`) | `cards`, `card_numbers` (`number` UNIQUE) and `printings`, see [ADR 0004](0004-card-printing-identity.md) | Surrogate keys (Gate A); one number can have several printings, so the number is a UNIQUE natural key on `card_numbers`. |
 | `Cards.Rarity` (free TEXT) | `rarities` lookup, `printings.rarity_id` ([ADR 0004](0004-card-printing-identity.md)) | Enum-like values use lookup tables. |
 | `CardTypes` | `card_types` | Case and key style; `Name` becomes a stable `code` plus an English `name`. |
-| `Sets` | `products` (+ `product_types`), see [ADR 0004](0004-card-printing-identity.md) | Promos, magazines and distributions are releases too, so a set is one product type; `Name` (e.g. `BSS01`) becomes a UNIQUE `code`; `products` keep `name_ja` and `name_en` as a data entity. |
+| `Sets` | `products` (+ `product_types`), see [ADR 0004](0004-card-printing-identity.md) | Promos, magazines and distributions are releases too, so a set is one product type; `Name` (e.g. `BSS01`) becomes a UNIQUE `code`; `products` keep `name_jp` and `name_en` as a data entity. |
 | `Colors` | `colors` | Case and key style; `Name` becomes a stable `code` plus an English `name`. |
 | `Symbols` (`ColorID`) | `symbols` (`color_id`) | Case and key style only. |
 | `Subtypes` | `families` (final, #30) | Battle Spirits calls them families (系統); the legacy schema already uses `families`. |
@@ -72,9 +72,9 @@ The concepts (lookups, junctions, reductions with a count, per-level rows, effec
 | `CardSubtypes` | `card_families` | Follows the rename of `Subtypes`. |
 | `CardReductions` (`CardID`, `ColorID`, `Count`) | `card_reductions` (`card_id`, `symbol_id`, `count`) | Hangs off the card, not the printing. Keyed by symbol instead of colour (deviation from BSS_app `ColorID`) because reductions include the god symbol 神, which is not a colour. `count` is a legal column name. |
 | `Core` (`CoreID`, `CardID`, `Level`, `BP`, `Cores`) | `card_levels` (`id`, `card_id`, `level`, `battle_points`, `cores`) (final, #30) | Singular table name breaks the plural rule; `BP` becomes `battle_points`, `Cores` becomes `cores`. `battle_points` is NULL for levels without BP (Nexus). |
-| `Effects` (`EffectID`, `CardID`, `ConditionID`, `Description`) | `card_effects` (final, #31) | One row per effect block; `Description` becomes `text_ja` / `text_en`, plus timing and kind. See [target-schema.md](../data-model/target-schema.md#effects-and-keywords). |
+| `Effects` (`EffectID`, `CardID`, `ConditionID`, `Description`) | `card_effects` (final, #31) | One row per effect block; `Description` becomes `text_jp` / `text_en`, plus timing and kind. See [target-schema.md](../data-model/target-schema.md#effects-and-keywords). |
 | `EffectLevels` (`EffectID`, `CoreID`) | `card_effect_levels` (final, #31) | References `card_levels` instead of `Core`. |
-| `EffectKeywords` (`EffectID`, `KeywordID`, `Modifier`) | `card_effect_keywords` (final, #31) | Composite key; `Modifier` becomes `parameter_ja` (text, not structured). |
+| `EffectKeywords` (`EffectID`, `KeywordID`, `Modifier`) | `card_effect_keywords` (final, #31) | Composite key; `Modifier` becomes `parameter_jp` (text, not structured). |
 | `EffectSteps` | Deferred (ADR 0005) | Effects are text-first in v1. |
 | `QA_cards` (`QA_cardID`…) | none | Out of scope for v1. |
 | `QA_keywords` (`QA_keyID`…) | none | Out of scope for v1. |

@@ -13,7 +13,7 @@ Reading the tables: **Target** is `table.column` of [target-schema.md](target-sc
 | Legacy column | Target | Note |
 | --- | --- | --- |
 | `cards.id` | dropped | Surrogate key of the old table. The target `cards.id` is a new key; the old value is not carried over. |
-| `cards.name` | `cards.name_en` | Machine-translated English name, so `en_source_id` = `machine` and `en_status_id` = `machine`. 1 legacy card has an `Error:` name: map it to `NULL` with status `failed`. `cards.name_ja` has no legacy source (gap). |
+| `cards.name` | `cards.name_en` | Machine-translated English name, so `en_source_id` = `machine` and `en_status_id` = `machine`. 1 legacy card has an `Error:` name: map it to `NULL` with status `failed`. `cards.name_jp` has no legacy source (gap). |
 | `cards.card_id` (unique business string, `BS72-007`) | `card_numbers.number` | Despite its name it is the card number, not a card key. One legacy row per number becomes one `card_numbers` row; linking numbers to one `cards` row is pending #9 ([ADR 0004](../adr/0004-card-printing-identity.md)). It also yields the product code (`BS72`) for `products.code`. |
 | `cards.cost` | `cards.cost` | Same meaning. Legacy range 0 to 12. |
 | `cards.symbol` | `card_colors` rows | Misnamed: it holds the card **colour** (see [section 2](#2-card-json-keys-batspi_cardpy)). It is free translated text (`Blue and red`), so it is not converted; colours are re-read from segment 2 of the Japanese cost line. |
@@ -39,7 +39,7 @@ Reading the tables: **Target** is `table.column` of [target-schema.md](target-sc
 | Legacy column | Target | Note |
 | --- | --- | --- |
 | `families.id` | dropped | Surrogate key. |
-| `families.name` (unique, machine-translated English, 517 rows) | `family_aliases.alias` with `lang` = `en` | The legacy name is a machine translation, so it becomes an alias with `translation_source_id` = `machine`. It points at the family whose Japanese name is found on the cards that use it. `families.name_ja` (the identity) and `families.name_en` (preferred) have no legacy source (gap); `name_en` can be filled from the `family_mapping.txt` right-hand side. |
+| `families.name` (unique, machine-translated English, 517 rows) | `family_aliases.alias` with `lang` = `en` | The legacy name is a machine translation, so it becomes an alias with `translation_source_id` = `machine`. It points at the family whose Japanese name is found on the cards that use it. `families.name_jp` (the identity) and `families.name_en` (preferred) have no legacy source (gap); `name_en` can be filled from the `family_mapping.txt` right-hand side. |
 
 ### card_colors ([db.py:23-28](../../src/bs_database/db.py#L23))
 
@@ -71,7 +71,7 @@ The card JSON is built at [batspi_card.py:132-142](https://github.com/AleFire99/
 
 | JSON key | Legacy loader | Target | Known parser bug and note |
 | --- | --- | --- | --- |
-| `name` | `cards.name` | `cards.name_en` (machine) | Machine translation of the JP title ([:133](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L133)); the Japanese title is read ([:31-38](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L31)) and discarded, so `cards.name_ja` must be re-scraped. A failed translation returns `"Error: ..."` ([:23-28](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L23)). |
+| `name` | `cards.name` | `cards.name_en` (machine) | Machine translation of the JP title ([:133](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L133)); the Japanese title is read ([:31-38](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L31)) and discarded, so `cards.name_jp` must be re-scraped. A failed translation returns `"Error: ..."` ([:23-28](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L23)). |
 | `card_id` | `cards.card_id` | `card_numbers.number` | Passed in by the caller, not read from the page ([:104](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L104)). The set prefix is also the source of `products.code`. |
 | `type` | `cards.type_id` via `card_types` | `cards.card_type_id` | Machine-translated line 1 ([:61](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L61)), normalized by `normalize_type` ([normalize.py:105-107](../../src/bs_database/normalize.py#L105)). The target maps the Japanese word (`スピリット`) to a code. |
 | `cost` | `cards.cost` | `cards.cost` | Number before `(` ([:62](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L62)). |
@@ -124,22 +124,22 @@ Target tables and columns with no legacy source. Grouped by the work item that m
 
 ### Needs #10 scraping (the data is on the page but the legacy scraper never read it)
 
-- `cards.name_ja` (the Japanese title is read then discarded)
-- `cards.flavor_text_ja`
+- `cards.name_jp` (the Japanese title is read then discarded)
+- `cards.flavor_text_jp`
 - `cards.block_icon`
 - `card_symbols` (all columns; the `シンボル：` line)
 - `card_reductions` (rebuilt from the Japanese cost line; legacy `reduction` was never stored)
 - `card_levels` for Nexus, Brave and Ultimate formats (Nexus levels were dropped by the regex; Brave/Ultimate pending #9)
 - `card_effects` (all columns), `card_effect_levels`, `card_effect_keywords`
 - `printings` (all columns), including `illustrator`, rarity and variant from the `収録` section
-- `products.name_ja`, `products.release_date`, `products.series`, `products.product_type_id`
+- `products.name_jp`, `products.release_date`, `products.series`, `products.product_type_id`
 - `printing_images.source_url` (the legacy path is built, not read) and image links per size
 - `sources`, `source_pages`, `card_source_pages`, `product_source_pages` (the legacy JSON has no URL, fetch time or hash)
 - `brave_details`, `ultimate_details` (all columns, pending #9: no fixture)
 
 ### Needs #11 normalization and translation
 
-- `families.name_ja`, `families.code`, `families.name_en` for the 517 machine-translated families (map them back to Japanese)
+- `families.name_jp`, `families.code`, `families.name_en` for the 517 machine-translated families (map them back to Japanese)
 - `family_aliases` seeding: 41 mapping lines plus the legacy names
 - `cards.name_en`, `cards.flavor_text_en`, `card_effects.timing_en`, `card_effects.text_en`, `products.name_en`, `brave_details.fusion_condition_en`, `ultimate_details.summon_condition_en`: English text, preferably from `fandom`; machine output is marked via `en_source_id` and `en_status_id`
 - `keywords` list (only `mirage` is seen)

@@ -83,10 +83,10 @@ INSERT INTO sources (id, code, name, base_url) VALUES
 The page says `<R> (SECRETあり)` and links two images, so the number has two printings in BS72: `normal` (rarity R) and `secret`. The rarity of the secret printing is NULL here and which image is the secret art is an assumption (the `-2` file), both pending #9 (see ADR 0004). The `path` of every image is a placeholder: the file layout is decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). The provenance rows use the real fixture hash; `fetched_at` and `parser_version` are sample values.
 
 ```sql
-INSERT INTO products (id, code, name_ja, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
+INSERT INTO products (id, code, name_jp, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
     (1, 'BS72', '第1章：廻帰再醒', NULL, 1, '2025-05-17', '契約編：環', NULL, 1);
 
-INSERT INTO cards (id, card_type_id, cost, name_ja, name_en, flavor_text_ja, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
+INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
     (3, 1, 4, '光爪の武芸者ヘルハウンド', NULL,
      'ルーの下に集った武芸者たちは、各々自慢の武器を携えている。その武器
 で戦うのは大型のスピリット。彼らの誉れはスピリットの討伐である。',
@@ -111,7 +111,7 @@ INSERT INTO card_reductions (card_id, symbol_id, count) VALUES
     (3, 1, 2),
     (3, 2, 1);
 
-INSERT INTO families (id, code, name_ja, name_en, en_source_id, en_status_id) VALUES
+INSERT INTO families (id, code, name_jp, name_en, en_source_id, en_status_id) VALUES
     (1, NULL, '眷属', NULL, NULL, 1),
     (2, NULL, '武迅', NULL, NULL, 1);
 INSERT INTO card_families (card_id, family_id) VALUES (3, 1), (3, 2);
@@ -120,7 +120,7 @@ INSERT INTO card_levels (id, card_id, level, cores, battle_points) VALUES
     (1, 3, 1, 1, 3000),
     (2, 3, 2, 3, 7000);
 
-INSERT INTO card_effects (id, card_id, position, effect_kind_id, timing_ja, timing_en, text_ja, text_en, en_source_id, en_status_id) VALUES
+INSERT INTO card_effects (id, card_id, position, effect_kind_id, timing_jp, timing_en, text_jp, text_en, en_source_id, en_status_id) VALUES
     (1, 3, 1, 1, '『自分のアタックステップ開始時』', NULL,
      '自分の「契約神ルー」すべてのブレイヴ1つにつき、自分のトラッシュの[ソウルコア]以外のコア2個を系統：「武迅」を持つスピリット/ネクサスに好きなだけ置く。',
      NULL, NULL, 1),
@@ -148,10 +148,10 @@ INSERT INTO card_source_pages (card_id, source_page_id) VALUES (3, 1);
 A Nexus has no BP, so `battle_points` is NULL. The plain reduction `(2)` is resolved to the card's own colour, red (assumed, pending #9). Effect 4 has no timing and therefore the kind `constant`.
 
 ```sql
-INSERT INTO products (id, code, name_ja, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
+INSERT INTO products (id, code, name_jp, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
     (2, 'BS74', '第3章：覇極来臨', NULL, 1, '2025-11-22', '契約編：環', NULL, 1);
 
-INSERT INTO cards (id, card_type_id, cost, name_ja, name_en, flavor_text_ja, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
+INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
     (1, 2, 3, 'ゼウスの雷火山', NULL,
      '噴火すると、周囲に雷火を落とすオリン随一の山。その有様は、
 ゼウスの怒りと揶揄される。　―『創世書記』神世界図125―',
@@ -168,7 +168,7 @@ INSERT INTO card_colors (card_id, color_id) VALUES (1, 1);
 INSERT INTO card_symbols (card_id, symbol_id, count) VALUES (1, 1, 1);
 INSERT INTO card_reductions (card_id, symbol_id, count) VALUES (1, 1, 2);
 
-INSERT INTO families (id, code, name_ja, name_en, en_source_id, en_status_id) VALUES
+INSERT INTO families (id, code, name_jp, name_en, en_source_id, en_status_id) VALUES
     (3, NULL, '皇獣', NULL, NULL, 1);
 INSERT INTO card_families (card_id, family_id) VALUES (1, 3);
 
@@ -176,7 +176,7 @@ INSERT INTO card_levels (id, card_id, level, cores, battle_points) VALUES
     (3, 1, 1, 0, NULL),
     (4, 1, 2, 1, NULL);
 
-INSERT INTO card_effects (id, card_id, position, effect_kind_id, timing_ja, timing_en, text_ja, text_en, en_source_id, en_status_id) VALUES
+INSERT INTO card_effects (id, card_id, position, effect_kind_id, timing_jp, timing_en, text_jp, text_en, en_source_id, en_status_id) VALUES
     (3, 1, 1, 1, '『このネクサスの配置時』', NULL,
      '自分のネクサスが「ゼウス」だけのとき、自分のデッキを上から3枚オープンできる。
 その中の「ゼウスの雷火山」以外の「ゼウス」1枚か、系統：「眷属」/「締皇」と「皇獣」を持つスピリットカード1枚を手札に加える。
@@ -205,10 +205,10 @@ INSERT INTO card_source_pages (card_id, source_page_id) VALUES (1, 2);
 The Magic card has no level line and no symbol line, so there are no `card_levels`, `card_effect_levels` or `card_symbols` rows, and no flavor text. The first block is the keyword block `【ミラージュ：コスト2(1)…】`: it is kept as text and the Mirage keyword is linked with its parameter `コスト2(1)` as printed.
 
 ```sql
-INSERT INTO products (id, code, name_ja, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
+INSERT INTO products (id, code, name_jp, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
     (3, NULL, 'バトルスキーイベント提供記念品', NULL, 2, NULL, NULL, NULL, 1);
 
-INSERT INTO cards (id, card_type_id, cost, name_ja, name_en, flavor_text_ja, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
+INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
     (2, 3, 4, 'ジャベリンドロー', NULL, NULL, NULL, NULL, 1, '12');
 
 INSERT INTO card_numbers (id, number, card_id) VALUES
@@ -222,7 +222,7 @@ INSERT INTO card_colors (card_id, color_id) VALUES (2, 1);
 INSERT INTO card_reductions (card_id, symbol_id, count) VALUES (2, 1, 2);
 INSERT INTO card_families (card_id, family_id) VALUES (2, 2);
 
-INSERT INTO card_effects (id, card_id, position, effect_kind_id, timing_ja, timing_en, text_ja, text_en, en_source_id, en_status_id) VALUES
+INSERT INTO card_effects (id, card_id, position, effect_kind_id, timing_jp, timing_en, text_jp, text_en, en_source_id, en_status_id) VALUES
     (5, 2, 1, 5, NULL, NULL,
      '【ミラージュ：コスト2(1)(このカードは手札からセットできる)】',
      NULL, NULL, 1),
@@ -237,7 +237,7 @@ INSERT INTO card_effects (id, card_id, position, effect_kind_id, timing_ja, timi
 残ったカードはデッキの下に戻す。',
      NULL, NULL, 1);
 
-INSERT INTO card_effect_keywords (card_effect_id, keyword_id, parameter_ja) VALUES
+INSERT INTO card_effect_keywords (card_effect_id, keyword_id, parameter_jp) VALUES
     (5, 1, 'コスト2(1)');
 
 INSERT INTO source_pages (id, source_id, url, fetched_at, content_sha256, parser_version) VALUES
@@ -251,16 +251,16 @@ INSERT INTO card_source_pages (card_id, source_page_id) VALUES (2, 3);
 
 No fixture exists for a Brave card. The only data is the **legacy database**: English name `Evil Fisher` (machine translated by the legacy scraper), cost 4, colour purple, family `Darkling` and one level row (Lv1, 1 core, 2000 BP). Everything else is unknown until the Brave page format is analysed in [#9](https://github.com/AleFire99/BS_Database/issues/9):
 
-- `name_ja` is NOT NULL, so it holds the marked placeholder `[PENDING #9] BS11-051`.
-- The family has no Japanese name either (`families.name_ja` is NOT NULL and UNIQUE), so a placeholder is used there too. The legacy English name is stored as `name_en`, status `machine`.
+- `name_jp` is NOT NULL, so it holds the marked placeholder `[PENDING #9] BS11-051`.
+- The family has no Japanese name either (`families.name_jp` is NOT NULL and UNIQUE), so a placeholder is used there too. The legacy English name is stored as `name_en`, status `machine`.
 - `brave_details` has a row, because the card is a Brave, but fusion condition and BP bonus are NULL and the translation status is `pending`.
 - The BS11 product name is a placeholder, the product type `booster` and the printing without rarity are assumptions. There are no effects, no symbols and no reductions in the legacy data.
 
 ```sql
-INSERT INTO products (id, code, name_ja, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
+INSERT INTO products (id, code, name_jp, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
     (4, 'BS11', '[PENDING #9] BS11 name', NULL, 1, NULL, NULL, NULL, 1);
 
-INSERT INTO cards (id, card_type_id, cost, name_ja, name_en, flavor_text_ja, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
+INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
     (4, 4, 4, '[PENDING #9] BS11-051', 'Evil Fisher', NULL, NULL, 1, 2, NULL);
 
 INSERT INTO card_numbers (id, number, card_id) VALUES
@@ -271,26 +271,26 @@ INSERT INTO printings (id, card_number_id, product_id, variant_id, rarity_id, il
 
 INSERT INTO card_colors (card_id, color_id) VALUES (4, 2);
 
-INSERT INTO families (id, code, name_ja, name_en, en_source_id, en_status_id) VALUES
+INSERT INTO families (id, code, name_jp, name_en, en_source_id, en_status_id) VALUES
     (4, 'darkling', '[PENDING #9] Darkling', 'Darkling', 1, 2);
 INSERT INTO card_families (card_id, family_id) VALUES (4, 4);
 
 INSERT INTO card_levels (id, card_id, level, cores, battle_points) VALUES
     (5, 4, 1, 1, 2000);
 
-INSERT INTO brave_details (card_id, fusion_condition_ja, fusion_condition_en, fusion_bp_bonus, en_source_id, en_status_id) VALUES
+INSERT INTO brave_details (card_id, fusion_condition_jp, fusion_condition_en, fusion_bp_bonus, en_source_id, en_status_id) VALUES
     (4, NULL, NULL, NULL, NULL, 1);
 ```
 
 ## Ultimate BS24-078 Ultimate Randolph
 
-Also legacy-only: English name `Ultimate Randolph`, cost 6, colour blue, families `God Of Fighting` and `Incarnate`, and two level rows (Lv3: 1 core, 12000 BP; Lv4: 4 cores, 18000 BP). Ultimate levels start at 3, so `card_levels.level` is not required to start at 1. The same placeholder rules as for the Brave apply: marked `name_ja`, family and product names, the booster product type assumed, and `ultimate_details` with a NULL summon condition, pending #9.
+Also legacy-only: English name `Ultimate Randolph`, cost 6, colour blue, families `God Of Fighting` and `Incarnate`, and two level rows (Lv3: 1 core, 12000 BP; Lv4: 4 cores, 18000 BP). Ultimate levels start at 3, so `card_levels.level` is not required to start at 1. The same placeholder rules as for the Brave apply: marked `name_jp`, family and product names, the booster product type assumed, and `ultimate_details` with a NULL summon condition, pending #9.
 
 ```sql
-INSERT INTO products (id, code, name_ja, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
+INSERT INTO products (id, code, name_jp, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
     (5, 'BS24', '[PENDING #9] BS24 name', NULL, 1, NULL, NULL, NULL, 1);
 
-INSERT INTO cards (id, card_type_id, cost, name_ja, name_en, flavor_text_ja, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
+INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
     (5, 5, 6, '[PENDING #9] BS24-078', 'Ultimate Randolph', NULL, NULL, 1, 2, NULL);
 
 INSERT INTO card_numbers (id, number, card_id) VALUES
@@ -301,7 +301,7 @@ INSERT INTO printings (id, card_number_id, product_id, variant_id, rarity_id, il
 
 INSERT INTO card_colors (card_id, color_id) VALUES (5, 3);
 
-INSERT INTO families (id, code, name_ja, name_en, en_source_id, en_status_id) VALUES
+INSERT INTO families (id, code, name_jp, name_en, en_source_id, en_status_id) VALUES
     (5, 'god_of_fighting', '[PENDING #9] God Of Fighting', 'God Of Fighting', 1, 2),
     (6, 'incarnate', '[PENDING #9] Incarnate', 'Incarnate', 1, 2);
 INSERT INTO card_families (card_id, family_id) VALUES (5, 5), (5, 6);
@@ -310,7 +310,7 @@ INSERT INTO card_levels (id, card_id, level, cores, battle_points) VALUES
     (6, 5, 3, 1, 12000),
     (7, 5, 4, 4, 18000);
 
-INSERT INTO ultimate_details (card_id, summon_condition_ja, summon_condition_en, en_source_id, en_status_id) VALUES
+INSERT INTO ultimate_details (card_id, summon_condition_jp, summon_condition_en, en_source_id, en_status_id) VALUES
     (5, NULL, NULL, NULL, 1);
 ```
 
@@ -318,9 +318,9 @@ INSERT INTO ultimate_details (card_id, summon_condition_ja, summon_condition_en,
 
 | Where | Placeholder | Needs |
 | --- | --- | --- |
-| `cards.name_ja` of BS11-051 and BS24-078 | `[PENDING #9] <number>` | Japanese names from the batspi pages. |
-| `families.name_ja` of `Darkling`, `God Of Fighting`, `Incarnate` | `[PENDING #9] <English name>` | Japanese family names. |
-| `products.name_ja` of BS11 and BS24 | `[PENDING #9] <code> name` | Product names from the set pages. |
+| `cards.name_jp` of BS11-051 and BS24-078 | `[PENDING #9] <number>` | Japanese names from the batspi pages. |
+| `families.name_jp` of `Darkling`, `God Of Fighting`, `Incarnate` | `[PENDING #9] <English name>` | Japanese family names. |
+| `products.name_jp` of BS11 and BS24 | `[PENDING #9] <code> name` | Product names from the set pages. |
 | `brave_details`, `ultimate_details` | NULL fields | Fusion and summon condition formats. |
 | BS11-051 and BS24-078 effects, symbols, reductions, rarity, illustrator | no rows or NULL | Brave and Ultimate page format. |
 | `printing_images.path` | `[PENDING #13] ...` | File layout, decided in #13. |
