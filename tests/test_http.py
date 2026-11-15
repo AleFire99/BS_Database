@@ -274,7 +274,12 @@ def test_requests_transport_maps_response(monkeypatch: pytest.MonkeyPatch) -> No
 
 @pytest.mark.parametrize(
     ("exc", "is_timeout"),
-    [(requests.Timeout("t"), True), (requests.ConnectionError("c"), False)],
+    [
+        (requests.Timeout("t"), True),
+        (requests.ConnectionError("c"), False),
+        (requests.exceptions.ChunkedEncodingError("x"), False),
+        (requests.exceptions.ContentDecodingError("d"), False),
+    ],
 )
 def test_requests_transport_maps_errors(
     monkeypatch: pytest.MonkeyPatch, exc: Exception, is_timeout: bool
@@ -374,3 +379,47 @@ def test_only_http_module_imports_requests() -> None:
         )
     ]
     assert offenders == ["bs_database/ingest/http.py"]
+
+
+@pytest.mark.parametrize(
+    "url", ["https://example.com/index.php?x", "http://batspi.com/index.php?x", "/index.php?x"]
+)
+def test_off_site_urls_skipped_and_never_requested(url: str) -> None:
+    client, transport, _ = make({}, with_robots=False)
+    result = client.fetch(url)
+    assert result == Skipped(url, "disallowed: off-site")
+    assert client.allowed(url) == result
+    assert transport.calls == []
+
+
+@pytest.mark.parametrize("value", ["-5", "1.5", "abc", "\u00b2"])
+def test_malformed_retry_after_falls_back_to_backoff(value: str) -> None:
+    client, transport, _ = make({URL: [resp(429, **{"Retry-After": value}), ok()]})
+    assert isinstance(client.fetch(URL), Fetched)
+    times = [t for t, _, _ in pages(transport)]
+    assert times[1] - times[0] == 8.0
+
+
+def test_redirect_is_skipped_not_followed() -> None:
+    target = f"{BASE}index.php?elsewhere"
+    client, transport, _ = make({URL: [resp(301, Location=target)]})
+    assert client.fetch(URL) == Skipped(URL, "status 301", 301)
+    assert [c[1] for c in pages(transport)] == [URL]
+
+
+def test_requests_transport_does_not_follow_redirects(monkeypatch: pytest.MonkeyPatch) -> None:
+    sent: list[bool] = []
+
+    def send(
+        self: requests.Session, request: requests.PreparedRequest, **kw: object
+    ) -> requests.Response:
+        sent.append(bool(kw.get("allow_redirects")))
+        r = requests.Response()
+        r.status_code = 301
+        r.headers["Location"] = "https://batspi.com/other"
+        return r
+
+    monkeypatch.setattr(requests.Session, "send", send)
+    out = RequestsTransport().get(BASE, headers={}, timeout=(1.0, 2.0))
+    assert out.status == 301
+    assert sent == [False]

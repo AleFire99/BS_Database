@@ -5,6 +5,7 @@ a time, paced by ``Settings.request_delay`` and capped by ``Settings.max_request
 """
 
 import logging
+import re
 import time
 import urllib.robotparser
 from collections.abc import Mapping
@@ -99,7 +100,11 @@ class RequestsTransport:
             )
         except requests.Timeout as exc:
             raise TransportError(str(exc), timeout=True) from exc
-        except requests.ConnectionError as exc:
+        except (
+            requests.ConnectionError,
+            requests.exceptions.ChunkedEncodingError,
+            requests.exceptions.ContentDecodingError,
+        ) as exc:
             raise TransportError(str(exc)) from exc
         return HttpResponse(resp.status_code, dict(resp.headers), resp.content)
 
@@ -171,7 +176,7 @@ class HttpClient:
     def _retry_after(resp: HttpResponse) -> float | None:
         """``Retry-After`` in integer seconds; an HTTP-date (or junk) is ignored."""
         for key, value in resp.headers.items():
-            if key.lower() == "retry-after" and value.strip().isdigit():
+            if key.lower() == "retry-after" and re.fullmatch(r"\d+", value.strip()):
                 return float(value.strip())
         return None
 
@@ -205,6 +210,9 @@ class HttpClient:
 
     def allowed(self, url: str) -> Skipped | None:
         """Policy gate: ``None`` if ``url`` may be fetched, else a ``Skipped``. Nothing is sent."""
+        if not url.startswith(BASE_URL):
+            log.warning("skip off-site %s", url)
+            return Skipped(url, "disallowed: off-site")
         robots = self._load_robots()
         try:
             check_allowed(url, robots, self._query_prefixes)
