@@ -8,20 +8,20 @@ def test_roundtrip_and_persistence(tmp_path: Path) -> None:
     path = tmp_path / "sub" / "t.sqlite"
     cache = TranslationCache(path)
     assert not path.exists()
-    assert cache.get_many("deepl", "jp", "en", ["あ"]) == {}
+    assert cache.get_many("engine", "jp", "en", ["あ"]) == {}
     assert not path.exists()  # a read creates nothing
-    cache.put_many("deepl", "jp", "en", [("あ", "a"), ("い", "i")])
+    cache.put_many("engine", "jp", "en", [("あ", "a"), ("い", "i")])
     again = TranslationCache(path)
-    assert again.get_many("deepl", "jp", "en", ["あ", "い", "う"]) == {"あ": "a", "い": "i"}
+    assert again.get_many("engine", "jp", "en", ["あ", "い", "う"]) == {"あ": "a", "い": "i"}
     with sqlite3.connect(path) as conn:
         assert conn.execute("PRAGMA user_version").fetchone() == (1,)
 
 
 def test_key_includes_engine_and_pair(tmp_path: Path) -> None:
     cache = TranslationCache(tmp_path / "t.sqlite")
-    cache.put_many("deepl", "jp", "en", [("あ", "a")])
+    cache.put_many("engine", "jp", "en", [("あ", "a")])
     assert cache.get_many("other", "jp", "en", ["あ"]) == {}
-    assert cache.get_many("deepl", "en", "jp", ["あ"]) == {}
+    assert cache.get_many("engine", "en", "jp", ["あ"]) == {}
 
 
 def test_overwrite_and_empty_put(tmp_path: Path) -> None:

@@ -382,8 +382,7 @@ def test_only_http_module_imports_requests() -> None:
             for line in path.read_text(encoding="utf-8").splitlines()
         )
     ]
-    # the DeepL engine POSTs through its own transport (policy R1: batspi traffic only)
-    assert offenders == ["bs_database/ingest/http.py", "bs_database/translate/deepl.py"]
+    assert offenders == ["bs_database/ingest/http.py"]
 
 
 @pytest.mark.parametrize(
