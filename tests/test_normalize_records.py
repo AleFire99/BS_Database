@@ -26,8 +26,21 @@ def test_collector_deduplicates_and_sorts() -> None:
     )
 
 
+def test_collector_keeps_uncurated_apart_sorted_and_deduplicated() -> None:
+    collector = UnmappedCollector()
+    collector.add_uncurated("families", "b", "N2")
+    collector.add_uncurated("families", "a", "N1")
+    collector.add_uncurated("families", "b", "N2")
+    assert collector.terms() == ()
+    assert collector.uncurated_terms() == (
+        UnmappedTerm("families", "a", "N1"),
+        UnmappedTerm("families", "b", "N2"),
+    )
+
+
 def test_collector_is_empty_by_default() -> None:
     assert UnmappedCollector().terms() == ()
+    assert UnmappedCollector().uncurated_terms() == ()
 
 
 @pytest.mark.parametrize(
@@ -48,7 +61,7 @@ def test_closed_classification(kind: str, closed: bool) -> None:
 
 
 def test_page_is_json_ready() -> None:
-    page = NormalizedPage("u", "t", (), (), (), (), (UnmappedTerm("families", "x", "N"),))
+    page = NormalizedPage("u", "t", (), (), (), (), (UnmappedTerm("families", "x", "N"),), ())
     assert json.dumps(dataclasses.asdict(page), ensure_ascii=False)
 
 

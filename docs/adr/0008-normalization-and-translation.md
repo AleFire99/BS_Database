@@ -118,7 +118,7 @@ One verdict per legacy rule. This table is the binding cleanup list for [#92](ht
 
 ## Amendments
 
-Recorded during [#92](https://github.com/AleFire99/BS_Database/issues/92). The status stays Proposed.
+Recorded during [#92](https://github.com/AleFire99/BS_Database/issues/92) to [#95](https://github.com/AleFire99/BS_Database/issues/95). The status stays Proposed.
 
 | Id | Amendment |
 | --- | --- |
@@ -126,6 +126,7 @@ Recorded during [#92](https://github.com/AleFire99/BS_Database/issues/92). The s
 | D4 | `rarities.csv` has an extra `sort_order` column (a unique integer). |
 | D5 | An unmapped variant note means `normal`, not an error. |
 | D6 | `product_types.csv` `jp` is an optional title marker, not an identity. |
+| D7 | Recorded in [#95](https://github.com/AleFire99/BS_Database/issues/95). A glossary row whose `code` is empty is **uncurated**, not unmapped: `unmapped` means no row, so `--strict` can pass while families are still being curated (the target schema allows `families.code` NULL until assigned). `NormalizedPage` gains `uncurated` and `NORMALIZED_SCHEMA_VERSION` becomes 1.1.0. Product names are machine-translated together with card names and families. The report and strict mode are described in [normalization](../architecture/normalization.md). |
 
 ## Links
 

@@ -10,6 +10,7 @@ from bs_database.ingest.parsed_store import parsed_path, write_card_json
 from bs_database.normalize.pipeline import normalize_tree
 from bs_database.parsers.batspi.card import parse_card_page
 from bs_database.parsers.card_models import CardPage
+from bs_database.translate import NullTranslator
 
 ROOT = Path(__file__).parent.parent
 GLOSSARY_DIR = ROOT / "data" / "glossary"
@@ -61,7 +62,7 @@ def normalized_documents(work_dir: Path) -> dict[str, str]:
     names = card_fixture_names()
     for name in names:
         write_parsed_fixture(parsed, name)
-    normalize_tree(parsed, normalized, real_glossary())
+    normalize_tree(parsed, normalized, real_glossary(), NullTranslator())
     return {
         name: parsed_path(normalized, "batspi", fixture_url(name)).read_text(encoding="utf-8")
         for name in names

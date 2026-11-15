@@ -18,7 +18,9 @@ from bs_database.ingest.report import render
 from bs_database.ingest.state import StateStore
 from bs_database.log import configure_logging
 from bs_database.normalize.pipeline import normalize_tree
+from bs_database.normalize.report import REPORT_MD, build_report, write_report
 from bs_database.settings import Settings
+from bs_database.translate import make_translator
 
 app = typer.Typer(no_args_is_help=True, help="bsdb: Battle Spirits card database tooling.")
 
@@ -68,8 +70,26 @@ def _settings(ctx: typer.Context) -> Settings:
 
 
 @app.command()
-def normalize(ctx: typer.Context) -> None:
-    """Normalize data/parsed into data/normalized: codes from the glossary, non-destructive."""
+def normalize(
+    ctx: typer.Context,
+    strict: Annotated[
+        bool,
+        typer.Option("--strict", help="Exit 1 on any unmapped term (no glossary row)."),
+    ] = False,
+    max_chars: Annotated[
+        int | None,
+        typer.Option(
+            "--max-chars",
+            min=0,
+            help="Send at most this many characters to the translation engine (0 = cache only).",
+        ),
+    ] = None,
+) -> None:
+    """Normalize data/parsed into data/normalized: glossary codes and English names.
+
+    Card names, product names and families are machine-translated when BSDB_DEEPL_API_KEY is
+    set; without a key the run is offline. Writes _report.json and _report.md next to the pages.
+    """
     settings = _settings(ctx)
     if not settings.parsed_dir.is_dir():
         typer.echo(f"error: parsed directory not found: {settings.parsed_dir}", err=True)
@@ -79,13 +99,26 @@ def normalize(ctx: typer.Context) -> None:
     except GlossaryError as exc:
         typer.echo(f"error: invalid glossary in {settings.glossary_dir}:\n{exc}", err=True)
         raise typer.Exit(1) from exc
-    result = normalize_tree(settings.parsed_dir, settings.normalized_dir, glossary)
+    translator = make_translator(settings, max_chars=max_chars)
+    result = normalize_tree(settings.parsed_dir, settings.normalized_dir, glossary, translator)
+    report = build_report(result, translator.name, settings.parsed_dir)
+    write_report(settings.normalized_dir, report)
+    statuses = [r.status for r in result.translations.values()]
     typer.echo(
         f"Normalized {result.written} pages, {len(result.unmapped)} unmapped terms "
-        f"({result.closed} closed)"
+        f"({result.closed} closed), {len(report['uncurated'])} uncurated terms"
     )
+    typer.echo(
+        f"Translation ({translator.name}): {statuses.count('machine')} machine, "
+        f"{statuses.count('pending')} pending, {statuses.count('failed')} failed"
+    )
+    typer.echo(f"Report: {settings.normalized_dir / REPORT_MD}")
     if result.failed:
         typer.echo(f"{len(result.failed)} pages failed", err=True)
+        raise typer.Exit(1)
+    if strict and any(not t.closed for t in result.unmapped):
+        warnings = len(report["unmapped"]["warnings"])
+        typer.echo(f"strict: {warnings} unmapped terms without a glossary row", err=True)
         raise typer.Exit(1)
 
 

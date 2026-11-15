@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "parsed_schema_version": "2.0.0",
   "url": "https://batspi.com/index.php?%E5%85%AD%E7%B5%B6%E7%A5%9E%20%E9%89%84%E5%A3%81%E3%81%AE%E3%82%AF%E3%83%AD%E3%83%A0%E3%83%BB%E3%83%AA%E3%82%BC%E3%83%AB%E3%83%95%E3%82%A1%E3%83%BC",
   "provenance": {
@@ -213,7 +213,8 @@
         ]
       }
     ],
-    "unmapped": [
+    "unmapped": [],
+    "uncurated": [
       {
         "kind": "families",
         "jp": "絶晶神",

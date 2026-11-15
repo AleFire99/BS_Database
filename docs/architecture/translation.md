@@ -1,6 +1,6 @@
 # Translation
 
-The translator ([#94](https://github.com/AleFire99/BS_Database/issues/94), [ADR 0008](../adr/0008-normalization-and-translation.md)) turns Japanese texts into English with a pluggable engine and a persistent cache. It lives in `src/bs_database/translate/`. Wiring it into `bsdb normalize` is [#95](https://github.com/AleFire99/BS_Database/issues/95).
+The translator ([#94](https://github.com/AleFire99/BS_Database/issues/94), [ADR 0008](../adr/0008-normalization-and-translation.md)) turns Japanese texts into English with a pluggable engine and a persistent cache. It lives in `src/bs_database/translate/`. It is wired into `bsdb normalize` by [#95](https://github.com/AleFire99/BS_Database/issues/95) (see Wiring).
 
 ## Components
 
@@ -47,6 +47,10 @@ Every call returns one result per input text, in the same order. The status uses
 
 Neither `pending` nor `failed` is cached, so the next run retries them. An unsupported language pair raises `ValueError`.
 
+## Wiring into `bsdb normalize`
+
+`normalize_tree` collects the card names, product names and families that have no English name (families with a glossary `en` and names printed by batspi are kept) and makes one batched `translate` call, ordered families, names, products and sorted by Japanese text. `normalize.translation.apply_translations` maps the results onto the fields: `machine` sets the text with source and status `machine`; `failed` and `pending` leave `en = None` with that status. See [normalization.md](normalization.md). A second run is served by the cache and makes no engine call.
+
 ## Engine choice
 
 - With `BSDB_DEEPL_API_KEY` set: `CachedTranslator(DeepLTranslator, TranslationCache)`.
@@ -67,7 +71,7 @@ Neither `pending` nor `failed` is cached, so the next run retries them. An unsup
 1. Duplicate texts are removed, then the cache is checked. Cache hits are free, even with a budget of 0.
 2. Misses are counted in input order. A text that would exceed the budget comes back `pending`, and a later shorter text can still fit.
 
-Each call logs one INFO line, `engine= hits= sent= chars= pending= failed=`. Texts are never logged at INFO. The `--max-chars` CLI flag is #95.
+Each call logs one INFO line, `engine= hits= sent= chars= pending= failed=`. Texts are never logged at INFO. `bsdb normalize --max-chars N` sets this budget (0 means cache only).
 
 ## DeepL engine
 

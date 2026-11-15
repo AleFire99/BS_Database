@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "parsed_schema_version": "2.0.0",
   "url": "https://batspi.com/index.php?%E8%B5%A4%E3%81%AE%E4%B8%96%E7%95%8C%EF%BC%8F%E8%B5%A4%E3%81%8D%E7%A5%9E%E9%BE%8D%E7%9A%87",
   "provenance": {
@@ -926,7 +926,8 @@
         ]
       }
     ],
-    "unmapped": [
+    "unmapped": [],
+    "uncurated": [
       {
         "kind": "families",
         "jp": "古竜",

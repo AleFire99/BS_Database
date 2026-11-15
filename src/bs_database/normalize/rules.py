@@ -5,7 +5,7 @@ is reported to the collector and never raises. Whether a miss is an error or a w
 decided by the kind (see :attr:`UnmappedTerm.closed`).
 """
 
-from bs_database.glossary import FamilyEntry, Glossary
+from bs_database.glossary import Entry, FamilyEntry, Glossary
 from bs_database.normalize.records import (
     SOURCE_MANUAL,
     STATUS_PENDING,
@@ -116,10 +116,23 @@ def _longest_no_split(
     return None
 
 
+def _report_miss(
+    unmapped: UnmappedCollector, kind: str, jp: str, number: str, entry: Entry | None
+) -> None:
+    """No row is unmapped; a row without a code is uncurated; otherwise nothing."""
+    if entry is None:
+        unmapped.add(kind, jp, number)
+    elif not entry.code:
+        unmapped.add_uncurated(kind, jp, number)
+
+
 def map_families(
     glossary: Glossary, tokens: tuple[str, ...], number: str, unmapped: UnmappedCollector
 ) -> tuple[FamilyRecord, ...]:
-    """Family tokens to records. A family without a glossary code is an unmapped warning.
+    """Family tokens to records.
+
+    A family with no glossary row is an unmapped warning; a row with an empty code is
+    uncurated (reported apart, not a warning).
 
     An English name from the glossary is curated by the owner: source ``manual``, status
     ``reviewed``. Without one the name is ``None`` and pending.
@@ -128,8 +141,7 @@ def map_families(
     for jp in merge_family_tokens(glossary, tokens):
         entry = glossary.lookup("families", jp)
         code = entry.code if entry is not None and entry.code else None
-        if code is None:
-            unmapped.add("families", jp, number)
+        _report_miss(unmapped, "families", jp, number, entry)
         en = entry.en if entry is not None and entry.en else None
         if en is None:
             records.append(FamilyRecord(jp, code, None, None, STATUS_PENDING))
@@ -141,12 +153,11 @@ def map_families(
 def map_keywords(
     glossary: Glossary, keywords: tuple[Keyword, ...], number: str, unmapped: UnmappedCollector
 ) -> tuple[KeywordRecord, ...]:
-    """Keyword tokens to records; a miss gives ``code=None`` and an unmapped warning."""
+    """Keyword tokens to records; no code gives ``None`` (unmapped or uncurated, see above)."""
     records: list[KeywordRecord] = []
     for k in keywords:
         entry = glossary.lookup("keywords", k.name)
         code = entry.code if entry is not None and entry.code else None
-        if code is None:
-            unmapped.add("keywords", k.name, number)
+        _report_miss(unmapped, "keywords", k.name, number, entry)
         records.append(KeywordRecord(k.bracket, k.name, code, k.parameter))
     return tuple(records)

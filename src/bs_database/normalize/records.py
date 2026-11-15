@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from bs_database.glossary import CLOSED
 from bs_database.parsers.card_models import CardImage, Credit, Level, Overclock, ValueDifference
 
-NORMALIZED_SCHEMA_VERSION = "1.0.0"
+NORMALIZED_SCHEMA_VERSION = "1.1.0"
 
 SOURCE_BATSPI = "batspi"
 SOURCE_MANUAL = "manual"
@@ -20,7 +20,11 @@ STATUS_PENDING = "pending"
 
 @dataclass(frozen=True, slots=True)
 class UnmappedTerm:
-    """A Japanese value with no glossary entry of ``kind``, seen on card ``number``."""
+    """A Japanese value of ``kind`` seen on card ``number``.
+
+    Used for two lists of :class:`NormalizedPage`: ``unmapped`` (no glossary row) and
+    ``uncurated`` (a row exists but its code is still empty).
+    """
 
     kind: str
     jp: str
@@ -33,18 +37,31 @@ class UnmappedTerm:
 
 
 class UnmappedCollector:
-    """Gathers unmapped terms of one page; :meth:`terms` is deduplicated and sorted."""
+    """Gathers the unmapped and uncurated terms of one page, deduplicated and sorted."""
 
     def __init__(self) -> None:
         self._terms: set[UnmappedTerm] = set()
+        self._uncurated: set[UnmappedTerm] = set()
 
     def add(self, kind: str, jp: str, number: str) -> None:
         """Record that ``jp`` has no ``kind`` glossary entry on card ``number``."""
         self._terms.add(UnmappedTerm(kind, jp, number))
 
+    def add_uncurated(self, kind: str, jp: str, number: str) -> None:
+        """Record that ``jp`` has a ``kind`` glossary row without a code yet (not an error)."""
+        self._uncurated.add(UnmappedTerm(kind, jp, number))
+
     def terms(self) -> tuple[UnmappedTerm, ...]:
-        """All recorded terms in a stable order."""
-        return tuple(sorted(self._terms, key=lambda t: (t.kind, t.jp, t.number)))
+        """All unmapped terms in a stable order."""
+        return _ordered(self._terms)
+
+    def uncurated_terms(self) -> tuple[UnmappedTerm, ...]:
+        """All uncurated terms in a stable order."""
+        return _ordered(self._uncurated)
+
+
+def _ordered(terms: set[UnmappedTerm]) -> tuple[UnmappedTerm, ...]:
+    return tuple(sorted(terms, key=lambda t: (t.kind, t.jp, t.number)))
 
 
 @dataclass(frozen=True, slots=True)
@@ -191,3 +208,4 @@ class NormalizedPage:
     printings: tuple[PrintingRecord, ...]
     images: tuple[CardImage, ...]
     unmapped: tuple[UnmappedTerm, ...]
+    uncurated: tuple[UnmappedTerm, ...]
