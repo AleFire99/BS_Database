@@ -22,6 +22,7 @@ from collections import defaultdict
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
+from bs_database.glossary import ProductPrefix, prefix_type_code
 from bs_database.review.corpus import Corpus, ProductStat, product_prefix
 from bs_database.review.legacy import LinkResult
 
@@ -126,7 +127,7 @@ class Review:
     family_csv: tuple[tuple[str, ...], ...]
     keyword_csv: tuple[tuple[str, ...], ...]
     legacy_csv: tuple[tuple[str, ...], ...]
-    unmatched_cards: int
+    no_legacy: tuple[str, ...]
 
 
 def _proposal(
@@ -248,7 +249,7 @@ def _no_split_rows(corpus: Corpus, known: set[str]) -> list[NoSplitRow]:
     return sorted(rows, key=lambda r: (-r.cards, r.joined))
 
 
-def _prefix_rows(corpus: Corpus, mapped: Mapping[str, str]) -> list[PrefixRow]:
+def _prefix_rows(corpus: Corpus, prefixes: Sequence[ProductPrefix]) -> list[PrefixRow]:
     groups: dict[str, list[ProductStat]] = defaultdict(list)
     for stat in corpus.products.values():
         groups[product_prefix(stat.code)].append(stat)
@@ -262,7 +263,11 @@ def _prefix_rows(corpus: Corpus, mapped: Mapping[str, str]) -> list[PrefixRow]:
                 sum(s.printings for s in stats),
                 sum(s.unresolved for s in stats),
                 tuple(sorted({t for s in stats for t in s.types})),
-                mapped.get(prefix, ""),
+                ", ".join(
+                    sorted(
+                        {c for s in stats if (c := prefix_type_code(prefixes, s.code)) is not None}
+                    )
+                ),
                 tuple(f"{s.code or '-'}: {s.name_jp}" for s in stats[:SAMPLE_PRODUCTS]),
             )
         )
@@ -311,11 +316,15 @@ def build_review(
         tuple(families),
         tuple(keywords),
         tuple(_no_split_rows(corpus, known)),
-        tuple(_prefix_rows(corpus, {r["prefix"]: r["code"] for r in prefix_rows})),
+        tuple(
+            _prefix_rows(
+                corpus, [ProductPrefix(r["prefix"], r["code"], r["notes"]) for r in prefix_rows]
+            )
+        ),
         tuple(legacy),
         tuple(conflicts),
         tuple(family_csv),
         tuple(keyword_csv),
         tuple(legacy_csv),
-        len(link.unmatched),
+        link.no_legacy,
     )

@@ -146,7 +146,9 @@ def glossary_review(
 
     Writes review.md (families, keywords, no_split candidates, product-code prefixes, slug
     conflicts, legacy pairs) and ready-to-copy families.csv, keywords.csv and
-    family_legacy_en.csv. Nothing under data/glossary is changed.
+    family_legacy_en.csv. Nothing under data/glossary is changed. Copy families.csv and
+    family_legacy_en.csv together, and re-sort families.csv and keywords.csv by code after
+    filling codes by hand (the loader requires it).
     """
     settings = _settings(ctx)
     try:

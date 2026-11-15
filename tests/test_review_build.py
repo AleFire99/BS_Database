@@ -200,7 +200,7 @@ def test_product_prefixes_group_count_and_show_mapping() -> None:
         printing("n-3", "BSC22", "スターター", None),
         printing("n-3", "BSC22", "スターター", None),
         printing("n-4", None, "不明"),
-        printing("n-5", "9X", "他"),
+        printing("n-5", "9999", "他"),
     ]
     review = make_review(
         [page([], printings)],
@@ -219,7 +219,9 @@ def test_product_prefixes_group_count_and_show_mapping() -> None:
 def test_product_prefix_helper() -> None:
     assert product_prefix("BSC22") == "BSC"
     assert product_prefix(NO_PRODUCT_CODE) == "(none)"
-    assert product_prefix("22X") == "(other)"
+    assert product_prefix("22X") == "22X"
+    assert product_prefix("26RBS01") == "26RBS"
+    assert product_prefix("2026") == "(other)"
 
 
 def test_legacy_pairs_filled_kept_conflicting_and_missing() -> None:
@@ -319,3 +321,45 @@ def test_read_csv_rows(tmp_path: Path) -> None:
     assert read_csv_rows(path) == [{"a": "1", "b": "2"}]
     with pytest.raises(ReviewError, match="cannot read"):
         read_csv_rows(tmp_path / "missing.csv")
+
+
+def test_prefix_mapped_uses_the_normalizer_rule_and_groups_digit_prefixes() -> None:
+    printings = [
+        printing("n-1", "BSC22", "スターター"),
+        printing("n-2", "26RBS01", "限定"),
+        printing("n-3", "BS01", "第1弾"),
+    ]
+    review = make_review(
+        [page([], printings)],
+        {},
+        prefixes=[
+            {"prefix": "BS", "code": "booster", "notes": ""},
+            {"prefix": "BSC", "code": "starter", "notes": ""},
+        ],
+    )
+    by = {p.prefix: p for p in review.prefixes}
+    assert by["BSC"].mapped == "starter"
+    assert by["BS"].mapped == "booster"
+    assert by["26RBS"].mapped == ""
+    assert by["26RBS"].samples == ("26RBS01: 限定",)
+    assert "(other)" not in by
+
+
+def test_prefix_mapped_shows_longest_prefix_of_the_group() -> None:
+    review = make_review(
+        [page([], [printing("n-1", "BSC22", "x")])],
+        {},
+        prefixes=[{"prefix": "BS", "code": "booster", "notes": ""}],
+    )
+    assert review.prefixes[0].prefix == "BSC"
+    assert review.prefixes[0].mapped == "booster"
+
+
+def test_markdown_lists_no_legacy_count_sample_and_copy_notes() -> None:
+    entries = [card(f"n-{i:02d}", [family("甲")]) for i in range(25)]
+    text = render_markdown(make_review([page(entries)], {}))
+    assert "Cards with no legacy family: 25." in text
+    assert "First 20 (sorted): n-00, n-01" in text
+    assert "n-19" in text
+    assert "n-20" not in text
+    assert "together" in text

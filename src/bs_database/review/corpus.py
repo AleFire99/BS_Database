@@ -39,10 +39,13 @@ class Corpus:
 
 
 def product_prefix(product_code: str) -> str:
-    """Leading letters of a product code (``BSC22`` gives ``BSC``)."""
+    """Group key of a product code: its leading ``\\d*[A-Za-z]+`` run.
+
+    ``BSC22`` gives ``BSC`` and ``26RBS01`` gives ``26RBS``.
+    """
     if product_code == NO_PRODUCT_CODE:
         return "(none)"
-    match = re.match(r"[A-Za-z]+", product_code)
+    match = re.match(r"\d*[A-Za-z]+", product_code)
     return match[0] if match else "(other)"
 
 

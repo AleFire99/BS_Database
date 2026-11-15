@@ -20,6 +20,7 @@ REVIEW_MD = "review.md"
 FAMILIES_CSV = "families.csv"
 KEYWORDS_CSV = "keywords.csv"
 LEGACY_CSV = "family_legacy_en.csv"
+NO_LEGACY_SAMPLE = 20
 
 
 def cell(text: object) -> str:
@@ -54,7 +55,16 @@ def render_markdown(review: Review) -> str:
         "# Glossary review",
         "",
         f"Families: {len(review.families)}. Keywords: {len(review.keywords)}. "
-        f"Cards without a legacy match: {review.unmatched_cards}.",
+        f"Cards with no legacy family: {len(review.no_legacy)}.",
+        "",
+    ]
+    if review.no_legacy:
+        sample = ", ".join(review.no_legacy[:NO_LEGACY_SAMPLE])
+        lines += [f"First {min(NO_LEGACY_SAMPLE, len(review.no_legacy))} (sorted): {sample}", ""]
+    lines += [
+        "Notes: copy `families.csv` and `family_legacy_en.csv` together (the legacy `jp` values "
+        "must exist in the families). After filling codes by hand, re-sort `families.csv` and "
+        "`keywords.csv` by code (then jp); `bsdb normalize` reports an unsorted file.",
         "",
     ]
     family_table = _table(

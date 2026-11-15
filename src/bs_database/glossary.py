@@ -10,7 +10,7 @@ lists all violations as ``<file>:<line>: <rule>``.
 
 import csv
 import io
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
 from types import MappingProxyType
@@ -123,19 +123,25 @@ class Glossary:
 
     def product_type_for_code(self, product_code: str | None) -> str | None:
         """Type code of the longest prefix of ``product_code``, else ``None``."""
-        if not product_code:
-            return None
-        best: ProductPrefix | None = None
-        for p in self.product_prefixes:
-            if product_code.startswith(p.prefix) and (
-                best is None or len(p.prefix) > len(best.prefix)
-            ):
-                best = p
-        return None if best is None else best.code
+        return prefix_type_code(self.product_prefixes, product_code)
 
     def unresolved_legacy(self) -> tuple[LegacyFamilyAlias, ...]:
         """Legacy pairs whose ``jp`` is still empty (to be filled in #96)."""
         return tuple(a for a in self.legacy_family_aliases if a.jp is None)
+
+
+def prefix_type_code(prefixes: Iterable[ProductPrefix], product_code: str | None) -> str | None:
+    """The type code of the longest ``startswith`` prefix of ``product_code``, else ``None``.
+
+    The one prefix rule: the normalizer and the review table both use it.
+    """
+    if not product_code:
+        return None
+    best: ProductPrefix | None = None
+    for p in prefixes:
+        if product_code.startswith(p.prefix) and (best is None or len(p.prefix) > len(best.prefix)):
+            best = p
+    return None if best is None else best.code
 
 
 Row = tuple[int, dict[str, str]]

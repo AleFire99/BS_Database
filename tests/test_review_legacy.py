@@ -8,7 +8,7 @@ from typing import Any
 import pytest
 
 from bs_database.normalize.records import NORMALIZED_SCHEMA_VERSION
-from bs_database.review.legacy import FamilyLink, link_families
+from bs_database.review.legacy import FamilyLink, link_families, number_key
 from bs_database.review.source import (
     ReviewError,
     iter_pages,
@@ -118,7 +118,7 @@ def test_ties_are_weak_and_sorted_by_name() -> None:
     assert not link.strong
 
 
-def test_multi_family_cards_do_not_vote_and_unmatched_are_listed() -> None:
+def test_multi_family_cards_do_not_vote_and_no_legacy_are_listed() -> None:
     cards = {
         "N-1": frozenset({"A", "B"}),
         "N-2": frozenset({"A"}),
@@ -129,4 +129,23 @@ def test_multi_family_cards_do_not_vote_and_unmatched_are_listed() -> None:
     legacy = {"N-1": ("x", "y"), "N-2": ("x", "y"), "N-3": ("x",), "N-4": ("x",)}
     result = link_families(cards, legacy)
     assert result.links == {"A": FamilyLink("A", (("x", 1),))}
-    assert result.unmatched == ("N-9",)
+    assert result.no_legacy == ("N-9",)
+
+
+@pytest.mark.parametrize(
+    "number",
+    ["BS52-TX01", "ＢＳ５２－ＴＸ０１", "  BS52-TX01 ", "BS52-TX01(A)", "BS52-TX01 （Ｂ）"],
+)
+def test_number_key_variants_join_the_legacy_number(number: str) -> None:
+    assert number_key(number) == "BS52-TX01"
+    result = link_families({number: frozenset({"甲"})}, {"BS52-TX01": ("Rebirth",)})
+    assert result.links["甲"].candidates == (("Rebirth", 1),)
+    assert result.no_legacy == ()
+
+
+def test_exact_match_is_tried_first_and_ambiguous_keys_are_unused() -> None:
+    cards = {"X-1(A)": frozenset({"甲"}), "Y-1": frozenset({"乙"})}
+    legacy = {"X-1(A)": ("exact",), "X-1": ("fallback",), "Y-1(A)": ("a",), "Y-1(B)": ("b",)}
+    result = link_families(cards, legacy)
+    assert result.links["甲"].candidates == (("exact", 1),)
+    assert result.no_legacy == ("Y-1",)
