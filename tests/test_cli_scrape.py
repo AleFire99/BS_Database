@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 import typer
-from fakes import ROBOTS_URL, FakeClock, FakeSite, fixture_url, make_client
+from fakes import ROBOTS_URL, FakeClock, FakeSite, fixture_url, make_client, memoise_parsers
 from typer.testing import CliRunner
 
 from bs_database import cli
@@ -24,6 +24,7 @@ SET_URL = fixture_url("set.html")
 def env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
     monkeypatch.setenv("BSDB_DATA_DIR", str(tmp_path / "data"))
     monkeypatch.setenv("BSDB_REQUEST_DELAY", "3.0")
+    memoise_parsers(monkeypatch)
     root = logging.getLogger()
     level, handlers = root.level, list(root.handlers)
     yield

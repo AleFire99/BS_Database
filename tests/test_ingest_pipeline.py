@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from fakes import ROBOTS_URL, FakeClock, FakeSite, Killed, fixture_url, make_client
+from fakes import ROBOTS_URL, FakeClock, FakeSite, Killed, fixture_url, make_client, memoise_parsers
 
 from bs_database.ingest.cache import CachedFetcher, RawCache
 from bs_database.ingest.http import (
@@ -47,6 +47,7 @@ def clean_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
         if key.startswith("BSDB_"):
             monkeypatch.delenv(key)
     monkeypatch.chdir(tmp_path)
+    memoise_parsers(monkeypatch)
 
 
 def make_settings(tmp_path: Path, *, max_requests: int = 1000) -> Settings:

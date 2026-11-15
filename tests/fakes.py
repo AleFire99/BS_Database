@@ -1,11 +1,16 @@
 """Shared fakes: a fake clock and a fake batspi.com that serves the cached fixtures."""
 
+import functools
 import json
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Literal
 
+import pytest
+
 from bs_database.ingest.http import HttpClient, HttpResponse
+from bs_database.parsers.batspi.card import parse_card_page
+from bs_database.parsers.batspi.index import parse_index
 from bs_database.settings import Settings
 
 HTML_DIR = Path(__file__).parent / "fixtures" / "html"
@@ -87,3 +92,14 @@ class FakeSite:
 
 def make_client(settings: Settings, site: FakeSite, clock: FakeClock) -> HttpClient:
     return HttpClient(settings, transport=site, clock=clock)
+
+
+# Pure parsers memoised across tests: the same fixture HTML is parsed hundreds of times otherwise.
+_CACHED_CARD = functools.cache(parse_card_page)
+_CACHED_INDEX = functools.cache(parse_index)
+
+
+def memoise_parsers(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Make the pipeline use memoised (identical) card and index parsers."""
+    monkeypatch.setattr("bs_database.ingest.pipeline.parse_card_page", _CACHED_CARD)
+    monkeypatch.setattr("bs_database.ingest.pipeline.parse_index", _CACHED_INDEX)
