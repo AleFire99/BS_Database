@@ -16,6 +16,8 @@ Settings are defined in `src/bs_database/settings.py` (`Settings`, built on pyda
 | `BSDB_STATE_DB_PATH` | `<data_dir>/state/ingest.db` | Ingestion state store (SQLite, see [ingestion-state](architecture/ingestion-state.md)) |
 | `BSDB_PARSED_DIR` | `<data_dir>/parsed` | Parsed card pages (`<source>/<sha256(url)>.json`) |
 | `BSDB_NORMALIZED_DIR` | `<data_dir>/normalized` | Normalized card pages (`<source>/<sha256(url)>.json`, see [normalization](architecture/normalization.md)) |
+| `BSDB_TRANSLATION_CACHE_PATH` | `<data_dir>/cache/translations.sqlite` | Machine-translation cache (SQLite, see [translation](architecture/translation.md)) |
+| `BSDB_DEEPL_API_KEY` | unset | DeepL API key (local only, hidden in `repr`); unset or empty means no machine translation (`NullTranslator`) |
 | `BSDB_BATSPI_URL` | `https://batspi.com/` | batspi.com base URL |
 | `BSDB_USER_AGENT` | `bs-database/<version> (+https://github.com/AleFire99/BS_Database)` | `User-Agent` sent on every request |
 | `BSDB_REQUEST_DELAY` | `3.0` | Minimum delay between HTTP requests, in seconds (must be >= 1.0, policy floor) |

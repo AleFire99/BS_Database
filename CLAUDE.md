@@ -42,6 +42,7 @@ uv run pre-commit run --all-files
 | `src/bs_database/ingest/`, `parsers/` | Scraper (epic #10): `ingest.policy`/`http`/`cache` (polite fetching), `ingest.state` (resume), `ingest.pipeline`/`report`/`parsed_store` (`bsdb scrape`), `parsers/` (pure HTML parsers); see [docs/architecture/scraper.md](docs/architecture/scraper.md) |
 | `src/bs_database/glossary.py`, `data/glossary/*.csv` | Glossary loader/validator and the 9 curated CSVs (JP to code and English); see [CONTRIBUTING.md](CONTRIBUTING.md#adding-a-glossary-entry) |
 | `src/bs_database/normalize/`, `glossary.py` | `bsdb normalize` (#93): `records`, `rules`, `pipeline` map `data/parsed` to `data/normalized` through `data/glossary/*.csv`; see [docs/architecture/normalization.md](docs/architecture/normalization.md) |
+| `src/bs_database/translate/` | Translator (#94): `Translator` protocol, `NullTranslator`, `DeepLTranslator`, SQLite `TranslationCache`, `CachedTranslator`, `make_translator`; see [docs/architecture/translation.md](docs/architecture/translation.md) |
 | `src/bs_database/db.py` | SQLAlchemy models and legacy JSON → SQLite loader (`build_db`, `bsdb build --input`) |
 | `tests/` | pytest suite; `tests/goldens/` and `tests/fixtures/` come from the legacy code (tag `v0.1.0`); `tests/tools/db_counts.py` prints per-table row counts |
 | `battle_spirits.db` | Build output, untracked and git-ignored |
