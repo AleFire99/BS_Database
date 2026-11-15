@@ -45,7 +45,7 @@ def write_page(
     target.parent.mkdir(parents=True, exist_ok=True)
     document = {
         "schema_version": version or NORMALIZED_SCHEMA_VERSION,
-        "page": {"entries": entries},
+        "page": {"entries": entries, "printings": []},
     }
     target.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
     return target
