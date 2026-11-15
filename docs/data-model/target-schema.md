@@ -424,7 +424,7 @@ Lookup, following the lookup convention of ADR 0003: `code` plus one English `na
 
 Added by [#30](https://github.com/AleFire99/BS_Database/issues/30). Gameplay attributes are identical across printings of a card (a reprint keeps its number and text; only rarity and art change, see ADR 0004), so they hang off `cards`, never off `card_numbers` or `printings`. Effects, keywords and alternate costs such as `【ミラージュ：コスト2(1)】` belong to [#31](https://github.com/AleFire99/BS_Database/issues/31) and are modelled in [Effects and keywords](#effects-and-keywords), not here.
 
-Lookup tables (`card_types`, `colors`, `symbols`, `rarities`, `variants`, `product_types`) carry a stable `code` and one English `name`. They have **no Japanese name column**: the Japanese source text is translated to a `code` by the loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)), see [JP source to code](#jp-source-to-code). Data entities (`cards`, `families`, `products`) keep `name_jp` so a bad machine translation can be redone.
+Lookup tables (`card_types`, `colors`, `symbols`, `rarities`, `variants`, `product_types`) carry a stable `code` and one English `name`. They have **no Japanese name column**: the Japanese source text is translated to a `code` by the normalization stage ([#11](https://github.com/AleFire99/BS_Database/issues/11), [ADR 0008](../adr/0008-normalization-and-translation.md)), see [JP source to code](#jp-source-to-code). Data entities (`cards`, `families`, `products`) keep `name_jp` so a bad machine translation can be redone.
 
 ```mermaid
 erDiagram
@@ -627,7 +627,7 @@ Other names for a family, so a machine translation can be mapped back to the pre
 | `family_id` | INTEGER | NOT NULL, FOREIGN KEY to `families.id` | |
 | `alias` | TEXT | NOT NULL | |
 | `lang` | TEXT | NOT NULL, CHECK `lang` IN (`jp`, `en`) | Internal language code (closed list: `jp`, `en`). Language codes are the one allowed CHECK-list exception to the lookup rule of [ADR 0003](../adr/0003-naming-and-schema-versioning.md). |
-| `translation_source_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_sources.id` | Where the alias comes from: `machine`, `fandom`, `manual` or `official`. |
+| `translation_source_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_sources.id` | Where the alias comes from: `machine`, `fandom`, `manual` or `batspi`. |
 
 Table constraint: `UNIQUE (family_id, alias, lang)`. Seeded from the 41 `MT = preferred EN` pairs in `data/family_mapping.txt` (source `machine`; for example `Rebirth = Reptile Beast`: the alias `Rebirth` points to the family whose preferred name is `Reptile Beast`) and from the machine-translated names in the legacy `families` table.
 
@@ -734,7 +734,7 @@ The `<pre>` lines come from the fixtures in `tests/fixtures/html/`. Ids are illu
 
 ### JP source to code
 
-The loader (#12) maps Japanese source text to lookup codes. The mapping is code, not data: it is not stored in the database.
+The normalization stage ([#11](https://github.com/AleFire99/BS_Database/issues/11), [ADR 0008](../adr/0008-normalization-and-translation.md)) maps Japanese source text to lookup codes. The #12 loader only inserts the resulting rows. The mapping is not stored in the database. It is curated as CSV glossaries in `data/glossary/<kind>.csv` (columns `jp,code,en,notes`), created in [#92](https://github.com/AleFire99/BS_Database/issues/92). The table below is the seed for those files.
 
 | Lookup | JP source | Code | Seen in |
 | --- | --- | --- | --- |
@@ -1048,7 +1048,7 @@ Lookup: where an English text came from.
 | Column | Type | Constraints | Notes |
 | --- | --- | --- | --- |
 | `id` | INTEGER | PRIMARY KEY | |
-| `code` | TEXT | NOT NULL, UNIQUE | `official`, `fandom`, `manual`, `machine`. Also used by `family_aliases.translation_source_id`. |
+| `code` | TEXT | NOT NULL, UNIQUE | `batspi` (English name printed on the batspi `<h3>`, added by [ADR 0008](../adr/0008-normalization-and-translation.md)), `official`, `fandom`, `manual`, `machine`. Also used by `family_aliases.translation_source_id`. |
 | `name` | TEXT | NOT NULL | English display name. |
 
 ### translation_statuses
@@ -1065,7 +1065,7 @@ Lookup: how far a translation has come.
 
 - The Japanese text is the source of truth and is never overwritten by a translation.
 - A failed translation is `X_en` NULL with the status `failed`. An error string is **never** stored as text; this fixes the legacy `Error: …` and `Aaaaaa` names.
-- `en_source_id` and `en_status_id` describe the row, not a single column: on `cards`, one pair covers `name_en` and `flavor_text_en`. If a row needs different sources for two texts, the model must change (accepted for v1, see ADR 0005).
+- `en_source_id` and `en_status_id` describe the row's **non-NULL** English texts, not a single column ([ADR 0008](../adr/0008-normalization-and-translation.md)). A NULL `X_en` always means "not translated". On `cards`, one pair covers `name_en` and `flavor_text_en`: `name_en` can be machine-translated (status `machine`) while `flavor_text_en` stays NULL. If a row needs different sources for two texts, the model must change (accepted for v1, see ADR 0005).
 - `en_source_id` is NULL while there is no English text. `en_status_id` is NOT NULL with the default `pending`. Names on lookups are English only, as in [ADR 0003](../adr/0003-naming-and-schema-versioning.md).
 - A third language would add `_xx` columns; it is out of scope.
 - Full-text search (FTS5) over `cards.name_*` and `card_effects.text_*` is a build option for [#12](https://github.com/AleFire99/BS_Database/issues/12), not designed here.
