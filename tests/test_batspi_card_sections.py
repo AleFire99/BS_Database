@@ -5,8 +5,8 @@ import logging
 import pytest
 from bs4 import BeautifulSoup
 
-from bs_database.parsers.batspi.card_sections import parse_printings
-from bs_database.parsers.card_models import Printing
+from bs_database.parsers.batspi.card_sections import parse_images, parse_printings
+from bs_database.parsers.card_models import CardImage, Printing
 from bs_database.parsers.errors import ParseError
 
 LOGGER = "bs_database.parsers.batspi.card_sections"
@@ -165,3 +165,58 @@ def test_unparseable_block_line_warns(caplog: pytest.LogCaptureFixture) -> None:
     with caplog.at_level(logging.WARNING, logger=LOGGER):
         assert run(page("", blocks), ["A-001"]) == ()
     assert caplog.text.count("unparseable block-icon line") == 2
+
+
+GALLERY = (
+    '<ul class="ppy-imglist">'
+    '<li><a href="/card/A-001.jpg"><img src="/card/small/A-001.jpg"/></a>'
+    '<span class="ppy-extcaption">A-001<br />製品<br />シークレット<br /><br /></span></li>'
+    "{extra}</ul>"
+)
+
+
+def images(html: str, numbers: list[str]) -> tuple[CardImage, ...]:
+    return parse_images(BeautifulSoup(html, "html.parser"), URL, numbers)
+
+
+def test_gallery_image() -> None:
+    (image,) = images(GALLERY.format(extra=""), ["A-001"])
+    assert image == CardImage(
+        "A-001",
+        "https://batspi.com/card/A-001.jpg",
+        "https://batspi.com/card/small/A-001.jpg",
+        ("製品", "シークレット"),
+    )
+
+
+def test_gallery_inside_a_list_item_is_ignored() -> None:
+    assert images(f"<ul><li>{GALLERY.format(extra='')}</li></ul>", ["A-001"]) == ()
+
+
+def test_no_gallery() -> None:
+    assert images("<html></html>", ["A-001"]) == ()
+
+
+def test_gallery_item_without_small_image() -> None:
+    html = GALLERY.format(extra="").replace('<img src="/card/small/A-001.jpg"/>', "")
+    assert images(html, ["A-001"])[0].small_url is None
+
+
+@pytest.mark.parametrize(
+    ("old", "new", "message"),
+    [
+        ('<a href="/card/A-001.jpg">', "<a>", "without a link"),
+        ('<span class="ppy-extcaption">A-001', '<span class="x">A-001', "without a caption"),
+        ('extcaption">A-001<br />', 'extcaption"><br />', "without a card number"),
+    ],
+)
+def test_malformed_gallery_item_raises(old: str, new: str, message: str) -> None:
+    with pytest.raises(ParseError, match=message):
+        images(GALLERY.format(extra="").replace(old, new), ["A-001"])
+
+
+def test_gallery_number_unknown_warns(caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level(logging.WARNING, logger=LOGGER):
+        assert images(GALLERY.format(extra=""), ["B-002"]) == ()
+    assert "field=number" in caplog.text
+    assert "A-001" in caplog.text

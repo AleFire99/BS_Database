@@ -13,7 +13,7 @@ from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from bs4.element import Comment, NavigableString, PageElement, Tag
 
-from bs_database.parsers.card_models import Printing
+from bs_database.parsers.card_models import CardImage, Printing
 from bs_database.parsers.errors import ParseError
 
 log = logging.getLogger(__name__)
@@ -265,3 +265,57 @@ def _join(
         used.add((index, number))
         return block
     return None
+
+
+def _caption_lines(caption: Tag) -> list[str]:
+    lines = [""]
+    for node in caption.children:
+        if isinstance(node, Tag) and node.name == "br":
+            lines.append("")
+        else:
+            lines[-1] += node.get_text() if isinstance(node, Tag) else str(node)
+    return [line.strip() for line in lines]
+
+
+def parse_images(soup: BeautifulSoup, url: str, numbers: Sequence[str]) -> tuple[CardImage, ...]:
+    """Return the gallery images (one per ``<li>`` of each ``ul.ppy-imglist``).
+
+    URLs are read from ``a[href]`` and ``img[src]`` and made absolute; file names are
+    never built. The first caption line is the card number, the rest is the caption.
+    """
+    images: list[CardImage] = []
+    for gallery in soup.select("ul.ppy-imglist"):
+        if gallery.find_parent("li") is not None:
+            continue
+        for item in gallery.find_all("li", recursive=False):
+            link = item.find("a")
+            thumb = item.find("img")
+            caption = item.find("span", class_="ppy-extcaption")
+            href = _attr(link, "href") if isinstance(link, Tag) else None
+            if href is None:
+                raise ParseError(f"gallery image without a link in {url}")
+            if not isinstance(caption, Tag):
+                raise ParseError(f"gallery image {href!r} without a caption in {url}")
+            lines = _caption_lines(caption)
+            if not lines[0]:
+                raise ParseError(f"gallery image {href!r} without a card number in {url}")
+            small = _attr(thumb, "src") if isinstance(thumb, Tag) else None
+            rest = lines[1:]
+            while rest and not rest[-1]:
+                rest.pop()
+            if lines[0] not in numbers:
+                log.warning(
+                    "gallery number is not a card number: %s field=number value=%r",
+                    url,
+                    lines[0],
+                )
+                continue
+            images.append(
+                CardImage(
+                    lines[0],
+                    urljoin(url, href),
+                    urljoin(url, small) if small else None,
+                    tuple(rest),
+                )
+            )
+    return tuple(images)

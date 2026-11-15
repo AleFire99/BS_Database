@@ -1,5 +1,6 @@
 """Text, credits, flavour (and later printings, images) of the 11 card fixtures (#71)."""
 
+import dataclasses
 import json
 import logging
 from pathlib import Path
@@ -7,7 +8,13 @@ from pathlib import Path
 import pytest
 
 from bs_database.parsers.batspi.card import parse_card_page
-from bs_database.parsers.card_models import CardEntry, CardPage, CardText, Printing
+from bs_database.parsers.card_models import (
+    CardEntry,
+    CardImage,
+    CardPage,
+    CardText,
+    Printing,
+)
 
 HTML_DIR = Path(__file__).parent / "fixtures" / "html"
 MANIFEST = json.loads((HTML_DIR / "fixtures.json").read_text(encoding="utf-8"))
@@ -494,3 +501,74 @@ def test_magic_flash_unmatched_rarity_and_dates() -> None:
     revival = printings_of("card_magic_flash", "BSC22-117")
     assert any(p.product_code == "BSC22" and p.block_icon == "2" for p in revival)
     assert [p.rarity for p in revival if p.rarity is None] == [None]
+
+
+IMAGE_COUNTS = {
+    ("card_spirit", "BS72-007"): 2,
+    ("card_nexus", "BS72-069"): 2,
+    ("card_magic", "BS72-075"): 1,
+    ("card_magic_flash", "BS01-117"): 7,
+    ("card_magic_flash", "BSC22-117"): 2,
+    ("card_nexus_soukaishin", "BS44-X07"): 3,
+    ("card_brave", "BS10-062"): 8,
+    ("card_brave", "BS38-RV022"): 5,
+    ("card_ultimate", "SD19-X01"): 9,
+    ("card_ultimate", "SD67-CP01"): 1,
+    ("card_flip", "BS52-TX01(A)"): 3,
+    ("card_flip", "BS52-TX01(B)"): 3,
+    ("card_flip", "BS73-TCP01(A)"): 2,
+    ("card_flip", "BS73-TCP01(B)"): 2,
+    ("card_spirit_xx_bs31", "BS31-XX02"): 2,
+    ("card_spirit_bs01", "BS01-001"): 3,
+    ("card_spirit_bs01", "BSC22-001"): 1,
+    ("card_promo", "P001"): 1,
+    ("card_promo", "EX001"): 1,
+    ("card_promo", "P20-19"): 1,
+}
+
+
+@pytest.mark.parametrize(
+    ("key", "expected"), list(IMAGE_COUNTS.items()), ids=[k[1] for k in IMAGE_COUNTS]
+)
+def test_image_counts(key: tuple[str, str], expected: int) -> None:
+    stem, number = key
+    assert sum(i.number == number for i in parse(stem).images) == expected
+
+
+def test_spirit_images() -> None:
+    first, second = parse("card_spirit").images
+    assert first == CardImage(
+        "BS72-007",
+        "https://batspi.com/card/BS7/BS72-007.jpg",
+        "https://batspi.com/card/BS7/small/BS72-007.jpg",
+        ("契約編：環 第1章：廻帰再醒",),
+    )
+    assert second.large_url == "https://batspi.com/card/BS7/BS72-007-2.jpg"
+    assert second.caption == ("契約編：環 第1章：廻帰再醒", "シークレット")
+
+
+def test_promo_caption_keeps_second_line() -> None:
+    (image,) = [i for i in parse("card_promo").images if i.number == "EX001"]
+    assert image.caption == ("Xレアパック 【龍皇ジークフリード】", "プロモーションカード")
+
+
+@pytest.mark.parametrize("stem", STEMS)
+def test_image_urls_are_read_not_built(stem: str) -> None:
+    page = parse(stem)
+    html = (HTML_DIR / f"{stem}.html").read_text(encoding="utf-8")
+    numbers = {e.number for e in page.entries}
+    assert page.images
+    for image in page.images:
+        assert image.number in numbers
+        assert image.large_url.startswith("https://batspi.com/")
+        assert f'href="{image.large_url.removeprefix("https://batspi.com")}"' in html
+        assert image.small_url is not None
+        assert f'src="{image.small_url.removeprefix("https://batspi.com")}"' in html
+
+
+@pytest.mark.parametrize("stem", STEMS)
+def test_page_round_trips_through_json(stem: str) -> None:
+    page = parse(stem)
+    data = json.loads(json.dumps(dataclasses.asdict(page), ensure_ascii=False))
+    assert data["schema_version"] == "1.1.0"
+    assert len(data["printings"]) == len(page.printings)
