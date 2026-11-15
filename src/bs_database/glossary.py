@@ -10,8 +10,10 @@ lists all violations as ``<file>:<line>: <rule>``.
 
 import csv
 import io
-from dataclasses import dataclass
+from collections.abc import Mapping
+from dataclasses import dataclass, field
 from pathlib import Path
+from types import MappingProxyType
 
 KINDS = (
     "colors",
@@ -91,15 +93,21 @@ class LegacyFamilyAlias:
 class Glossary:
     """All glossaries, indexed by kind and exact ``jp`` value."""
 
-    entries: dict[str, tuple[Entry, ...]]
+    entries: Mapping[str, tuple[Entry, ...]]
     legacy_family_aliases: tuple[LegacyFamilyAlias, ...]
+    _index: Mapping[tuple[str, str], Entry] = field(init=False, repr=False, compare=False)
+
+    def __post_init__(self) -> None:
+        """Freeze ``entries`` and build the ``(kind, jp)`` index used by :meth:`lookup`."""
+        object.__setattr__(self, "entries", MappingProxyType(dict(self.entries)))
+        index = {
+            (k, e.jp): e for k, kind_entries in self.entries.items() for e in kind_entries if e.jp
+        }
+        object.__setattr__(self, "_index", MappingProxyType(index))
 
     def lookup(self, kind: str, jp: str) -> Entry | None:
         """Return the entry of ``kind`` whose ``jp`` equals ``jp``, else ``None``."""
-        for entry in self.entries.get(kind, ()):
-            if entry.jp == jp:
-                return entry
-        return None
+        return self._index.get((kind, jp))
 
     def unresolved_legacy(self) -> tuple[LegacyFamilyAlias, ...]:
         """Legacy pairs whose ``jp`` is still empty (to be filled in #96)."""
@@ -185,6 +193,8 @@ def load_glossary(directory: Path) -> Glossary:
     for kind in KINDS:
         if kind in raw:
             _check_common(kind, raw[kind], errors)
+            if kind in CLOSED and not raw[kind]:
+                errors.append(f"{kind}.csv: a closed kind needs at least one row")
 
     sort_orders: set[int] = set()
     for line, row in raw.get("rarities", []):

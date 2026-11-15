@@ -175,3 +175,21 @@ def test_all_violations_reported_once(tmp_path: Path) -> None:
 
 def test_blank_lines_ignored(tmp_path: Path) -> None:
     load_glossary(make(tmp_path, colors=f"{H}\n青,blue,Blue,\n\n赤,red,Red,\n"))
+
+
+def test_closed_kind_needs_a_row(tmp_path: Path) -> None:
+    assert "card_types.csv: a closed kind needs at least one row" in errors_of(
+        tmp_path, card_types=f"{H}\n"
+    )
+
+
+def test_open_kind_may_be_empty(tmp_path: Path) -> None:
+    g = load_glossary(make(tmp_path, keywords=f"{H}\n"))
+    assert g.entries["keywords"] == ()
+
+
+def test_entries_are_read_only(tmp_path: Path) -> None:
+    g = load_glossary(make(tmp_path))
+    with pytest.raises(TypeError):
+        g.entries["colors"] = ()  # type: ignore[index]
+    assert g.lookup("colors", "赤") is not None
