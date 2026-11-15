@@ -4,11 +4,16 @@
 ``<parsed_dir>/<source>/<sha>.json`` and writes ``<normalized_dir>/<source>/<sha>.json``
 with the same stem, atomically and byte-identically across runs. ``parsed_dir`` is never
 written.
+
+``normalize_tree`` streams the tree twice so it never holds every page in memory: pass 1
+normalizes each page and keeps only the texts to translate; one batched ``translate`` call
+follows; pass 2 normalizes again, applies the results and writes.
 """
 
 import json
 import logging
-from dataclasses import asdict, dataclass
+from collections.abc import Mapping
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from bs_database.glossary import Glossary
@@ -30,6 +35,11 @@ from bs_database.normalize.records import (
     UnmappedCollector,
     UnmappedTerm,
 )
+from bs_database.normalize.translation import (
+    TranslationRequests,
+    apply_translations,
+    collect_requests,
+)
 from bs_database.parsers.card_models import (
     CardEntry,
     CardPage,
@@ -38,6 +48,7 @@ from bs_database.parsers.card_models import (
     Gameplay,
     Printing,
 )
+from bs_database.translate.types import TranslationResult, Translator
 
 log = logging.getLogger(__name__)
 
@@ -152,6 +163,9 @@ class TreeResult:
     written: int
     failed: tuple[Path, ...]
     unmapped: tuple[UnmappedTerm, ...]
+    uncurated: tuple[UnmappedTerm, ...] = ()
+    requests: TranslationRequests = field(default_factory=TranslationRequests)
+    translations: Mapping[str, TranslationResult] = field(default_factory=dict)
 
     @property
     def closed(self) -> int:
@@ -159,39 +173,92 @@ class TreeResult:
         return sum(1 for t in self.unmapped if t.closed)
 
 
-def normalize_tree(parsed_dir: Path, normalized_dir: Path, glossary: Glossary) -> TreeResult:
+def _load(
+    path: Path, glossary: Glossary
+) -> tuple[CardPage, dict[str, object], NormalizedPage] | None:
+    """Read and normalize one parsed file; ``None`` (logged) when it cannot be read."""
+    try:
+        page, provenance = read_card_page(path)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        log.error("cannot read %s: %s", path, exc)
+        return None
+    return page, provenance, normalize_page(page, glossary)
+
+
+def _write(
+    normalized_dir: Path,
+    path: Path,
+    page: CardPage,
+    provenance: dict[str, object],
+    result: NormalizedPage,
+) -> None:
+    document = {
+        "schema_version": NORMALIZED_SCHEMA_VERSION,
+        "parsed_schema_version": page.schema_version,
+        "url": page.url,
+        "provenance": provenance,
+        "page": asdict(result),
+    }
+    target = normalized_dir / path.parent.name / path.name
+    target.parent.mkdir(parents=True, exist_ok=True)
+    text = json.dumps(document, ensure_ascii=False, indent=2) + "\n"
+    atomic_write(target, text.encode("utf-8"))
+
+
+def normalize_tree(
+    parsed_dir: Path, normalized_dir: Path, glossary: Glossary, translator: Translator
+) -> TreeResult:
     """Normalize every ``<parsed_dir>/<source>/*.json`` into ``normalized_dir``.
 
-    A page with a closed unmapped term, or a parsed file that cannot be read, is not written
-    and counted as failed; the run continues. Normalized files whose parsed source was
-    deleted are not pruned.
+    Card names, product names and families without an English name are translated with
+    ``translator`` in one batched call (pass a ``NullTranslator`` to stay offline). A page
+    with a closed unmapped term, or a parsed file that cannot be read, is not written, is
+    counted as failed and sends nothing to the translator; the run continues. Normalized
+    files whose parsed source was deleted are not pruned.
     """
-    written = 0
     failed: list[Path] = []
     unmapped: list[UnmappedTerm] = []
+    uncurated: list[UnmappedTerm] = []
+    families: set[str] = set()
+    names: set[str] = set()
+    products: set[str] = set()
+    good: list[Path] = []
     for path in sorted(parsed_dir.glob("*/*.json")):
-        try:
-            page, provenance = read_card_page(path)
-        except (OSError, ValueError, KeyError, TypeError) as exc:
-            log.error("cannot read %s: %s", path, exc)
+        loaded = _load(path, glossary)
+        if loaded is None:
             failed.append(path)
             continue
-        result = normalize_page(page, glossary)
+        result = loaded[2]
         unmapped.extend(result.unmapped)
+        uncurated.extend(result.uncurated)
         if any(t.closed for t in result.unmapped):
             log.error("%s: closed unmapped terms, page not written", path)
             failed.append(path)
             continue
-        document = {
-            "schema_version": NORMALIZED_SCHEMA_VERSION,
-            "parsed_schema_version": page.schema_version,
-            "url": page.url,
-            "provenance": provenance,
-            "page": asdict(result),
-        }
-        target = normalized_dir / path.parent.name / path.name
-        target.parent.mkdir(parents=True, exist_ok=True)
-        text = json.dumps(document, ensure_ascii=False, indent=2) + "\n"
-        atomic_write(target, text.encode("utf-8"))
+        wanted = collect_requests(result)
+        families.update(wanted.families)
+        names.update(wanted.names)
+        products.update(wanted.products)
+        good.append(path)
+    requests = TranslationRequests(
+        tuple(sorted(families)), tuple(sorted(names)), tuple(sorted(products))
+    )
+    texts = requests.ordered()
+    results = dict(zip(texts, translator.translate(texts), strict=True)) if texts else {}
+    written = 0
+    for path in good:
+        loaded = _load(path, glossary)
+        if loaded is None:
+            failed.append(path)
+            continue
+        page, provenance, result = loaded
+        _write(normalized_dir, path, page, provenance, apply_translations(result, results))
         written += 1
-    return TreeResult(written, tuple(failed), tuple(unmapped))
+    return TreeResult(
+        written,
+        tuple(failed),
+        tuple(unmapped),
+        tuple(uncurated),
+        requests,
+        results,
+    )

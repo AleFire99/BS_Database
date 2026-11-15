@@ -19,6 +19,7 @@ from bs_database.ingest.state import StateStore
 from bs_database.log import configure_logging
 from bs_database.normalize.pipeline import normalize_tree
 from bs_database.settings import Settings
+from bs_database.translate import make_translator
 
 app = typer.Typer(no_args_is_help=True, help="bsdb: Battle Spirits card database tooling.")
 
@@ -79,7 +80,8 @@ def normalize(ctx: typer.Context) -> None:
     except GlossaryError as exc:
         typer.echo(f"error: invalid glossary in {settings.glossary_dir}:\n{exc}", err=True)
         raise typer.Exit(1) from exc
-    result = normalize_tree(settings.parsed_dir, settings.normalized_dir, glossary)
+    translator = make_translator(settings)
+    result = normalize_tree(settings.parsed_dir, settings.normalized_dir, glossary, translator)
     typer.echo(
         f"Normalized {result.written} pages, {len(result.unmapped)} unmapped terms "
         f"({result.closed} closed)"

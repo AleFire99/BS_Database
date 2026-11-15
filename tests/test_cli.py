@@ -88,6 +88,7 @@ def data_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, restore_logging: N
     data = tmp_path / "data"
     data.mkdir()
     monkeypatch.setenv("BSDB_DATA_DIR", str(data))
+    monkeypatch.setenv("BSDB_DEEPL_API_KEY", "")  # empty means offline; also beats a local .env
     return data
 
 

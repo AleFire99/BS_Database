@@ -6,9 +6,17 @@ from collections.abc import Callable
 from pathlib import Path
 
 import pytest
+from fakes import FakeEngine
 from golden_support import card_fixture_names, parse_fixture, real_glossary, write_parsed_fixture
 
 from bs_database.normalize.pipeline import normalize_page, normalize_tree
+from bs_database.translate import NullTranslator
+from bs_database.translate.cache import TranslationCache
+from bs_database.translate.cached import CachedTranslator
+
+
+def _cache(tmp_path: Path) -> TranslationCache:
+    return TranslationCache(tmp_path / "translations.sqlite")
 
 
 def _hash_tree(root: Path) -> dict[str, str]:
@@ -70,7 +78,7 @@ def test_product_type_marker_and_no_marker() -> None:
 def test_tree_writes_same_stem_and_is_idempotent(tmp_path: Path) -> None:
     parsed, out = tmp_path / "parsed", tmp_path / "normalized"
     sources = [write_parsed_fixture(parsed, n) for n in ("card_spirit.html", "card_flip.html")]
-    first = normalize_tree(parsed, out, real_glossary())
+    first = normalize_tree(parsed, out, real_glossary(), NullTranslator())
     assert (first.written, first.failed) == (2, ())
     for src in sources:
         target = out / "batspi" / src.name
@@ -79,7 +87,7 @@ def test_tree_writes_same_stem_and_is_idempotent(tmp_path: Path) -> None:
         assert document["parsed_schema_version"] == "2.0.0"
         assert document["provenance"]["source"] == "batspi"
     snapshot = _hash_tree(out)
-    normalize_tree(parsed, out, real_glossary())
+    normalize_tree(parsed, out, real_glossary(), NullTranslator())
     assert _hash_tree(out) == snapshot
 
 
@@ -87,7 +95,7 @@ def test_tree_leaves_parsed_unchanged(tmp_path: Path) -> None:
     parsed = tmp_path / "parsed"
     write_parsed_fixture(parsed, "card_spirit.html")
     before = _hash_tree(parsed)
-    normalize_tree(parsed, tmp_path / "normalized", real_glossary())
+    normalize_tree(parsed, tmp_path / "normalized", real_glossary(), NullTranslator())
     assert _hash_tree(parsed) == before
 
 
@@ -98,7 +106,7 @@ def test_closed_unmapped_term_fails_the_page_but_not_the_run(tmp_path: Path) -> 
     document = json.loads(bad.read_text(encoding="utf-8"))
     document["page"]["entries"][0]["gameplay"]["card_type"] = "謎のタイプ"
     bad.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
-    result = normalize_tree(parsed, out, real_glossary())
+    result = normalize_tree(parsed, out, real_glossary(), NullTranslator())
     assert (result.written, result.failed) == (1, (bad,))
     assert result.closed == 1
     assert (out / "batspi" / good.name).is_file()
@@ -141,10 +149,78 @@ def test_unreadable_parsed_file_is_counted_failed(
     parsed = tmp_path / "parsed"
     path = write_parsed_fixture(parsed, "card_spirit.html")
     breaker(path)
-    result = normalize_tree(parsed, tmp_path / "normalized", real_glossary())
+    result = normalize_tree(parsed, tmp_path / "normalized", real_glossary(), NullTranslator())
     assert (result.written, result.failed) == (0, (path,))
 
 
 def test_empty_tree(tmp_path: Path) -> None:
-    result = normalize_tree(tmp_path / "none", tmp_path / "out", real_glossary())
+    result = normalize_tree(tmp_path / "none", tmp_path / "out", real_glossary(), NullTranslator())
     assert (result.written, result.failed, result.unmapped) == (0, (), ())
+
+
+def _written(out: Path) -> dict[str, str]:
+    return {p.name: p.read_text(encoding="utf-8") for p in sorted(out.rglob("*.json"))}
+
+
+def test_tree_translates_names_families_and_products(tmp_path: Path) -> None:
+    parsed, out = tmp_path / "parsed", tmp_path / "normalized"
+    write_parsed_fixture(parsed, "card_flip.html")
+    engine = FakeEngine()
+    result = normalize_tree(
+        parsed, out, real_glossary(), CachedTranslator(engine, _cache(tmp_path))
+    )
+    (document,) = (json.loads(t) for t in _written(out).values())
+    page = document["page"]
+    first = page["entries"][0]
+    assert (first["name_en"], first["en_status"]) == (f"<{first['name_jp']}>", "machine")
+    assert page["printings"][0]["product_en_source"] == "machine"
+    assert len(engine.calls) == 1
+    assert engine.calls[0] == result.requests.ordered()
+    assert {r.status for r in result.translations.values()} == {"machine"}
+
+
+def test_failed_page_sends_nothing_to_the_engine(tmp_path: Path) -> None:
+    parsed = tmp_path / "parsed"
+    bad = write_parsed_fixture(parsed, "card_magic.html")
+    document = json.loads(bad.read_text(encoding="utf-8"))
+    document["page"]["entries"][0]["gameplay"]["card_type"] = "謎のタイプ"
+    bad.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
+    engine = FakeEngine()
+    result = normalize_tree(
+        parsed, tmp_path / "out", real_glossary(), CachedTranslator(engine, _cache(tmp_path))
+    )
+    assert result.failed == (bad,)
+    assert engine.calls == []
+
+
+def test_null_translator_output_has_pending_status_and_no_text(tmp_path: Path) -> None:
+    parsed, out = tmp_path / "parsed", tmp_path / "normalized"
+    write_parsed_fixture(parsed, "card_spirit.html")
+    normalize_tree(parsed, out, real_glossary(), NullTranslator())
+    (document,) = (json.loads(t) for t in _written(out).values())
+    entry = document["page"]["entries"][0]
+    assert (entry["name_en"], entry["en_source"], entry["en_status"]) == (None, None, "pending")
+
+
+def test_max_chars_zero_leaves_texts_pending(tmp_path: Path) -> None:
+    parsed, out = tmp_path / "parsed", tmp_path / "normalized"
+    write_parsed_fixture(parsed, "card_flip.html")
+    engine = FakeEngine()
+    translator = CachedTranslator(engine, _cache(tmp_path), max_chars=0)
+    result = normalize_tree(parsed, out, real_glossary(), translator)
+    assert engine.calls == []
+    assert {r.status for r in result.translations.values()} == {"pending"}
+
+
+def test_second_run_makes_no_engine_calls(tmp_path: Path) -> None:
+    parsed = tmp_path / "parsed"
+    for name in card_fixture_names():
+        write_parsed_fixture(parsed, name)
+    engine = FakeEngine()
+    cache = _cache(tmp_path)
+    normalize_tree(parsed, tmp_path / "one", real_glossary(), CachedTranslator(engine, cache))
+    assert engine.calls
+    engine.calls.clear()
+    normalize_tree(parsed, tmp_path / "two", real_glossary(), CachedTranslator(engine, cache))
+    assert engine.calls == []
+    assert _written(tmp_path / "one") == _written(tmp_path / "two")
