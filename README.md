@@ -8,17 +8,17 @@ The `bs_database` package and `bsdb` CLI replace the legacy scripts (E2 restruct
 
 ## Roadmap
 
-| Epic | Theme | Issue |
-| --- | --- | --- |
-| E1 | Governance bootstrap | [#1](https://github.com/AleFire99/BS_Database/issues/1) |
-| E2 | Restructure | [#7](https://github.com/AleFire99/BS_Database/issues/7) |
-| E3 | Data model | [#8](https://github.com/AleFire99/BS_Database/issues/8) |
-| E4 | Source analysis | [#9](https://github.com/AleFire99/BS_Database/issues/9) |
-| E5 | Scraper rewrite | [#10](https://github.com/AleFire99/BS_Database/issues/10) |
-| E6 | Normalization and translation | [#11](https://github.com/AleFire99/BS_Database/issues/11) |
-| E7 | DB build and validation | [#12](https://github.com/AleFire99/BS_Database/issues/12) |
-| E8 | Images | [#13](https://github.com/AleFire99/BS_Database/issues/13) |
-| E9 | Distribution | [#14](https://github.com/AleFire99/BS_Database/issues/14) |
+| Epic | Theme | Issue | Milestone |
+| --- | --- | --- | --- |
+| E1 | Governance bootstrap | [#1](https://github.com/AleFire99/BS_Database/issues/1) | [v0.1.0](https://github.com/AleFire99/BS_Database/milestone/1) |
+| E2 | Restructure | [#7](https://github.com/AleFire99/BS_Database/issues/7) | [v0.2.0](https://github.com/AleFire99/BS_Database/milestone/2) |
+| E3 | Data model | [#8](https://github.com/AleFire99/BS_Database/issues/8) | [v0.3.0](https://github.com/AleFire99/BS_Database/milestone/3) |
+| E4 | Source analysis | [#9](https://github.com/AleFire99/BS_Database/issues/9) | [v0.3.0](https://github.com/AleFire99/BS_Database/milestone/3) |
+| E5 | Scraper rewrite | [#10](https://github.com/AleFire99/BS_Database/issues/10) | [v0.4.0](https://github.com/AleFire99/BS_Database/milestone/4) |
+| E6 | Normalization and translation | [#11](https://github.com/AleFire99/BS_Database/issues/11) | [v0.5.0](https://github.com/AleFire99/BS_Database/milestone/5) |
+| E7 | DB build and validation | [#12](https://github.com/AleFire99/BS_Database/issues/12) | [v0.5.0](https://github.com/AleFire99/BS_Database/milestone/5) |
+| E8 | Images | [#13](https://github.com/AleFire99/BS_Database/issues/13) | [v1.0.0](https://github.com/AleFire99/BS_Database/milestone/6) |
+| E9 | Distribution | [#14](https://github.com/AleFire99/BS_Database/issues/14) | [v1.0.0](https://github.com/AleFire99/BS_Database/milestone/6) |
 
 ## Quickstart
 

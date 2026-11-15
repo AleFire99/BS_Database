@@ -10,6 +10,7 @@ This repo opts into the owner's global workflow (`.github/workflow.yml`), so **l
 - Stop at human gates 🛑 A–D.
 - The chat is the Opus orchestrator and delegates to the `wf-*` haiku/sonnet subagents.
 - Branches: `feature/<epic#>-…` and `task/<sub#>-…`. Never commit to `main` or `dev`.
+- Milestones are release targets (`vX.Y.Z`); an epic and its sub-issues share one.
 - Use Conventional Commits with a `Refs #n` footer.
 - Python is **uv only**.
 
