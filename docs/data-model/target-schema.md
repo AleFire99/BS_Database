@@ -629,7 +629,7 @@ Other names for a family, so a machine translation can be mapped back to the pre
 | `lang` | TEXT | NOT NULL, CHECK `lang` IN (`jp`, `en`) | Internal language code (closed list: `jp`, `en`). Language codes are the one allowed CHECK-list exception to the lookup rule of [ADR 0003](../adr/0003-naming-and-schema-versioning.md). |
 | `translation_source_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_sources.id` | Where the alias comes from: `machine`, `fandom`, `manual` or `batspi`. |
 
-Table constraint: `UNIQUE (family_id, alias, lang)`. Seeded from the 41 `MT = preferred EN` pairs in `data/family_mapping.txt` (source `machine`; for example `Rebirth = Reptile Beast`: the alias `Rebirth` points to the family whose preferred name is `Reptile Beast`) and from the machine-translated names in the legacy `families` table.
+Table constraint: `UNIQUE (family_id, alias, lang)`. Seeded from the 41 `MT = preferred EN` pairs in `data/glossary/family_legacy_en.csv` (copied from the legacy `data/family_mapping.txt`; source `machine`; for example `Rebirth = Reptile Beast`: the alias `Rebirth` points to the family whose preferred name is `Reptile Beast`) and from the machine-translated names in the legacy `families` table.
 
 ### card_families
 
@@ -734,28 +734,21 @@ The `<pre>` lines come from the fixtures in `tests/fixtures/html/`. Ids are illu
 
 ### JP source to code
 
-The normalization stage ([#11](https://github.com/AleFire99/BS_Database/issues/11), [ADR 0008](../adr/0008-normalization-and-translation.md)) maps Japanese source text to lookup codes. The #12 loader only inserts the resulting rows. The mapping is not stored in the database. It is curated as CSV glossaries in `data/glossary/<kind>.csv` (columns `jp,code,en,notes`), created in [#92](https://github.com/AleFire99/BS_Database/issues/92). The table below is the seed for those files.
+The normalization stage ([#11](https://github.com/AleFire99/BS_Database/issues/11), [ADR 0008](../adr/0008-normalization-and-translation.md)) maps Japanese source text to lookup codes. The #12 loader only inserts the resulting rows. The mapping is not stored in the database. It is curated as CSV glossaries in `data/glossary/`, loaded and validated by `bs_database.glossary` ([#92](https://github.com/AleFire99/BS_Database/issues/92)). Every `jp` value is exactly what the batspi parser emits.
 
-| Lookup | JP source | Code | Seen in |
-| --- | --- | --- | --- |
-| `colors` / `symbols` | 赤 | `red` | fixtures |
-| `colors` / `symbols` | 紫 | `purple` | glossary, to verify #9 |
-| `colors` / `symbols` | 緑 | `green` | glossary, to verify #9 |
-| `colors` / `symbols` | 白 | `white` | glossary, to verify #9 |
-| `colors` / `symbols` | 黄 | `yellow` | glossary, to verify #9 |
-| `colors` / `symbols` | 青 | `blue` | glossary, to verify #9 |
-| `symbols` | 神 | `god` | fixture (reduction) |
-| `card_types` | スピリット | `spirit` | fixtures |
-| `card_types` | ネクサス | `nexus` | fixtures |
-| `card_types` | マジック | `magic` | fixtures |
-| `card_types` | ブレイヴ | `brave` | not in fixtures, pending #9 |
-| `card_types` | アルティメット | `ultimate` | not in fixtures, pending #9 |
-| `rarities` | `<C>` | `C` | batspi `収録` list |
-| `rarities` | `<R>` | `R` | batspi `収録` list |
-| `variants` | `SECRETあり` | `secret` | BS72-007 |
-| `variants` | `フルアート版` | `full_art` | BS72-069 |
+| File | Columns | Seed |
+| --- | --- | --- |
+| `colors.csv` | `jp,code,en,notes` | 赤 `red`, 紫 `purple`, 緑 `green`, 白 `white`, 黄 `yellow`, 青 `blue` (all seen in fixtures) |
+| `symbols.csv` | `jp,code,en,notes` | the six colour glyphs, 神 `god`, 極 `ultimate`, 全 `any` (reduction wildcard) |
+| `card_types.csv` | `jp,code,en,notes` | スピリット `spirit`, ネクサス `nexus`, マジック `magic`, ブレイヴ `brave`, アルティメット `ultimate` |
+| `rarities.csv` | `jp,code,en,notes,sort_order` | `C`, `R`, `X`, `XX`, `P`, `EX`, `CP`, 転醒X (`TX`); `CP` and `TX` English names are provisional |
+| `variants.csv` | `jp,code,en,notes` | `normal` (empty `jp`, the default), SECRETあり `secret`, フルアート版 `full_art`, パラレルあり `parallel` |
+| `product_types.csv` | `jp,code,en,notes` | `booster`, `starter`, `promo`, `magazine`, `collab`, `other`; `jp` is an optional title marker |
+| `keywords.csv` | `jp,code,en,notes` | the 14 keywords seen in fixtures; `en` is empty except `mirage` |
+| `families.csv` | `jp,code,en,notes,aliases_en,no_split` | the 16 families seen in fixtures; `code` and `en` are empty except 爬獣 |
+| `family_legacy_en.csv` | `legacy_en,preferred_en,jp,notes` | the 41 legacy pairs; `jp` is empty except `Rebirth` (爬獣) |
 
-Other rarities and variants, and the exact spelling of colours and Brave/Ultimate type names on the page, are pending #9. The colour and symbol glyphs 紫, 緑, 白, 黄, 青 are not in the three fixtures and are taken from the game's standard colour names and the glossary. Mark them to verify in #9.
+Matching is exact. An unmapped variant note means `normal`, not an error. Other free-text notes (`特別仕様`, `銀蒸着仕様`) are not variants. `EX赤` is not seeded because the parser does not emit it.
 
 ### Legacy mapping
 

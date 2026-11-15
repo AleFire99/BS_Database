@@ -164,8 +164,8 @@ Tables: `card_types`, `colors`, `symbols`, `card_colors`, `card_symbols`, `card_
 | Column | batspi | official | fandom | Notes for #10 |
 | --- | --- | --- | --- | --- |
 | `card_families` and `families.name_jp` (segment 3 of line 2) | `confirmed`: `眷属・武迅` @ `card_spirit.html`; `皇獣` @ `card_nexus.html`; `創界神・オリン` @ `card_nexus_soukaishin.html`; `起幻・眷属・古竜` @ `card_flip.html`; `極契約・新生・古竜` @ `card_ultimate.html`. `absent` on `card_magic_flash.html` (`4(2)/赤`, no third segment) | `unknown` (listed): `.type .system`, also a `system[]` filter with 351 options | `not fetched` | Families are separated by `・`. A third segment can be missing (older Magic). A family name can be a placeholder (`系統A` in the `体験会でのスペック` block @ `card_magic_flash.html`) |
-| `families.name_en`, `families.code` | `absent` | `absent` | `not fetched` | English names come from `data/family_mapping.txt` and machine translation (#11) |
-| `family_aliases.alias`, `family_aliases.lang`, `family_aliases.family_id`, `family_aliases.translation_source_id` | `absent` | `absent` | `not fetched` | Seeded from the legacy mapping (`data/family_mapping.txt`), not from a source |
+| `families.name_en`, `families.code` | `absent` | `absent` | `not fetched` | English names come from `data/glossary/families.csv` and `family_legacy_en.csv` (#92) and machine translation (#11) |
+| `family_aliases.alias`, `family_aliases.lang`, `family_aliases.family_id`, `family_aliases.translation_source_id` | `absent` | `absent` | `not fetched` | Seeded from the legacy mapping (`data/glossary/family_legacy_en.csv`), not from a source |
 | `en_source_id`, `en_status_id` | `derived` | | | Not source data |
 
 ### brave_details
@@ -226,7 +226,7 @@ Tables: `translation_sources`, `translation_statuses`, and the `_en` columns and
 | --- | --- | --- | --- | --- |
 | `cards.name_en` | `confirmed` on some pages only (see [cards](#cards)) | `absent`: Japanese only | `not fetched` | See the gap list |
 | `cards.flavor_text_en`, `card_effects.text_en`, `card_effects.timing_en`, `brave_details.fusion_condition_en`, `ultimate_details.summon_condition_en` | `absent`: the pages are Japanese only | `absent` | `not fetched` | Machine translation (#11) is the only route in v1 |
-| `families.name_en` | `absent` | `absent` | `not fetched` | `data/family_mapping.txt` (41 `MT = preferred EN` pairs) and machine translation |
+| `families.name_en` | `absent` | `absent` | `not fetched` | `data/glossary/family_legacy_en.csv` (41 `MT = preferred EN` pairs) and machine translation |
 | `products.name_en` | `absent` | `unknown` | `not fetched` | Machine translation (#11) |
 | `translation_sources.code`, `translation_sources.name` | `derived`: `batspi`, `official`, `fandom`, `manual`, `machine`; the English name on an old batspi `<h3>` uses `batspi` ([ADR 0008](../adr/0008-normalization-and-translation.md)), because it comes from the wiki, not from the card maker | | | See the gap list |
 | `translation_statuses.code` | `derived`: `pending`, `machine`, `reviewed`, `failed`, set by the pipeline | | | Not source data |

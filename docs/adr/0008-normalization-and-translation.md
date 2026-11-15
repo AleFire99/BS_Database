@@ -116,6 +116,17 @@ One verdict per legacy rule. This table is the binding cleanup list for [#92](ht
   - The parsed schema is 2.0.0 after the `_jp` rename, so older parsed JSON must be re-parsed from the HTML cache.
 - Work is split into [#92](https://github.com/AleFire99/BS_Database/issues/92) (glossaries), [#93](https://github.com/AleFire99/BS_Database/issues/93) (normalize package), [#94](https://github.com/AleFire99/BS_Database/issues/94) (translator), [#95](https://github.com/AleFire99/BS_Database/issues/95) (wiring and strict mode) and #96 (full scrape and audit).
 
+## Amendments
+
+Recorded during [#92](https://github.com/AleFire99/BS_Database/issues/92). The status stays Proposed.
+
+| Id | Amendment |
+| --- | --- |
+| D1 | A ninth file, `family_legacy_en.csv` (`legacy_en,preferred_en,jp,notes`), holds the 41 legacy English family pairs. `jp` is empty until #96. |
+| D4 | `rarities.csv` has an extra `sort_order` column (a unique integer). |
+| D5 | An unmapped variant note means `normal`, not an error. |
+| D6 | `product_types.csv` `jp` is an optional title marker, not an identity. |
+
 ## Links
 
 - Issues: [#11](https://github.com/AleFire99/BS_Database/issues/11), [#91](https://github.com/AleFire99/BS_Database/issues/91), [#92](https://github.com/AleFire99/BS_Database/issues/92), [#93](https://github.com/AleFire99/BS_Database/issues/93), [#94](https://github.com/AleFire99/BS_Database/issues/94), [#95](https://github.com/AleFire99/BS_Database/issues/95), [#96](https://github.com/AleFire99/BS_Database/issues/96)

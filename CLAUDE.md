@@ -40,6 +40,7 @@ uv run pre-commit run --all-files
 | `src/bs_database/cli.py` | Typer app, entry point `bsdb` (`scrape`, `normalize`, `build`) |
 | `src/bs_database/settings.py`, `log.py` | `BSDB_*` settings and logging setup |
 | `src/bs_database/ingest/`, `parsers/` | Scraper (epic #10): `ingest.policy`/`http`/`cache` (polite fetching), `ingest.state` (resume), `ingest.pipeline`/`report`/`parsed_store` (`bsdb scrape`), `parsers/` (pure HTML parsers); see [docs/architecture/scraper.md](docs/architecture/scraper.md) |
+| `src/bs_database/glossary.py`, `data/glossary/*.csv` | Glossary loader/validator and the 9 curated CSVs (JP to code and English); see [CONTRIBUTING.md](CONTRIBUTING.md#adding-a-glossary-entry) |
 | `src/bs_database/normalize.py` | Family-name and type normalization (uses `data/family_mapping.txt`) |
 | `src/bs_database/db.py` | SQLAlchemy models and JSON → SQLite loader (`build_db`) |
 | `tests/` | pytest suite; `tests/goldens/` and `tests/fixtures/` come from the legacy code (tag `v0.1.0`); `tests/tools/db_counts.py` prints per-table row counts |

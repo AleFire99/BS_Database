@@ -24,11 +24,13 @@ flowchart LR
             BPARSE["batspi: index, set_page, promo_list, numbers, card, card_text, card_sections"]
         end
         NORM["normalize"]
+        GLOS["glossary<br/>(loader, validator)"]
         DBM["db<br/>(models, build_db)"]
     end
 
     CJ[("data/json/card_json/BSxx/*.json")]
     FM[("data/family_mapping.txt")]
+    GL[("data/glossary/*.csv")]
     DB[("battle_spirits.db<br/>(untracked build output)")]
 
     CLI --> SET
@@ -46,6 +48,7 @@ flowchart LR
 
     CJ --> NORM
     FM --> NORM
+    GL --> GLOS
     NORM --> CJ
     CJ --> DBM --> DB
 ```
@@ -137,6 +140,7 @@ sequenceDiagram
 | `bs_database.parsers.card_models`, `.errors` | Card page DTOs with `SCHEMA_VERSION`, and `ParseError` (`NoCardList` for a set page without cards) | n/a | n/a |
 | `bs_database.parsers.batspi.index`, `.set_page`, `.promo_list`, `.numbers` | batspi.com discovery parsers and card-number parser (#69) | cached HTML | parsed records |
 | `bs_database.parsers.batspi.card`, `.card_text`, `.card_sections` | Card page parser: identity and gameplay values (#70); effects, credits, flavour, printings and images (#71) | cached HTML, URL | `CardPage` |
+| `bs_database.glossary` | Load and validate the glossary CSVs; exact `jp` lookup, legacy English family aliases (#92). Not used by `normalize` yet (#93) | `data/glossary/*.csv` | `Glossary` |
 | `bs_database.normalize` | Normalize family names, type, image path in place | card JSON tree, `data/family_mapping.txt` | rewritten JSON files |
 | `bs_database.db` | SQLAlchemy models, JSON loader, color derivation, `build_db` | card JSON tree | SQLite rows |
 | `data/family_mapping.txt` | Manual `machine translation = canonical name` overrides | n/a | used by `normalize` |
