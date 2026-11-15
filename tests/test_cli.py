@@ -13,11 +13,14 @@ from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
+from fakes import FakeEngine
 from golden_support import GLOSSARY_DIR, write_parsed_fixture
 from typer.testing import CliRunner
 
 from bs_database import __version__
 from bs_database.cli import app
+from bs_database.translate.cache import TranslationCache
+from bs_database.translate.cached import CachedTranslator
 
 runner = CliRunner()
 
@@ -157,7 +160,9 @@ def test_normalize_happy_path(glossary_data: Path) -> None:
     result = runner.invoke(app, ["normalize"])
     assert result.exit_code == 0, result.output
     assert re.fullmatch(
-        r"Normalized 2 pages, \d+ unmapped terms \(0 closed\)\nReport: \S+_report\.md\n",
+        r"Normalized 2 pages, \d+ unmapped terms \(0 closed\), \d+ uncurated terms\n"
+        r"Translation \(null\): 0 machine, \d+ pending, 0 failed\n"
+        r"Report: \S+_report\.md\n",
         result.stdout,
     )
     for name in ("_report.json", "_report.md"):
@@ -195,3 +200,63 @@ def test_normalize_missing_parsed_dir_is_a_clear_error(glossary_data: Path) -> N
 def test_normalize_has_no_legacy_option(glossary_data: Path) -> None:
     result = runner.invoke(app, ["normalize", "--legacy"])
     assert result.exit_code == 2
+
+
+def _drop_family_rows(glossary_dir: Path, jp: str) -> None:
+    path = glossary_dir / "families.csv"
+    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    kept = [lines[0], *(ln for ln in lines[1:] if not ln.startswith(f"{jp},"))]
+    assert len(kept) < len(lines)
+    path.write_text("".join(kept), encoding="utf-8")
+
+
+def test_normalize_strict_passes_on_the_real_glossary(glossary_data: Path) -> None:
+    _parsed_data(glossary_data, "card_spirit.html", "card_flip.html")
+    result = runner.invoke(app, ["normalize", "--strict"])
+    assert result.exit_code == 0, result.output
+    assert "uncurated terms" in result.stdout
+
+
+def test_normalize_strict_fails_on_an_unmapped_family_but_writes_pages(glossary_data: Path) -> None:
+    _parsed_data(glossary_data, "card_flip.html")
+    assert runner.invoke(app, ["normalize"]).exit_code == 0
+    report = json.loads((glossary_data / "normalized" / "_report.json").read_text("utf-8"))
+    jp = report["uncurated"][0]["jp"]
+    _drop_family_rows(glossary_data / "glossary", jp)
+    plain = runner.invoke(app, ["normalize"])
+    assert plain.exit_code == 0, plain.output
+    strict = runner.invoke(app, ["normalize", "--strict"])
+    assert strict.exit_code == 1
+    assert "strict:" in strict.output
+    assert len(list((glossary_data / "normalized" / "batspi").glob("*.json"))) == 1
+    report = json.loads((glossary_data / "normalized" / "_report.json").read_text("utf-8"))
+    assert [t["jp"] for t in report["unmapped"]["warnings"]] == [jp]
+
+
+def test_normalize_max_chars_zero_and_bad_values(glossary_data: Path) -> None:
+    _parsed_data(glossary_data, "card_spirit.html")
+    assert runner.invoke(app, ["normalize", "--max-chars", "0"]).exit_code == 0
+    assert runner.invoke(app, ["normalize", "--max-chars", "-1"]).exit_code == 2
+    assert runner.invoke(app, ["normalize", "--max-chars", "many"]).exit_code == 2
+
+
+def test_normalize_with_a_key_uses_the_engine_and_pending_does_not_fail_strict(
+    glossary_data: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _parsed_data(glossary_data, "card_flip.html")
+    monkeypatch.setenv("BSDB_DEEPL_API_KEY", "test-key:fx")
+    monkeypatch.setattr(
+        "bs_database.cli.make_translator",
+        lambda settings, *, max_chars=None: CachedTranslator(
+            FakeEngine(), TranslationCache(settings.translation_cache_path), max_chars=max_chars
+        ),
+    )
+    result = runner.invoke(app, ["normalize", "--strict"])
+    assert result.exit_code == 0, result.output
+    assert "Translation (fake):" in result.stdout
+    assert ": 0 machine" not in result.stdout
+    monkeypatch.setenv("BSDB_TRANSLATION_CACHE_PATH", str(glossary_data / "fresh.sqlite"))
+    limited = runner.invoke(app, ["normalize", "--strict", "--max-chars", "0"])
+    assert limited.exit_code == 0, limited.output
+    assert ": 0 machine" in limited.stdout
+    assert " 0 pending" not in limited.stdout
