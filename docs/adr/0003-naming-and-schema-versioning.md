@@ -39,8 +39,8 @@ Use **option 2**: snake_case conventions, keeping the BSS_app entity split but n
 - **Columns:** lower snake_case, singular (`battle_points`, not `battlePoints`).
   - Booleans are named `is_…` or `has_…`.
   - Timestamps are named `…_at` and stored as ISO-8601 UTC TEXT.
-  - Language suffixes (`name_jp`, `name_en`) are used only on data entities: `cards`, `families`, `products` and effect text. The Japanese source text is kept there so a bad machine translation can be redone.
-  - Lookup rows have a stable `code` (for example `red`) plus a single English `name`. They have no `_ja`/`_en` columns; the loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)) maps Japanese source text to the `code` (see [target-schema.md](../data-model/target-schema.md#jp-source-to-code)).
+  - Language suffixes are `_jp` and `_en` (never `_ja`). They are used only on data entities: `cards`, `families`, `products` and effect text. The Japanese source text is kept there so a bad machine translation can be redone.
+  - Lookup rows have a stable `code` (for example `red`) plus a single English `name`. They have no `_jp`/`_en` columns; the normalization stage ([#11](https://github.com/AleFire99/BS_Database/issues/11), [ADR 0008](0008-normalization-and-translation.md)) maps Japanese source text to the `code` (see [target-schema.md](../data-model/target-schema.md#jp-source-to-code)). The loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)) only inserts rows.
 - **Keys:**
   - The primary key is `id INTEGER PRIMARY KEY` (a rowid alias).
   - The only exception is pure junction tables (only foreign keys plus optional attributes such as a count): they use a composite primary key of their foreign key columns, as in BSS_app.
@@ -49,7 +49,7 @@ Use **option 2**: snake_case conventions, keeping the BSS_app entity split but n
   - The legacy `cards.card_id` (TEXT print number) is retired because it clashes with the foreign key convention.
 - **Constraint and index names:** `pk_`, `fk_`, `uq_`, `ck_` or `ix_` followed by `<table>_<cols>`. Implemented as a SQLAlchemy `naming_convention` in #12.
 - **Quoting:** none required. Avoid reserved words as bare table names (`order`, `set`); plural names such as `sets` are safe. Columns such as `level` are legal unquoted in SQLite, but each such case is flagged in review.
-- **Enum-like values:** lookup tables with foreign keys instead of CHECK lists, so a new card type or rarity needs no schema change. The one exception is ISO 639-1 language codes (for example `family_aliases.lang`), which may use a CHECK list.
+- **Enum-like values:** lookup tables with foreign keys instead of CHECK lists, so a new card type or rarity needs no schema change. The one exception is language codes (for example `family_aliases.lang`). They are an internal closed list (`jp`, `en`) and may use a CHECK list.
 
 ### BSS_app → BS_Database
 
@@ -115,3 +115,4 @@ If BSS_app tooling is ever shared, compatibility views can map the names without
 
 - Issue: [#27](https://github.com/AleFire99/BS_Database/issues/27) (epic [#8](https://github.com/AleFire99/BS_Database/issues/8))
 - Builds on [0002](0002-storage-technology.md).
+- Amended by [#91](https://github.com/AleFire99/BS_Database/issues/91): the Japanese suffix is `_jp`, the code mapping is owned by #11 ([ADR 0008](0008-normalization-and-translation.md)), and language codes are an internal list, not ISO 639-1.
