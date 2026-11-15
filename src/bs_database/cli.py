@@ -10,12 +10,14 @@ import typer
 
 from bs_database import __version__
 from bs_database.db import build_db
+from bs_database.glossary import GlossaryError, load_glossary
 from bs_database.ingest.cache import CachedFetcher, RawCache
 from bs_database.ingest.http import HttpClient
 from bs_database.ingest.pipeline import RunOptions, run_pipeline
 from bs_database.ingest.report import render
 from bs_database.ingest.state import StateStore
 from bs_database.log import configure_logging
+from bs_database.normalize.pipeline import normalize_tree
 from bs_database.settings import Settings
 
 app = typer.Typer(no_args_is_help=True, help="bsdb: Battle Spirits card database tooling.")
@@ -63,6 +65,28 @@ def main(
 def _settings(ctx: typer.Context) -> Settings:
     settings: Settings = ctx.obj
     return settings
+
+
+@app.command()
+def normalize(ctx: typer.Context) -> None:
+    """Normalize data/parsed into data/normalized: codes from the glossary, non-destructive."""
+    settings = _settings(ctx)
+    if not settings.parsed_dir.is_dir():
+        typer.echo(f"error: parsed directory not found: {settings.parsed_dir}", err=True)
+        raise typer.Exit(1)
+    try:
+        glossary = load_glossary(settings.glossary_dir)
+    except GlossaryError as exc:
+        typer.echo(f"error: invalid glossary in {settings.glossary_dir}:\n{exc}", err=True)
+        raise typer.Exit(1) from exc
+    result = normalize_tree(settings.parsed_dir, settings.normalized_dir, glossary)
+    typer.echo(
+        f"Normalized {result.written} pages, {len(result.unmapped)} unmapped terms "
+        f"({result.closed} closed)"
+    )
+    if result.failed:
+        typer.echo(f"{len(result.failed)} pages failed", err=True)
+        raise typer.Exit(1)
 
 
 @app.command()
