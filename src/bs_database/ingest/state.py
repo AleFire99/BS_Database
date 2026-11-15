@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import sqlite3
-from collections.abc import Callable, Iterable, Iterator
+from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -63,9 +63,15 @@ class UnknownPage(KeyError):
     """Raised when a URL is not tracked by the store."""
 
 
+class RetriesExhausted(RuntimeError):
+    """Raised when a failed page has used all its attempts."""
+
+
 class SchemaTooNew(RuntimeError):
     """Raised when the database was written by a newer version of the code."""
 
+
+DEFAULT_MAX_ATTEMPTS = 3
 
 MIGRATIONS: tuple[str, ...] = (
     """
@@ -126,9 +132,11 @@ class StateStore:
         self,
         path: Path,
         *,
+        max_attempts: int = DEFAULT_MAX_ATTEMPTS,
         now: Callable[[], datetime] = _utc_now,
     ) -> None:
         self._now = now
+        self.max_attempts = max_attempts
         path.parent.mkdir(parents=True, exist_ok=True)
         self._conn = sqlite3.connect(path, isolation_level=None)
         self._conn.execute("PRAGMA journal_mode=WAL")
@@ -198,6 +206,39 @@ class StateStore:
                 (new_state.value, content_sha256, self._stamp(), url),
             )
 
+    def mark_failed(self, url: str, reason: str) -> None:
+        """Record a failure of the stage the page was in; counts one attempt."""
+        with self._tx() as conn:
+            current = self._locked_get(conn, url)
+            check_transition(current.state, IngestState.FAILED)
+            conn.execute(
+                "UPDATE pages SET state = ?, failed_from = ?, attempts = attempts + 1, "
+                "last_error = ?, updated_at = ? WHERE url = ?",
+                (IngestState.FAILED.value, current.state.value, reason, self._stamp(), url),
+            )
+
+    def retry(self, url: str) -> None:
+        """Return a failed page to the stage that failed, unless attempts ran out."""
+        with self._tx() as conn:
+            current = self._locked_get(conn, url)
+            if current.state is not IngestState.FAILED or current.failed_from is None:
+                raise IllegalTransition(f"{url} is not failed")
+            if current.attempts >= self.max_attempts:
+                raise RetriesExhausted(f"{url} failed {current.attempts} times")
+            check_transition(IngestState.FAILED, current.failed_from)
+            conn.execute(
+                "UPDATE pages SET state = ?, updated_at = ? WHERE url = ?",
+                (current.failed_from.value, self._stamp(), url),
+            )
+
+    def iter_exhausted(self) -> list[PageRecord]:
+        """Failed pages that used all attempts, for reporting."""
+        rows = self._conn.execute(
+            f"SELECT {_COLUMNS} FROM pages WHERE state = ? AND attempts >= ? ORDER BY url",
+            (IngestState.FAILED.value, self.max_attempts),
+        ).fetchall()
+        return [_record(r) for r in rows]
+
     def _locked_get(self, conn: sqlite3.Connection, url: str) -> PageRecord:
         row = conn.execute(f"SELECT {_COLUMNS} FROM pages WHERE url = ?", (url,)).fetchone()
         if row is None:
@@ -208,10 +249,17 @@ class StateStore:
         self,
         kind: PageKind | None = None,
         state: IngestState | None = None,
-    ) -> Iterable[PageRecord]:
-        """Pages that still have work to do (not loaded, not failed)."""
-        sql = f"SELECT {_COLUMNS} FROM pages WHERE state NOT IN (?, ?)"
-        args: list[str] = [IngestState.LOADED.value, IngestState.FAILED.value]
+    ) -> list[PageRecord]:
+        """Pages with work left: unfinished ones plus failed ones still retryable.
+
+        Failed pages are returned in state ``failed``; call ``retry`` on them.
+        """
+        sql = f"SELECT {_COLUMNS} FROM pages WHERE state != ? AND (state != ? OR attempts < ?)"
+        args: list[str | int] = [
+            IngestState.LOADED.value,
+            IngestState.FAILED.value,
+            self.max_attempts,
+        ]
         if kind is not None:
             sql += " AND kind = ?"
             args.append(kind.value)

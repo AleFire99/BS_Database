@@ -14,6 +14,7 @@ from bs_database.ingest.state import (
     IllegalTransition,
     IngestState,
     PageKind,
+    RetriesExhausted,
     SchemaTooNew,
     StateStore,
     UnknownPage,
@@ -131,3 +132,64 @@ def test_iter_pending_and_counts(tmp_path: Path) -> None:
         counts = store.counts()
         assert counts[S.DISCOVERED] == 1 and counts[S.FETCHED] == 1
         assert counts[S.LOADED] == 0
+
+
+def test_failure_is_recorded(tmp_path: Path) -> None:
+    with make_store(tmp_path / "s.db") as store:
+        store.upsert_discovered("u", PageKind.CARD)
+        store.advance("u", S.FETCHED)
+        store.mark_failed("u", "boom")
+        rec = store.get("u")
+        assert rec.state is S.FAILED
+        assert rec.failed_from is S.FETCHED
+        assert rec.attempts == 1
+        assert rec.last_error == "boom"
+        assert rec.updated_at == T0.isoformat()
+        with pytest.raises(IllegalTransition):
+            store.mark_failed("u", "again")
+
+
+def test_retry_returns_to_failed_from_and_success_resets_attempts(tmp_path: Path) -> None:
+    with make_store(tmp_path / "s.db") as store:
+        store.upsert_discovered("u", PageKind.CARD)
+        store.advance("u", S.FETCHED)
+        store.mark_failed("u", "x")
+        store.retry("u")
+        assert store.get("u").state is S.FETCHED
+        store.advance("u", S.PARSED)
+        rec = store.get("u")
+        assert rec.attempts == 0 and rec.last_error is None and rec.failed_from is None
+
+
+def test_retry_requires_failed(tmp_path: Path) -> None:
+    with make_store(tmp_path / "s.db") as store:
+        store.upsert_discovered("u", PageKind.CARD)
+        with pytest.raises(IllegalTransition):
+            store.retry("u")
+
+
+def test_retry_after_max_attempts_raises(tmp_path: Path) -> None:
+    with StateStore(tmp_path / "s.db", max_attempts=2, now=lambda: T0) as store:
+        store.upsert_discovered("u", PageKind.CARD)
+        for _ in range(2):
+            store.mark_failed("u", "x")
+            if store.get("u").attempts < 2:
+                store.retry("u")
+        with pytest.raises(RetriesExhausted):
+            store.retry("u")
+        assert [r.url for r in store.iter_exhausted()] == ["u"]
+        assert store.iter_pending() == []
+        assert store.counts()[S.FAILED] == 1
+
+
+def test_later_run_sees_failed_row_as_retryable(tmp_path: Path) -> None:
+    db = tmp_path / "s.db"
+    with make_store(db) as run1:
+        run1.upsert_discovered("u", PageKind.CARD)
+        run1.mark_failed("u", "net")
+    with make_store(db) as run2:
+        pending = run2.iter_pending()
+        assert [(r.url, r.state) for r in pending] == [("u", S.FAILED)]
+        run2.retry("u")
+        assert run2.get("u").state is S.DISCOVERED
+        assert run2.iter_exhausted() == []
