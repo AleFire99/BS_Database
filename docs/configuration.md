@@ -14,7 +14,11 @@ Settings are defined in `src/bs_database/settings.py` (`Settings`, built on pyda
 | `BSDB_DB_PATH` | `<data_dir>/battle_spirits.db` | SQLite database output |
 | `BSDB_FAMILY_MAPPING_PATH` | `<data_dir>/family_mapping.txt` | Family-name normalization map |
 | `BSDB_BATSPI_URL` | `https://batspi.com/` | batspi.com base URL |
-| `BSDB_REQUEST_DELAY` | `0.0` | Delay between HTTP requests, in seconds (must be >= 0) |
+| `BSDB_USER_AGENT` | `bs-database/<version> (+https://github.com/AleFire99/BS_Database)` | `User-Agent` sent on every request |
+| `BSDB_REQUEST_DELAY` | `3.0` | Minimum delay between HTTP requests, in seconds (must be >= 1.0, policy floor) |
+| `BSDB_MAX_REQUESTS` | `1000` | Request budget per run, retries and robots.txt included (must be >= 1) |
+| `BSDB_CONNECT_TIMEOUT` | `10.0` | HTTP connect timeout, in seconds (must be > 0) |
+| `BSDB_READ_TIMEOUT` | `30.0` | HTTP read timeout, in seconds (must be > 0) |
 | `BSDB_LOG_LEVEL` | `INFO` | Root log level |
 
 `bsdb --log-level LEVEL` overrides `BSDB_LOG_LEVEL` for a single run.

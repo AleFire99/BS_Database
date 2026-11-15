@@ -24,7 +24,11 @@ def test_defaults() -> None:
     assert s.json_dir == Path("data/json")
     for p in (s.json_dir, s.images_dir, s.db_path, s.family_mapping_path):
         assert not p.is_absolute()
-    assert s.request_delay == 0.0
+    assert s.request_delay == 3.0
+    assert s.max_requests == 1000
+    assert s.connect_timeout == 10.0
+    assert s.read_timeout == 30.0
+    assert s.user_agent.startswith("bs-database/")
     assert s.log_level == "INFO"
 
 
@@ -54,5 +58,23 @@ def test_dotenv_and_env_precedence(tmp_path: Path, monkeypatch: pytest.MonkeyPat
 
 def test_invalid_delay(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("BSDB_REQUEST_DELAY", "abc")
+    with pytest.raises(ValidationError):
+        Settings()
+
+
+def test_delay_floor(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("BSDB_REQUEST_DELAY", "0.5")
+    with pytest.raises(ValidationError):
+        Settings()
+    monkeypatch.setenv("BSDB_REQUEST_DELAY", "1.0")
+    assert Settings().request_delay == 1.0
+
+
+def test_invalid_limits(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("BSDB_MAX_REQUESTS", "0")
+    with pytest.raises(ValidationError):
+        Settings()
+    monkeypatch.delenv("BSDB_MAX_REQUESTS")
+    monkeypatch.setenv("BSDB_READ_TIMEOUT", "0")
     with pytest.raises(ValidationError):
         Settings()
