@@ -191,6 +191,17 @@ uv run bsdb --help                         # dev loop: run the CLI from the work
 
 Add dependencies with `uv add <pkg>` (or `uv add --dev <pkg>` for dev tools) and commit `uv.lock`.
 
+## Adding a glossary entry
+
+Glossaries are CSV files in `data/glossary/` (see [ADR 0008](docs/adr/0008-normalization-and-translation.md)).
+
+1. Pick the file: `colors`, `symbols`, `card_types`, `rarities`, `variants`, `product_types`, `keywords` or `families`.
+2. Add one row. `jp` must be exactly what the parser emits. Do not pad with spaces.
+3. Keep rows sorted by `code` (families: by `code`, then `jp`). Do not duplicate a `jp` or a `code`.
+4. Fill `en` for closed kinds. Mark a guessed English name in `notes` as `provisional`.
+5. Legacy English family names go in `family_legacy_en.csv`. Fill `jp` with a name that exists in `families.csv`.
+6. Run `uv run pytest tests/test_glossary.py tests/test_glossary_seed.py`. The loader lists every violation as `<file>:<line>: <rule>`.
+
 ## Releases
 
 SemVer, and a schema-breaking change bumps the major version. Cut `release/X.Y.Z` from `dev`, generate the CHANGELOG with `uvx git-cliff --tag vX.Y.Z`, pass Gate D, merge into `main`, tag it, publish a GitHub Release (the built database is attached as an asset), then back-merge into `dev`. The release's scope is its milestone: open issues in it are finished or moved before Gate D, and the release closes the milestone.

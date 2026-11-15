@@ -25,6 +25,7 @@ def test_defaults() -> None:
     assert s.cache_dir == Path("data/cache/html")
     assert s.state_db_path == Path("data/state/ingest.db")
     assert s.parsed_dir == Path("data/parsed")
+    assert s.glossary_dir == Path("data/glossary")
     for p in (s.json_dir, s.images_dir, s.db_path, s.family_mapping_path, s.cache_dir):
         assert not p.is_absolute()
     assert s.request_delay == 3.0
@@ -42,6 +43,7 @@ def test_data_dir_derives_paths(monkeypatch: pytest.MonkeyPatch) -> None:
         assert p.is_relative_to("/x")
     assert s.state_db_path.is_relative_to("/x")
     assert s.parsed_dir.is_relative_to("/x")
+    assert s.glossary_dir == Path("/x/glossary")
 
 
 def test_explicit_override(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -83,3 +85,8 @@ def test_invalid_limits(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("BSDB_READ_TIMEOUT", "0")
     with pytest.raises(ValidationError):
         Settings()
+
+
+def test_glossary_dir_override(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("BSDB_GLOSSARY_DIR", "/g")
+    assert Settings().glossary_dir == Path("/g")

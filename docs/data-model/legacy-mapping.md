@@ -99,6 +99,8 @@ Not emitted by the legacy JSON at all (see the [gap list](#6-gap-list)): effects
 
 ## 4. Family mapping ([data/family_mapping.txt](../../data/family_mapping.txt))
 
+The 41 pairs were copied verbatim into [data/glossary/family_legacy_en.csv](../../data/glossary/family_legacy_en.csv) ([#92](https://github.com/AleFire99/BS_Database/issues/92)). The legacy file stays until #93 removes the legacy `normalize` that reads it. #96 fills the Japanese names.
+
 | Legacy item | Target | Note |
 | --- | --- | --- |
 | Each `MT = preferred` line (41 non-empty lines: `Rebirth = Reptile Beast`) | `family_aliases` row with `lang` = `en` and `translation_source_id` = `machine`, `alias` = left side | The left side is a machine-translation output; the right side is the preferred English name and goes to `families.name_en`. Keys are matched in lower case ([normalize.py:17-25](../../src/bs_database/normalize.py#L17)); alias lookup keeps the same behaviour. |
@@ -140,7 +142,7 @@ Target tables and columns with no legacy source. Grouped by the work item that m
 ### Needs #11 normalization and translation
 
 - `families.name_jp`, `families.code`, `families.name_en` for the 517 machine-translated families (map them back to Japanese)
-- `family_aliases` seeding: 41 mapping lines plus the legacy names
+- `family_aliases` seeding: 41 mapping lines (now in `data/glossary/family_legacy_en.csv`, `jp` still to fill) plus the legacy names
 - `cards.name_en`, `cards.flavor_text_en`, `card_effects.timing_en`, `card_effects.text_en`, `products.name_en`, `brave_details.fusion_condition_en`, `ultimate_details.summon_condition_en`: English text, preferably from `fandom`; machine output is marked via `en_source_id` and `en_status_id`
 - `keywords` list (only `mirage` is seen)
 - Cleaning of the legacy `cards.name` entry that is an `Error:` string
