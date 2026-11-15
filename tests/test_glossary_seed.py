@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from bs_database.glossary import KINDS, Glossary, load_glossary
+from bs_database.glossary import FamilyEntry, Glossary, load_glossary
 from bs_database.parsers.batspi.card import parse_card_page
 from bs_database.parsers.card_models import CardPage
 
@@ -12,29 +12,9 @@ GLOSSARY_DIR = ROOT / "data" / "glossary"
 FIXTURES = sorted(glob.glob(str(ROOT / "tests" / "fixtures" / "html" / "card_*.html")))
 
 
-# Kinds seeded so far; each seeding commit extends this set.
-SEEDED = {"colors", "symbols", "card_types", "rarities", "variants", "product_types", "keywords"}
-HEADERS = {
-    "rarities": "jp,code,en,notes,sort_order",
-    "families": "jp,code,en,notes,aliases_en,no_split",
-    "family_legacy_en": "legacy_en,preferred_en,jp,notes",
-}
-
-
-def load_seeded(tmp_path: Path) -> Glossary:
-    """Load the real seeds; kinds not seeded yet get a header-only stub."""
-    for path in GLOSSARY_DIR.glob("*.csv"):
-        (tmp_path / path.name).write_bytes(path.read_bytes())
-    for kind in (*KINDS, "family_legacy_en"):
-        stub = tmp_path / f"{kind}.csv"
-        if not stub.exists():
-            stub.write_text(HEADERS.get(kind, "jp,code,en,notes") + "\n", encoding="utf-8")
-    return load_glossary(tmp_path)
-
-
 @pytest.fixture(scope="module")
-def glossary(tmp_path_factory: pytest.TempPathFactory) -> Glossary:
-    return load_seeded(tmp_path_factory.mktemp("glossary"))
+def glossary() -> Glossary:
+    return load_glossary(GLOSSARY_DIR)
 
 
 @pytest.fixture(scope="module")
@@ -45,14 +25,8 @@ def pages() -> list[CardPage]:
     ]
 
 
-def _sub(base: Path, name: str) -> Path:
-    (base / name).mkdir()
-    return base / name
-
-
-def test_seed_loads_and_is_stable(tmp_path: Path) -> None:
-    first = load_seeded(_sub(tmp_path, "a"))
-    assert first == load_seeded(_sub(tmp_path, "b"))
+def test_seed_loads_and_is_stable() -> None:
+    assert load_glossary(GLOSSARY_DIR) == load_glossary(GLOSSARY_DIR)
 
 
 def test_fixtures_found() -> None:
@@ -75,5 +49,73 @@ def test_fixture_values_mapped(glossary: Glossary, pages: list[CardPage]) -> Non
                     wanted += [("keywords", k.name) for k in effect.keywords]
         wanted += [("rarities", p.rarity) for p in page.printings if p.rarity]
     assert wanted
-    missing = sorted({w for w in wanted if w[0] in SEEDED and glossary.lookup(*w) is None})
+    missing = sorted({w for w in wanted if glossary.lookup(*w) is None})
     assert missing == []
+
+
+LEGACY_PAIRS = [
+    ("Rebirth", "Reptile Beast"),
+    ("Sky Fang", "Flying Fang"),
+    ("Flood", "Drifting Spirit"),
+    ("Earth Dragon", "Terra Dragon"),
+    ("Kidra", "Machine Dragon"),
+    ("The Imperial Beast", "Emperor Beast"),
+    ("War", "Mounted Warrior"),
+    ("Pterosaur", "Winged Dragon"),
+    ("Dragon Man", "Dragon"),
+    ("Old Dragon", "Ancient Dragon"),
+    ("Ghost", "Darkling"),
+    ("No Wonder", "Zombie"),
+    ("Cursed Demon", "Ogre Wizard"),
+    ("Demon", "Evil Deity"),
+    ("Night Tribe", "Nightling"),
+    ("Sword Beast", "Blade Beast"),
+    ("Tree Demon", "Plant Spirit"),
+    ("Monster", "Parasite"),
+    ("Claw Bird", "Winged Beast"),
+    ("Yusei", "Imp"),
+    ("Shell Man", "Shellman"),
+    ("Motion", "Machine"),
+    ("Sky Fish", "Flying Fish"),
+    ("Light Insect", "Glow insect"),
+    ("Armed", "Armed Machine"),
+    ("Beast", "Machine Beast"),
+    ("Man", "Android"),
+    ("Human", "Android"),
+    ("Melted Fish", "Lava Fish"),
+    ("Imperial Beast", "Emperor Beast"),
+    ("Old Dragons", "Ancient Dragon"),
+    ("Demon Shadow", "Evil shadow"),
+    ("Shellworm", "Shell Insect"),
+    ("Axial Beast", "Armored Beast"),
+    ("Raku Tribe", "Fairy"),
+    ("Small Toy", "Toy Beast"),
+    ("Four Way", "Magician"),
+    ("New", "Incarnate"),
+    ("Divine Beast", "Imaginary Beast"),
+    ("Divine General", "Deified General"),
+    ("Different", "Fusion Beast"),
+]
+
+
+def test_legacy_pair_count() -> None:
+    assert len(LEGACY_PAIRS) == 41
+
+
+@pytest.mark.parametrize(("legacy", "preferred"), LEGACY_PAIRS)
+def test_legacy_pairs(glossary: Glossary, legacy: str, preferred: str) -> None:
+    rows = [a for a in glossary.legacy_family_aliases if a.legacy_en == legacy]
+    assert [(a.legacy_en, a.preferred_en) for a in rows] == [(legacy, preferred)]
+
+
+def test_legacy_order_and_rebirth(glossary: Glossary) -> None:
+    pairs = [(a.legacy_en, a.preferred_en) for a in glossary.legacy_family_aliases]
+    assert pairs == LEGACY_PAIRS
+    family = glossary.lookup("families", "爬獣")
+    assert isinstance(family, FamilyEntry)
+    assert "Rebirth" in family.aliases_en
+    assert family.en == "Reptile Beast"
+
+
+def test_unresolved_legacy(glossary: Glossary) -> None:
+    assert len(glossary.unresolved_legacy()) == 40
