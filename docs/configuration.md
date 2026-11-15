@@ -13,6 +13,7 @@ Settings are defined in `src/bs_database/settings.py` (`Settings`, built on pyda
 | `BSDB_IMAGES_DIR` | `<data_dir>/images` | Downloaded card images |
 | `BSDB_DB_PATH` | `<data_dir>/battle_spirits.db` | SQLite database output |
 | `BSDB_FAMILY_MAPPING_PATH` | `<data_dir>/family_mapping.txt` | Family-name normalization map |
+| `BSDB_CACHE_DIR` | `<data_dir>/cache/html` | Raw HTML cache (`<source>/<sha256(url)>.html` plus `.json` sidecar) |
 | `BSDB_BATSPI_URL` | `https://batspi.com/` | batspi.com base URL |
 | `BSDB_USER_AGENT` | `bs-database/<version> (+https://github.com/AleFire99/BS_Database)` | `User-Agent` sent on every request |
 | `BSDB_REQUEST_DELAY` | `3.0` | Minimum delay between HTTP requests, in seconds (must be >= 1.0, policy floor) |
