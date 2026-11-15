@@ -116,7 +116,7 @@ def test_conflicting_h3_number_warns(caplog: pytest.LogCaptureFixture) -> None:
     with caplog.at_level(logging.WARNING, logger=LOGGER):
         page = parse_card_page(html, "u")
     assert page.entries[0].number == "BS10-999"
-    warnings = [r.getMessage() for r in caplog.records]
+    warnings = [r.getMessage() for r in caplog.records if r.name == LOGGER]
     assert len(warnings) == 1
     assert "BS10-999" in warnings[0] and "number" in warnings[0] and "BS10-062" in warnings[0]
 

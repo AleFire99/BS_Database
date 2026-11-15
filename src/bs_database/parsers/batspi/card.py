@@ -12,6 +12,7 @@ import re
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString, Tag
 
+from bs_database.parsers.batspi.card_sections import parse_printings
 from bs_database.parsers.batspi.card_text import parse_card_text
 from bs_database.parsers.card_models import (
     SCHEMA_VERSION,
@@ -340,4 +341,7 @@ def parse_card_page(html: str, url: str) -> CardPage:
         gameplay = _parse_gameplay(lines, url)
         text = _parse_text(lines, gameplay, number, url)
         entries.append(CardEntry(number, name_ja, name_en, gameplay, text))
-    return CardPage(SCHEMA_VERSION, url, title, tuple(entries), _differences(entries))
+    printings = parse_printings(soup, url, [e.number for e in entries])
+    return CardPage(
+        SCHEMA_VERSION, url, title, tuple(entries), _differences(entries), printings=printings
+    )
