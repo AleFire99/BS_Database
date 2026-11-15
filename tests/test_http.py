@@ -376,7 +376,7 @@ def test_only_http_module_imports_requests() -> None:
     src = Path(__file__).resolve().parent.parent / "src"
     offenders = [
         path.relative_to(src).as_posix()
-        for path in src.rglob("*.py")
+        for path in sorted(src.rglob("*.py"))
         if any(
             line.startswith(("import requests", "from requests"))
             for line in path.read_text(encoding="utf-8").splitlines()

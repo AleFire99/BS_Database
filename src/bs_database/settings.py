@@ -20,6 +20,7 @@ _DERIVED_PATHS = {
     "parsed_dir": "parsed",
     "normalized_dir": "normalized",
     "translation_cache_path": "cache/translations.sqlite",
+    "mt_model_dir": "models/quickmt-ja-en",
 }
 
 
@@ -43,6 +44,7 @@ class Settings(BaseSettings):
     parsed_dir: Path = Path()
     normalized_dir: Path = Path()
     translation_cache_path: Path = Path()
+    mt_model_dir: Path = Path()  # the quickmt ja-en model files (git-ignored)
     # DeepL key (local only, never committed); unset or empty means no machine translation.
     deepl_api_key: SecretStr | None = None
     batspi_url: str = "https://batspi.com/"

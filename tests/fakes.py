@@ -166,3 +166,37 @@ def ok_response(texts: Sequence[str]) -> HttpResponse:
         "translations": [{"detected_source_language": "JA", "text": t.upper()} for t in texts]
     }
     return HttpResponse(200, {}, json.dumps(payload).encode())
+
+
+class FakeSP:
+    """A fake SentencePiece model: pieces are the characters; decode joins them."""
+
+    def encode(self, text: str, out_type: type[str]) -> list[str]:
+        return list(text)
+
+    def decode(self, pieces: list[str]) -> str:
+        return "".join(pieces)
+
+
+class _FakeHyp:
+    def __init__(self, hypotheses: list[list[str]]) -> None:
+        self.hypotheses = hypotheses
+
+
+class FakeCT2:
+    """A fake CTranslate2 translator: upper-cases the pieces; records each call's options.
+
+    ``fail_on`` raises for a batch containing that piece list; ``hypotheses`` is how many
+    hypotheses each result carries.
+    """
+
+    def __init__(self, *, fail_on: list[str] | None = None, hypotheses: int = 1) -> None:
+        self.calls: list[tuple[list[list[str]], dict[str, Any]]] = []
+        self.fail_on = fail_on
+        self.hypotheses = hypotheses
+
+    def translate_batch(self, source: list[list[str]], **options: Any) -> list[_FakeHyp]:
+        self.calls.append((source, options))
+        if self.fail_on is not None and self.fail_on in source:
+            raise RuntimeError("boom")
+        return [_FakeHyp([[p.upper() for p in s]] * self.hypotheses) for s in source]
