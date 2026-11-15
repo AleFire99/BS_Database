@@ -17,7 +17,7 @@ flowchart LR
             STATE["state"]
             PIPE["pipeline"]
         end
-        subgraph parsers["parsers (stubs, #69-#71)"]
+        subgraph parsers["parsers (card: #70, index/set: #69)"]
             MODELS["models"]
             BPARSE["batspi: index, set_page, card"]
         end
@@ -40,7 +40,16 @@ flowchart LR
     CJ --> DBM --> DB
 ```
 
-The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). Only `ingest.policy` has code today (the scraping policy helpers); the other modules are docstring stubs owned by the issues named in them. `bsdb scrape` is a stub that exits with an error until the rewrite lands. The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
+The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). `ingest.policy` (the scraping policy helpers) and the card parser (`parsers.batspi.card`, with `parsers.card_models` and `parsers.errors`, see below) have code today; the other modules are docstring stubs owned by the issues named in them. `bsdb scrape` is a stub that exits with an error until the rewrite lands. The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
+
+### Card page parser
+
+`bs_database.parsers.batspi.card.parse_card_page(html, url)` ([#70](https://github.com/AleFire99/BS_Database/issues/70)) is a pure function: cached HTML in, a `CardPage` out, with no network, translation or file I/O. It reads identity (card numbers, `name_ja`, `name_en`) and gameplay values (type, cost, reduction, colours, families, levels, symbols, plus `fusion_bp_bonus` for Brave and `overclock` for Ultimate) of every card block in the card region of the page. Erratum and trial-spec blocks, Q&A and the related listing are skipped. The DTOs are frozen slotted dataclasses in `bs_database.parsers.card_models`, JSON-ready through `dataclasses.asdict`, and carry `SCHEMA_VERSION` (`1.0.0`). #71 adds text and printings as optional fields (`1.1.0`). Unknown cost, level or symbol syntax raises `ParseError` instead of being guessed.
+
+- **Number source.** The number in the print heading comes first, because it is the only per-block source (the `span.cardno` order differs on promo pages and the spans lack the `(A)`/`(B)` face on flip pages). The page's own `span.cardno` values are a set cross-check, and a mismatch is logged as a warning. Pages without a heading number take the span at the same position. This clarifies the "cardno span is authoritative" rule of [ADR 0007](../adr/0007-source-of-truth.md) for #12; the ADR itself is unchanged.
+- **Literal values.** Colours, symbols, types and families keep the Japanese glyphs of the source; mapping to codes is the loader's job (#12).
+- **Per-number differences (#63).** Gameplay fields that differ between numbers with the same name are logged at INFO and listed in `CardPage.differences`, so #12 can decide the card-versus-number grouping.
+- **Fields without a schema column.** `deck_limit` (`制限カード<N>`) and `overclock` are parsed but have no column in the [target schema](../data-model/target-schema.md); #12 decides where they go.
 
 ## Target data flow
 
@@ -101,8 +110,10 @@ sequenceDiagram
 | `bs_database.ingest.cache` | Raw-HTML cache (stub, #68) | n/a | n/a |
 | `bs_database.ingest.state` | Run state and resume (stub, #72) | n/a | n/a |
 | `bs_database.ingest.pipeline` | Ingestion orchestration (stub, #73) | n/a | n/a |
-| `bs_database.parsers.models` | Parsed record models (stub, #69, #70) | n/a | n/a |
-| `bs_database.parsers.batspi.index`, `.set_page`, `.card` | batspi.com page parsers (stubs, #69-#71) | cached HTML | parsed records |
+| `bs_database.parsers.models` | Parsed record models (stub, #69) | n/a | n/a |
+| `bs_database.parsers.card_models`, `.errors` | Card page DTOs with `SCHEMA_VERSION`, and `ParseError` | n/a | n/a |
+| `bs_database.parsers.batspi.index`, `.set_page` | batspi.com page parsers (stubs, #69) | cached HTML | parsed records |
+| `bs_database.parsers.batspi.card` | Card page parser: identity and gameplay values (#70); text and printings follow in #71 | cached HTML, URL | `CardPage` |
 | `bs_database.normalize` | Normalize family names, type, image path in place | card JSON tree, `data/family_mapping.txt` | rewritten JSON files |
 | `bs_database.db` | SQLAlchemy models, JSON loader, color derivation, `build_db` | card JSON tree | SQLite rows |
 | `data/family_mapping.txt` | Manual `machine translation = canonical name` overrides | n/a | used by `normalize` |
@@ -127,7 +138,7 @@ Tags refer to the epic addressing each item: E2 restructure ([#7](https://github
 | Resolved: dependency list | Unused `selenium`, `webdriver-manager`, `libretranslatepy`, `lxml` dropped; used packages declared | E2 |
 | Resolved: database committed to git | `battle_spirits.db` untracked and ignored in #23 (release artefact is E9) | E2, E9 |
 | Resolved: no tests, CI or lint | pytest with goldens, ruff, mypy strict, CI and pre-commit | E2 |
-| Resolved: legacy scrapers and fandom code | Removed in #66 (commit `f90747b` has them); fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the new ingestion modules are stubs implemented in #67-#73 | E5 |
+| Resolved: legacy scrapers and fandom code | Removed in #66 (commit `f90747b` has them); fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the card parser exists (#70); the other new ingestion modules are stubs implemented in #67-#73 | E5 |
 | Machine translation of names and families | `GoogleTranslator` output is stored as canonical names; family names are patched with ad-hoc rules in `normalize` plus `family_mapping.txt` (e.g. "Snake" forced to "Dark Snake", naive plural stripping) | E6 |
 | Translation failures stored as data | `translate()` returns `"Error: ..."` strings that would be persisted | E6 |
 | Colors derived from translated symbol | Symbol-to-color map in `db.py` lacks `white`; multicolor strings (e.g. "Red purple green white yellow blue") match nothing. Designed in the target schema: `colors` with White and a `card_colors` junction filled from the Japanese colour segment ([target-schema](../data-model/target-schema.md#card_colors)); the fix is in E6/E7. | E3, E6 |
