@@ -5,7 +5,6 @@ header = """
 
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-
 """
 body = """
 {% if version %}\
@@ -20,7 +19,9 @@ body = """
 {% endfor %}
 {% endfor %}
 """
-trim = true
+# Keep the trailing newline of each release body so releases are separated by a
+# blank line (markdownlint MD022/MD032).
+trim = false
 
 [git]
 conventional_commits = true
