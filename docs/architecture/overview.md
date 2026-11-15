@@ -42,6 +42,15 @@ flowchart LR
 
 The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). Only `ingest.policy` has code today (the scraping policy helpers); the other modules are docstring stubs owned by the issues named in them. `bsdb scrape` is a stub that exits with an error until the rewrite lands. The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
 
+### Card page parser
+
+`bs_database.parsers.batspi.card.parse_card_page(html, url)` ([#70](https://github.com/AleFire99/BS_Database/issues/70)) is a pure function: cached HTML in, a `CardPage` out, with no network, translation or file I/O. It reads identity (card numbers, `name_ja`, `name_en`) and gameplay values (type, cost, reduction, colours, families, levels, symbols, plus `fusion_bp_bonus` for Brave and `overclock` for Ultimate) of every card block in the card region of the page. Erratum and trial-spec blocks, Q&A and the related listing are skipped. The DTOs are frozen slotted dataclasses in `bs_database.parsers.card_models`, JSON-ready through `dataclasses.asdict`, and carry `SCHEMA_VERSION` (`1.0.0`). #71 adds text and printings as optional fields (`1.1.0`). Unknown cost, level or symbol syntax raises `ParseError` instead of being guessed.
+
+- **Number source.** The number in the print heading comes first, because it is the only per-block source (the `span.cardno` order differs on promo pages and the spans lack the `(A)`/`(B)` face on flip pages). The page's own `span.cardno` values are a set cross-check, and a mismatch is logged as a warning. Pages without a heading number take the span at the same position. This clarifies the "cardno span is authoritative" rule of [ADR 0007](../adr/0007-source-of-truth.md) for #12; the ADR itself is unchanged.
+- **Literal values.** Colours, symbols, types and families keep the Japanese glyphs of the source; mapping to codes is the loader's job (#12).
+- **Per-number differences (#63).** Gameplay fields that differ between numbers with the same name are logged at INFO and listed in `CardPage.differences`, so #12 can decide the card-versus-number grouping.
+- **Fields without a schema column.** `deck_limit` (`制限カード<N>`) and `overclock` are parsed but have no column in the [target schema](../data-model/target-schema.md); #12 decides where they go.
+
 ## Target data flow
 
 The pipeline that the roadmap epics build, following the [scraping policy](../sources/policy.md), [ADR 0006](../adr/0006-scraping-and-redistribution-policy.md) and [ADR 0007](../adr/0007-source-of-truth.md). batspi.com is the only source fetched in v1. The fandom wiki is dropped ([fandom.md](../sources/fandom.md)), and the official site is a survey only ([official.md](../sources/official.md)). Field-level coverage is in the [coverage matrix](../sources/coverage-matrix.md).
@@ -101,8 +110,10 @@ sequenceDiagram
 | `bs_database.ingest.cache` | Raw-HTML cache (stub, #68) | n/a | n/a |
 | `bs_database.ingest.state` | Run state and resume (stub, #72) | n/a | n/a |
 | `bs_database.ingest.pipeline` | Ingestion orchestration (stub, #73) | n/a | n/a |
-| `bs_database.parsers.models` | Parsed record models (stub, #69, #70) | n/a | n/a |
-| `bs_database.parsers.batspi.index`, `.set_page`, `.card` | batspi.com page parsers (stubs, #69-#71) | cached HTML | parsed records |
+| `bs_database.parsers.models` | Parsed record models (stub, #69) | n/a | n/a |
+| `bs_database.parsers.card_models`, `.errors` | Card page DTOs with `SCHEMA_VERSION`, and `ParseError` | n/a | n/a |
+| `bs_database.parsers.batspi.index`, `.set_page` | batspi.com page parsers (stubs, #69) | cached HTML | parsed records |
+| `bs_database.parsers.batspi.card` | Card page parser: identity and gameplay values (#70); text and printings follow in #71 | cached HTML, URL | `CardPage` |
 | `bs_database.normalize` | Normalize family names, type, image path in place | card JSON tree, `data/family_mapping.txt` | rewritten JSON files |
 | `bs_database.db` | SQLAlchemy models, JSON loader, color derivation, `build_db` | card JSON tree | SQLite rows |
 | `data/family_mapping.txt` | Manual `machine translation = canonical name` overrides | n/a | used by `normalize` |
