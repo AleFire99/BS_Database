@@ -4,7 +4,7 @@ import functools
 import json
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 import pytest
 
@@ -125,3 +125,37 @@ class FakeEngine:
             else TranslationResult(f"<{t}>", "machine", self.name)
             for t in texts
         ]
+
+
+class FakeJsonTransport:
+    """Scripted JSON POST transport: each entry of ``script`` is a response or an exception.
+
+    When the script is used up, the default answer upper-cases the texts (HTTP 200).
+    """
+
+    def __init__(self, script: Sequence[HttpResponse | Exception] = ()) -> None:
+        self.script = list(script)
+        self.calls: list[dict[str, Any]] = []
+
+    def post(
+        self,
+        url: str,
+        *,
+        headers: Mapping[str, str],
+        json_body: Mapping[str, Any],
+        timeout: tuple[float, float],
+    ) -> HttpResponse:
+        self.calls.append({"url": url, "headers": dict(headers), "body": dict(json_body)})
+        if self.script:
+            item = self.script.pop(0)
+            if isinstance(item, Exception):
+                raise item
+            return item
+        return ok_response(json_body["text"])
+
+
+def ok_response(texts: Sequence[str]) -> HttpResponse:
+    payload = {
+        "translations": [{"detected_source_language": "JA", "text": t.upper()} for t in texts]
+    }
+    return HttpResponse(200, {}, json.dumps(payload).encode())
