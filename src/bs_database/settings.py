@@ -18,6 +18,7 @@ _DERIVED_PATHS = {
     "cache_dir": "cache/html",
     "state_db_path": "state/ingest.db",
     "parsed_dir": "parsed",
+    "normalized_dir": "normalized",
 }
 
 
@@ -39,6 +40,7 @@ class Settings(BaseSettings):
     cache_dir: Path = Path()
     state_db_path: Path = Path()
     parsed_dir: Path = Path()
+    normalized_dir: Path = Path()
     batspi_url: str = "https://batspi.com/"
     user_agent: str = f"bs-database/{__version__} (+https://github.com/AleFire99/BS_Database)"
     request_delay: float = Field(default=3.0, ge=1.0)

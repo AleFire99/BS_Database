@@ -24,6 +24,7 @@ def test_defaults() -> None:
     assert s.cache_dir == Path("data/cache/html")
     assert s.state_db_path == Path("data/state/ingest.db")
     assert s.parsed_dir == Path("data/parsed")
+    assert s.normalized_dir == Path("data/normalized")
     assert s.glossary_dir == Path("data/glossary")
     for p in (s.images_dir, s.db_path, s.cache_dir):
         assert not p.is_absolute()

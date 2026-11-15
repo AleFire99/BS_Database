@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
+from golden_support import FETCHED, card_fixture_names, parse_fixture, write_parsed_fixture
 
 from bs_database.ingest import parsed_store
 from bs_database.ingest.atomic import atomic_write
@@ -93,3 +94,24 @@ def test_atomic_write_removes_temp_on_failure(tmp_path: Path) -> None:
     with pytest.raises(OSError):
         atomic_write(target, b"x")
     assert list(tmp_path.rglob("*.tmp")) == []
+
+
+@pytest.mark.parametrize("name", card_fixture_names())
+def test_read_card_page_round_trip(tmp_path: Path, name: str) -> None:
+    path = write_parsed_fixture(tmp_path, name)
+    page, provenance = parsed_store.read_card_page(path)
+    assert page == parse_fixture(name)
+    assert provenance == {
+        "source": "batspi",
+        "fetched_at": FETCHED.isoformat(),
+        "from_cache": True,
+    }
+
+
+def test_read_card_page_rejects_other_schema_version(tmp_path: Path) -> None:
+    path = write_parsed_fixture(tmp_path, "card_spirit.html")
+    document = json.loads(path.read_text(encoding="utf-8"))
+    document["schema_version"] = "1.0.0"
+    path.write_text(json.dumps(document), encoding="utf-8")
+    with pytest.raises(ValueError, match="re-parse from the HTML cache"):
+        parsed_store.read_card_page(path)
