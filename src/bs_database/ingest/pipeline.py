@@ -12,7 +12,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 from bs_database.ingest.cache import CachedFetcher, CachedPage
-from bs_database.ingest.http import Skipped
+from bs_database.ingest.http import TRANSPORT_ERROR_REASON, Skipped
 from bs_database.ingest.parsed_store import write_card_json
 from bs_database.ingest.policy import StopRun
 from bs_database.ingest.report import DiscoveryNote, RunReport
@@ -61,7 +61,7 @@ def _sha256(content: bytes) -> str:
 def _permanent(skipped: Skipped) -> bool:
     """404 and policy skips cannot be fixed by retrying (policy 3.5: log and skip)."""
     if skipped.status is None:
-        return not skipped.reason.startswith("transport error")
+        return not skipped.reason.startswith(TRANSPORT_ERROR_REASON)
     return skipped.status in _PERMANENT_STATUSES
 
 
@@ -149,10 +149,15 @@ class _Run:
         return tuple(products)
 
     def selected(self, products: tuple[IndexProduct, ...]) -> list[IndexProduct]:
-        needles = [s.casefold() for s in self.options.sets]
-        if not needles:
+        if not self.options.sets:
             return list(products)
-        return [p for p in products if any(n in p.name.casefold() for n in needles)]
+        chosen: list[IndexProduct] = []
+        for text in self.options.sets:
+            found = [p for p in products if text.casefold() in p.name.casefold()]
+            if not found:
+                self.report.warnings.append(f"no product matches --set {text}")
+            chosen += [p for p in found if p not in chosen]
+        return chosen
 
     def set_page(self, product_url: str, name: str) -> None:
         record = self.revive(product_url)

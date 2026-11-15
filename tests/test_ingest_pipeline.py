@@ -15,7 +15,13 @@ import pytest
 from fakes import ROBOTS_URL, FakeClock, FakeSite, Killed, fixture_url, make_client
 
 from bs_database.ingest.cache import CachedFetcher, RawCache
-from bs_database.ingest.http import Blocked, BudgetExhausted, HttpResponse, Skipped
+from bs_database.ingest.http import (
+    TRANSPORT_ERROR_REASON,
+    Blocked,
+    BudgetExhausted,
+    HttpResponse,
+    Skipped,
+)
 from bs_database.ingest.pipeline import INDEX_URL, PROMO_URL, RunOptions, _permanent, run_pipeline
 from bs_database.ingest.report import RunReport, render
 from bs_database.ingest.state import IngestState, PageKind, StateStore
@@ -436,6 +442,19 @@ def test_only_transport_errors_are_retryable_skips() -> None:
     assert not _permanent(Skipped("u", "status 503", 503))
     assert _permanent(Skipped("u", "status 404", 404))
     assert _permanent(Skipped("u", "disallowed: deny list"))
+
+
+def test_set_filter_without_a_match_warns(tmp_path: Path) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    site = FakeSite(clock)
+    report = crawl(settings, site, clock, RunOptions(sets=("zzz-nothing",), limit=0))
+    assert "no product matches --set zzz-nothing" in report.warnings
+    assert site.urls() == [ROBOTS_URL, INDEX_URL]
+    assert "Warning: no product matches --set zzz-nothing" in render(report)
+
+
+def test_transport_error_reason_is_the_shared_constant() -> None:
+    assert _permanent(Skipped("u", f"{TRANSPORT_ERROR_REASON}: timeout")) is False
 
 
 def test_exhausted_set_is_skipped(tmp_path: Path) -> None:
