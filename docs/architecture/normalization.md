@@ -1,6 +1,6 @@
 # Normalization (`bsdb normalize`)
 
-The normalization stage ([#93](https://github.com/AleFire99/BS_Database/issues/93), [ADR 0008](../adr/0008-normalization-and-translation.md)) turns the Japanese parsed pages of `data/parsed/` into records shaped like the [target schema](../data-model/target-schema.md), with a glossary code for every Japanese glyph. It is non-destructive: it reads `data/parsed/` and `data/glossary/`, and writes `data/normalized/`. Card names, product names and families get a machine translation through the [translator](translation.md) ([#94](https://github.com/AleFire99/BS_Database/issues/94), wired in [#95](https://github.com/AleFire99/BS_Database/issues/95)); without a DeepL key the run is offline.
+The normalization stage ([#93](https://github.com/AleFire99/BS_Database/issues/93), [ADR 0008](../adr/0008-normalization-and-translation.md)) turns the Japanese parsed pages of `data/parsed/` into records shaped like the [target schema](../data-model/target-schema.md), with a glossary code for every Japanese glyph. It is non-destructive: it reads `data/parsed/` and `data/glossary/`, and writes `data/normalized/`. Card names, product names and families get a machine translation through the [translator](translation.md) ([#94](https://github.com/AleFire99/BS_Database/issues/94), wired in [#95](https://github.com/AleFire99/BS_Database/issues/95)); without the quickmt model the run is offline.
 
 ## Flow
 

@@ -211,7 +211,7 @@ Glossaries are CSV files in `data/glossary/` (see [ADR 0008](docs/adr/0008-norma
 - **Uncurated**: a row exists but its `code` is empty. Not an error; fill the code (families are curated in #96).
 - **Translation**: per category (families, names, products), how many texts came from the glossary or batspi, and how many are `machine`, `pending` or `failed`. `pending` means no key, over the `--max-chars` budget or the null engine; `failed` means the engine errored. Both are retried on the next run.
 
-Strict mode (`bsdb normalize --strict`) is checked in CI by `tests/test_normalize_strict.py`, with no DeepL key.
+Strict mode (`bsdb normalize --strict`) is checked in CI by `tests/test_normalize_strict.py`, with no translation model.
 
 ## Releases
 

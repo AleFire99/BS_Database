@@ -91,7 +91,8 @@ def data_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, restore_logging: N
     data = tmp_path / "data"
     data.mkdir()
     monkeypatch.setenv("BSDB_DATA_DIR", str(data))
-    monkeypatch.setenv("BSDB_DEEPL_API_KEY", "")  # empty means offline; also beats a local .env
+    # a missing model means offline; also beats a local model or .env
+    monkeypatch.setenv("BSDB_MT_MODEL_DIR", str(data / "no-model"))
     return data
 
 
@@ -240,11 +241,10 @@ def test_normalize_max_chars_zero_and_bad_values(glossary_data: Path) -> None:
     assert runner.invoke(app, ["normalize", "--max-chars", "many"]).exit_code == 2
 
 
-def test_normalize_with_a_key_uses_the_engine_and_pending_does_not_fail_strict(
+def test_normalize_with_an_engine_uses_the_engine_and_pending_does_not_fail_strict(
     glossary_data: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _parsed_data(glossary_data, "card_flip.html")
-    monkeypatch.setenv("BSDB_DEEPL_API_KEY", "test-key:fx")
     monkeypatch.setattr(
         "bs_database.cli.make_translator",
         lambda settings, *, max_chars=None: CachedTranslator(

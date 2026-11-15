@@ -8,7 +8,7 @@ The translator ([#94](https://github.com/AleFire99/BS_Database/issues/94), [ADR 
 | --- | --- |
 | `types` | `Translator` protocol, `TranslationResult(text, status, engine)`, language codes `jp` and `en` |
 | `null` | `NullTranslator`: every text is `pending`, no I/O |
-| `deepl` | `DeepLTranslator` and `RequestsJsonTransport`: the only place that knows the DeepL API codes (`JA`, `EN-US`) |
+| `quickmt` | `QuickMTTranslator`: the offline quickmt ja-en engine (CTranslate2 + SentencePiece, lazy imports) |
 | `cache` | `TranslationCache`: SQLite, keyed by (engine, src, tgt, sha256 of the text) |
 | `cached` | `CachedTranslator`: cache first, optional character budget, one INFO log line per call |
 | `factory` | `make_translator(settings)`: picks the engine |
@@ -20,7 +20,7 @@ sequenceDiagram
     participant C as Caller
     participant T as CachedTranslator
     participant K as TranslationCache
-    participant D as DeepLTranslator
+    participant D as QuickMTTranslator
     C->>T: translate(texts)
     T->>K: get_many(texts)
     K-->>T: hits
@@ -53,8 +53,8 @@ Neither `pending` nor `failed` is cached, so the next run retries them. An unsup
 
 ## Engine choice
 
-- With `BSDB_DEEPL_API_KEY` set: `CachedTranslator(DeepLTranslator, TranslationCache)`.
-- Without a key (or an empty one): a bare `NullTranslator`. It reads no cache and creates no file, so CI stays offline and deterministic.
+- With the three model files present in `BSDB_MT_MODEL_DIR` and `ctranslate2` and `sentencepiece` importable: `CachedTranslator(QuickMTTranslator, TranslationCache)`.
+- Otherwise a bare `NullTranslator`, with one INFO line saying why (model files missing, or run `uv sync --group mt`). It reads no cache and creates no file, so CI stays offline and deterministic.
 
 ## Cache
 
@@ -73,18 +73,32 @@ Neither `pending` nor `failed` is cached, so the next run retries them. An unsup
 
 Each call logs one INFO line, `engine= hits= sent= chars= pending= failed=`. Texts are never logged at INFO. `bsdb normalize --max-chars N` sets this budget (0 means cache only).
 
-## DeepL engine
+## quickmt engine
 
-- Host: `api-free.deepl.com` for keys ending in `:fx`, otherwise `api.deepl.com`. Request: `POST /v2/translate` with a JSON body (`text[]`, `source_lang`, `target_lang`) and the header `Authorization: DeepL-Auth-Key <key>`.
-- Batches hold at most 50 texts and about 100 KiB (DeepL's cap is 128 KiB), sent one at a time.
-- 429, 5xx, 529 and transport errors are retried 3 times with 2, 6 and 18 s backoff, honouring `Retry-After` (capped at 300 s). When the retries run out, that batch is `failed` and the next batch is still tried.
-- 400, 403 and 456 are not retried. The batch and every remaining text become `failed`, the engine stops for the run and one ERROR line says why (invalid request, authentication or quota).
-- A single text over the byte cap is sent alone in its own batch; if DeepL answers 413, only that batch fails (any other unexpected status behaves the same).
-- A response with a different number of translations than texts sent, or an unreadable one, fails the batch.
-- The `X-Trace-ID` response header is logged at DEBUG.
+The engine ([#102](https://github.com/AleFire99/BS_Database/issues/102)) runs the [quickmt ja-en](https://huggingface.co/quickmt/quickmt-ja-en) model offline on the CPU, through CTranslate2 and SentencePiece called directly (the `quickmt` package itself is not used).
 
-## Key handling
+- Name `quickmt-ja-en`, part of the cache key. A new model, beam size or compute type needs a new name so stale translations are never reused.
+- Only `jp` to `en`; any other pair raises `ValueError`.
+- Deterministic decoding: beam size 5, one hypothesis, no sampling, one inference thread. Compute type `int8` (a constructor argument, not a setting). Texts go in batches of 32.
+- The model loads on the first non-empty call. SentencePiece encodes to pieces without BOS/EOS, `translate_batch` runs, and the target SentencePiece model decodes.
+- Nothing raises on engine errors. A load failure (missing or corrupt model, missing library) logs one WARNING and marks every text `failed`. A batch exception, a wrong number of hypotheses or an empty output marks only that batch (or text) `failed`. Blank text is `pending`.
+- The libraries are typed with small private protocols and loaded with `importlib`, so mypy and CI do not need them.
 
-- The key is a pydantic `SecretStr`, so it is hidden in `repr(settings)`. It is read only to build the `Authorization` header.
-- It never appears in logs, exceptions or `repr(translator)`; transport errors keep only the exception class name.
-- It lives in the environment or the git-ignored `.env`. Tests use the literal `test-key:fx` and never call DeepL.
+### Setup
+
+The libraries live in the optional uv group `mt`, which CI never installs:
+
+```bash
+uv sync --group mt
+uvx --from huggingface_hub hf download quickmt/quickmt-ja-en --exclude "eole-model/*" --local-dir data/models/quickmt-ja-en
+```
+
+About 410 MB. The flags `--exclude` and `--local-dir` were checked against `hf download --help`. The files `model.bin`, `src.spm.model` and `tgt.spm.model` must end up in `BSDB_MT_MODEL_DIR` (default `data/models/quickmt-ja-en`, git-ignored). Tests never download the model and never read a local one.
+
+## Third-party models
+
+| Model | URL | Licence |
+| --- | --- | --- |
+| quickmt ja-en | <https://huggingface.co/quickmt/quickmt-ja-en> | CC-BY-4.0 |
+
+Released English names can include output of this model. The credit in the release notes and the database `meta` is tracked in [#14](https://github.com/AleFire99/BS_Database/issues/14).

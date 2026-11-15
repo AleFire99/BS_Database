@@ -87,8 +87,9 @@ def normalize(
 ) -> None:
     """Normalize data/parsed into data/normalized: glossary codes and English names.
 
-    Card names, product names and families are machine-translated when BSDB_DEEPL_API_KEY is
-    set; without a key the run is offline. Writes _report.json and _report.md next to the pages.
+    Card names, product names and families are machine-translated offline when the quickmt
+    model is in BSDB_MT_MODEL_DIR and the mt group is installed; otherwise nothing is translated.
+    Writes _report.json and _report.md next to the pages.
     """
     settings = _settings(ctx)
     if not settings.parsed_dir.is_dir():

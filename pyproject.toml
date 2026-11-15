@@ -29,6 +29,11 @@ dev = [
     "pytest-cov>=7.1.0",
     "ruff>=0.17.5",
 ]
+# Offline machine translation (#102); optional, not installed in CI.
+mt = [
+    "ctranslate2>=4.9,<5",
+    "sentencepiece>=0.2.1,<0.3",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
