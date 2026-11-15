@@ -164,6 +164,8 @@ class TreeResult:
     ``requests`` are the texts sent for translation and ``translations`` their results;
     ``texts`` are all distinct texts of the written pages. ``unmapped_pages`` and
     ``uncurated_pages`` map ``(kind, jp)`` to the URLs of the pages where it was seen.
+    Terms, ``requests`` and ``texts`` describe the parsed tree as pass 1 read it; ``written``
+    and ``failed`` are final, so a page that changed or broke between the passes is failed.
     """
 
     written: int
@@ -274,6 +276,10 @@ def normalize_tree(
             failed.append(path)
             continue
         page, provenance, result = loaded
+        if any(t.closed for t in result.unmapped):
+            log.error("%s: closed unmapped terms after translation, page not written", path)
+            failed.append(path)
+            continue
         _write(normalized_dir, path, page, provenance, apply_translations(result, results))
         written += 1
     return TreeResult(

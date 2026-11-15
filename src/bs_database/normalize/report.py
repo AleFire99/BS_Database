@@ -67,6 +67,11 @@ def render_json(report: Mapping[str, Any]) -> str:
     return json.dumps(report, ensure_ascii=False, indent=2) + "\n"
 
 
+def _cell(text: object) -> str:
+    """Make ``text`` safe inside a Markdown table cell."""
+    return str(text).replace("|", "\\|").replace("\r", " ").replace("\n", " ")
+
+
 def _term_lines(title: str, terms: list[dict[str, Any]]) -> list[str]:
     lines = [f"## {title} ({len(terms)})", ""]
     if not terms:
@@ -74,7 +79,7 @@ def _term_lines(title: str, terms: list[dict[str, Any]]) -> list[str]:
     lines += ["| Kind | Japanese | Pages | Sample |", "| --- | --- | ---: | --- |"]
     for t in terms:
         sample = t["samples"][0] if t["samples"] else ""
-        lines.append(f"| {t['kind']} | {t['jp']} | {t['pages']} | {sample} |")
+        lines.append(f"| {_cell(t['kind'])} | {_cell(t['jp'])} | {t['pages']} | {_cell(sample)} |")
     return [*lines, ""]
 
 

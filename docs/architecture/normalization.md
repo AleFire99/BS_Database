@@ -105,6 +105,8 @@ Exit 1 when a page failed (a closed unmapped term or an unreadable file), the gl
 Term = {kind, jp, pages, samples: [up to 5 sorted URLs]}
 ```
 
+The Markdown report shows only the first sample of each term; the JSON keeps up to 5. Terms and translation counts describe the parsed tree as pass 1 read it; the written and failed page counts are final (a page that changes or breaks between the two passes is counted as failed).
+
 ## Tests
 
 - Unit tests per rule on a hand-built glossary (`tests/test_normalize_rules.py`).
