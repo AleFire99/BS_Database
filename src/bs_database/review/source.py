@@ -4,6 +4,7 @@ Everything here is read-only. The legacy snapshot is the SQLite DB of release v0
 schema is in ``docs/data-model/current-schema.md``.
 """
 
+import csv
 import json
 import sqlite3
 from collections.abc import Iterator
@@ -40,16 +41,6 @@ def iter_pages(normalized_dir: Path) -> Iterator[dict[str, Any]]:
         yield page
 
 
-def card_families(pages: Iterator[dict[str, Any]]) -> dict[str, frozenset[str]]:
-    """``{card number: Japanese families}``; the families of a number seen twice are united."""
-    merged: dict[str, set[str]] = {}
-    for page in pages:
-        for entry in page["entries"]:
-            families = merged.setdefault(entry["number"], set())
-            families.update(f["jp"] for f in entry["gameplay"]["families"])
-    return {number: frozenset(jps) for number, jps in merged.items()}
-
-
 _LEGACY_QUERY = (
     "SELECT c.card_id, f.name FROM cards c "
     "JOIN card_families cf ON cf.card_id = c.id "
@@ -74,3 +65,12 @@ def load_legacy_families(db_path: Path) -> dict[str, tuple[str, ...]]:
     for number, name in rows:
         result.setdefault(number, []).append(name)
     return {number: tuple(names) for number, names in result.items()}
+
+
+def read_csv_rows(path: Path) -> list[dict[str, str]]:
+    """The rows of a glossary CSV as dicts (the header is the keys); ``[]`` when empty."""
+    try:
+        with path.open(encoding="utf-8", newline="") as fh:
+            return list(csv.DictReader(fh))
+    except (OSError, UnicodeDecodeError, csv.Error) as exc:
+        raise ReviewError(f"cannot read {path}: {exc}") from exc

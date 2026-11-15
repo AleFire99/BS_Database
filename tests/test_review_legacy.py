@@ -11,7 +11,6 @@ from bs_database.normalize.records import NORMALIZED_SCHEMA_VERSION
 from bs_database.review.legacy import FamilyLink, link_families
 from bs_database.review.source import (
     ReviewError,
-    card_families,
     iter_pages,
     load_legacy_families,
 )
@@ -90,15 +89,6 @@ def test_iter_pages_rejects_unreadable_file(tmp_path: Path) -> None:
 def test_report_files_outside_the_glob_are_ignored(tmp_path: Path) -> None:
     (tmp_path / "_report.json").write_text("{}", encoding="utf-8")
     assert list(iter_pages(tmp_path)) == []
-
-
-def test_card_families_unites_repeated_numbers(tmp_path: Path) -> None:
-    write_page(tmp_path, "a", [entry("N-1", "爬獣"), entry("N-2")])
-    write_page(tmp_path, "b", [entry("N-1", "武迅")])
-    assert card_families(iter_pages(tmp_path)) == {
-        "N-1": frozenset({"爬獣", "武迅"}),
-        "N-2": frozenset(),
-    }
 
 
 def test_one_to_one_votes_are_strong_with_votes_and_share() -> None:
