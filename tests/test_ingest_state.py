@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import itertools
 import sqlite3
+import subprocess
+import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -193,3 +195,42 @@ def test_later_run_sees_failed_row_as_retryable(tmp_path: Path) -> None:
         run2.retry("u")
         assert run2.get("u").state is S.DISCOVERED
         assert run2.iter_exhausted() == []
+
+
+_KILL_SCRIPT = """
+import os
+import sys
+from pathlib import Path
+
+from bs_database.ingest.state import IngestState, PageKind, StateStore
+
+store = StateStore(Path(sys.argv[1]))
+for i in range(5):
+    url = f"u{i}"
+    store.upsert_discovered(url, PageKind.CARD)
+    if i < 3:
+        store.advance(url, IngestState.FETCHED)
+        store.advance(url, IngestState.PARSED)
+with store._tx() as conn:
+    conn.execute("UPDATE pages SET state = 'fetched' WHERE url = 'u3'")
+    os._exit(1)
+"""
+
+
+def test_resume_after_kill_does_not_redo_completed_pages(tmp_path: Path) -> None:
+    db = tmp_path / "s.db"
+    proc = subprocess.run(
+        [sys.executable, "-I", "-c", _KILL_SCRIPT, str(db)],
+        check=False,
+        timeout=60,
+    )
+    assert proc.returncode == 1
+
+    fetched: list[str] = []
+    with make_store(db) as store:
+        assert store.get("u3").state is S.DISCOVERED  # half-done update rolled back
+        for rec in store.iter_pending(state=S.DISCOVERED):
+            fetched.append(rec.url)
+            store.advance(rec.url, S.FETCHED)
+        assert [r.url for r in store.iter_pending(state=S.PARSED)] == ["u0", "u1", "u2"]
+    assert fetched == ["u3", "u4"]
