@@ -48,8 +48,8 @@ Use **option 3**.
 
 ### Translator
 
-- A `Translator` protocol. The first engine is DeepL (key `BSDB_DEEPL_API_KEY`, local only).
-- The DeepL engine maps the internal language code `jp` to the API code `JA`. The internal codes (`jp`, `en`) are a closed list, not ISO 639-1.
+- A `Translator` protocol. The engine is the offline quickmt ja-en model (see the amendment below).
+- The internal language codes (`jp`, `en`) are a closed list, not ISO 639-1; an engine maps them to its own codes if it needs to.
 - CI uses `NullTranslator`, which never calls the network.
 - **Cache:** SQLite, keyed by (engine, src, tgt, sha256 of the text).
 
@@ -127,6 +127,7 @@ Recorded during [#92](https://github.com/AleFire99/BS_Database/issues/92) to [#9
 | D5 | An unmapped variant note means `normal`, not an error. |
 | D6 | `product_types.csv` `jp` is an optional title marker, not an identity. |
 | D7 | Recorded in [#95](https://github.com/AleFire99/BS_Database/issues/95). A glossary row whose `code` is empty is **uncurated**, not unmapped: `unmapped` means no row, so `--strict` can pass while families are still being curated (the target schema allows `families.code` NULL until assigned). `NormalizedPage` gains `uncurated` and `NORMALIZED_SCHEMA_VERSION` becomes 1.1.0. Product names are machine-translated together with card names and families. The report and strict mode are described in [normalization](../architecture/normalization.md). |
+| D8 | Recorded in [#102](https://github.com/AleFire99/BS_Database/issues/102). The DeepL engine is replaced by the offline quickmt ja-en model (CTranslate2 and SentencePiece, optional uv group `mt`, model in `BSDB_MT_MODEL_DIR`), so no API key or paid service is needed. The `Translator` protocol, the cache and the statuses are unchanged; the engine name `quickmt-ja-en` is part of the cache key. The text above is kept as history. See [translation](../architecture/translation.md). |
 
 ## Links
 
