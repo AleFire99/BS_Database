@@ -202,6 +202,17 @@ Glossaries are CSV files in `data/glossary/` (see [ADR 0008](docs/adr/0008-norma
 5. Legacy English family names go in `family_legacy_en.csv`. Fill `jp` with a name that exists in `families.csv`.
 6. Run `uv run pytest tests/test_glossary.py tests/test_glossary_seed.py`. The loader lists every violation as `<file>:<line>: <rule>`.
 
+## Reading the normalize report
+
+`bsdb normalize` writes `data/normalized/_report.md` (and the same data as `_report.json`) next to the pages.
+
+- **Unmapped, closed**: a colour, symbol, card type, rarity, variant or product type with no glossary row. The page is not written. Add the row to the right CSV.
+- **Unmapped, warnings**: a family or keyword with no glossary row. `--strict` fails on these. Add the row.
+- **Uncurated**: a row exists but its `code` is empty. Not an error; fill the code (families are curated in #96).
+- **Translation**: per category (families, names, products), how many texts came from the glossary or batspi, and how many are `machine`, `pending` or `failed`. `pending` means no key, over the `--max-chars` budget or the null engine; `failed` means the engine errored. Both are retried on the next run.
+
+Strict mode (`bsdb normalize --strict`) is checked in CI by `tests/test_normalize_strict.py`, with no DeepL key.
+
 ## Releases
 
 SemVer, and a schema-breaking change bumps the major version. Cut `release/X.Y.Z` from `dev`, generate the CHANGELOG with `uvx git-cliff --tag vX.Y.Z`, pass Gate D, merge into `main`, tag it, publish a GitHub Release (the built database is attached as an asset), then back-merge into `dev`. The release's scope is its milestone: open issues in it are finished or moved before Gate D, and the release closes the milestone.

@@ -20,8 +20,8 @@ This folder documents the current state of BS_Database (the `bs_database` packag
 | [domain/glossary.md](domain/glossary.md) | Battle Spirits domain glossary (EN/JP) |
 | [architecture/ingestion-state.md](architecture/ingestion-state.md) | Ingestion state machine, retry rules and the SQLite state store schema |
 | [architecture/scraper.md](architecture/scraper.md) | `bsdb scrape` pipeline: components, fetch/cache/parse/state sequence, run semantics, options and exit codes, parsed JSON layout, report |
-| [architecture/normalization.md](architecture/normalization.md) | `bsdb normalize`: parsed to normalized flow, rules, unmapped-term policy, normalized document shape |
-| [architecture/translation.md](architecture/translation.md) | Translator: engines (DeepL, null), SQLite cache, character budget, statuses, key handling |
+| [architecture/normalization.md](architecture/normalization.md) | `bsdb normalize`: parsed to normalized flow, rules, translation wiring, unmapped and uncurated terms, `--strict`, the report, normalized document shape |
+| [architecture/translation.md](architecture/translation.md) | Translator: engines (DeepL, null), SQLite cache, character budget, statuses, key handling, wiring into `bsdb normalize` |
 | [configuration.md](configuration.md) | Settings and `BSDB_*` environment variables |
 | [adr/README.md](adr/README.md) | Architecture Decision Records index |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | How to contribute (workflow, commits, tooling) |

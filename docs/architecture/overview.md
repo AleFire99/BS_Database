@@ -115,9 +115,9 @@ sequenceDiagram
     I->>P: parsed JSON per card page, state in ingest.db
     C-->>Dev: run report, exit code 0, 1 or 3
     Dev->>C: bsdb normalize
-    C->>N: normalize_tree(parsed_dir, normalized_dir, glossary)
+    C->>N: normalize_tree(parsed_dir, normalized_dir, glossary, translator)
     N->>P: read parsed JSON (never written)
-    N-->>C: pages written, unmapped terms
+    N-->>C: pages written, unmapped and uncurated terms, translations
     Dev->>C: bsdb build --input PATH [--db PATH]
     C->>D: build_db(input, db_path)
     D->>J: read each JSON
@@ -144,7 +144,7 @@ sequenceDiagram
 | `bs_database.parsers.batspi.index`, `.set_page`, `.promo_list`, `.numbers` | batspi.com discovery parsers and card-number parser (#69) | cached HTML | parsed records |
 | `bs_database.parsers.batspi.card`, `.card_text`, `.card_sections` | Card page parser: identity and gameplay values (#70); effects, credits, flavour, printings and images (#71) | cached HTML, URL | `CardPage` |
 | `bs_database.glossary` | Load and validate the glossary CSVs; exact `jp` lookup, legacy English family aliases (#92); used by `normalize` | `data/glossary/*.csv` | `Glossary` |
-| `bs_database.normalize` | Package (`records`, `rules`, `pipeline`, #93): `normalize_page` (pure) and `normalize_tree`; see [normalization.md](normalization.md) | `data/parsed`, `Glossary` | `data/normalized/<source>/<sha256>.json` |
+| `bs_database.normalize` | Package (`records`, `rules`, `pipeline`, #93): `normalize_page` (pure), `normalize_tree`, `translation` and `report` (#95); see [normalization.md](normalization.md) | `data/parsed`, `Glossary` | `data/normalized/<source>/<sha256>.json` |
 | `bs_database.db` | SQLAlchemy models, JSON loader, color derivation, `build_db` (legacy, rewritten in #12) | legacy card JSON tree (`bsdb build --input`) | SQLite rows |
 | `tests/tools/db_counts.py` | Per-table row counts of a SQLite file as JSON | a `.db` file | JSON on stdout |
 | `example_query.sql` | Sample SQL queries | n/a | n/a |
