@@ -116,7 +116,7 @@ class QuickMTTranslator:
                 raise ValueError(f"expected {len(batch)} single hypotheses, got {len(results)}")
             return [models.tgt_spm.decode(r.hypotheses[0]).strip() for r in results]
         except Exception as exc:  # noqa: BLE001 - a bad batch must not stop the run
-            log.warning("quickmt batch of %d failed (%s: %s)", len(batch), type(exc).__name__, exc)
+            log.warning("quickmt batch of %d failed (%s)", len(batch), type(exc).__name__)
             return None
 
     def translate(
