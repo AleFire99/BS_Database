@@ -33,3 +33,11 @@ repos:
       - id: conventional-pre-commit
         stages: [commit-msg]
         args: [feat, fix, docs, refactor, test, ci, chore, build, perf, style, revert, data]
+  - repo: local
+    hooks:
+      - id: no-ja-suffix
+        name: no-ja-suffix
+        description: Use the _jp suffix, never _ja (ADR 0003)
+        language: pygrep
+        entry: '\b\w+_ja\b'
+        files: '^(src/|tests/.*\.py$|docs/)'
