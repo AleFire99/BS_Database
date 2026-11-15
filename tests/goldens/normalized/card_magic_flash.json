@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "parsed_schema_version": "2.0.0",
   "url": "https://batspi.com/index.php?%E3%83%80%E3%83%96%E3%83%AB%E3%83%89%E3%83%AD%E3%83%BC",
   "provenance": {
@@ -553,6 +553,7 @@
         "caption": []
       }
     ],
-    "unmapped": []
+    "unmapped": [],
+    "uncurated": []
   }
 }

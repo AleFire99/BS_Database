@@ -141,6 +141,7 @@ def normalize_page(page: CardPage, glossary: Glossary) -> NormalizedPage:
         printings=printings,
         images=page.images,
         unmapped=u.terms(),
+        uncurated=u.uncurated_terms(),
     )
 
 

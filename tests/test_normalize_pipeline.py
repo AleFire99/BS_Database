@@ -50,12 +50,13 @@ def test_pending_when_no_batspi_name() -> None:
     assert result.printings[0].product_name_en is None
 
 
-def test_uncurated_families_are_warnings_sorted() -> None:
+def test_uncurated_families_are_listed_apart_and_sorted() -> None:
     result = normalize_page(parse_fixture("card_flip.html"), real_glossary())
-    assert result.unmapped
-    assert all(t.kind in ("families", "keywords") for t in result.unmapped)
-    assert list(result.unmapped) == sorted(
-        set(result.unmapped), key=lambda t: (t.kind, t.jp, t.number)
+    assert result.unmapped == ()
+    assert result.uncurated
+    assert all(t.kind in ("families", "keywords") for t in result.uncurated)
+    assert list(result.uncurated) == sorted(
+        set(result.uncurated), key=lambda t: (t.kind, t.jp, t.number)
     )
 
 
@@ -74,7 +75,7 @@ def test_tree_writes_same_stem_and_is_idempotent(tmp_path: Path) -> None:
     for src in sources:
         target = out / "batspi" / src.name
         document = json.loads(target.read_text(encoding="utf-8"))
-        assert document["schema_version"] == "1.0.0"
+        assert document["schema_version"] == "1.1.0"
         assert document["parsed_schema_version"] == "2.0.0"
         assert document["provenance"]["source"] == "batspi"
     snapshot = _hash_tree(out)

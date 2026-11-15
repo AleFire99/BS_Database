@@ -111,12 +111,12 @@ def test_families_with_glossary_name_are_manual_reviewed() -> None:
     assert u.terms() == ()
 
 
-def test_family_with_empty_code_is_a_warning() -> None:
+def test_family_with_empty_code_is_uncurated_not_unmapped() -> None:
     u = UnmappedCollector()
     (rec,) = rules.map_families(G, ("武迅",), "N", u)
     assert (rec.code, rec.en, rec.en_source, rec.en_status) == (None, None, None, "pending")
-    assert u.terms() == (UnmappedTerm("families", "武迅", "N"),)
-    assert not u.terms()[0].closed
+    assert u.terms() == ()
+    assert u.uncurated_terms() == (UnmappedTerm("families", "武迅", "N"),)
 
 
 def test_unknown_family_is_a_warning() -> None:
@@ -124,6 +124,8 @@ def test_unknown_family_is_a_warning() -> None:
     (rec,) = rules.map_families(G, ("未知",), "N", u)
     assert rec.code is None
     assert u.terms() == (UnmappedTerm("families", "未知", "N"),)
+    assert u.uncurated_terms() == ()
+    assert not u.terms()[0].closed
 
 
 def test_keywords_hit_and_miss() -> None:
@@ -136,4 +138,5 @@ def test_keywords_hit_and_miss() -> None:
     )
     assert [k.code for k in got] == ["shintaku", None, None]
     assert got[2].parameter_jp == "1"
-    assert [t.jp for t in u.terms()] == ["新", "激突"]
+    assert [t.jp for t in u.terms()] == ["新"]
+    assert [t.jp for t in u.uncurated_terms()] == ["激突"]
