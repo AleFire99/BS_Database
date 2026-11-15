@@ -17,7 +17,6 @@ from bs_database.ingest.http import (
     Skipped,
     TransportError,
 )
-from bs_database.ingest.policy import local_check
 from bs_database.settings import Settings
 
 BASE = "https://batspi.com/"
@@ -349,26 +348,28 @@ def test_robots_counts_in_budget() -> None:
 
 
 @pytest.mark.parametrize(
-    "url",
+    ("url", "calls"),
     [
-        f"{BASE}index.php?cmd=edit&page=x",
-        f"{BASE}index.php?word=abc",
-        f"{BASE}NextCard.php?x=1",
-        f"{BASE}bbs/thread",
-        f"{BASE}index.php/foo",
-        f"{BASE}?x",
-        f"{BASE}index.php?%E3%82%AB%E3%83%BC%E3%83%89%E6%83%85%E5%A0%B1%E7%B5%9E%E8%BE%BC%E3%81%BF&c=1",
+        (f"{BASE}index.php?cmd=edit&page=x", []),
+        (f"{BASE}index.php?word=abc", []),
+        (f"{BASE}NextCard.php?x=1", []),
+        (f"{BASE}bbs/thread", []),
+        (f"{BASE}index.php/foo", [ROBOTS_URL]),
+        (f"{BASE}?x", [ROBOTS_URL]),
+        (
+            f"{BASE}index.php?%E3%82%AB%E3%83%BC%E3%83%89%E6%83%85%E5%A0%B1%E7%B5%9E%E8%BE%BC%E3%81%BF&c=1",
+            [ROBOTS_URL],
+        ),
     ],
 )
-def test_disallowed_urls_skipped_and_never_requested(url: str) -> None:
+def test_disallowed_urls_skipped_and_never_requested(url: str, calls: list[str]) -> None:
     client, transport, _ = make({})
     result = client.fetch(url)
     assert isinstance(result, Skipped)
     assert result.reason.startswith("disallowed")
     assert client.allowed(url) == result
     # deny-list URLs are refused by the local gate before robots.txt is even loaded
-    expected = [] if local_check(url) else [ROBOTS_URL]
-    assert [c[1] for c in transport.calls] == expected
+    assert [c[1] for c in transport.calls] == calls
 
 
 def test_only_http_module_imports_requests() -> None:
