@@ -2,6 +2,7 @@
 
 import re
 from collections import Counter
+from datetime import date
 
 from bs4 import Tag
 
@@ -39,7 +40,10 @@ def parse_set_page(html: str) -> SetPage:
         if el.name == "p":
             m = _DATE.search(el.get_text())
             if m:
-                release_date = f"{int(m[1]):04d}-{int(m[2]):02d}-{int(m[3]):02d}"
+                try:
+                    release_date = date(int(m[1]), int(m[2]), int(m[3])).isoformat()
+                except ValueError:
+                    release_date = None
                 break
 
     selected: list[Tag] = []

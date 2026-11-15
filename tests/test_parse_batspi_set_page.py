@@ -210,3 +210,8 @@ def test_every_fixture_number_parses() -> None:
     for fixture, *_ in SETS:
         for e in parse_set_page(_html(fixture)).entries:
             assert parse_number(e.number) is not None, e.number
+
+
+def test_invalid_release_date_is_none() -> None:
+    html = _page('<p>A-01 <a href="index.php?a">A</a></p>').replace("2020年3月4日", "2020年2月30日")
+    assert parse_set_page(html).release_date is None
