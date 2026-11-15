@@ -4,7 +4,13 @@ import logging
 
 import pytest
 
-from bs_database.parsers.batspi.card_text import parse_body
+from bs_database.parsers.batspi.card_text import (
+    parse_body,
+    parse_card_text,
+    parse_trailer,
+    split_note,
+    split_trailer,
+)
 from bs_database.parsers.card_models import Keyword
 from bs_database.parsers.errors import ParseError
 
@@ -183,3 +189,67 @@ def test_known_level_scope_does_not_warn(caplog: pytest.LogCaptureFixture) -> No
     with caplog.at_level(logging.WARNING, logger=LOGGER):
         parse_body(["Lv1・Lv2", "x"], (1, 2))
     assert caplog.records == []
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("ikuyoan(プロモ)", ("ikuyoan", "プロモ")),
+        ("SUNRISE D.I.D.(a/〃～b～)", ("SUNRISE D.I.D.", "a/〃～b～")),
+        ("名前（全角）", ("名前", "全角")),
+        ("名前(a(b)c)", ("名前", "a(b)c")),
+        ("(only)", ("", "only")),
+        ("plain", ("plain", None)),
+        ("", ("", None)),
+        ("名前)", ("名前)", None)),
+        (" 名前 ", ("名前", None)),
+    ],
+)
+def test_split_note(text: str, expected: tuple[str, str | None]) -> None:
+    assert split_note(text) == expected
+
+
+def test_split_trailer() -> None:
+    lines = ["効果", "シンボル：なし", "イラスト：x"]
+    assert split_trailer(lines) == (["効果"], ["シンボル：なし", "イラスト：x"])
+    assert split_trailer(["効果"]) == (["効果"], ())
+
+
+def test_trailer_credits_and_flavor() -> None:
+    lines = [
+        "シンボル：赤",
+        "コンセプト：石垣純哉",
+        "イラスト：a",
+        "イラスト：b(note)",
+        "フレーバーテキスト：(メモ)",
+        "一行目 ",
+        "二行目",
+        "",
+    ]
+    illustrators, concepts, flavor, note = parse_trailer(lines)
+    assert [(c.name, c.note) for c in illustrators] == [("a", None), ("b", "note")]
+    assert [c.name for c in concepts] == ["石垣純哉"]
+    assert (flavor, note) == ("一行目\n二行目", "メモ")
+
+
+def test_trailer_flavor_note_without_parentheses_and_empty() -> None:
+    assert parse_trailer(["フレーバーテキスト：そのまま", "x"])[2:] == ("x", "そのまま")
+    assert parse_trailer(["フレーバーテキスト：", ""])[2:] == (None, None)
+    assert parse_trailer([])[2:] == (None, None)
+
+
+def test_trailer_errors() -> None:
+    with pytest.raises(ParseError, match="unexpected trailer line"):
+        parse_trailer(["イラスト：a", "謎の行"], "BS00-001")
+    with pytest.raises(ParseError, match="empty illustrator"):
+        parse_trailer(["イラスト：(only)"], "BS00-001")
+    with pytest.raises(ParseError, match="empty concept"):
+        parse_trailer(["コンセプト："], "BS00-001")
+
+
+def test_parse_card_text() -> None:
+    lines = ["Lv1", "効果", "シンボル：赤", "イラスト：a", "フレーバーテキスト：", "f"]
+    text = parse_card_text(lines, (1,), "BS00-001")
+    assert [e.text for e in text.effects] == ["効果"]
+    assert text.flavor == "f"
+    assert text.illustrators[0].name == "a"
