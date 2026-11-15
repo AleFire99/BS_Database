@@ -28,8 +28,9 @@ flowchart LR
         DBM["db<br/>(models, build_db)"]
     end
 
-    CJ[("data/json/card_json/BSxx/*.json")]
-    FM[("data/family_mapping.txt")]
+    PJ[("data/parsed/*/*.json")]
+    NJ[("data/normalized/*/*.json")]
+    LJ[("legacy card JSON<br/>(--input)")]
     GL[("data/glossary/*.csv")]
     DB[("battle_spirits.db<br/>(untracked build output)")]
 
@@ -46,11 +47,12 @@ flowchart LR
     PIPE --> BPARSE
     HTTP --> POL
 
-    CJ --> NORM
-    FM --> NORM
+    PSTORE --> PJ
+    PJ --> NORM
     GL --> GLOS
-    NORM --> CJ
-    CJ --> DBM --> DB
+    GLOS --> NORM
+    NORM --> NJ
+    LJ --> DBM --> DB
 ```
 
 The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). They are complete: `bsdb scrape` runs the whole pipeline (HTTP client, cache, parsers, state store, parsed JSON, run report), documented in [scraper.md](scraper.md). The parsed JSON is not loaded into the database yet; the loader is [#12](https://github.com/AleFire99/BS_Database/issues/12). The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
@@ -68,7 +70,7 @@ The `ingest` and `parsers` packages hold the target layout of the scraper rewrit
 - **Images.** Each `ul.ppy-imglist` item becomes a `CardImage` with the large and small URLs read from the page (never built from a name) and the caption lines; the first caption line is the card number. Assigning images to printings is left to #12/#13.
 - **#63 text differences.** `CardPage.differences` also compares `effects`, the side conditions and `flavor`. Credits and `flavor_note` are printing-level and excluded.
 - **Fields without a schema column.** `deck_limit` (`制限カード<N>`), `overclock`, `OC条件`, `コンセプト`, `Printing.detail_jp` and `note_jp`, `flavor_note` and the effect `form`/`label` structure are parsed but have no column in the [target schema](../data-model/target-schema.md); #12 decides where they go.
-- **Coverage gate.** `pyproject.toml` runs coverage with branches and fails below 97% over `ingest/` and `parsers/` only; the legacy modules (`db.py`, `cli.py`, `normalize.py`) are not gated. CI already runs `uv run pytest --cov`.
+- **Coverage gate.** `pyproject.toml` runs coverage with branches and fails below 97% over `ingest/`, `parsers/`, `glossary.py` and `normalize/`; the legacy modules (`db.py`, `cli.py`) are not gated. CI already runs `uv run pytest --cov`.
 
 ## Target data flow
 
@@ -101,7 +103,7 @@ flowchart LR
 sequenceDiagram
     actor Dev as Developer
     participant C as bsdb (cli)
-    participant J as card JSON files
+    participant J as legacy card JSON
     participant I as ingest.pipeline
     participant P as data/parsed
     participant N as normalize
@@ -113,10 +115,11 @@ sequenceDiagram
     I->>P: parsed JSON per card page, state in ingest.db
     C-->>Dev: run report, exit code 0, 1 or 3
     Dev->>C: bsdb normalize
-    C->>N: normalize_tree(json_dir, family mapping)
-    N->>J: rewrite JSON in place
-    Dev->>C: bsdb build [--db PATH]
-    C->>D: build_db(json_dir, db_path)
+    C->>N: normalize_tree(parsed_dir, normalized_dir, glossary)
+    N->>P: read parsed JSON (never written)
+    N-->>C: pages written, unmapped terms
+    Dev->>C: bsdb build --input PATH [--db PATH]
+    C->>D: build_db(input, db_path)
     D->>J: read each JSON
     D->>DB: insert card, type, colors, families, core requirements
 ```
@@ -140,15 +143,14 @@ sequenceDiagram
 | `bs_database.parsers.card_models`, `.errors` | Card page DTOs with `SCHEMA_VERSION`, and `ParseError` (`NoCardList` for a set page without cards) | n/a | n/a |
 | `bs_database.parsers.batspi.index`, `.set_page`, `.promo_list`, `.numbers` | batspi.com discovery parsers and card-number parser (#69) | cached HTML | parsed records |
 | `bs_database.parsers.batspi.card`, `.card_text`, `.card_sections` | Card page parser: identity and gameplay values (#70); effects, credits, flavour, printings and images (#71) | cached HTML, URL | `CardPage` |
-| `bs_database.glossary` | Load and validate the glossary CSVs; exact `jp` lookup, legacy English family aliases (#92). Not used by `normalize` yet (#93) | `data/glossary/*.csv` | `Glossary` |
-| `bs_database.normalize` | Normalize family names, type, image path in place | card JSON tree, `data/family_mapping.txt` | rewritten JSON files |
-| `bs_database.db` | SQLAlchemy models, JSON loader, color derivation, `build_db` | card JSON tree | SQLite rows |
-| `data/family_mapping.txt` | Manual `machine translation = canonical name` overrides | n/a | used by `normalize` |
+| `bs_database.glossary` | Load and validate the glossary CSVs; exact `jp` lookup, legacy English family aliases (#92); used by `normalize` | `data/glossary/*.csv` | `Glossary` |
+| `bs_database.normalize` | Package (`records`, `rules`, `pipeline`, #93): `normalize_page` (pure) and `normalize_tree`; see [normalization.md](normalization.md) | `data/parsed`, `Glossary` | `data/normalized/<source>/<sha256>.json` |
+| `bs_database.db` | SQLAlchemy models, JSON loader, color derivation, `build_db` (legacy, rewritten in #12) | legacy card JSON tree (`bsdb build --input`) | SQLite rows |
 | `tests/tools/db_counts.py` | Per-table row counts of a SQLite file as JSON | a `.db` file | JSON on stdout |
 | `example_query.sql` | Sample SQL queries | n/a | n/a |
 | `Notes.md` | Informal notes (card type list) | n/a | n/a |
 
-Kept quirks (covered by golden tests): the family order from the legacy normalizer was a set, so goldens are sorted. The quirks of the removed scrapers are described in the [legacy mapping](../data-model/legacy-mapping.md).
+The quirks of the removed scrapers are described in the [legacy mapping](../data-model/legacy-mapping.md).
 
 ## Known issues / tech debt
 
@@ -166,7 +168,7 @@ Tags refer to the epic addressing each item: E2 restructure ([#7](https://github
 | Resolved: database committed to git | `battle_spirits.db` untracked and ignored in #23 (release artefact is E9) | E2, E9 |
 | Resolved: no tests, CI or lint | pytest with goldens, ruff, mypy strict, CI and pre-commit | E2 |
 | Resolved: legacy scrapers and fandom code | Removed in #66 (commit `f90747b` has them); fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the new ingestion modules (#67-#73), the parsers (#69-#71) and `bsdb scrape` are implemented | E5 |
-| Machine translation of names and families | `GoogleTranslator` output is stored as canonical names; family names are patched with ad-hoc rules in `normalize` plus `family_mapping.txt` (e.g. "Snake" forced to "Dark Snake", naive plural stripping). Replaced by glossaries and a cached translator ([ADR 0008](../adr/0008-normalization-and-translation.md)): [#92](https://github.com/AleFire99/BS_Database/issues/92) to [#95](https://github.com/AleFire99/BS_Database/issues/95) | E6 |
+| Machine translation of names and families | `GoogleTranslator` output is stored as canonical names; family names were patched with ad-hoc rules in the legacy `normalize` plus `family_mapping.txt` (removed in #93). Replaced by glossaries, the [normalize package](normalization.md) (#93) and a cached translator ([ADR 0008](../adr/0008-normalization-and-translation.md)): [#92](https://github.com/AleFire99/BS_Database/issues/92) to [#95](https://github.com/AleFire99/BS_Database/issues/95) | E6 |
 | Translation failures stored as data | `translate()` returns `"Error: ..."` strings that would be persisted. Fixed by the translator and its error policy in [ADR 0008](../adr/0008-normalization-and-translation.md) ([#94](https://github.com/AleFire99/BS_Database/issues/94), [#95](https://github.com/AleFire99/BS_Database/issues/95)) | E6 |
 | Colors derived from translated symbol | Symbol-to-color map in `db.py` lacks `white`; multicolor strings (e.g. "Red purple green white yellow blue") match nothing. Designed in the target schema: `colors` with White and a `card_colors` junction filled from the Japanese colour segment ([target-schema](../data-model/target-schema.md#card_colors)); the colour mapping moves to glossaries in [#92](https://github.com/AleFire99/BS_Database/issues/92), the loader is E7. | E3, E6 |
 | Resolved: no caching, retries or User-Agent | The legacy scrapers were removed in #66; the new client, cache, state and pipeline (#67, #68, #72, #73) provide them. Requirements are set in the [scraping policy](../sources/policy.md#5-requirements-for-the-scraper-rewrite-10) | E5 |

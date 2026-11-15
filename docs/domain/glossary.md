@@ -55,7 +55,7 @@ On batspi.com the scraped line format is `<cores>LvN BP`, e.g. `<3>Lv2 3000`.
 
 ## Families (系統)
 
-A family is a creature-type tag on a card (e.g. "Reptile Beast", 爬獣). A card can have several. The scraper translates Japanese families with a machine translator, producing inconsistent names relative to the English wiki and official English terms. `data/family_mapping.txt` (legacy) and `data/glossary/family_legacy_en.csv` (the same 41 pairs, to be keyed by Japanese name) patch known mismatches manually (e.g. `Earth Dragon = Terra Dragon`, `Kidra = Machine Dragon`, `Rebirth = Reptile Beast`). Some are compound or prefixed (`Different X`, `New X`, `Next Generation of X`) and are split heuristically. The JP to EN family mapping lives in `data/glossary/families.csv` and is reviewed in E6 ([#11](https://github.com/AleFire99/BS_Database/issues/11)).
+A family is a creature-type tag on a card (e.g. "Reptile Beast", 爬獣). A card can have several. The scraper translates Japanese families with a machine translator, producing inconsistent names relative to the English wiki and official English terms. `data/glossary/family_legacy_en.csv` (the 41 pairs of the former `data/family_mapping.txt`, to be keyed by Japanese name) patch known mismatches manually (e.g. `Earth Dragon = Terra Dragon`, `Kidra = Machine Dragon`, `Rebirth = Reptile Beast`). Some are compound or prefixed (`Different X`, `New X`, `Next Generation of X`) and are split heuristically. The JP to EN family mapping lives in `data/glossary/families.csv` and is reviewed in E6 ([#11](https://github.com/AleFire99/BS_Database/issues/11)).
 
 ## Card IDs
 
