@@ -6,12 +6,14 @@ Goldens in tests/goldens/ were generated from the legacy code at 5ae5646
 
 import json
 import logging
+import re
 import shutil
 import sqlite3
 from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
+from golden_support import GLOSSARY_DIR, write_parsed_fixture
 from typer.testing import CliRunner
 
 from bs_database import __version__
@@ -77,14 +79,14 @@ def test_invalid_log_level_fails(restore_logging: None) -> None:
 
 
 FIXTURES = Path(__file__).parent / "fixtures"
+LEGACY_JSON = FIXTURES / "legacy" / "card_json"
 GOLDEN = Path(__file__).parent / "goldens" / "db.json"
 
 
 @pytest.fixture
 def data_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, restore_logging: None) -> Path:
     data = tmp_path / "data"
-    shutil.copytree(FIXTURES / "card_json", data / "json" / "card_json")
-    shutil.copy(FIXTURES / "family_mapping.txt", data / "family_mapping.txt")
+    data.mkdir()
     monkeypatch.setenv("BSDB_DATA_DIR", str(data))
     return data
 
@@ -108,18 +110,20 @@ def _assert_matches_golden(db: Path) -> None:
     con.close()
 
 
-def test_normalize_then_build_matches_golden(data_dir: Path) -> None:
-    result = runner.invoke(app, ["normalize"])
-    assert result.exit_code == 0, result.output
-    result = runner.invoke(app, ["build"])
+def test_build_matches_golden(data_dir: Path) -> None:
+    result = runner.invoke(app, ["build", "--input", str(LEGACY_JSON)])
     assert result.exit_code == 0, result.output
     _assert_matches_golden(data_dir / "battle_spirits.db")
 
 
+def test_build_requires_input(data_dir: Path) -> None:
+    result = runner.invoke(app, ["build"])
+    assert result.exit_code == 2
+
+
 def test_build_db_option(data_dir: Path, tmp_path: Path) -> None:
-    runner.invoke(app, ["normalize"])
     target = tmp_path / "custom.db"
-    result = runner.invoke(app, ["build", "--db", str(target)])
+    result = runner.invoke(app, ["build", "--input", str(LEGACY_JSON), "--db", str(target)])
     assert result.exit_code == 0, result.output
     _assert_matches_golden(target)
     assert not (data_dir / "battle_spirits.db").exists()
@@ -134,3 +138,52 @@ def test_no_network_guard() -> None:
 
     with pytest.raises(AssertionError, match="network"):
         requests.get("https://example.invalid/")
+
+
+def _parsed_data(data_dir: Path, *names: str) -> None:
+    for name in names:
+        write_parsed_fixture(data_dir / "parsed", name)
+
+
+@pytest.fixture
+def glossary_data(data_dir: Path) -> Path:
+    shutil.copytree(GLOSSARY_DIR, data_dir / "glossary")
+    return data_dir
+
+
+def test_normalize_happy_path(glossary_data: Path) -> None:
+    _parsed_data(glossary_data, "card_spirit.html", "card_flip.html")
+    result = runner.invoke(app, ["normalize"])
+    assert result.exit_code == 0, result.output
+    assert re.fullmatch(r"Normalized 2 pages, \d+ unmapped terms \(0 closed\)\n", result.stdout)
+    assert len(list((glossary_data / "normalized" / "batspi").glob("*.json"))) == 2
+
+
+def test_normalize_closed_unmapped_exits_1_without_file(glossary_data: Path) -> None:
+    path = write_parsed_fixture(glossary_data / "parsed", "card_magic.html")
+    document = json.loads(path.read_text(encoding="utf-8"))
+    document["page"]["entries"][0]["gameplay"]["card_type"] = "謎のタイプ"
+    path.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
+    result = runner.invoke(app, ["normalize"])
+    assert result.exit_code == 1
+    assert "1 closed" in result.stdout
+    assert not (glossary_data / "normalized").exists()
+
+
+def test_normalize_missing_glossary_is_a_clear_error(data_dir: Path) -> None:
+    _parsed_data(data_dir, "card_spirit.html")
+    result = runner.invoke(app, ["normalize"])
+    assert result.exit_code == 1
+    assert "invalid glossary" in result.output
+    assert "missing file" in result.output
+
+
+def test_normalize_missing_parsed_dir_is_a_clear_error(glossary_data: Path) -> None:
+    result = runner.invoke(app, ["normalize"])
+    assert result.exit_code == 1
+    assert "parsed directory not found" in result.output
+
+
+def test_normalize_has_no_legacy_option(glossary_data: Path) -> None:
+    result = runner.invoke(app, ["normalize", "--legacy"])
+    assert result.exit_code == 2

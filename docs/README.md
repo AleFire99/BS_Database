@@ -1,6 +1,6 @@
 # Documentation index
 
-This folder documents the current state of BS_Database (the `bs_database` package: Battle Spirits card ingestion layout, normalizer and SQLite builder) and the decisions that shape it. It is the baseline for the roadmap epics listed in the [top-level README](../README.md).
+This folder documents the current state of BS_Database (the `bs_database` package: Battle Spirits card ingestion layout, normalization and SQLite builder) and the decisions that shape it. It is the baseline for the roadmap epics listed in the [top-level README](../README.md).
 
 ## Contents
 
@@ -20,6 +20,7 @@ This folder documents the current state of BS_Database (the `bs_database` packag
 | [domain/glossary.md](domain/glossary.md) | Battle Spirits domain glossary (EN/JP) |
 | [architecture/ingestion-state.md](architecture/ingestion-state.md) | Ingestion state machine, retry rules and the SQLite state store schema |
 | [architecture/scraper.md](architecture/scraper.md) | `bsdb scrape` pipeline: components, fetch/cache/parse/state sequence, run semantics, options and exit codes, parsed JSON layout, report |
+| [architecture/normalization.md](architecture/normalization.md) | `bsdb normalize`: parsed to normalized flow, rules, unmapped-term policy, normalized document shape |
 | [configuration.md](configuration.md) | Settings and `BSDB_*` environment variables |
 | [adr/README.md](adr/README.md) | Architecture Decision Records index |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | How to contribute (workflow, commits, tooling) |
