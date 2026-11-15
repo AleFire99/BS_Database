@@ -16,7 +16,6 @@ from bs_database.ingest.pipeline import RunOptions, run_pipeline
 from bs_database.ingest.report import render
 from bs_database.ingest.state import StateStore
 from bs_database.log import configure_logging
-from bs_database.normalize import normalize_tree
 from bs_database.settings import Settings
 
 app = typer.Typer(no_args_is_help=True, help="bsdb: Battle Spirits card database tooling.")
@@ -64,14 +63,6 @@ def main(
 def _settings(ctx: typer.Context) -> Settings:
     settings: Settings = ctx.obj
     return settings
-
-
-@app.command()
-def normalize(ctx: typer.Context) -> None:
-    """Normalize family names and types in the card JSON files, in place."""
-    settings = _settings(ctx)
-    written = normalize_tree(settings.data_dir / "json" / "card_json", settings.family_mapping_path)
-    typer.echo(f"Normalized {written} files")
 
 
 @app.command()

@@ -14,7 +14,6 @@ _DEFAULT_DATA_DIR = Path("data")
 _DERIVED_PATHS = {
     "images_dir": "images",
     "db_path": "battle_spirits.db",
-    "family_mapping_path": "family_mapping.txt",
     "glossary_dir": "glossary",
     "cache_dir": "cache/html",
     "state_db_path": "state/ingest.db",
@@ -36,7 +35,6 @@ class Settings(BaseSettings):
     # The paths below default to locations under ``data_dir`` (see ``_derive_paths``).
     images_dir: Path = Path()
     db_path: Path = Path()
-    family_mapping_path: Path = Path()
     glossary_dir: Path = Path()
     cache_dir: Path = Path()
     state_db_path: Path = Path()

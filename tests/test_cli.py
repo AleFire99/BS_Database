@@ -91,7 +91,7 @@ def data_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, restore_logging: N
 def test_commands_listed_with_help() -> None:
     result = runner.invoke(app, ["--help"])
     assert result.exit_code == 0
-    for name in ("scrape", "normalize", "build"):
+    for name in ("scrape", "build"):
         assert name in result.output
         assert runner.invoke(app, [name, "--help"]).exit_code == 0
 
