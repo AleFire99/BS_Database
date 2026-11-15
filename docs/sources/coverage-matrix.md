@@ -228,7 +228,7 @@ Tables: `translation_sources`, `translation_statuses`, and the `_en` columns and
 | `cards.flavor_text_en`, `card_effects.text_en`, `card_effects.timing_en`, `brave_details.fusion_condition_en`, `ultimate_details.summon_condition_en` | `absent`: the pages are Japanese only | `absent` | `not fetched` | Machine translation (#11) is the only route in v1 |
 | `families.name_en` | `absent` | `absent` | `not fetched` | `data/family_mapping.txt` (41 `MT = preferred EN` pairs) and machine translation |
 | `products.name_en` | `absent` | `unknown` | `not fetched` | Machine translation (#11) |
-| `translation_sources.code`, `translation_sources.name` | `derived`: `official`, `fandom`, `manual`, `machine`; the English name on an old batspi `<h3>` has no listed code in the target schema (it comes from the wiki, not from the card maker) | | | See the gap list |
+| `translation_sources.code`, `translation_sources.name` | `derived`: `batspi`, `official`, `fandom`, `manual`, `machine`; the English name on an old batspi `<h3>` uses `batspi` ([ADR 0008](../adr/0008-normalization-and-translation.md)), because it comes from the wiki, not from the card maker | | | See the gap list |
 | `translation_statuses.code` | `derived`: `pending`, `machine`, `reviewed`, `failed`, set by the pipeline | | | Not source data |
 
 ## 5. Provenance
@@ -269,7 +269,7 @@ Fields where no source gives a usable value, or only a derived or machine-transl
 | --- | --- | --- | --- |
 | 1 | `cards.name_en` | Printed only on older pages and promos (`card_brave.html`, `card_spirit_bs01.html`, `card_magic_flash.html`, `card_promo.html`); absent on the contract-era, flip, XX, Ultimate and 創界神 fixtures. fandom is dropped | Take it from the `<h3>` where present, otherwise null, then translate in #11 |
 | 2 | `flavor_text_en`, `card_effects.text_en` and `timing_en`, `brave_details.fusion_condition_en`, `ultimate_details.summon_condition_en`, `families.name_en`, `products.name_en` | No source has English text | Translate in #11 |
-| 3 | `translation_sources` for the English `<h3>` name | The codes `official`, `fandom`, `manual`, `machine` do not name "English name printed on batspi" | Later epic: owner choice in ADR 0007 or #11 (a new lookup row, no schema change) |
+| 3 | `translation_sources` for the English `<h3>` name | The codes `official`, `fandom`, `manual`, `machine` do not name "English name printed on batspi" | Resolved by [ADR 0008](../adr/0008-normalization-and-translation.md): new lookup row `batspi` (status `reviewed`), no schema change |
 | 4 | `printings.illustrator` | `absent` on the first block of `card_magic_flash.html`; a credit may be tied to a product (`イラスト：平坂康也(契約編：環 第3章：覇極来臨)` @ `card_nexus.html`) or not | Null when no line; keep the bracketed product as written |
 | 5 | `printings.variant_id` | Variants are free-text notes after the rarity, an open list (`(特別仕様)` @ `card_spirit_xx_bs31.html`, `(金色仕様・2013/11/28頃発送)` @ `card_ultimate.html`) | Derive for the known notes; leave others as the default variant and log them for #10 |
 | 6 | `printings.rarity_id` | Absent for distributions with no rarity (`バトルスキーイベント提供記念品` @ `card_magic.html`); on set pages a missing token means common | Null for distributions; derive `C` from the set-page rule |
