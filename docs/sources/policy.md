@@ -47,7 +47,7 @@ Before the first URL of a run, robots.txt is fetched. If that fails (any status 
 
 - The scraper **must** fetch `https://batspi.com/robots.txt` once per run and check every URL against it with `urllib.robotparser`.
   - The rules in force on 2026-11-14 disallow `/?`, `/index.php/` and `/index.php?カード情報絞込み&…`.
-  - On Python 3.12, `urllib.robotparser` normalises `Disallow: /?` to `/`, which would block the whole site. A rule that ends in `?` **must** therefore be checked as a plain prefix of the path and query, outside the parser. See `split_robots` in [fixture_fetch.py](../../tests/tools/fixture_fetch.py), which [test_fixture_fetch_tool.py](../../tests/test_fixture_fetch_tool.py) covers.
+  - On Python 3.12, `urllib.robotparser` normalises `Disallow: /?` to `/`, which would block the whole site. A rule that ends in `?` **must** therefore be checked as a plain prefix of the path and query, outside the parser. See `split_robots` in [ingest/policy.py](../../src/bs_database/ingest/policy.py), which [test_ingest_policy.py](../../tests/test_ingest_policy.py) covers.
 - In addition, the scraper **must not** request:
   - PukiWiki action pages: any URL with `cmd=` or `plugin=`, for example `cmd=edit`, `cmd=listadd` or `cmd=rss`.
   - Search URLs with `word=`.

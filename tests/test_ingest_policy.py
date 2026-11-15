@@ -1,13 +1,17 @@
-"""Offline tests of the robots.txt and deny-list logic in ``tests/tools/fixture_fetch.py``."""
+"""Offline tests of the robots.txt, deny-list and challenge logic in ``ingest.policy``."""
 
-import importlib.util
 import urllib.robotparser
-from pathlib import Path
-from types import ModuleType
+from urllib.parse import quote
 
 import pytest
 
-TOOL = Path(__file__).parent / "tools" / "fixture_fetch.py"
+from bs_database.ingest.policy import (
+    BASE_URL,
+    StopRun,
+    check_allowed,
+    is_challenge,
+    split_robots,
+)
 
 # batspi.com robots.txt as fetched on 2026-11-14 (docs/sources/batspi.md, "Robots policy").
 ROBOTS = """User-agent: *
@@ -24,30 +28,17 @@ Disallow: /
 """
 
 
-def load_tool() -> ModuleType:
-    spec = importlib.util.spec_from_file_location("fixture_fetch", TOOL)
-    assert spec and spec.loader
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
 @pytest.fixture(scope="module")
-def tool() -> ModuleType:
-    return load_tool()
-
-
-@pytest.fixture(scope="module")
-def rules(tool: ModuleType) -> tuple[urllib.robotparser.RobotFileParser, list[str]]:
-    lines, prefixes = tool.split_robots(ROBOTS)
+def rules() -> tuple[urllib.robotparser.RobotFileParser, list[str]]:
+    lines, prefixes = split_robots(ROBOTS)
     parser = urllib.robotparser.RobotFileParser()
     parser.parse(lines)
     parser.modified()
     return parser, prefixes
 
 
-def test_split_robots_moves_bare_query_rule(tool: ModuleType) -> None:
-    lines, prefixes = tool.split_robots(ROBOTS)
+def test_split_robots_moves_bare_query_rule() -> None:
+    lines, prefixes = split_robots(ROBOTS)
     assert prefixes == ["/?"]
     assert "Disallow: /?" not in lines
     assert "Disallow: /index.php/" in lines
@@ -55,10 +46,10 @@ def test_split_robots_moves_bare_query_rule(tool: ModuleType) -> None:
 
 @pytest.mark.parametrize("page", ["ゴラドン", "第一弾", "プロモーションカード"])
 def test_card_and_set_pages_allowed(
-    tool: ModuleType, rules: tuple[urllib.robotparser.RobotFileParser, list[str]], page: str
+    rules: tuple[urllib.robotparser.RobotFileParser, list[str]], page: str
 ) -> None:
     parser, prefixes = rules
-    tool.check_allowed(tool.page_url(page), parser, prefixes)
+    check_allowed(f"{BASE_URL}index.php?{quote(page, safe='')}", parser, prefixes)
 
 
 @pytest.mark.parametrize(
@@ -74,13 +65,13 @@ def test_card_and_set_pages_allowed(
     ],
 )
 def test_disallowed_urls_stop_the_run(
-    tool: ModuleType, rules: tuple[urllib.robotparser.RobotFileParser, list[str]], url: str
+    rules: tuple[urllib.robotparser.RobotFileParser, list[str]], url: str
 ) -> None:
     parser, prefixes = rules
-    with pytest.raises(tool.StopRun):
-        tool.check_allowed(url, parser, prefixes)
+    with pytest.raises(StopRun):
+        check_allowed(url, parser, prefixes)
 
 
-def test_challenge_detection(tool: ModuleType) -> None:
-    assert tool.is_challenge("<title>Just a moment...</title>")
-    assert not tool.is_challenge("<pre>スピリット</pre>")
+def test_challenge_detection() -> None:
+    assert is_challenge("<title>Just a moment...</title>")
+    assert not is_challenge("<pre>スピリット</pre>")
