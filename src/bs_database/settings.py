@@ -12,7 +12,6 @@ _DEFAULT_DATA_DIR = Path("data")
 
 # field name -> path relative to data_dir, used when the field is not set explicitly
 _DERIVED_PATHS = {
-    "json_dir": "json",
     "images_dir": "images",
     "db_path": "battle_spirits.db",
     "family_mapping_path": "family_mapping.txt",
@@ -35,7 +34,6 @@ class Settings(BaseSettings):
 
     data_dir: Path = _DEFAULT_DATA_DIR
     # The paths below default to locations under ``data_dir`` (see ``_derive_paths``).
-    json_dir: Path = Path()
     images_dir: Path = Path()
     db_path: Path = Path()
     family_mapping_path: Path = Path()

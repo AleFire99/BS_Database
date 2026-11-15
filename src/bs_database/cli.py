@@ -66,27 +66,27 @@ def _settings(ctx: typer.Context) -> Settings:
     return settings
 
 
-def _card_json_dir(settings: Settings) -> Path:
-    return settings.json_dir / "card_json"
-
-
 @app.command()
 def normalize(ctx: typer.Context) -> None:
     """Normalize family names and types in the card JSON files, in place."""
     settings = _settings(ctx)
-    written = normalize_tree(_card_json_dir(settings), settings.family_mapping_path)
+    written = normalize_tree(settings.data_dir / "json" / "card_json", settings.family_mapping_path)
     typer.echo(f"Normalized {written} files")
 
 
 @app.command()
 def build(
     ctx: typer.Context,
+    input_dir: Annotated[
+        Path,
+        typer.Option("--input", help="Directory with the legacy normalized card JSON files."),
+    ],
     db: Annotated[Path | None, typer.Option("--db", help="Database path.")] = None,
 ) -> None:
-    """Build the SQLite database from the card JSON files (appends to an existing DB)."""
+    """Build the SQLite database from card JSON files (appends to an existing DB)."""
     settings = _settings(ctx)
     target = db or settings.db_path
-    build_db(_card_json_dir(settings), target)
+    build_db(input_dir, target)
     typer.echo(f"Built {target}")
 
 

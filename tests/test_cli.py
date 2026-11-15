@@ -6,7 +6,6 @@ Goldens in tests/goldens/ were generated from the legacy code at 5ae5646
 
 import json
 import logging
-import shutil
 import sqlite3
 from collections.abc import Iterator
 from pathlib import Path
@@ -77,14 +76,14 @@ def test_invalid_log_level_fails(restore_logging: None) -> None:
 
 
 FIXTURES = Path(__file__).parent / "fixtures"
+LEGACY_JSON = FIXTURES / "legacy" / "card_json"
 GOLDEN = Path(__file__).parent / "goldens" / "db.json"
 
 
 @pytest.fixture
 def data_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, restore_logging: None) -> Path:
     data = tmp_path / "data"
-    shutil.copytree(FIXTURES / "card_json", data / "json" / "card_json")
-    shutil.copy(FIXTURES / "family_mapping.txt", data / "family_mapping.txt")
+    data.mkdir()
     monkeypatch.setenv("BSDB_DATA_DIR", str(data))
     return data
 
@@ -108,18 +107,20 @@ def _assert_matches_golden(db: Path) -> None:
     con.close()
 
 
-def test_normalize_then_build_matches_golden(data_dir: Path) -> None:
-    result = runner.invoke(app, ["normalize"])
-    assert result.exit_code == 0, result.output
-    result = runner.invoke(app, ["build"])
+def test_build_matches_golden(data_dir: Path) -> None:
+    result = runner.invoke(app, ["build", "--input", str(LEGACY_JSON)])
     assert result.exit_code == 0, result.output
     _assert_matches_golden(data_dir / "battle_spirits.db")
 
 
+def test_build_requires_input(data_dir: Path) -> None:
+    result = runner.invoke(app, ["build"])
+    assert result.exit_code == 2
+
+
 def test_build_db_option(data_dir: Path, tmp_path: Path) -> None:
-    runner.invoke(app, ["normalize"])
     target = tmp_path / "custom.db"
-    result = runner.invoke(app, ["build", "--db", str(target)])
+    result = runner.invoke(app, ["build", "--input", str(LEGACY_JSON), "--db", str(target)])
     assert result.exit_code == 0, result.output
     _assert_matches_golden(target)
     assert not (data_dir / "battle_spirits.db").exists()
