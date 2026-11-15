@@ -87,38 +87,6 @@
     "card_type": "アルティメット",
     "trimmed": true
   },
-  "fandom_card.html": {
-    "url": "https://battle-spirits.fandom.com/wiki/Card_A",
-    "fetched": "2026-11-14",
-    "source": "synthetic",
-    "kind": "card",
-    "note": "fandom.com blocked by Cloudflare challenge on 2026-11-14",
-    "trimmed": false
-  },
-  "fandom_card_base64.html": {
-    "url": "https://battle-spirits.fandom.com/wiki/Card_B",
-    "fetched": "2026-11-14",
-    "source": "synthetic",
-    "kind": "card",
-    "note": "fandom.com blocked by Cloudflare challenge on 2026-11-14",
-    "trimmed": false
-  },
-  "fandom_image.png": {
-    "url": "https://static.wikia.nocookie.net/bs/images/a/a1/BS47-001.png/revision/latest",
-    "fetched": "2026-11-14",
-    "source": "synthetic",
-    "kind": "image",
-    "note": "fandom.com blocked by Cloudflare challenge on 2026-11-14",
-    "trimmed": false
-  },
-  "fandom_set_BS47.html": {
-    "url": "https://battle-spirits.fandom.com/wiki/BS47",
-    "fetched": "2026-11-14",
-    "source": "synthetic",
-    "kind": "set",
-    "note": "fandom.com blocked by Cloudflare challenge on 2026-11-14",
-    "trimmed": false
-  },
   "index.html": {
     "url": "https://batspi.com/index.php?カードリスト",
     "fetched": "2026-11-14",

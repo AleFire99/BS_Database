@@ -1,6 +1,6 @@
 # Documentation index
 
-This folder documents the current state of BS_Database (the `bs_database` package: Battle Spirits card scrapers, normalizer and SQLite builder) and the decisions that shape it. It is the baseline for the roadmap epics listed in the [top-level README](../README.md).
+This folder documents the current state of BS_Database (the `bs_database` package: Battle Spirits card ingestion layout, normalizer and SQLite builder) and the decisions that shape it. It is the baseline for the roadmap epics listed in the [top-level README](../README.md).
 
 ## Contents
 

@@ -47,7 +47,7 @@ Before the first URL of a run, robots.txt is fetched. If that fails (any status 
 
 - The scraper **must** fetch `https://batspi.com/robots.txt` once per run and check every URL against it with `urllib.robotparser`.
   - The rules in force on 2026-11-14 disallow `/?`, `/index.php/` and `/index.php?カード情報絞込み&…`.
-  - On Python 3.12, `urllib.robotparser` normalises `Disallow: /?` to `/`, which would block the whole site. A rule that ends in `?` **must** therefore be checked as a plain prefix of the path and query, outside the parser. See `split_robots` in [fixture_fetch.py](../../tests/tools/fixture_fetch.py), which [test_fixture_fetch_tool.py](../../tests/test_fixture_fetch_tool.py) covers.
+  - On Python 3.12, `urllib.robotparser` normalises `Disallow: /?` to `/`, which would block the whole site. A rule that ends in `?` **must** therefore be checked as a plain prefix of the path and query, outside the parser. See `split_robots` in [ingest/policy.py](../../src/bs_database/ingest/policy.py), which [test_ingest_policy.py](../../tests/test_ingest_policy.py) covers.
 - In addition, the scraper **must not** request:
   - PukiWiki action pages: any URL with `cmd=` or `plugin=`, for example `cmd=edit`, `cmd=listadd` or `cmd=rss`.
   - Search URLs with `word=`.
@@ -133,7 +133,7 @@ This is the project's position, not legal advice.
 
 | # | Requirement | Setting or behaviour |
 | --- | --- | --- |
-| R1 | One shared HTTP client used by every scraper, with no direct `requests.get` calls. Today there are 7 such calls in 5 modules of `src/bs_database/scrapers/` | `http` module |
+| R1 | One shared HTTP client used by every scraper, with no direct `requests.get` calls. Before #66 there were 7 such calls in 5 legacy modules ([`scrapers/`](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/)), now removed | `http` module |
 | R2 | robots.txt check per run, plus the deny list | §3.1 |
 | R3 | `request_delay` default `3.0`, minimum `1.0`; `max_requests` default `1000` | [settings.py](../../src/bs_database/settings.py) |
 | R4 | `user_agent` setting with the fixed format | §3.3 |

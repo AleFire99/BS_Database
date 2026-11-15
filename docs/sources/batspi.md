@@ -244,7 +244,7 @@ A page holds every number that shares the card name. The Spirit fixture has one 
 Consequences for a parser:
 
 - The `<pre>` blocks and the `<h3>` print headings are in the same order. The pairing by position is the only link between a number and its text; the pre block carries no number itself.
-- The first `<pre>` of the page is not enough: it is only the first printed number. The scraper of [batspi_card.py](../../src/bs_database/scrapers/batspi_card.py) reads `soup.find("pre")`, so it sees only the first print.
+- The first `<pre>` of the page is not enough: it is only the first printed number. The scraper of [batspi_card.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py) reads `soup.find("pre")`, so it sees only the first print.
 - Extra `<pre>` blocks appear after a card block under a collapsed label `(エラッタ前) ▼` ("before the erratum"). They hold the old wording, may contain only the changed lines (the first one on the Brave page is two lines long) and do not start with a type line. The Q&A answers are `<pre>` blocks too (`はい、破壊できます。…`). A card block is identified by a first line that is a card type.
 - The same print can differ between numbers in cost, BP, family and text, so each number is a separate printing with its own data. How this maps to card and printing is decided in [ADR 0004](../adr/0004-card-printing-identity.md), not here.
 

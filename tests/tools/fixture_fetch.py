@@ -1,9 +1,10 @@
 """Fetch batspi.com pages as test fixtures, trim them and record them in the manifest.
 
-Run by hand, never imported by tests. Follows ``docs/sources/policy.md``: robots.txt check,
-deny list, policy User-Agent, at least 3 s between requests, stop on a 403 or a challenge page,
-no images. Stricter than the policy: no retries (a 429 or 5xx page is skipped) and a robots.txt
-that is not 200 stops the run. The manifest is saved even when a run stops early.
+Run by hand, never imported by tests. Follows ``docs/sources/policy.md`` (the rules live in
+``bs_database.ingest.policy``): robots.txt check, deny list, policy User-Agent, at least 3 s
+between requests, stop on a 403 or a challenge page, no images. Stricter than the policy: no
+retries (a 429 or 5xx page is skipped) and a robots.txt that is not 200 stops the run. The
+manifest is saved even when a run stops early.
 
 Each page is given as ``FILE|PAGE NAME|KIND|CARD TYPE`` (the card type may be empty)::
 
@@ -27,8 +28,17 @@ from urllib.parse import quote
 import requests
 from bs4 import BeautifulSoup, Comment
 
-BASE = "https://batspi.com/"
-USER_AGENT = "bs-database/0.2.0 (+https://github.com/AleFire99/BS_Database)"
+from bs_database.ingest.policy import (
+    BASE_URL as BASE,
+)
+from bs_database.ingest.policy import (
+    USER_AGENT,
+    StopRun,
+    check_allowed,
+    is_challenge,
+    split_robots,
+)
+
 DELAY = 3.0
 HTML_DIR = Path(__file__).resolve().parent.parent / "fixtures" / "html"
 STRIP_TAGS = ("script", "style", "noscript", "iframe", "link", "meta")
@@ -41,50 +51,10 @@ STRIP_IDS = (
     "toolbar",
     "lastmodified",
 )
-DENY_MARKERS = ("cmd=", "plugin=", "word=", "NextCard.php", "bbs/")
-CHALLENGE_MARKERS = ("Just a moment", "cf-chl", "challenge-platform", "cf-browser-verification")
-
-
-class StopRun(Exception):
-    """Raised when the policy requires the run to stop."""
 
 
 def page_url(page: str) -> str:
     return f"{BASE}index.php?{quote(page, safe='')}"
-
-
-def split_robots(text: str) -> tuple[list[str], list[str]]:
-    """Return ``(lines for urllib.robotparser, raw Disallow prefixes ending in "?")``.
-
-    ``urllib.robotparser`` normalises the rule ``/?`` to ``/`` and would block the whole site,
-    so such rules are checked here by plain prefix match instead.
-    """
-    lines: list[str] = []
-    prefixes: list[str] = []
-    for line in text.splitlines():
-        key, _, value = line.partition(":")
-        value = value.strip()
-        if key.strip().lower() == "disallow" and value.endswith("?") and "&" not in value:
-            prefixes.append(value)
-        else:
-            lines.append(line)
-    return lines, prefixes
-
-
-def check_allowed(
-    url: str, robots: urllib.robotparser.RobotFileParser, query_prefixes: list[str]
-) -> None:
-    if any(marker in url for marker in DENY_MARKERS):
-        raise StopRun(f"deny list: {url}")
-    rest = url.removeprefix(BASE.rstrip("/"))
-    if any(rest.startswith(prefix) for prefix in query_prefixes):
-        raise StopRun(f"robots.txt disallows: {url}")
-    if not robots.can_fetch(USER_AGENT, url):
-        raise StopRun(f"robots.txt disallows: {url}")
-
-
-def is_challenge(text: str) -> bool:
-    return any(marker in text for marker in CHALLENGE_MARKERS)
 
 
 def trim(html: str) -> str:

@@ -13,9 +13,6 @@ Settings are defined in `src/bs_database/settings.py` (`Settings`, built on pyda
 | `BSDB_IMAGES_DIR` | `<data_dir>/images` | Downloaded card images |
 | `BSDB_DB_PATH` | `<data_dir>/battle_spirits.db` | SQLite database output |
 | `BSDB_FAMILY_MAPPING_PATH` | `<data_dir>/family_mapping.txt` | Family-name normalization map |
-| `BSDB_EXTRACTED_URLS_PATH` | `<data_dir>/extracted_urls.txt` | Extracted card URLs |
-| `BSDB_FANDOM_BASE_URL` | `https://battle-spirits.fandom.com` | Fandom wiki base URL |
-| `BSDB_FANDOM_SET_URL` | `https://battle-spirits.fandom.com/wiki/` | Fandom set page URL prefix |
 | `BSDB_BATSPI_URL` | `https://batspi.com/` | batspi.com base URL |
 | `BSDB_REQUEST_DELAY` | `0.0` | Delay between HTTP requests, in seconds (must be >= 0) |
 | `BSDB_LOG_LEVEL` | `INFO` | Root log level |
