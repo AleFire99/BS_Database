@@ -51,11 +51,10 @@ def parse_type_line(line: str) -> tuple[str, int | None]:
     return match.group(1), int(limit) if limit is not None else None
 
 
-def _parts(text: str, glyphs: str, what: str) -> tuple[SymbolCount, ...]:
+def _parts(text: str, pattern: re.Pattern[str], what: str) -> tuple[SymbolCount, ...]:
     """Split ``赤2神1`` into counted glyphs, adding up repeated glyphs in order."""
     counts: dict[str, int] = {}
     pos = 0
-    pattern = _PART_RE if glyphs == REDUCTION_GLYPHS else _SYMBOL_RE
     while pos < len(text):
         match = pattern.match(text, pos)
         if match is None:
@@ -77,7 +76,7 @@ def parse_cost_line(line: str) -> tuple[int, Reduction, tuple[str, ...], tuple[s
     elif inner.isdigit():
         reduction = Reduction(plain=int(inner), parts=())
     else:
-        reduction = Reduction(plain=None, parts=_parts(inner, REDUCTION_GLYPHS, "reduction"))
+        reduction = Reduction(plain=None, parts=_parts(inner, _PART_RE, "reduction"))
     colors = tuple(match.group(3))
     for color in colors:
         if color not in COLORS:
@@ -121,7 +120,7 @@ def parse_symbol_line(line: str) -> tuple[SymbolCount, ...]:
     text = "".join(line[len(SYMBOL_PREFIX) :].split())
     if text == "なし":
         return ()
-    return _parts(text, SYMBOL_GLYPHS, "symbol")
+    return _parts(text, _SYMBOL_RE, "symbol")
 
 
 _TITLE_SUFFIX = " - バトルスピリッツ wiki"
@@ -224,7 +223,9 @@ def _parse_gameplay(pre: Tag, url: str) -> Gameplay:
     overclock: Overclock | None = None
     if len(lines) > 2 and LEVEL_LINE_RE.match(lines[2]):
         levels, fusion, overclock = parse_level_line(lines[2])
-    symbol_line = next((line for line in lines if line.startswith(SYMBOL_PREFIX)), None)
+    elif card_type != "マジック":
+        raise ParseError(f"{card_type} block without a level line in {url}")
+    symbol_line = next((line for line in lines[2:] if line.startswith(SYMBOL_PREFIX)), None)
     symbols = parse_symbol_line(symbol_line) if symbol_line is not None else ()
     return Gameplay(
         card_type=card_type,

@@ -327,33 +327,28 @@ def test_full_ultimate() -> None:
     )
 
 
+def nexus_gp(
+    card_type: str,
+    cost: int,
+    reduction: Reduction,
+    families: tuple[str, ...],
+    levels: tuple[Level, ...],
+) -> Gameplay:
+    return gp(card_type, cost, reduction, families, levels, symbols=(sc("赤"),), deck_limit=1)
+
+
 def test_full_flip() -> None:
     a1, b1, a2, b2 = gameplays("card_flip")
-    nexus = {"deck_limit": 1, "symbols": (sc("赤"),)}
-    assert a1 == gp("ネクサス", 3, plain(2), ("起幻",), (Level(1, 0, None),), **nexus)  # type: ignore[arg-type]
-    assert a2 == gp(
-        "ネクサス",
-        3,
-        plain(2),
-        ("起幻", "眷属"),
-        (Level(1, 0, None),),
-        **nexus,  # type: ignore[arg-type]
-    )
-    assert b1 == gp(
-        "スピリット",
-        6,
-        plain(None),
-        ("起幻", "古竜"),
-        (Level(1, 1, 6000),),
-        **nexus,  # type: ignore[arg-type]
-    )
-    assert b2 == gp(
+    one = (Level(1, 0, None),)
+    assert a1 == nexus_gp("ネクサス", 3, plain(2), ("起幻",), one)
+    assert a2 == nexus_gp("ネクサス", 3, plain(2), ("起幻", "眷属"), one)
+    assert b1 == nexus_gp("スピリット", 6, plain(None), ("起幻", "古竜"), (Level(1, 1, 6000),))
+    assert b2 == nexus_gp(
         "スピリット",
         6,
         plain(None),
         ("起幻", "眷属", "古竜"),
         (Level(1, 1, 7000), Level(2, 3, 10000)),
-        **nexus,  # type: ignore[arg-type]
     )
 
 
@@ -397,3 +392,51 @@ def test_full_promo() -> None:
     assert gameplays("card_promo") == [
         gp("スピリット", 4, plain(2), f, levels, symbols=(sc("赤"),)) for f in families
     ]
+
+
+SPIRIT_PRE = "<pre>スピリット\n4(2)/赤\n<1>Lv1 3000\nシンボル：赤</pre>"
+MAGIC_PRE = "<pre>マジック\n4(2)/赤\nシンボル：なし</pre>"
+
+
+def page(body: str) -> str:
+    return (
+        "<html><head><title>題名 - バトルスピリッツ wiki</title></head><body>"
+        f"<span class='cardno'>BS01-001</span>{body}</body></html>"
+    )
+
+
+def test_headingless_page_ignores_pre_after_h4() -> None:
+    entries = parse_card_page(page(f"{SPIRIT_PRE}<h4>x</h4>{SPIRIT_PRE}"), "u").entries
+    assert len(entries) == 1
+
+
+def test_headingless_page_skips_collapsed_blocks(caplog: pytest.LogCaptureFixture) -> None:
+    collapsed = (
+        "<div class='plugin-openclose'><div class='plugin-openclose-link'>"
+        "<a><p>(エラッタ前) ▼</p></a></div>"
+        f"<div class='plugin-openclose-contents'>{SPIRIT_PRE}</div></div>"
+    )
+    with caplog.at_level(logging.WARNING, logger=LOGGER):
+        entries = parse_card_page(page(SPIRIT_PRE + collapsed), "u").entries
+    assert len(entries) == 1
+    assert not caplog.records
+
+
+def test_unknown_collapsed_block_warns_and_is_skipped(caplog: pytest.LogCaptureFixture) -> None:
+    collapsed = (
+        "<div class='plugin-openclose'><div class='plugin-openclose-link'>"
+        "<a><p>謎の続き ▼</p></a></div>"
+        f"<div class='plugin-openclose-contents'>{SPIRIT_PRE}</div></div>"
+    )
+    with caplog.at_level(logging.WARNING, logger=LOGGER):
+        entries = parse_card_page(page(MAGIC_PRE + collapsed), "u").entries
+    assert len(entries) == 1
+    assert [r.levelno for r in caplog.records] == [logging.WARNING]
+    assert "謎の続き" in caplog.records[0].getMessage()
+
+
+@pytest.mark.parametrize("card_type", ["スピリット", "ネクサス", "ブレイヴ", "アルティメット"])
+def test_missing_level_line_raises(card_type: str) -> None:
+    html = page(f"<pre>{card_type}\n4(2)/赤\nシンボル：なし</pre>")
+    with pytest.raises(ParseError, match="level line"):
+        parse_card_page(html, "u")

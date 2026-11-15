@@ -17,7 +17,7 @@ flowchart LR
             STATE["state"]
             PIPE["pipeline"]
         end
-        subgraph parsers["parsers (stubs, #69-#71)"]
+        subgraph parsers["parsers (card: #70, index/set: #69)"]
             MODELS["models"]
             BPARSE["batspi: index, set_page, card"]
         end
@@ -40,7 +40,7 @@ flowchart LR
     CJ --> DBM --> DB
 ```
 
-The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). Only `ingest.policy` has code today (the scraping policy helpers); the other modules are docstring stubs owned by the issues named in them. `bsdb scrape` is a stub that exits with an error until the rewrite lands. The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
+The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). `ingest.policy` (the scraping policy helpers) and the card parser (`parsers.batspi.card`, with `parsers.card_models` and `parsers.errors`, see below) have code today; the other modules are docstring stubs owned by the issues named in them. `bsdb scrape` is a stub that exits with an error until the rewrite lands. The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
 
 ### Card page parser
 
@@ -138,7 +138,7 @@ Tags refer to the epic addressing each item: E2 restructure ([#7](https://github
 | Resolved: dependency list | Unused `selenium`, `webdriver-manager`, `libretranslatepy`, `lxml` dropped; used packages declared | E2 |
 | Resolved: database committed to git | `battle_spirits.db` untracked and ignored in #23 (release artefact is E9) | E2, E9 |
 | Resolved: no tests, CI or lint | pytest with goldens, ruff, mypy strict, CI and pre-commit | E2 |
-| Resolved: legacy scrapers and fandom code | Removed in #66 (commit `f90747b` has them); fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the new ingestion modules are stubs implemented in #67-#73 | E5 |
+| Resolved: legacy scrapers and fandom code | Removed in #66 (commit `f90747b` has them); fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the card parser exists (#70); the other new ingestion modules are stubs implemented in #67-#73 | E5 |
 | Machine translation of names and families | `GoogleTranslator` output is stored as canonical names; family names are patched with ad-hoc rules in `normalize` plus `family_mapping.txt` (e.g. "Snake" forced to "Dark Snake", naive plural stripping) | E6 |
 | Translation failures stored as data | `translate()` returns `"Error: ..."` strings that would be persisted | E6 |
 | Colors derived from translated symbol | Symbol-to-color map in `db.py` lacks `white`; multicolor strings (e.g. "Red purple green white yellow blue") match nothing. Designed in the target schema: `colors` with White and a `card_colors` junction filled from the Japanese colour segment ([target-schema](../data-model/target-schema.md#card_colors)); the fix is in E6/E7. | E3, E6 |
