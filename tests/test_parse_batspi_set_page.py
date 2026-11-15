@@ -8,7 +8,7 @@ import pytest
 from bs_database.parsers.batspi.numbers import parse_number
 from bs_database.parsers.batspi.promo_list import parse_promo_list
 from bs_database.parsers.batspi.set_page import parse_set_page
-from bs_database.parsers.errors import ParseError
+from bs_database.parsers.errors import NoCardList, ParseError
 from bs_database.parsers.models import ListEntry, SetPage
 
 
@@ -205,6 +205,14 @@ def test_missing_cards_heading() -> None:
         parse_set_page('<div id="body"><h2>Title</h2><p>x</p></div>')
     with pytest.raises(ParseError):
         parse_set_page("")
+
+
+def test_no_card_list_is_a_distinct_error() -> None:
+    with pytest.raises(NoCardList):
+        parse_set_page('<div id="body"><h2>Title</h2><p>x</p></div>')
+    with pytest.raises(ParseError) as info:
+        parse_set_page("")
+    assert not isinstance(info.value, NoCardList)
 
 
 def test_every_fixture_number_parses() -> None:
