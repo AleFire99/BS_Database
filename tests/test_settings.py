@@ -19,12 +19,10 @@ def clean_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
 def test_defaults() -> None:
     s = Settings()
     assert s.batspi_url == "https://batspi.com/"
-    assert s.fandom_base_url == "https://battle-spirits.fandom.com"
-    assert s.fandom_set_url == "https://battle-spirits.fandom.com/wiki/"
     assert s.data_dir == Path("data")
     assert s.db_path == Path("data/battle_spirits.db")
     assert s.json_dir == Path("data/json")
-    for p in (s.json_dir, s.images_dir, s.db_path, s.family_mapping_path, s.extracted_urls_path):
+    for p in (s.json_dir, s.images_dir, s.db_path, s.family_mapping_path):
         assert not p.is_absolute()
     assert s.request_delay == 0.0
     assert s.log_level == "INFO"
@@ -33,7 +31,7 @@ def test_defaults() -> None:
 def test_data_dir_derives_paths(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("BSDB_DATA_DIR", "/x")
     s = Settings()
-    for p in (s.json_dir, s.images_dir, s.db_path, s.family_mapping_path, s.extracted_urls_path):
+    for p in (s.json_dir, s.images_dir, s.db_path, s.family_mapping_path):
         assert p.is_relative_to("/x")
 
 

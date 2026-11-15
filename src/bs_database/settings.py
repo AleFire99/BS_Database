@@ -14,7 +14,6 @@ _DERIVED_PATHS = {
     "images_dir": "images",
     "db_path": "battle_spirits.db",
     "family_mapping_path": "family_mapping.txt",
-    "extracted_urls_path": "extracted_urls.txt",
 }
 
 
@@ -34,9 +33,6 @@ class Settings(BaseSettings):
     images_dir: Path = Path()
     db_path: Path = Path()
     family_mapping_path: Path = Path()
-    extracted_urls_path: Path = Path()
-    fandom_base_url: str = "https://battle-spirits.fandom.com"
-    fandom_set_url: str = "https://battle-spirits.fandom.com/wiki/"
     batspi_url: str = "https://batspi.com/"
     request_delay: float = Field(default=0.0, ge=0)
     log_level: str = "INFO"
