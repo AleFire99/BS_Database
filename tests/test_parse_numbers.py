@@ -80,3 +80,11 @@ def test_seq_kept_as_text() -> None:
 @pytest.mark.parametrize("raw", ["", "PB17-RV X01", "BS01-", "ZZ01-001", "BS01-001(C)"])
 def test_unknown_numbers(raw: str) -> None:
     assert parse_number(raw) is None
+
+
+@pytest.mark.parametrize(
+    "raw",
+    ["BS1-001", "BS01-0", "BS01-01", "BS01-X1", "BS01-X001", "BS123-001", "P25-6", "PX1", "P01"],
+)
+def test_wrong_digit_counts(raw: str) -> None:
+    assert parse_number(raw) is None
