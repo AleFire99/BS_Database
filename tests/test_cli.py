@@ -125,14 +125,6 @@ def test_build_db_option(data_dir: Path, tmp_path: Path) -> None:
     assert not (data_dir / "battle_spirits.db").exists()
 
 
-def test_scrape_is_a_stub(data_dir: Path) -> None:
-    before = sorted(p for p in data_dir.rglob("*"))
-    result = runner.invoke(app, ["scrape"])
-    assert result.exit_code == 1
-    assert "being rewritten (#10)" in result.output
-    assert sorted(p for p in data_dir.rglob("*")) == before
-
-
 def test_images_command_removed() -> None:
     assert runner.invoke(app, ["images"]).exit_code == 2
 
