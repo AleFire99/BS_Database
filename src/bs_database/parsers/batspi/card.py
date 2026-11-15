@@ -4,10 +4,25 @@
 colours, families, levels, symbols). Text and printings are added by #71.
 """
 
+import logging
 import re
 
-from bs_database.parsers.card_models import Level, Overclock, Reduction, SymbolCount
+from bs4 import BeautifulSoup
+from bs4.element import NavigableString, Tag
+
+from bs_database.parsers.card_models import (
+    SCHEMA_VERSION,
+    CardEntry,
+    CardPage,
+    Gameplay,
+    Level,
+    Overclock,
+    Reduction,
+    SymbolCount,
+)
 from bs_database.parsers.errors import ParseError
+
+log = logging.getLogger(__name__)
 
 CARD_TYPES = ("スピリット", "ネクサス", "マジック", "ブレイヴ", "アルティメット")
 COLORS = "赤紫緑白黄青"
@@ -105,3 +120,167 @@ def parse_symbol_line(line: str) -> tuple[SymbolCount, ...]:
     if text == "なし":
         return ()
     return _parts(text, SYMBOL_GLYPHS, "symbol")
+
+
+_TITLE_SUFFIX = " - バトルスピリッツ wiki"
+_TRAILING_NUMBER_RE = re.compile(r"\s*<([^<>]+)>\s*$")
+_FACE_RE = re.compile(r"\([A-Z]\)$")
+_KNOWN_COLLAPSED_LABELS = ("(エラッタ前)", "体験会でのスペック")
+
+
+def _h3_text(h3: Tag) -> str:
+    """Text of a print heading without ruby readings and the anchor dagger."""
+    parts: list[str] = []
+    for node in h3.descendants:
+        if isinstance(node, NavigableString) and not any(
+            isinstance(parent, Tag)
+            and (parent.name in ("rt", "rp") or "anchor_super" in (parent.get("class") or []))
+            for parent in node.parents
+            if parent is not h3
+        ):
+            parts.append(str(node))
+    return "".join(parts).strip()
+
+
+def _split_heading(text: str) -> tuple[str, str | None, str | None]:
+    """Split ``名前/English <number>`` into ``(name_ja, name_en, number)``."""
+    number: str | None = None
+    match = _TRAILING_NUMBER_RE.search(text)
+    if match:
+        number = match.group(1).strip()
+        text = text[: match.start()]
+    name_ja, name_en = text.strip(), None
+    english = re.search(r"/(?=[A-Za-z0-9])", text)
+    if english:
+        name_ja, name_en = text[: english.start()].strip(), text[english.end() :].strip()
+    return name_ja, name_en or None, number
+
+
+def _is_print_heading(h3: Tag) -> bool:
+    return h3.find("a", class_="anchor_super") is not None
+
+
+def _is_gallery_heading(h3: Tag) -> bool:
+    return h3.get_text().strip().startswith("カード画像")
+
+
+def _card_blocks(soup: BeautifulSoup) -> list[tuple[Tag | None, Tag]]:
+    """Return ``(print heading, pre)`` pairs of the card region, in page order."""
+    blocks: list[tuple[Tag | None, Tag]] = []
+    heading: Tag | None = None
+    elements = soup.find_all(["h3", "h4", "pre"])
+    # A page without any print heading (trimmed) has its card blocks from the start.
+    started = not any(
+        el.name == "h3" and _is_print_heading(el) and not _is_gallery_heading(el) for el in elements
+    )
+    for el in elements:
+        if el.name == "h3":
+            if _is_gallery_heading(el) and started:
+                break
+            if _is_print_heading(el) and not _is_gallery_heading(el):
+                heading, started = el, True
+        elif el.name == "h4":
+            if started:
+                break
+        elif started:
+            first = el.get_text().split("\n")[0].strip("\r")
+            collapsed = el.find_parent(class_="plugin-openclose-contents")
+            if collapsed is not None:
+                label_tag = collapsed.find_previous_sibling(class_="plugin-openclose-link")
+                label = label_tag.get_text().strip() if label_tag else ""
+                if TYPE_LINE_RE.match(first) and not any(
+                    known in label for known in _KNOWN_COLLAPSED_LABELS
+                ):
+                    log.warning("unknown collapsed card block %r is skipped", label)
+                continue
+            if TYPE_LINE_RE.match(first):
+                blocks.append((heading, el))
+                heading = None
+    return blocks
+
+
+def _own_numbers(soup: BeautifulSoup) -> list[str]:
+    """Card numbers of the page itself (not the related listing), de-duplicated in order."""
+    numbers: list[str] = []
+    for span in soup.select("span.cardno"):
+        if span.find_parent("li") is not None:
+            continue
+        number = span.get_text().strip()
+        if number and number not in numbers:
+            numbers.append(number)
+    return numbers
+
+
+def _parse_gameplay(pre: Tag, url: str) -> Gameplay:
+    lines = [line.rstrip("\r") for line in pre.get_text().split("\n")]
+    if len(lines) < 2:
+        raise ParseError(f"card block without a cost line in {url}")
+    card_type, deck_limit = parse_type_line(lines[0])
+    cost, reduction, colors, families = parse_cost_line(lines[1])
+    levels: tuple[Level, ...] = ()
+    fusion: int | None = None
+    overclock: Overclock | None = None
+    if len(lines) > 2 and LEVEL_LINE_RE.match(lines[2]):
+        levels, fusion, overclock = parse_level_line(lines[2])
+    symbol_line = next((line for line in lines if line.startswith(SYMBOL_PREFIX)), None)
+    symbols = parse_symbol_line(symbol_line) if symbol_line is not None else ()
+    return Gameplay(
+        card_type=card_type,
+        deck_limit=deck_limit,
+        cost=cost,
+        reduction=reduction,
+        colors=colors,
+        symbols=symbols,
+        families=families,
+        levels=levels,
+        fusion_bp_bonus=fusion,
+        overclock=overclock,
+    )
+
+
+def _title(soup: BeautifulSoup) -> str:
+    if soup.title is None:
+        return ""
+    text = soup.title.get_text().strip()
+    return text.removesuffix(_TITLE_SUFFIX).strip()
+
+
+def parse_card_page(html: str, url: str) -> CardPage:
+    """Parse a batspi card page into identity and gameplay values (pure, no I/O)."""
+    soup = BeautifulSoup(html, "html.parser")
+    title = _title(soup)
+    blocks = _card_blocks(soup)
+    if not blocks:
+        raise ParseError(f"no card <pre> found in {url}")
+    own = _own_numbers(soup)
+    entries: list[CardEntry] = []
+    for index, (heading, pre) in enumerate(blocks):
+        name_ja, name_en, h3_number = (
+            _split_heading(_h3_text(heading)) if heading is not None else ("", None, None)
+        )
+        if h3_number is not None:
+            number = h3_number
+            if own and _FACE_RE.sub("", number) not in own:
+                log.warning("source conflict: field=number h3=%r cardno=%r in %s", number, own, url)
+        elif len(own) == len(blocks):
+            number = own[index]
+        else:
+            raise ParseError(
+                f"{len(blocks)} card blocks without h3 numbers but {len(own)} card numbers in {url}"
+            )
+        if name_ja:
+            titles = title.split("／")
+            if title and name_ja not in (title, *titles):
+                log.warning(
+                    "source conflict: field=name_ja number=%s h3=%r title=%r in %s",
+                    number,
+                    name_ja,
+                    title,
+                    url,
+                )
+        else:
+            name_ja = title
+        if not name_ja:
+            raise ParseError(f"no card name for {number} in {url}")
+        entries.append(CardEntry(number, name_ja, name_en, _parse_gameplay(pre, url)))
+    return CardPage(SCHEMA_VERSION, url, title, tuple(entries), ())
