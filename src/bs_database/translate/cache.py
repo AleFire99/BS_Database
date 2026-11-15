@@ -28,7 +28,11 @@ def text_hash(text: str) -> str:
 
 
 class TranslationCache:
-    """Created lazily: opening the object touches no file until the first read or write."""
+    """Created lazily: opening the object touches no file until the first read or write.
+
+    ``sqlite3`` errors propagate: the cache is a local file, not an engine, so a failure
+    there is an environment problem and must not be reported as a failed translation.
+    """
 
     def __init__(self, path: Path) -> None:
         self.path = path

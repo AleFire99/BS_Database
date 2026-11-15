@@ -24,9 +24,14 @@ sequenceDiagram
     C->>T: translate(texts)
     T->>K: get_many(texts)
     K-->>T: hits
-    T->>D: translate(misses within the budget)
-    D-->>T: results
-    T->>K: put_many(machine results)
+    opt over budget -> pending
+        T-->>T: skip the text
+    end
+    loop each chunk of 50
+        T->>D: translate(chunk)
+        D-->>T: results
+        T->>K: put_many(machine results)
+    end
     T-->>C: one result per text, in order
 ```
 
@@ -52,7 +57,7 @@ Neither `pending` nor `failed` is cached, so the next run retries them. An unsup
 - File: `BSDB_TRANSLATION_CACHE_PATH`, default `data/cache/translations.sqlite` (git-ignored through `/data/cache/`).
 - Table `translations(engine, src, tgt, sha256, source_text, translated_text, created_at)`, primary key `(engine, src, tgt, sha256)`, `PRAGMA user_version = 1`.
 - A lookup also compares `source_text`, so a hash collision counts as a miss.
-- Each chunk of 50 texts is committed on its own, so a killed run keeps what it already translated.
+- Each chunk of 50 texts is committed on its own, so a killed run keeps what it already translated. `sqlite3` errors propagate: the cache is a local file, not an engine.
 - The file is created on the first write, not on construction.
 
 ## Character budget
@@ -70,6 +75,7 @@ Each call logs one INFO line, `engine= hits= sent= chars= pending= failed=`. Tex
 - Batches hold at most 50 texts and about 100 KiB (DeepL's cap is 128 KiB), sent one at a time.
 - 429, 5xx, 529 and transport errors are retried 3 times with 2, 6 and 18 s backoff, honouring `Retry-After` (capped at 300 s). When the retries run out, that batch is `failed` and the next batch is still tried.
 - 400, 403 and 456 are not retried. The batch and every remaining text become `failed`, the engine stops for the run and one ERROR line says why (invalid request, authentication or quota).
+- A single text over the byte cap is sent alone in its own batch; if DeepL answers 413, only that batch fails (any other unexpected status behaves the same).
 - A response with a different number of translations than texts sent, or an unreadable one, fails the batch.
 - The `X-Trace-ID` response header is logged at DEBUG.
 
