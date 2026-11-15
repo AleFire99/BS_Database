@@ -6,8 +6,7 @@ Saved pages that stand in for the network in tests. The manifest [fixtures.json]
 
 | File | Page | Notes |
 | --- | --- | --- |
-| `index.html`, `set.html`, `card_spirit.html`, `card_nexus.html`, `card_magic.html` | Original fixtures (BS72 era) | Untrimmed; the legacy goldens depend on them |
-| `fandom_*` | Synthetic stand-ins | fandom.com is dropped for v1 (Cloudflare) |
+| `index.html`, `set.html`, `card_spirit.html`, `card_nexus.html`, `card_magic.html` | Original fixtures (BS72 era) | Untrimmed; kept as the first batspi test pages |
 | `card_brave.html` | `砲凰竜フェニック・キャノン` | Brave; reprint `BS38-RV022` |
 | `card_ultimate.html` | `アルティメット・ジークフリード` | Ultimate; starter deck `SD19-X01` |
 | `card_nexus_soukaishin.html` | `創界神アポローン` | 創界神 Nexus |
@@ -44,4 +43,4 @@ uv run python tests/tools/fixture_fetch.py --raw-dir <dir outside the repo> \
     "card_brave.html|砲凰竜フェニック・キャノン|card|ブレイヴ"
 ```
 
-Each argument is `FILE|PAGE NAME|KIND|CARD TYPE`. Add `--partial` to allow a partial page, or `--offline` to trim again from the raw pages in `--raw-dir` with no request. The tool is run by hand. Its robots.txt and deny-list logic is covered by `tests/test_fixture_fetch_tool.py`.
+Each argument is `FILE|PAGE NAME|KIND|CARD TYPE`. Add `--partial` to allow a partial page, or `--offline` to trim again from the raw pages in `--raw-dir` with no request. The tool is run by hand. Its robots.txt and deny-list logic is in `bs_database.ingest.policy`, covered by `tests/test_ingest_policy.py`.

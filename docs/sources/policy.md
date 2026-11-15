@@ -18,11 +18,13 @@ Adding a source requires a new dossier in `docs/sources/` and an update to this 
 
 ```mermaid
 flowchart TD
-    url["Next URL"] --> rules{"Allowed by robots.txt and the deny list?"}
-    rules -->|no| skip["Skip and log"]
-    rules -->|yes| cache{"In the cache and no --refresh?"}
+    url["Next URL"] --> local{"Off-site or deny list?"}
+    local -->|yes| skip["Skip and log"]
+    local -->|no| cache{"In the cache and no --refresh?"}
     cache -->|yes| parse["Parse from cache"]
-    cache -->|no| budget{"Request budget left?"}
+    cache -->|no| robots{"robots.txt allows?"}
+    robots -->|no| skip
+    robots -->|yes| budget{"Request budget left?"}
     budget -->|no| stop["Stop the run"]
     budget -->|yes| wait["Wait at least request_delay"]
     wait --> fetch["GET with the project User-Agent"]
@@ -39,15 +41,16 @@ flowchart TD
     status -->|403| stop
 ```
 
-Before the first URL of a run, robots.txt is fetched. If that fails (any status other than 200 or 404), the run stops.
+robots.txt is fetched lazily, before the first network request of a run (a cache miss). If that fails (any status other than 200 or 404), the run stops. A warm run that only hits the cache fetches no robots.txt.
 
 ## 3. Rules
 
 ### 3.1 robots.txt and deny list
 
-- The scraper **must** fetch `https://batspi.com/robots.txt` once per run and check every URL against it with `urllib.robotparser`.
+- The scraper **must** fetch `https://batspi.com/robots.txt` once per run and check every URL it is about to fetch against it with `urllib.robotparser`.
+  - robots.txt is checked only on a cache miss, inside `fetch()`. The off-site and deny-list checks (below) are network-free and run on every lookup, hits included. A warm run therefore fetches no robots.txt, and a page cached before a robots.txt change is still served until it is refreshed.
   - The rules in force on 2026-11-14 disallow `/?`, `/index.php/` and `/index.php?カード情報絞込み&…`.
-  - On Python 3.12, `urllib.robotparser` normalises `Disallow: /?` to `/`, which would block the whole site. A rule that ends in `?` **must** therefore be checked as a plain prefix of the path and query, outside the parser. See `split_robots` in [fixture_fetch.py](../../tests/tools/fixture_fetch.py), which [test_fixture_fetch_tool.py](../../tests/test_fixture_fetch_tool.py) covers.
+  - On Python 3.12, `urllib.robotparser` normalises `Disallow: /?` to `/`, which would block the whole site. A rule that ends in `?` **must** therefore be checked as a plain prefix of the path and query, outside the parser. See `split_robots` in [ingest/policy.py](../../src/bs_database/ingest/policy.py), which [test_ingest_policy.py](../../tests/test_ingest_policy.py) covers.
 - In addition, the scraper **must not** request:
   - PukiWiki action pages: any URL with `cmd=` or `plugin=`, for example `cmd=edit`, `cmd=listadd` or `cmd=rss`.
   - Search URLs with `word=`.
@@ -86,6 +89,7 @@ Before the first URL of a run, robots.txt is fetched. If that fails (any status 
   - The page goes to `data/cache/html/<source>/<sha256 of the URL>.html`.
   - A sidecar file `<same name>.json` holds `url`, `fetched_at` (UTC, ISO 8601), `status` and `etag` / `last_modified` if present.
 - Parsers **must** read only from the cache, never from the network.
+- Only status-200 pages are cached. An entry is valid when the HTML exists and the sidecar parses, has `status` 200 and the same `url`; anything else is a miss. The sidecar is written last, as the commit marker.
 - A cached page is re-fetched only with an explicit `--refresh` flag, or when it is older than a `--max-age` given on the command line. There is no automatic expiry.
 - The cache is local working data. It **must** be git-ignored and **must not** be published or attached to a release.
 
@@ -133,7 +137,7 @@ This is the project's position, not legal advice.
 
 | # | Requirement | Setting or behaviour |
 | --- | --- | --- |
-| R1 | One shared HTTP client used by every scraper, with no direct `requests.get` calls. Today there are 7 such calls in 5 modules of `src/bs_database/scrapers/` | `http` module |
+| R1 | One shared HTTP client used by every scraper, with no direct `requests.get` calls. Before #66 there were 7 such calls in 5 legacy modules ([`scrapers/`](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/)), now removed | `http` module |
 | R2 | robots.txt check per run, plus the deny list | §3.1 |
 | R3 | `request_delay` default `3.0`, minimum `1.0`; `max_requests` default `1000` | [settings.py](../../src/bs_database/settings.py) |
 | R4 | `user_agent` setting with the fixed format | §3.3 |

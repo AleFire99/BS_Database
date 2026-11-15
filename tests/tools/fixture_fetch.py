@@ -1,9 +1,10 @@
 """Fetch batspi.com pages as test fixtures, trim them and record them in the manifest.
 
-Run by hand, never imported by tests. Follows ``docs/sources/policy.md``: robots.txt check,
-deny list, policy User-Agent, at least 3 s between requests, stop on a 403 or a challenge page,
-no images. Stricter than the policy: no retries (a 429 or 5xx page is skipped) and a robots.txt
-that is not 200 stops the run. The manifest is saved even when a run stops early.
+Run by hand, never imported by tests. Fetches through the shared ``HttpClient``
+(``bs_database.ingest.http``), which enforces ``docs/sources/policy.md``: robots.txt check,
+deny list, policy User-Agent, ``BSDB_REQUEST_DELAY`` between requests, stop on a 403 or a
+challenge page, no images. Stricter than the policy: no retries (a 429 or 5xx page is
+skipped). The manifest is saved even when a run stops early.
 
 Each page is given as ``FILE|PAGE NAME|KIND|CARD TYPE`` (the card type may be empty)::
 
@@ -17,19 +18,18 @@ with ``--offline`` and no request.
 import argparse
 import json
 import sys
-import time
-import urllib.robotparser
 from datetime import date
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote
 
-import requests
 from bs4 import BeautifulSoup, Comment
 
-BASE = "https://batspi.com/"
-USER_AGENT = "bs-database/0.2.0 (+https://github.com/AleFire99/BS_Database)"
-DELAY = 3.0
+from bs_database.ingest.http import HttpClient, Skipped
+from bs_database.ingest.policy import BASE_URL as BASE
+from bs_database.ingest.policy import StopRun
+from bs_database.settings import Settings
+
 HTML_DIR = Path(__file__).resolve().parent.parent / "fixtures" / "html"
 STRIP_TAGS = ("script", "style", "noscript", "iframe", "link", "meta")
 STRIP_IDS = (
@@ -41,50 +41,10 @@ STRIP_IDS = (
     "toolbar",
     "lastmodified",
 )
-DENY_MARKERS = ("cmd=", "plugin=", "word=", "NextCard.php", "bbs/")
-CHALLENGE_MARKERS = ("Just a moment", "cf-chl", "challenge-platform", "cf-browser-verification")
-
-
-class StopRun(Exception):
-    """Raised when the policy requires the run to stop."""
 
 
 def page_url(page: str) -> str:
     return f"{BASE}index.php?{quote(page, safe='')}"
-
-
-def split_robots(text: str) -> tuple[list[str], list[str]]:
-    """Return ``(lines for urllib.robotparser, raw Disallow prefixes ending in "?")``.
-
-    ``urllib.robotparser`` normalises the rule ``/?`` to ``/`` and would block the whole site,
-    so such rules are checked here by plain prefix match instead.
-    """
-    lines: list[str] = []
-    prefixes: list[str] = []
-    for line in text.splitlines():
-        key, _, value = line.partition(":")
-        value = value.strip()
-        if key.strip().lower() == "disallow" and value.endswith("?") and "&" not in value:
-            prefixes.append(value)
-        else:
-            lines.append(line)
-    return lines, prefixes
-
-
-def check_allowed(
-    url: str, robots: urllib.robotparser.RobotFileParser, query_prefixes: list[str]
-) -> None:
-    if any(marker in url for marker in DENY_MARKERS):
-        raise StopRun(f"deny list: {url}")
-    rest = url.removeprefix(BASE.rstrip("/"))
-    if any(rest.startswith(prefix) for prefix in query_prefixes):
-        raise StopRun(f"robots.txt disallows: {url}")
-    if not robots.can_fetch(USER_AGENT, url):
-        raise StopRun(f"robots.txt disallows: {url}")
-
-
-def is_challenge(text: str) -> bool:
-    return any(marker in text for marker in CHALLENGE_MARKERS)
 
 
 def trim(html: str) -> str:
@@ -134,21 +94,7 @@ def main(argv: list[str]) -> int:
     args = parser.parse_args(argv[1:])
 
     args.raw_dir.mkdir(parents=True, exist_ok=True)
-    session = requests.Session()
-    session.headers["User-Agent"] = USER_AGENT
-    robots = urllib.robotparser.RobotFileParser()
-    requests_made = 0
-    query_prefixes: list[str] = []
-    if not args.offline:
-        resp = session.get(f"{BASE}robots.txt", timeout=30)
-        requests_made += 1
-        print(f"GET robots.txt -> {resp.status_code}")
-        if resp.status_code != 200:
-            print("error: robots.txt not fetched, stopping", file=sys.stderr)
-            return 1
-        robot_lines, query_prefixes = split_robots(resp.text)
-        robots.parse(robot_lines)
-        robots.modified()
+    client = None if args.offline else HttpClient(Settings(), backoff=())
 
     manifest = load_manifest()
     try:
@@ -156,23 +102,13 @@ def main(argv: list[str]) -> int:
             name, page, kind, card_type = spec.split("|")
             url = page_url(page)
             raw_path = args.raw_dir / name
-            if not args.offline:
-                try:
-                    check_allowed(url, robots, query_prefixes)
-                except StopRun as exc:
-                    print(f"error: {exc}", file=sys.stderr)
-                    return 1
-                time.sleep(DELAY)
-                resp = session.get(url, timeout=30)
-                requests_made += 1
-                print(f"GET {page} -> {resp.status_code}")
-                if resp.status_code == 403 or is_challenge(resp.text):
-                    print("error: 403 or challenge page, stopping", file=sys.stderr)
-                    return 1
-                if resp.status_code != 200:
-                    print(f"skip {page}: status {resp.status_code}", file=sys.stderr)
+            if client is not None:
+                result = client.fetch(url)
+                if isinstance(result, Skipped):
+                    print(f"skip {page}: {result.reason}", file=sys.stderr)
                     continue
-                raw_path.write_bytes(resp.content)
+                print(f"GET {page} -> {result.status}")
+                raw_path.write_bytes(result.content)
             raw = raw_path.read_bytes().decode("utf-8")
             trimmed = trim(raw)
             entry: dict[str, Any] = {
@@ -193,12 +129,12 @@ def main(argv: list[str]) -> int:
             (HTML_DIR / name).write_text(trimmed, encoding="utf-8")
             manifest[name] = entry
             print(f"wrote {name}: {len(trimmed.encode('utf-8')) / 1024:.1f} KB")
-    except requests.RequestException as exc:
-        print(f"error: request failed, stopping: {exc}", file=sys.stderr)
+    except StopRun as exc:
+        print(f"error: {exc}", file=sys.stderr)
         return 1
     finally:
         save_manifest(manifest)
-    print(f"live requests: {requests_made}")
+    print(f"live requests: {client.requests_made if client else 0}")
     return 0
 
 
