@@ -6,6 +6,8 @@ from typing import Any
 from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from bs_database import __version__
+
 _DEFAULT_DATA_DIR = Path("data")
 
 # field name -> path relative to data_dir, used when the field is not set explicitly
@@ -34,7 +36,11 @@ class Settings(BaseSettings):
     db_path: Path = Path()
     family_mapping_path: Path = Path()
     batspi_url: str = "https://batspi.com/"
-    request_delay: float = Field(default=0.0, ge=0)
+    user_agent: str = f"bs-database/{__version__} (+https://github.com/AleFire99/BS_Database)"
+    request_delay: float = Field(default=3.0, ge=1.0)
+    max_requests: int = Field(default=1000, ge=1)
+    connect_timeout: float = Field(default=10.0, gt=0)
+    read_timeout: float = Field(default=30.0, gt=0)
     log_level: str = "INFO"
 
     @model_validator(mode="before")
