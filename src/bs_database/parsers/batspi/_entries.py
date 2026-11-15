@@ -1,11 +1,15 @@
 """Helpers shared by the batspi page parsers (#69)."""
 
+import re
+from collections.abc import Iterable
 from urllib.parse import parse_qs, unquote, urljoin
 
 from bs4 import BeautifulSoup, Tag
 
 from bs_database.ingest.policy import BASE_URL
+from bs_database.parsers.batspi.numbers import parse_number
 from bs_database.parsers.errors import ParseError
+from bs_database.parsers.models import ListEntry
 
 _PREFIX = "index.php?"
 
@@ -57,3 +61,80 @@ def edit_target(a: Tag) -> str | None:
         return None
     values = parse_qs(href[len(_PREFIX) :]).get("page")
     return values[0] if values else None
+
+
+_NUMBER = re.compile(r"^[0-9A-Za-z][0-9A-Za-z()\- ]{0,24}$")
+_RARITY = re.compile(r"^[^\s()（）]+")
+_COPIES = re.compile(r"\((\d+)\)")
+
+
+def _lines(p: Tag) -> list[list[object]]:
+    lines: list[list[object]] = [[]]
+    for child in p.children:
+        if isinstance(child, Tag) and child.name == "br":
+            lines.append([])
+        else:
+            lines[-1].append(child)
+    return lines
+
+
+def _text(node: object) -> str:
+    return node.get_text() if isinstance(node, Tag) else str(node)
+
+
+def _entry(line: list[object], section: tuple[str, ...]) -> ListEntry | None:
+    idx = next((i for i, n in enumerate(line) if isinstance(n, Tag) and n.name == "a"), None)
+    if idx is None:
+        return None
+    a = line[idx]
+    assert isinstance(a, Tag)
+    number = "".join(_text(n) for n in line[:idx]).strip()
+    href = page_href(a)
+    if href is None or not _NUMBER.match(number):
+        return None
+    after = "".join(_text(n) for n in line[idx + 1 :]).strip()
+    rarity = None
+    m = _RARITY.match(after)
+    if m:
+        rarity = m.group(0)
+        after = after[m.end() :]
+    copies = None
+    m = _COPIES.search(after)
+    if m:
+        copies = int(m.group(1))
+        after = after[: m.start()] + after[m.end() :]
+    note = " ".join(after.split()) or None
+    return ListEntry(
+        number,
+        parse_number(number),
+        a.get_text().strip(),
+        page_url(href),
+        rarity,
+        copies,
+        note,
+        section,
+    )
+
+
+def iter_entries(elements: Iterable[Tag]) -> list[ListEntry]:
+    """Collect card lines from ``h2/h3/h4/p`` elements given in document order.
+
+    ``section`` of each entry is the current (h3, h4) heading texts.
+    """
+    h3: str | None = None
+    h4: str | None = None
+    entries: list[ListEntry] = []
+    for el in elements:
+        if el.name == "h2":
+            h3 = h4 = None
+        elif el.name == "h3":
+            h3, h4 = heading_text(el), None
+        elif el.name == "h4":
+            h4 = heading_text(el)
+        elif el.name == "p":
+            section = tuple(x for x in (h3, h4) if x)
+            for line in _lines(el):
+                entry = _entry(line, section)
+                if entry is not None:
+                    entries.append(entry)
+    return entries
