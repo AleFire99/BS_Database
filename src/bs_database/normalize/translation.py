@@ -45,6 +45,14 @@ def collect_requests(page: NormalizedPage) -> TranslationRequests:
     return TranslationRequests(_needed(families), _needed(names), _needed(products))
 
 
+def collect_texts(page: NormalizedPage) -> TranslationRequests:
+    """Every family, card name and product name of ``page``, with or without English."""
+    families = [f.jp for e in page.entries for f in e.gameplay.families]
+    names = [e.name_jp for e in page.entries]
+    products = [p.product_name_jp for p in page.printings]
+    return TranslationRequests(_needed(families), _needed(names), _needed(products))
+
+
 def _fields(result: TranslationResult) -> tuple[str | None, str | None, str]:
     """``(en, en_source, en_status)`` for a result."""
     if result.status == "machine" and result.text is not None:

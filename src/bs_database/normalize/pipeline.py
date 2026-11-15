@@ -39,6 +39,7 @@ from bs_database.normalize.translation import (
     TranslationRequests,
     apply_translations,
     collect_requests,
+    collect_texts,
 )
 from bs_database.parsers.card_models import (
     CardEntry,
@@ -158,7 +159,12 @@ def normalize_page(page: CardPage, glossary: Glossary) -> NormalizedPage:
 
 @dataclass(frozen=True, slots=True)
 class TreeResult:
-    """Outcome of one :func:`normalize_tree` run."""
+    """Outcome of one :func:`normalize_tree` run.
+
+    ``requests`` are the texts sent for translation and ``translations`` their results;
+    ``texts`` are all distinct texts of the written pages. ``unmapped_pages`` and
+    ``uncurated_pages`` map ``(kind, jp)`` to the URLs of the pages where it was seen.
+    """
 
     written: int
     failed: tuple[Path, ...]
@@ -166,6 +172,9 @@ class TreeResult:
     uncurated: tuple[UnmappedTerm, ...] = ()
     requests: TranslationRequests = field(default_factory=TranslationRequests)
     translations: Mapping[str, TranslationResult] = field(default_factory=dict)
+    texts: TranslationRequests = field(default_factory=TranslationRequests)
+    unmapped_pages: Mapping[tuple[str, str], frozenset[str]] = field(default_factory=dict)
+    uncurated_pages: Mapping[tuple[str, str], frozenset[str]] = field(default_factory=dict)
 
     @property
     def closed(self) -> int:
@@ -222,6 +231,11 @@ def normalize_tree(
     families: set[str] = set()
     names: set[str] = set()
     products: set[str] = set()
+    all_families: set[str] = set()
+    all_names: set[str] = set()
+    all_products: set[str] = set()
+    unmapped_pages: dict[tuple[str, str], set[str]] = {}
+    uncurated_pages: dict[tuple[str, str], set[str]] = {}
     good: list[Path] = []
     for path in sorted(parsed_dir.glob("*/*.json")):
         loaded = _load(path, glossary)
@@ -231,10 +245,18 @@ def normalize_tree(
         result = loaded[2]
         unmapped.extend(result.unmapped)
         uncurated.extend(result.uncurated)
+        for t in result.unmapped:
+            unmapped_pages.setdefault((t.kind, t.jp), set()).add(result.url)
+        for t in result.uncurated:
+            uncurated_pages.setdefault((t.kind, t.jp), set()).add(result.url)
         if any(t.closed for t in result.unmapped):
             log.error("%s: closed unmapped terms, page not written", path)
             failed.append(path)
             continue
+        present = collect_texts(result)
+        all_families.update(present.families)
+        all_names.update(present.names)
+        all_products.update(present.products)
         wanted = collect_requests(result)
         families.update(wanted.families)
         names.update(wanted.names)
@@ -243,8 +265,8 @@ def normalize_tree(
     requests = TranslationRequests(
         tuple(sorted(families)), tuple(sorted(names)), tuple(sorted(products))
     )
-    texts = requests.ordered()
-    results = dict(zip(texts, translator.translate(texts), strict=True)) if texts else {}
+    to_send = requests.ordered()
+    results = dict(zip(to_send, translator.translate(to_send), strict=True)) if to_send else {}
     written = 0
     for path in good:
         loaded = _load(path, glossary)
@@ -261,4 +283,9 @@ def normalize_tree(
         tuple(uncurated),
         requests,
         results,
+        TranslationRequests(
+            tuple(sorted(all_families)), tuple(sorted(all_names)), tuple(sorted(all_products))
+        ),
+        {k: frozenset(v) for k, v in unmapped_pages.items()},
+        {k: frozenset(v) for k, v in uncurated_pages.items()},
     )

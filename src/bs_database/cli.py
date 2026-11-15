@@ -18,6 +18,7 @@ from bs_database.ingest.report import render
 from bs_database.ingest.state import StateStore
 from bs_database.log import configure_logging
 from bs_database.normalize.pipeline import normalize_tree
+from bs_database.normalize.report import REPORT_MD, build_report, write_report
 from bs_database.settings import Settings
 from bs_database.translate import make_translator
 
@@ -82,10 +83,13 @@ def normalize(ctx: typer.Context) -> None:
         raise typer.Exit(1) from exc
     translator = make_translator(settings)
     result = normalize_tree(settings.parsed_dir, settings.normalized_dir, glossary, translator)
+    report = build_report(result, translator.name, settings.parsed_dir)
+    write_report(settings.normalized_dir, report)
     typer.echo(
         f"Normalized {result.written} pages, {len(result.unmapped)} unmapped terms "
         f"({result.closed} closed)"
     )
+    typer.echo(f"Report: {settings.normalized_dir / REPORT_MD}")
     if result.failed:
         typer.echo(f"{len(result.failed)} pages failed", err=True)
         raise typer.Exit(1)

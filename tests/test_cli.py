@@ -156,7 +156,12 @@ def test_normalize_happy_path(glossary_data: Path) -> None:
     _parsed_data(glossary_data, "card_spirit.html", "card_flip.html")
     result = runner.invoke(app, ["normalize"])
     assert result.exit_code == 0, result.output
-    assert re.fullmatch(r"Normalized 2 pages, \d+ unmapped terms \(0 closed\)\n", result.stdout)
+    assert re.fullmatch(
+        r"Normalized 2 pages, \d+ unmapped terms \(0 closed\)\nReport: \S+_report\.md\n",
+        result.stdout,
+    )
+    for name in ("_report.json", "_report.md"):
+        assert (glossary_data / "normalized" / name).is_file()
     assert len(list((glossary_data / "normalized" / "batspi").glob("*.json"))) == 2
 
 
@@ -168,7 +173,9 @@ def test_normalize_closed_unmapped_exits_1_without_file(glossary_data: Path) -> 
     result = runner.invoke(app, ["normalize"])
     assert result.exit_code == 1
     assert "1 closed" in result.stdout
-    assert not (glossary_data / "normalized").exists()
+    assert list((glossary_data / "normalized").rglob("batspi/*.json")) == []
+    report = json.loads((glossary_data / "normalized" / "_report.json").read_text("utf-8"))
+    assert [t["jp"] for t in report["unmapped"]["closed"]] == ["謎のタイプ"]
 
 
 def test_normalize_missing_glossary_is_a_clear_error(data_dir: Path) -> None:
