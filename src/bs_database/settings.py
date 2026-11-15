@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Any
 
-from pydantic import Field, model_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from bs_database import __version__
@@ -19,6 +19,7 @@ _DERIVED_PATHS = {
     "state_db_path": "state/ingest.db",
     "parsed_dir": "parsed",
     "normalized_dir": "normalized",
+    "translation_cache_path": "cache/translations.sqlite",
 }
 
 
@@ -41,6 +42,9 @@ class Settings(BaseSettings):
     state_db_path: Path = Path()
     parsed_dir: Path = Path()
     normalized_dir: Path = Path()
+    translation_cache_path: Path = Path()
+    # DeepL key (local only, never committed); unset or empty means no machine translation.
+    deepl_api_key: SecretStr | None = None
     batspi_url: str = "https://batspi.com/"
     user_agent: str = f"bs-database/{__version__} (+https://github.com/AleFire99/BS_Database)"
     request_delay: float = Field(default=3.0, ge=1.0)
@@ -48,6 +52,13 @@ class Settings(BaseSettings):
     connect_timeout: float = Field(default=10.0, gt=0)
     read_timeout: float = Field(default=30.0, gt=0)
     log_level: str = "INFO"
+
+    @field_validator("deepl_api_key", mode="after")
+    @classmethod
+    def _empty_key_is_unset(cls, value: SecretStr | None) -> SecretStr | None:
+        if value is not None and not value.get_secret_value().strip():
+            return None
+        return value
 
     @model_validator(mode="before")
     @classmethod

@@ -90,3 +90,28 @@ def test_invalid_limits(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_glossary_dir_override(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("BSDB_GLOSSARY_DIR", "/g")
     assert Settings().glossary_dir == Path("/g")
+
+
+def test_translation_defaults() -> None:
+    s = Settings()
+    assert s.translation_cache_path == Path("data/cache/translations.sqlite")
+    assert s.deepl_api_key is None
+
+
+def test_translation_cache_path_follows_data_dir(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("BSDB_DATA_DIR", "/x")
+    assert Settings().translation_cache_path == Path("/x/cache/translations.sqlite")
+
+
+def test_deepl_key_read_and_hidden(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("BSDB_DEEPL_API_KEY", "test-key:fx")
+    s = Settings()
+    assert s.deepl_api_key is not None
+    assert s.deepl_api_key.get_secret_value() == "test-key:fx"
+    assert "test-key" not in repr(s) and "test-key" not in str(s)
+
+
+@pytest.mark.parametrize("value", ["", "  "])
+def test_empty_deepl_key_is_unset(monkeypatch: pytest.MonkeyPatch, value: str) -> None:
+    monkeypatch.setenv("BSDB_DEEPL_API_KEY", value)
+    assert Settings().deepl_api_key is None
