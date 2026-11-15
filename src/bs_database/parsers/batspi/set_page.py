@@ -7,7 +7,7 @@ from datetime import date
 from bs4 import Tag
 
 from bs_database.parsers.batspi._entries import heading_text, iter_entries, soup_body
-from bs_database.parsers.errors import ParseError
+from bs_database.parsers.errors import NoCardList, ParseError
 from bs_database.parsers.models import ListEntry, SetPage
 
 _CARDS = "収録カード"
@@ -32,7 +32,7 @@ def parse_set_page(html: str) -> SetPage:
         raise ParseError("no title heading")
     cards = next((e for e in h2s if heading_text(e) == _CARDS), None)
     if cards is None:
-        raise ParseError(f"no {_CARDS} heading")
+        raise NoCardList(f"no {_CARDS} heading")
     start = elements.index(cards)
 
     release_date = None

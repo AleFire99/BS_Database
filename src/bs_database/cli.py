@@ -1,6 +1,8 @@
 """Command-line interface for bs-database."""
 
 import logging
+import re
+from datetime import timedelta
 from pathlib import Path
 from typing import Annotated
 
@@ -8,6 +10,11 @@ import typer
 
 from bs_database import __version__
 from bs_database.db import build_db
+from bs_database.ingest.cache import CachedFetcher, RawCache
+from bs_database.ingest.http import HttpClient
+from bs_database.ingest.pipeline import RunOptions, run_pipeline
+from bs_database.ingest.report import render
+from bs_database.ingest.state import StateStore
 from bs_database.log import configure_logging
 from bs_database.normalize import normalize_tree
 from bs_database.settings import Settings
@@ -83,12 +90,54 @@ def build(
     typer.echo(f"Built {target}")
 
 
+_UNITS = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}
+_DURATION = re.compile(r"(\d+)([smhdw])")
+
+
+def parse_duration(text: str) -> timedelta:
+    """``<int><unit>`` with units ``s m h d w`` (``30d``, ``12h``)."""
+    match = _DURATION.fullmatch(text.strip().lower())
+    if match is None:
+        raise typer.BadParameter(f"expected <int><unit> with unit s, m, h, d or w, got {text!r}")
+    return timedelta(seconds=int(match[1]) * _UNITS[match[2]])
+
+
+def _build_http_client(settings: Settings) -> HttpClient:
+    """The one place the real network client is built (tests replace it with a fake)."""
+    return HttpClient(settings)
+
+
 @app.command()
-def scrape() -> None:
-    """Scrape card pages from batspi.com (being rewritten, see #10)."""
-    typer.echo(
-        "bsdb scrape is being rewritten (#10); the legacy scraper was removed because it "
-        "did not follow the scraping policy.",
-        err=True,
-    )
-    raise typer.Exit(1)
+def scrape(
+    ctx: typer.Context,
+    sets: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--set",
+            help="Only sets whose Japanese product name contains this text (repeatable).",
+        ),
+    ] = None,
+    refresh: Annotated[
+        bool, typer.Option("--refresh", help="Fetch again every page this run visits.")
+    ] = False,
+    max_age: Annotated[
+        str | None,
+        typer.Option("--max-age", help="Fetch again cached pages older than this (30d, 12h)."),
+    ] = None,
+    limit: Annotated[
+        int | None, typer.Option("--limit", min=1, help="Take at most this many card pages.")
+    ] = None,
+) -> None:
+    """Scrape card pages from batspi.com into data/parsed, resuming where the last run stopped."""
+    settings = _settings(ctx)
+    age = parse_duration(max_age) if max_age is not None else None
+    client = _build_http_client(settings)
+    fetcher = CachedFetcher(client, RawCache(settings.cache_dir), refresh=refresh, max_age=age)
+    options = RunOptions(sets=tuple(sets or ()), limit=limit)
+    with StateStore(settings.state_db_path) as store:
+        report = run_pipeline(
+            settings, fetcher, store, requests_made=lambda: client.requests_made, options=options
+        )
+    typer.echo(render(report))
+    if report.exit_code:
+        raise typer.Exit(report.exit_code)

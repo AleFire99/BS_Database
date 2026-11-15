@@ -14,6 +14,8 @@ Settings are defined in `src/bs_database/settings.py` (`Settings`, built on pyda
 | `BSDB_DB_PATH` | `<data_dir>/battle_spirits.db` | SQLite database output |
 | `BSDB_FAMILY_MAPPING_PATH` | `<data_dir>/family_mapping.txt` | Family-name normalization map |
 | `BSDB_CACHE_DIR` | `<data_dir>/cache/html` | Raw HTML cache (`<source>/<sha256(url)>.html` plus `.json` sidecar) |
+| `BSDB_STATE_DB_PATH` | `<data_dir>/state/ingest.db` | Ingestion state store (SQLite, see [ingestion-state](architecture/ingestion-state.md)) |
+| `BSDB_PARSED_DIR` | `<data_dir>/parsed` | Parsed card pages (`<source>/<sha256(url)>.json`) |
 | `BSDB_BATSPI_URL` | `https://batspi.com/` | batspi.com base URL |
 | `BSDB_USER_AGENT` | `bs-database/<version> (+https://github.com/AleFire99/BS_Database)` | `User-Agent` sent on every request |
 | `BSDB_REQUEST_DELAY` | `3.0` | Minimum delay between HTTP requests, in seconds (must be >= 1.0, policy floor) |

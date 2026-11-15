@@ -43,6 +43,7 @@ class RetryAfterTooLong(StopRun):
     """The server asks to wait longer than ``MAX_RETRY_AFTER`` seconds."""
 
 
+TRANSPORT_ERROR_REASON = "transport error"  # prefix of the Skipped reason
 MAX_RETRY_AFTER = 300
 RETRY_STATUSES = frozenset({429, 500, 502, 503, 504})
 
@@ -238,7 +239,7 @@ class HttpClient:
             try:
                 resp = self._request(url)
             except TransportError as exc:
-                reason, status, retry_after = f"transport error: {exc}", None, None
+                reason, status, retry_after = f"{TRANSPORT_ERROR_REASON}: {exc}", None, None
             else:
                 if resp.status == 403 or is_challenge(resp.text):
                     raise Blocked(f"403 or challenge page: {url}")

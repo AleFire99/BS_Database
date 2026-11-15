@@ -7,12 +7,12 @@ leave an html without a sidecar (a miss, overwritten later), never a sidecar wit
 
 import hashlib
 import json
-import os
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from bs_database.ingest.atomic import atomic_write
 from bs_database.ingest.http import Fetched, Fetcher, Skipped
 
 CACHED_STATUS = 200
@@ -39,32 +39,6 @@ def _header(headers: Mapping[str, str], name: str) -> str | None:
         if key.lower() == name:
             return value
     return None
-
-
-def _fsync_dir(directory: Path) -> None:
-    fd = os.open(directory, os.O_RDONLY)
-    try:
-        os.fsync(fd)
-    finally:
-        os.close(fd)
-
-
-def _atomic_write(path: Path, data: bytes) -> None:
-    """Write ``data`` to ``path`` via a same-directory temp file, fsync, then ``os.replace``.
-
-    The parent directory is fsynced after the replace; a failed write removes the temp file.
-    """
-    tmp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
-    try:
-        with tmp.open("wb") as fh:
-            fh.write(data)
-            fh.flush()
-            os.fsync(fh.fileno())
-        os.replace(tmp, path)
-    except BaseException:
-        tmp.unlink(missing_ok=True)
-        raise
-    _fsync_dir(path.parent)
 
 
 class RawCache:
@@ -101,8 +75,8 @@ class RawCache:
             "last_modified": last_modified,
         }
         sidecar.unlink(missing_ok=True)  # no stale sidecar next to a new html
-        _atomic_write(html, content)
-        _atomic_write(sidecar, json.dumps(meta, indent=2).encode("utf-8"))
+        atomic_write(html, content)
+        atomic_write(sidecar, json.dumps(meta, indent=2).encode("utf-8"))
         return CachedPage(url, source, content, CACHED_STATUS, when, False, etag, last_modified)
 
     def load(self, url: str, source: str) -> CachedPage | None:

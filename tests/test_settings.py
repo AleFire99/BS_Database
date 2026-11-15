@@ -23,6 +23,8 @@ def test_defaults() -> None:
     assert s.db_path == Path("data/battle_spirits.db")
     assert s.json_dir == Path("data/json")
     assert s.cache_dir == Path("data/cache/html")
+    assert s.state_db_path == Path("data/state/ingest.db")
+    assert s.parsed_dir == Path("data/parsed")
     for p in (s.json_dir, s.images_dir, s.db_path, s.family_mapping_path, s.cache_dir):
         assert not p.is_absolute()
     assert s.request_delay == 3.0
@@ -38,6 +40,8 @@ def test_data_dir_derives_paths(monkeypatch: pytest.MonkeyPatch) -> None:
     s = Settings()
     for p in (s.json_dir, s.images_dir, s.db_path, s.family_mapping_path, s.cache_dir):
         assert p.is_relative_to("/x")
+    assert s.state_db_path.is_relative_to("/x")
+    assert s.parsed_dir.is_relative_to("/x")
 
 
 def test_explicit_override(monkeypatch: pytest.MonkeyPatch) -> None:

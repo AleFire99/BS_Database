@@ -17,6 +17,8 @@ _DERIVED_PATHS = {
     "db_path": "battle_spirits.db",
     "family_mapping_path": "family_mapping.txt",
     "cache_dir": "cache/html",
+    "state_db_path": "state/ingest.db",
+    "parsed_dir": "parsed",
 }
 
 
@@ -37,6 +39,8 @@ class Settings(BaseSettings):
     db_path: Path = Path()
     family_mapping_path: Path = Path()
     cache_dir: Path = Path()
+    state_db_path: Path = Path()
+    parsed_dir: Path = Path()
     batspi_url: str = "https://batspi.com/"
     user_agent: str = f"bs-database/{__version__} (+https://github.com/AleFire99/BS_Database)"
     request_delay: float = Field(default=3.0, ge=1.0)

@@ -15,4 +15,5 @@ node_modules/
 /battle_spirits.db
 /data/*.db
 /data/state/
+/data/parsed/
 /data/cache/
