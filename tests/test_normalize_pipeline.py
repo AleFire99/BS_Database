@@ -2,7 +2,7 @@
 
 import hashlib
 import json
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from pathlib import Path
 
 import pytest
@@ -13,6 +13,7 @@ from bs_database.normalize.pipeline import normalize_page, normalize_tree
 from bs_database.translate import NullTranslator
 from bs_database.translate.cache import TranslationCache
 from bs_database.translate.cached import CachedTranslator
+from bs_database.translate.types import Lang, TranslationResult
 
 
 def _cache(tmp_path: Path) -> TranslationCache:
@@ -224,3 +225,79 @@ def test_second_run_makes_no_engine_calls(tmp_path: Path) -> None:
     normalize_tree(parsed, tmp_path / "two", real_glossary(), CachedTranslator(engine, cache))
     assert engine.calls == []
     assert _written(tmp_path / "one") == _written(tmp_path / "two")
+
+
+class _RewritingTranslator:
+    """Rewrites a parsed file during ``translate`` (between the two passes)."""
+
+    name = "rewriter"
+
+    def __init__(self, action: Callable[[], None]) -> None:
+        self.action = action
+
+    def translate(
+        self, texts: Sequence[str], *, src: Lang = "jp", tgt: Lang = "en"
+    ) -> list[TranslationResult]:
+        self.action()
+        return [TranslationResult(None, "pending", self.name) for _ in texts]
+
+
+def test_page_that_gains_a_closed_term_between_passes_is_failed(tmp_path: Path) -> None:
+    parsed, out = tmp_path / "parsed", tmp_path / "normalized"
+    path = write_parsed_fixture(parsed, "card_magic.html")
+
+    def corrupt() -> None:
+        document = json.loads(path.read_text(encoding="utf-8"))
+        document["page"]["entries"][0]["gameplay"]["card_type"] = "謎のタイプ"
+        path.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
+
+    result = normalize_tree(parsed, out, real_glossary(), _RewritingTranslator(corrupt))
+    assert (result.written, result.failed) == (0, (path,))
+    assert not (out / "batspi" / path.name).exists()
+
+
+def test_page_that_becomes_unreadable_between_passes_is_failed(tmp_path: Path) -> None:
+    parsed = tmp_path / "parsed"
+    path = write_parsed_fixture(parsed, "card_magic.html")
+
+    def break_file() -> None:
+        path.write_text("{bad", encoding="utf-8")
+
+    translator = _RewritingTranslator(break_file)
+    result = normalize_tree(parsed, tmp_path / "normalized", real_glossary(), translator)
+    assert (result.written, result.failed) == (0, (path,))
+
+
+def test_same_text_as_family_and_name_is_translated_once_for_both(tmp_path: Path) -> None:
+    parsed, out = tmp_path / "parsed", tmp_path / "normalized"
+    path = write_parsed_fixture(parsed, "card_flip.html")
+    document = json.loads(path.read_text(encoding="utf-8"))
+    entry = document["page"]["entries"][0]
+    family = entry["gameplay"]["families"][0]
+    entry["name_jp"] = family
+    entry["name_en"] = None
+    path.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
+    engine = FakeEngine()
+    normalize_tree(parsed, out, real_glossary(), CachedTranslator(engine, _cache(tmp_path)))
+    assert engine.calls[0].count(family) == 1
+    page = json.loads(next(out.rglob("*.json")).read_text(encoding="utf-8"))["page"]
+    first = page["entries"][0]
+    assert first["name_en"] == f"<{family}>"
+    fams = {f["jp"]: f["en"] for f in first["gameplay"]["families"]}
+    assert fams[family] == f"<{family}>"
+
+
+def test_engine_receives_families_then_names_then_products_sorted(tmp_path: Path) -> None:
+    parsed = tmp_path / "parsed"
+    for name in card_fixture_names():
+        write_parsed_fixture(parsed, name)
+    engine = FakeEngine()
+    result = normalize_tree(
+        parsed, tmp_path / "out", real_glossary(), CachedTranslator(engine, _cache(tmp_path))
+    )
+    sent = [t for call in engine.calls for t in call]  # chunks of 50, in order
+    r = result.requests
+    assert r.families and r.names and r.products
+    assert sent == [*r.families, *r.names, *r.products]
+    for part in (r.families, r.names, r.products):
+        assert list(part) == sorted(part)

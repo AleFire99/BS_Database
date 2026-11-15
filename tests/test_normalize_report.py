@@ -141,3 +141,29 @@ def test_second_run_report_is_byte_equal_and_makes_no_engine_calls(tmp_path: Pat
             engine.calls.clear()
     assert engine.calls == []
     assert texts[0] == texts[1]
+
+
+def test_markdown_escapes_table_cells() -> None:
+    report = {
+        "schema_version": "1.0.0",
+        "engine": "null",
+        "pages": {"written": 1, "failed": []},
+        "unmapped": {
+            "closed": [],
+            "warnings": [
+                {"kind": "fam|ilies", "jp": "a|b\nc", "pages": 1, "samples": ["http://x/?a|b"]}
+            ],
+        },
+        "uncurated": [],
+        "translation": {
+            c: {
+                "distinct": 0,
+                "from_glossary_or_batspi": 0,
+                "machine": 0,
+                "pending": 0,
+                "failed": 0,
+            }
+            for c in ("families", "names", "products")
+        },
+    }
+    assert "| fam\\|ilies | a\\|b c | 1 | http://x/?a\\|b |" in render_markdown(report)
