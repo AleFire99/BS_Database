@@ -1,0 +1,152 @@
+"""Pure mapping rules (#93, ADR 0008). Every mapping goes through ``Glossary.lookup``.
+
+Each rule takes the glossary and an :class:`UnmappedCollector` and returns records; a miss
+is reported to the collector and never raises. Whether a miss is an error or a warning is
+decided by the kind (see :attr:`UnmappedTerm.closed`).
+"""
+
+from bs_database.glossary import FamilyEntry, Glossary
+from bs_database.normalize.records import (
+    SOURCE_MANUAL,
+    STATUS_PENDING,
+    STATUS_REVIEWED,
+    CodedTerm,
+    FamilyRecord,
+    KeywordRecord,
+    SymbolCountRecord,
+    UnmappedCollector,
+)
+from bs_database.parsers.card_models import Keyword, SymbolCount
+
+DEFAULT_VARIANT = "normal"
+
+
+def closed_code(
+    glossary: Glossary, kind: str, jp: str, number: str, unmapped: UnmappedCollector
+) -> str | None:
+    """Code of ``jp`` in the closed ``kind``, or ``None`` after reporting the miss."""
+    entry = glossary.lookup(kind, jp)
+    if entry is None:
+        unmapped.add(kind, jp, number)
+        return None
+    return entry.code
+
+
+def map_colors(
+    glossary: Glossary, colors: tuple[str, ...], number: str, unmapped: UnmappedCollector
+) -> tuple[CodedTerm, ...]:
+    """Colour glyphs to :class:`CodedTerm` in source order."""
+    return tuple(CodedTerm(c, closed_code(glossary, "colors", c, number, unmapped)) for c in colors)
+
+
+def map_symbols(
+    glossary: Glossary,
+    symbols: tuple[SymbolCount, ...],
+    number: str,
+    unmapped: UnmappedCollector,
+) -> tuple[SymbolCountRecord, ...]:
+    """Symbol glyphs with counts to records carrying the symbol code."""
+    return tuple(
+        SymbolCountRecord(
+            s.symbol, closed_code(glossary, "symbols", s.symbol, number, unmapped), s.count
+        )
+        for s in symbols
+    )
+
+
+def rarity_code(
+    glossary: Glossary, rarity: str | None, number: str, unmapped: UnmappedCollector
+) -> str | None:
+    """Rarity code; ``None`` stays ``None``, a value missing from the glossary is reported."""
+    if rarity is None:
+        return None
+    return closed_code(glossary, "rarities", rarity, number, unmapped)
+
+
+def variant_code(glossary: Glossary, note: str | None) -> tuple[str | None, str]:
+    """``(variant_jp, variant_code)`` from a printing note.
+
+    A note that is not a known variant means ``normal`` and is never unmapped (ADR 0008, D5).
+    """
+    if note is not None:
+        entry = glossary.lookup("variants", note)
+        if entry is not None:
+            return note, entry.code
+    return None, DEFAULT_VARIANT
+
+
+def product_type_code(glossary: Glossary, product_name: str) -> str | None:
+    """Product type from a title marker contained in the product name (ADR 0008, D6).
+
+    Products without a marker get ``None``: the prefix rule is curated in #96.
+    """
+    for entry in glossary.entries["product_types"]:
+        if entry.jp and entry.jp in product_name:
+            return entry.code
+    return None
+
+
+def merge_family_tokens(glossary: Glossary, tokens: tuple[str, ...]) -> tuple[str, ...]:
+    """Re-join adjacent tokens whose ``・``-joined form is a ``no_split`` glossary family.
+
+    The parser splits on ``・``. Order is source order and duplicates are removed.
+    """
+    merged: list[str] = []
+    i = 0
+    while i < len(tokens):
+        joined = _longest_no_split(glossary, tokens, i)
+        if joined is None:
+            merged.append(tokens[i])
+            i += 1
+        else:
+            text, size = joined
+            merged.append(text)
+            i += size
+    return tuple(dict.fromkeys(merged))
+
+
+def _longest_no_split(
+    glossary: Glossary, tokens: tuple[str, ...], start: int
+) -> tuple[str, int] | None:
+    for size in range(len(tokens) - start, 1, -1):
+        text = "・".join(tokens[start : start + size])
+        entry = glossary.lookup("families", text)
+        if isinstance(entry, FamilyEntry) and entry.no_split:
+            return text, size
+    return None
+
+
+def map_families(
+    glossary: Glossary, tokens: tuple[str, ...], number: str, unmapped: UnmappedCollector
+) -> tuple[FamilyRecord, ...]:
+    """Family tokens to records. A family without a glossary code is an unmapped warning.
+
+    An English name from the glossary is curated by the owner: source ``manual``, status
+    ``reviewed``. Without one the name is ``None`` and pending.
+    """
+    records: list[FamilyRecord] = []
+    for jp in merge_family_tokens(glossary, tokens):
+        entry = glossary.lookup("families", jp)
+        code = entry.code if entry is not None and entry.code else None
+        if code is None:
+            unmapped.add("families", jp, number)
+        en = entry.en if entry is not None and entry.en else None
+        if en is None:
+            records.append(FamilyRecord(jp, code, None, None, STATUS_PENDING))
+        else:
+            records.append(FamilyRecord(jp, code, en, SOURCE_MANUAL, STATUS_REVIEWED))
+    return tuple(records)
+
+
+def map_keywords(
+    glossary: Glossary, keywords: tuple[Keyword, ...], number: str, unmapped: UnmappedCollector
+) -> tuple[KeywordRecord, ...]:
+    """Keyword tokens to records; a miss gives ``code=None`` and an unmapped warning."""
+    records: list[KeywordRecord] = []
+    for k in keywords:
+        entry = glossary.lookup("keywords", k.name)
+        code = entry.code if entry is not None and entry.code else None
+        if code is None:
+            unmapped.add("keywords", k.name, number)
+        records.append(KeywordRecord(k.bracket, k.name, code, k.parameter))
+    return tuple(records)
