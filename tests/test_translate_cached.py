@@ -94,3 +94,26 @@ def test_info_line_has_no_texts(tmp_path: Path, caplog: pytest.LogCaptureFixture
         ct.translate(["秘密", "z"])
     assert "engine=fake hits=0 sent=1 chars=1 pending=1 failed=0" in caplog.text
     assert "秘密" not in caplog.text
+
+
+def test_failed_second_chunk_keeps_first_chunk(tmp_path: Path) -> None:
+    texts = [f"t{i}" for i in range(100)]
+    ct, _, cache = make(tmp_path, fail=frozenset(texts[50:]))
+    out = ct.translate(texts)
+    assert [r.status for r in out] == ["machine"] * 50 + ["failed"] * 50
+    assert set(cache.get_many("fake", "jp", "en", texts)) == set(texts[:50])
+
+
+def test_engine_raising_keeps_earlier_chunks(tmp_path: Path) -> None:
+    class Boom(FakeEngine):
+        def translate(self, texts, *, src="jp", tgt="en"):  # type: ignore[no-untyped-def]
+            if self.calls:
+                raise RuntimeError("engine died")
+            return super().translate(texts, src=src, tgt=tgt)
+
+    cache = TranslationCache(tmp_path / "t.sqlite")
+    ct = CachedTranslator(Boom(), cache)
+    texts = [f"t{i}" for i in range(80)]
+    with pytest.raises(RuntimeError):
+        ct.translate(texts)
+    assert set(cache.get_many("fake", "jp", "en", texts)) == set(texts[:50])

@@ -7,7 +7,7 @@ from fakes import FakeClock, FakeJsonTransport, ok_response
 from pydantic import SecretStr
 
 from bs_database.ingest.http import HttpResponse, TransportError
-from bs_database.translate.deepl import DeepLTranslator, RequestsJsonTransport
+from bs_database.translate.deepl import DeepLTranslator, RequestsJsonTransport, _retry_after
 
 KEY = "test-key:fx"
 
@@ -32,6 +32,7 @@ def test_request_shape_free_key() -> None:
     (call,) = t.calls
     assert call["url"] == "https://api-free.deepl.com/v2/translate"
     assert call["headers"]["Authorization"] == f"DeepL-Auth-Key {KEY}"
+    assert call["timeout"] == (10.0, 30.0)
     assert call["body"] == {
         "text": ["こんにちは", "あ"],
         "source_lang": "JA",
@@ -169,4 +170,57 @@ def test_requests_transport_success(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(transport, "_session", fake)
     out = transport.post("https://x", headers={"A": "b"}, json_body={"k": 1}, timeout=(1, 2))
     assert out.status == 200 and out.headers == {"X": "y"}
+    assert fake.kwargs["timeout"] == (1, 2)
     assert fake.kwargs["json"] == {"k": 1} and fake.kwargs["allow_redirects"] is False
+
+
+@pytest.mark.parametrize(
+    ("headers", "expected"),
+    [
+        ({"Retry-After": "Wed, 21 Oct 2026 07:28:00 GMT"}, None),
+        ({"Retry-After": "0"}, 0.0),
+        ({"Retry-After": "1.5"}, None),
+        ({"Retry-After": "99999"}, 300.0),
+        ({"Retry-After": " 12 "}, 12.0),
+        ({"X-Other": "1"}, None),
+        ({}, None),
+    ],
+)
+def test_retry_after_parsing(headers: dict[str, str], expected: float | None) -> None:
+    assert _retry_after(resp(429, headers)) == expected
+
+
+def test_empty_input_makes_no_call() -> None:
+    t = FakeJsonTransport()
+    e, _ = engine(t)
+    assert e.translate([]) == []
+    assert t.calls == []
+
+
+def test_oversized_text_sent_alone_and_413_fails_only_that_batch() -> None:
+    t = FakeJsonTransport([ok_response(["ab"]), resp(413)])
+    e, _ = engine(t, batch_bytes=6)
+    out = e.translate(["ab", "あいうえ", "c"])
+    assert [c["body"]["text"] for c in t.calls] == [["ab"], ["あいうえ"], ["c"]]
+    assert [r.status for r in out] == ["machine", "failed", "machine"]
+    assert len(t.calls) == 3
+
+
+def test_real_transport_path_keeps_secret_out_of_errors_and_logs(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    secret = "test-key:fx"
+    transport = RequestsJsonTransport()
+    fake = FakeSession(requests.ConnectionError(f"failed with DeepL-Auth-Key {secret}"))
+    monkeypatch.setattr(transport, "_session", fake)
+    with pytest.raises(TransportError) as ei:
+        transport.post("https://x", headers={}, json_body={}, timeout=(1, 2))
+    exc = ei.value
+    assert secret not in str(exc)
+    assert exc.__cause__ is None and exc.__context__ is None
+    e = DeepLTranslator(SecretStr(secret), transport=transport, clock=FakeClock())
+    with caplog.at_level(logging.DEBUG):
+        assert e.translate(["a"])[0].status == "failed"
+    assert secret not in caplog.text and "test-key" not in caplog.text
+    for rec in caplog.records:
+        assert rec.exc_info is None

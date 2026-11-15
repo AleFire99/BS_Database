@@ -145,7 +145,14 @@ class FakeJsonTransport:
         json_body: Mapping[str, Any],
         timeout: tuple[float, float],
     ) -> HttpResponse:
-        self.calls.append({"url": url, "headers": dict(headers), "body": dict(json_body)})
+        self.calls.append(
+            {
+                "url": url,
+                "headers": dict(headers),
+                "body": dict(json_body),
+                "timeout": timeout,
+            }
+        )
         if self.script:
             item = self.script.pop(0)
             if isinstance(item, Exception):
