@@ -2,7 +2,7 @@
 
 import pytest
 
-from bs_database.glossary import Entry, FamilyEntry, Glossary, RarityEntry
+from bs_database.glossary import Entry, FamilyEntry, Glossary, ProductPrefix, RarityEntry
 from bs_database.normalize import rules
 from bs_database.normalize.records import CodedTerm, UnmappedCollector, UnmappedTerm
 from bs_database.parsers.card_models import Keyword, SymbolCount
@@ -30,6 +30,11 @@ def make_glossary() -> Glossary:
             ),
         },
         (),
+        (
+            ProductPrefix("BS", "booster", ""),
+            ProductPrefix("BSC", "starter", ""),
+            ProductPrefix("SD", "starter", ""),
+        ),
     )
 
 
@@ -88,6 +93,21 @@ def test_variant_miss_is_normal() -> None:
 )
 def test_product_type_marker(name: str, code: str | None) -> None:
     assert rules.product_type_code(G, name) == code
+
+
+@pytest.mark.parametrize(
+    ("name", "product_code", "code"),
+    [
+        ("ワンピースコラボ スターター", "SD54", "collab"),
+        ("第一弾", "BSC01", "starter"),
+        ("第一弾", "BS01", "booster"),
+        ("第一弾", "SD01", "starter"),
+        ("第一弾", "XX01", None),
+        ("第一弾", None, None),
+    ],
+)
+def test_product_type_prefix_rule(name: str, product_code: str | None, code: str | None) -> None:
+    assert rules.product_type_code(G, name, product_code) == code
 
 
 def test_merge_family_tokens_rejoins_no_split() -> None:
