@@ -7,7 +7,15 @@ from pathlib import Path
 import pytest
 
 from bs_database.parsers.batspi.card import parse_card_page
-from bs_database.parsers.card_models import SCHEMA_VERSION, CardPage
+from bs_database.parsers.card_models import (
+    SCHEMA_VERSION,
+    CardPage,
+    Gameplay,
+    Level,
+    Overclock,
+    Reduction,
+    SymbolCount,
+)
 from bs_database.parsers.errors import ParseError
 
 HTML_DIR = Path(__file__).parent / "fixtures" / "html"
@@ -189,3 +197,203 @@ def test_other_differences() -> None:
         "アルティメット・ジークフリード": ["reduction", "families", "levels", "overclock"]
     }
     assert diff_fields("card_promo") == {"焔竜翼人マ・ドー": ["families"]}
+
+
+def sc(symbol: str, count: int = 1) -> SymbolCount:
+    return SymbolCount(symbol, count)
+
+
+def gp(
+    card_type: str,
+    cost: int,
+    reduction: Reduction,
+    families: tuple[str, ...],
+    levels: tuple[Level, ...],
+    *,
+    colors: tuple[str, ...] = ("赤",),
+    symbols: tuple[SymbolCount, ...] = (),
+    deck_limit: int | None = None,
+    fusion: int | None = None,
+    overclock: Overclock | None = None,
+) -> Gameplay:
+    return Gameplay(
+        card_type=card_type,
+        deck_limit=deck_limit,
+        cost=cost,
+        reduction=reduction,
+        colors=colors,
+        symbols=symbols,
+        families=families,
+        levels=levels,
+        fusion_bp_bonus=fusion,
+        overclock=overclock,
+    )
+
+
+def plain(n: int | None) -> Reduction:
+    return Reduction(n, ())
+
+
+def gameplays(stem: str) -> list[Gameplay]:
+    return [e.gameplay for e in parse(stem).entries]
+
+
+def test_full_spirit() -> None:
+    assert gameplays("card_spirit") == [
+        gp(
+            "スピリット",
+            4,
+            Reduction(None, (sc("赤", 2), sc("神"))),
+            ("眷属", "武迅"),
+            (Level(1, 1, 3000), Level(2, 3, 7000)),
+            symbols=(sc("赤"),),
+        )
+    ]
+
+
+def test_full_nexus() -> None:
+    assert gameplays("card_nexus") == [
+        gp(
+            "ネクサス",
+            3,
+            plain(2),
+            ("皇獣",),
+            (Level(1, 0, None), Level(2, 1, None)),
+            symbols=(sc("赤"),),
+        )
+    ]
+
+
+def test_full_nexus_soukaishin() -> None:
+    assert gameplays("card_nexus_soukaishin") == [
+        gp(
+            "ネクサス",
+            2,
+            plain(1),
+            ("創界神", "オリン"),
+            (Level(1, 0, None), Level(2, 5, None)),
+            symbols=(sc("神"),),
+        )
+    ]
+
+
+def test_full_magic() -> None:
+    assert gameplays("card_magic") == [gp("マジック", 4, plain(2), ("武迅",), ())]
+
+
+def test_full_magic_flash() -> None:
+    assert gameplays("card_magic_flash") == [gp("マジック", 4, plain(2), (), ())] * 2
+
+
+def test_full_brave() -> None:
+    first, second = gameplays("card_brave")
+    assert first == gp(
+        "ブレイヴ",
+        5,
+        Reduction(None, (sc("赤", 2), sc("白", 2))),
+        ("機竜", "星魂"),
+        (Level(1, 1, 3000),),
+        fusion=3000,
+    )
+    assert second == gp(
+        "ブレイヴ",
+        5,
+        Reduction(None, (sc("赤", 2), sc("白", 2))),
+        ("異魔神", "星魂", "機竜"),
+        (Level(1, 0, 3000),),
+        symbols=(sc("赤"),),
+        fusion=3000,
+    )
+
+
+def test_full_ultimate() -> None:
+    first, second = gameplays("card_ultimate")
+    assert first == gp(
+        "アルティメット",
+        6,
+        plain(3),
+        ("新生", "古竜"),
+        (Level(3, 1, 10000), Level(4, 3, 14000), Level(5, 5, 20000)),
+        symbols=(sc("極"),),
+    )
+    assert second == gp(
+        "アルティメット",
+        6,
+        Reduction(None, (sc("全"), sc("極", 3))),
+        ("極契約", "新生", "古竜"),
+        (Level(3, 1, 10000), Level(4, 3, 14000)),
+        symbols=(sc("極"),),
+        overclock=Overclock(5, 6000),
+    )
+
+
+def test_full_flip() -> None:
+    a1, b1, a2, b2 = gameplays("card_flip")
+    nexus = {"deck_limit": 1, "symbols": (sc("赤"),)}
+    assert a1 == gp("ネクサス", 3, plain(2), ("起幻",), (Level(1, 0, None),), **nexus)  # type: ignore[arg-type]
+    assert a2 == gp(
+        "ネクサス",
+        3,
+        plain(2),
+        ("起幻", "眷属"),
+        (Level(1, 0, None),),
+        **nexus,  # type: ignore[arg-type]
+    )
+    assert b1 == gp(
+        "スピリット",
+        6,
+        plain(None),
+        ("起幻", "古竜"),
+        (Level(1, 1, 6000),),
+        **nexus,  # type: ignore[arg-type]
+    )
+    assert b2 == gp(
+        "スピリット",
+        6,
+        plain(None),
+        ("起幻", "眷属", "古竜"),
+        (Level(1, 1, 7000), Level(2, 3, 10000)),
+        **nexus,  # type: ignore[arg-type]
+    )
+
+
+def test_full_spirit_xx_bs31() -> None:
+    assert gameplays("card_spirit_xx_bs31") == [
+        gp(
+            "スピリット",
+            0,
+            plain(0),
+            ("絶晶神",),
+            (Level(1, 1, 5000), Level(2, 3, 10000)),
+            colors=("白",),
+            symbols=(sc("白"),),
+        )
+    ]
+
+
+def test_full_spirit_bs01() -> None:
+    first, second = gameplays("card_spirit_bs01")
+    assert first == gp(
+        "スピリット",
+        0,
+        plain(0),
+        ("爬獣",),
+        (Level(1, 1, 1000), Level(2, 3, 3000)),
+        symbols=(sc("赤"),),
+    )
+    assert second == gp(
+        "スピリット",
+        0,
+        plain(0),
+        ("爬獣",),
+        (Level(1, 1, 2000), Level(2, 3, 5000)),
+        symbols=(sc("赤"),),
+    )
+
+
+def test_full_promo() -> None:
+    levels = (Level(1, 1, 3000), Level(2, 2, 4000), Level(3, 5, 7000))
+    families = [("竜人", "翼竜"), ("竜人", "翼竜"), ("起幻", "竜人", "翼竜")]
+    assert gameplays("card_promo") == [
+        gp("スピリット", 4, plain(2), f, levels, symbols=(sc("赤"),)) for f in families
+    ]
