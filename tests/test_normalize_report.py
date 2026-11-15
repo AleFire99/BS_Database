@@ -65,6 +65,17 @@ def test_translation_counts_with_null_and_fake_engine(tmp_path: Path) -> None:
     assert online["translation"]["names"]["machine"] > 0
 
 
+def test_chars_to_translate_counts_requested_texts(tmp_path: Path) -> None:
+    result, report = _fixture_run(tmp_path)
+    for category in ("families", "names", "products"):
+        requested = getattr(result.requests, category)
+        assert report["translation"][category]["chars_to_translate"] == sum(
+            len(t) for t in requested
+        )
+    assert report["translation"]["names"]["chars_to_translate"] > 0
+    assert "| To translate (chars) |" in render_markdown(report)
+
+
 def test_unmapped_and_failed_pages_are_reported(tmp_path: Path) -> None:
     parsed = tmp_path / "parsed"
     bad = write_parsed_fixture(parsed, "card_magic.html")
@@ -104,7 +115,7 @@ def test_markdown_lists_sections_and_empty_state(tmp_path: Path) -> None:
 
 def test_markdown_lists_failed_pages() -> None:
     report = {
-        "schema_version": "1.0.0",
+        "schema_version": "1.1.0",
         "engine": "null",
         "pages": {"written": 0, "failed": ["batspi/x.json"]},
         "unmapped": {"closed": [], "warnings": []},
@@ -113,6 +124,7 @@ def test_markdown_lists_failed_pages() -> None:
             c: {
                 "distinct": 0,
                 "from_glossary_or_batspi": 0,
+                "chars_to_translate": 0,
                 "machine": 0,
                 "pending": 0,
                 "failed": 0,
@@ -145,7 +157,7 @@ def test_second_run_report_is_byte_equal_and_makes_no_engine_calls(tmp_path: Pat
 
 def test_markdown_escapes_table_cells() -> None:
     report = {
-        "schema_version": "1.0.0",
+        "schema_version": "1.1.0",
         "engine": "null",
         "pages": {"written": 1, "failed": []},
         "unmapped": {
@@ -159,6 +171,7 @@ def test_markdown_escapes_table_cells() -> None:
             c: {
                 "distinct": 0,
                 "from_glossary_or_batspi": 0,
+                "chars_to_translate": 0,
                 "machine": 0,
                 "pending": 0,
                 "failed": 0,

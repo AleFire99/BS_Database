@@ -101,7 +101,7 @@ Exit 1 when a page failed (a closed unmapped term or an unreadable file), the gl
 ```text
 {schema_version, engine, pages: {written, failed: [paths]},
  unmapped: {closed: [Term], warnings: [Term]}, uncurated: [Term],
- translation: {families|names|products: {distinct, from_glossary_or_batspi, machine, pending, failed}}}
+ translation: {families|names|products: {distinct, from_glossary_or_batspi, chars_to_translate, machine, pending, failed}}}
 Term = {kind, jp, pages, samples: [up to 5 sorted URLs]}
 ```
 
