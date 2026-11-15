@@ -1,0 +1,743 @@
+{
+  "schema_version": "1.0.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E7%A0%B2%E5%87%B0%E7%AB%9C%E3%83%95%E3%82%A7%E3%83%8B%E3%83%83%E3%82%AF%E3%83%BB%E3%82%AD%E3%83%A3%E3%83%8E%E3%83%B3",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E7%A0%B2%E5%87%B0%E7%AB%9C%E3%83%95%E3%82%A7%E3%83%8B%E3%83%83%E3%82%AF%E3%83%BB%E3%82%AD%E3%83%A3%E3%83%8E%E3%83%B3",
+    "title_jp": "砲凰竜フェニック・キャノン",
+    "entries": [
+      {
+        "number": "BS10-062",
+        "name_jp": "砲凰竜フェニック・キャノン",
+        "name_en": "The GunDragon Phoenix-Cannon",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "ブレイヴ",
+          "card_type_code": "brave",
+          "deck_limit": null,
+          "cost": 5,
+          "reduction": {
+            "plain": null,
+            "parts": [
+              {
+                "symbol_jp": "赤",
+                "symbol_code": "red",
+                "count": 2
+              },
+              {
+                "symbol_jp": "白",
+                "symbol_code": "white",
+                "count": 2
+              }
+            ]
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [],
+          "families": [
+            {
+              "jp": "機竜",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "jp": "星魂",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 3000
+            }
+          ],
+          "fusion_bp_bonus": 3000,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このブレイヴの召喚時』",
+              "header_jp": "Lv1『このブレイヴの召喚時』",
+              "text_jp": "BP4000以下の相手のスピリット2体を破壊する。\nまたは、BP4000以下の相手のスピリット1体と相手のネクサス1つを破壊する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "合体時",
+                  "code": "gattai_ji",
+                  "parameter_jp": null
+                },
+                {
+                  "bracket": "【",
+                  "name_jp": "激突",
+                  "code": "gekitotsu",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "【合体時】【激突】『このスピリットのアタック時』",
+              "text_jp": "相手は可能ならスピリットでブロックする。\nただし、アルティメットでブロックしてもよい。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [
+            "合体条件：コスト3以上"
+          ],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "斉藤和衛",
+              "note": null
+            }
+          ],
+          "concepts": [
+            {
+              "name": "石垣純哉",
+              "note": null
+            }
+          ],
+          "flavor_jp": "星空の闇と静寂を切り裂く業火。正に炎のブレイヴ。\n―星文学者リリア『八十八星夜話』鳳凰座―",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      },
+      {
+        "number": "BS38-RV022",
+        "name_jp": "砲凰竜フェニック・キャノン",
+        "name_en": "The GunDragon Phoenix-Cannon",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "ブレイヴ",
+          "card_type_code": "brave",
+          "deck_limit": null,
+          "cost": 5,
+          "reduction": {
+            "plain": null,
+            "parts": [
+              {
+                "symbol_jp": "赤",
+                "symbol_code": "red",
+                "count": 2
+              },
+              {
+                "symbol_jp": "白",
+                "symbol_code": "white",
+                "count": 2
+              }
+            ]
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "異魔神",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "jp": "星魂",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "jp": "機竜",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 0,
+              "battle_points": 3000
+            }
+          ],
+          "fusion_bp_bonus": 3000,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このブレイヴは、疲労せず、スピリット状態のとき、アタックとブロックができない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このブレイヴの召喚時』",
+              "header_jp": "Lv1『このブレイヴの召喚時』",
+              "text_jp": "BP7000以下の相手のスピリット1体と、相手のネクサス1つを破壊する。\nまたは、自分の手札にある赤の異魔神ブレイヴカード1枚を、コストを支払わずに召喚できる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [
+            "右合体条件：コスト5以上",
+            "左合体条件：コスト3以上"
+          ],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "斉藤和衛",
+              "note": null
+            },
+            {
+              "name": "SUNRISE D.I.D.",
+              "note": null
+            }
+          ],
+          "concepts": [
+            {
+              "name": "石垣純哉",
+              "note": null
+            }
+          ],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "砲凰竜フェニック・キャノン",
+        "field": "symbols",
+        "values": [
+          [
+            "BS10-062",
+            "()"
+          ],
+          [
+            "BS38-RV022",
+            "(SymbolCount(symbol='赤', count=1),)"
+          ]
+        ]
+      },
+      {
+        "name_jp": "砲凰竜フェニック・キャノン",
+        "field": "families",
+        "values": [
+          [
+            "BS10-062",
+            "('機竜', '星魂')"
+          ],
+          [
+            "BS38-RV022",
+            "('異魔神', '星魂', '機竜')"
+          ]
+        ]
+      },
+      {
+        "name_jp": "砲凰竜フェニック・キャノン",
+        "field": "levels",
+        "values": [
+          [
+            "BS10-062",
+            "(Level(level=1, cores=1, battle_points=3000),)"
+          ],
+          [
+            "BS38-RV022",
+            "(Level(level=1, cores=0, battle_points=3000),)"
+          ]
+        ]
+      },
+      {
+        "name_jp": "砲凰竜フェニック・キャノン",
+        "field": "effects",
+        "values": [
+          [
+            "BS10-062",
+            "(Effect(position=1, form='header', levels=(1,), label=None, keywords=(), timing='『このブレイヴの召喚時』', header='Lv1『このブレイヴの召喚時』', text='BP4000以下の相手のスピリット2体を破壊する。\\nまたは、BP4000以下の相手のスピリット1体と相手のネクサス1つを破壊する。'), Effect(position=2, form='header', levels=(), label=None, keywords=(Keyword(bracket='【', name='合体時', parameter=None), Keyword(bracket='【', name='激突', parameter=None)), timing='『このスピリットのアタック時』', header='【合体時】【激突】『このスピリットのアタック時』', text='相手は可能ならスピリットでブロックする。\\nただし、アルティメットでブロックしてもよい。'))"
+          ],
+          [
+            "BS38-RV022",
+            "(Effect(position=1, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='このブレイヴは、疲労せず、スピリット状態のとき、アタックとブロックができない。'), Effect(position=2, form='header', levels=(1,), label=None, keywords=(), timing='『このブレイヴの召喚時』', header='Lv1『このブレイヴの召喚時』', text='BP7000以下の相手のスピリット1体と、相手のネクサス1つを破壊する。\\nまたは、自分の手札にある赤の異魔神ブレイヴカード1枚を、コストを支払わずに召喚できる。'))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "砲凰竜フェニック・キャノン",
+        "field": "fusion_conditions",
+        "values": [
+          [
+            "BS10-062",
+            "('合体条件：コスト3以上',)"
+          ],
+          [
+            "BS38-RV022",
+            "('右合体条件：コスト5以上', '左合体条件：コスト3以上')"
+          ]
+        ]
+      },
+      {
+        "name_jp": "砲凰竜フェニック・キャノン",
+        "field": "flavor",
+        "values": [
+          [
+            "BS10-062",
+            "'星空の闇と静寂を切り裂く業火。正に炎のブレイヴ。\\n―星文学者リリア『八十八星夜話』鳳凰座―'"
+          ],
+          [
+            "BS38-RV022",
+            "None"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "BS10-062",
+        "product_name_jp": "星座編 第一弾：八星龍降臨",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E6%98%9F%E5%BA%A7%E7%B7%A8%20%E7%AC%AC%E4%B8%80%E5%BC%BE%EF%BC%9A%E5%85%AB%E6%98%9F%E9%BE%8D%E9%99%8D%E8%87%A8",
+        "product_code": "BS10",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2010-11-12",
+        "section": "収録"
+      },
+      {
+        "number": "BS10-062",
+        "product_name_jp": "馬神ダンデッキ ブレイヴセンチュリオン",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E9%A6%AC%E7%A5%9E%E3%83%80%E3%83%B3%E3%83%87%E3%83%83%E3%82%AD%20%E3%83%96%E3%83%AC%E3%82%A4%E3%83%B4%E3%82%BB%E3%83%B3%E3%83%81%E3%83%A5%E3%83%AA%E3%82%AA%E3%83%B3",
+        "product_code": "SD03C",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2011-04-08",
+        "section": "収録"
+      },
+      {
+        "number": "BS10-062",
+        "product_name_jp": "はじめてのバトルセット 【VSハイランカー】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AE%E3%83%90%E3%83%88%E3%83%AB%E3%82%BB%E3%83%83%E3%83%88%20%E3%80%90VS%E3%83%8F%E3%82%A4%E3%83%A9%E3%83%B3%E3%82%AB%E3%83%BC%E3%80%91",
+        "product_code": "SD09",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2012-03-23",
+        "section": "収録"
+      },
+      {
+        "number": "BS10-062",
+        "product_name_jp": "星座編12宮ブースター【前編】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E6%98%9F%E5%BA%A7%E7%B7%A812%E5%AE%AE%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90%E5%89%8D%E7%B7%A8%E3%80%91",
+        "product_code": "BSC11",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2012-08-10",
+        "section": "収録"
+      },
+      {
+        "number": "BS10-062",
+        "product_name_jp": "はじめてのバトルセット【決めろ!アルティメットトリガー】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AE%E3%83%90%E3%83%88%E3%83%AB%E3%82%BB%E3%83%83%E3%83%88%E3%80%90%E6%B1%BA%E3%82%81%E3%82%8D%21%E3%82%A2%E3%83%AB%E3%83%86%E3%82%A3%E3%83%A1%E3%83%83%E3%83%88%E3%83%88%E3%83%AA%E3%82%AC%E3%83%BC%E3%80%91",
+        "product_code": "SD21",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2013-09-14",
+        "section": "収録"
+      },
+      {
+        "number": "BS10-062",
+        "product_name_jp": "バトルスピリッツ チャンピオンシップ2013メモリアルデッキセット",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%20%E3%83%81%E3%83%A3%E3%83%B3%E3%83%94%E3%82%AA%E3%83%B3%E3%82%B7%E3%83%83%E3%83%972013%E3%83%A1%E3%83%A2%E3%83%AA%E3%82%A2%E3%83%AB%E3%83%87%E3%83%83%E3%82%AD%E3%82%BB%E3%83%83%E3%83%88",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2014-03-20",
+        "section": "収録"
+      },
+      {
+        "number": "BS10-062",
+        "product_name_jp": "スペシャルデッキセット【12宮Xレアの輝き】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%B9%E3%83%9A%E3%82%B7%E3%83%A3%E3%83%AB%E3%83%87%E3%83%83%E3%82%AD%E3%82%BB%E3%83%83%E3%83%88%E3%80%9012%E5%AE%AEX%E3%83%AC%E3%82%A2%E3%81%AE%E8%BC%9D%E3%81%8D%E3%80%91",
+        "product_code": "SD27",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2014-11-15",
+        "section": "収録"
+      },
+      {
+        "number": "BS10-062",
+        "product_name_jp": "バトスピビギニングセット【烈火出陣】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E3%83%93%E3%82%AE%E3%83%8B%E3%83%B3%E3%82%B0%E3%82%BB%E3%83%83%E3%83%88%E3%80%90%E7%83%88%E7%81%AB%E5%87%BA%E9%99%A3%E3%80%91",
+        "product_code": "SD30",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "2",
+        "release_date": "2015-04-11",
+        "section": "収録"
+      },
+      {
+        "number": "BS10-062",
+        "product_name_jp": "バトスピ大好き声優の生放送！ 5th MEMORIALBOX",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E5%A4%A7%E5%A5%BD%E3%81%8D%E5%A3%B0%E5%84%AA%E3%81%AE%E7%94%9F%E6%94%BE%E9%80%81%EF%BC%81%205th%20MEMORIALBOX",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "2",
+        "release_date": "2015-12-21",
+        "section": "収録"
+      },
+      {
+        "number": "BS38-RV022",
+        "product_name_jp": "十二神皇編 第4章",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E5%8D%81%E4%BA%8C%E7%A5%9E%E7%9A%87%E7%B7%A8%20%E7%AC%AC4%E7%AB%A0",
+        "product_code": "BS38",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "3",
+        "release_date": "2016-12-17",
+        "section": "収録"
+      },
+      {
+        "number": "BS38-RV022",
+        "product_name_jp": "バトルスピリッツウエハース～雷皇復活～",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%E3%82%A6%E3%82%A8%E3%83%8F%E3%83%BC%E3%82%B9%EF%BD%9E%E9%9B%B7%E7%9A%87%E5%BE%A9%E6%B4%BB%EF%BD%9E",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "4",
+        "release_date": "2017-11-14",
+        "section": "収録"
+      },
+      {
+        "number": "BS38-RV022",
+        "product_name_jp": "メガデッキ【灼熱の神皇】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%A1%E3%82%AC%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E7%81%BC%E7%86%B1%E3%81%AE%E7%A5%9E%E7%9A%87%E3%80%91",
+        "product_code": "SD46",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "5",
+        "release_date": "2018-12-08",
+        "section": "収録"
+      },
+      {
+        "number": "BS38-RV022",
+        "product_name_jp": "GREATEST RECORD 2020",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?GREATEST%20RECORD%202020",
+        "product_code": "BSC36",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": "パラレルあり",
+        "variant_code": "parallel",
+        "detail_jp": null,
+        "note_jp": "パラレルあり",
+        "block_icon": "7",
+        "release_date": "2020-07-25",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS10-062",
+        "large_url": "https://batspi.com/card/BS1/BS10-062.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS10-062.jpg",
+        "caption": [
+          "星座編 第一弾：八星龍降臨"
+        ]
+      },
+      {
+        "number": "BS10-062",
+        "large_url": "https://batspi.com/card/BS1/BS10-062-3.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS10-062-3.jpg",
+        "caption": [
+          "星座編12宮ブースター【前編】"
+        ]
+      },
+      {
+        "number": "BS10-062",
+        "large_url": "https://batspi.com/card/BS1/BS10-062-2.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS10-062-2.jpg",
+        "caption": [
+          "はじめてのバトルセット 【VSハイランカー】"
+        ]
+      },
+      {
+        "number": "BS10-062",
+        "large_url": "https://batspi.com/card/BS1/BS10-062-4.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS10-062-4.jpg",
+        "caption": [
+          "はじめてのバトルセット【決めろ!アルティメットトリガー】",
+          "リクトデッキ"
+        ]
+      },
+      {
+        "number": "BS10-062",
+        "large_url": "https://batspi.com/card/BS1/BS10-062-6.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS10-062-6.jpg",
+        "caption": [
+          "スペシャルデッキセット【12宮Xレアの輝き】"
+        ]
+      },
+      {
+        "number": "BS10-062",
+        "large_url": "https://batspi.com/card/BS1/BS10-062-7.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS10-062-7.jpg",
+        "caption": [
+          "バトスピビギニングセット【烈火出陣】"
+        ]
+      },
+      {
+        "number": "BS10-062",
+        "large_url": "https://batspi.com/card/BS1/BS10-062-5.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS10-062-5.jpg",
+        "caption": [
+          "ギャラクシーカップチャンピオンデッキ"
+        ]
+      },
+      {
+        "number": "BS10-062",
+        "large_url": "https://batspi.com/card/BS1/BS10-062-8.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS10-062-8.jpg",
+        "caption": [
+          "諏訪部順一デッキ【赤竜★パーリナイデッキ】"
+        ]
+      },
+      {
+        "number": "BS38-RV022",
+        "large_url": "https://batspi.com/card/BS3/BS38-RV022.jpg",
+        "small_url": "https://batspi.com/card/BS3/small/BS38-RV022.jpg",
+        "caption": [
+          "十二神皇編 第4章"
+        ]
+      },
+      {
+        "number": "BS38-RV022",
+        "large_url": "https://batspi.com/card/BS3/BS38-RV022-4.jpg",
+        "small_url": "https://batspi.com/card/BS3/small/BS38-RV022-4.jpg",
+        "caption": [
+          "GREATEST RECORD 2020"
+        ]
+      },
+      {
+        "number": "BS38-RV022",
+        "large_url": "https://batspi.com/card/BS3/BS38-RV022-5.jpg",
+        "small_url": "https://batspi.com/card/BS3/small/BS38-RV022-5.jpg",
+        "caption": [
+          "GREATEST RECORD 2020",
+          "シークレット"
+        ]
+      },
+      {
+        "number": "BS38-RV022",
+        "large_url": "https://batspi.com/card/BS3/BS38-RV022-3.jpg",
+        "small_url": "https://batspi.com/card/BS3/small/BS38-RV022-3.jpg",
+        "caption": [
+          "メガデッキ【灼熱の神皇】"
+        ]
+      },
+      {
+        "number": "BS38-RV022",
+        "large_url": "https://batspi.com/card/BS3/BS38-RV022-2.jpg",
+        "small_url": "https://batspi.com/card/BS3/small/BS38-RV022-2.jpg",
+        "caption": []
+      }
+    ],
+    "unmapped": [
+      {
+        "kind": "families",
+        "jp": "星魂",
+        "number": "BS10-062"
+      },
+      {
+        "kind": "families",
+        "jp": "星魂",
+        "number": "BS38-RV022"
+      },
+      {
+        "kind": "families",
+        "jp": "機竜",
+        "number": "BS10-062"
+      },
+      {
+        "kind": "families",
+        "jp": "機竜",
+        "number": "BS38-RV022"
+      },
+      {
+        "kind": "families",
+        "jp": "異魔神",
+        "number": "BS38-RV022"
+      }
+    ]
+  }
+}

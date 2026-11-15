@@ -1,0 +1,190 @@
+{
+  "schema_version": "1.0.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E5%85%89%E7%88%AA%E3%81%AE%E6%AD%A6%E8%8A%B8%E8%80%85%E3%83%98%E3%83%AB%E3%83%8F%E3%82%A6%E3%83%B3%E3%83%89",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E5%85%89%E7%88%AA%E3%81%AE%E6%AD%A6%E8%8A%B8%E8%80%85%E3%83%98%E3%83%AB%E3%83%8F%E3%82%A6%E3%83%B3%E3%83%89",
+    "title_jp": "光爪の武芸者ヘルハウンド",
+    "entries": [
+      {
+        "number": "BS72-007",
+        "name_jp": "光爪の武芸者ヘルハウンド",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": null,
+            "parts": [
+              {
+                "symbol_jp": "赤",
+                "symbol_code": "red",
+                "count": 2
+              },
+              {
+                "symbol_jp": "神",
+                "symbol_code": "god",
+                "count": 1
+              }
+            ]
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "眷属",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "jp": "武迅",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 3000
+            },
+            {
+              "level": 2,
+              "cores": 3,
+              "battle_points": 7000
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『自分のアタックステップ開始時』",
+              "header_jp": "Lv1・Lv2『自分のアタックステップ開始時』",
+              "text_jp": "自分の「契約神ルー」すべてのブレイヴ1つにつき、自分のトラッシュの[ソウルコア]以外のコア2個を系統：「武迅」を持つスピリット/ネクサスに好きなだけ置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『自分のアタックステップ』",
+              "header_jp": "Lv2『自分のアタックステップ』",
+              "text_jp": "系統：「武迅」を持つ自分のスピリットがアタックしたとき、自分の創界神ネクサス1つにコア+1できる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "伊藤正市",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "ルーの下に集った武芸者たちは、各々自慢の武器を携えている。その武器\nで戦うのは大型のスピリット。彼らの誉れはスピリットの討伐である。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "BS72-007",
+        "product_name_jp": "契約編：環 第1章：廻帰再醒",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%92%B0%20%E7%AC%AC1%E7%AB%A0%EF%BC%9A%E5%BB%BB%E5%B8%B0%E5%86%8D%E9%86%92",
+        "product_code": "BS72",
+        "product_type_code": null,
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": "SECRETあり",
+        "variant_code": "secret",
+        "detail_jp": null,
+        "note_jp": "SECRETあり",
+        "block_icon": "12",
+        "release_date": "2025-05-17",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS72-007",
+        "large_url": "https://batspi.com/card/BS7/BS72-007.jpg",
+        "small_url": "https://batspi.com/card/BS7/small/BS72-007.jpg",
+        "caption": [
+          "契約編：環 第1章：廻帰再醒"
+        ]
+      },
+      {
+        "number": "BS72-007",
+        "large_url": "https://batspi.com/card/BS7/BS72-007-2.jpg",
+        "small_url": "https://batspi.com/card/BS7/small/BS72-007-2.jpg",
+        "caption": [
+          "契約編：環 第1章：廻帰再醒",
+          "シークレット"
+        ]
+      }
+    ],
+    "unmapped": [
+      {
+        "kind": "families",
+        "jp": "武迅",
+        "number": "BS72-007"
+      },
+      {
+        "kind": "families",
+        "jp": "眷属",
+        "number": "BS72-007"
+      }
+    ]
+  }
+}

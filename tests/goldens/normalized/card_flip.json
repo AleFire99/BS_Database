@@ -1,0 +1,972 @@
+{
+  "schema_version": "1.0.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E8%B5%A4%E3%81%AE%E4%B8%96%E7%95%8C%EF%BC%8F%E8%B5%A4%E3%81%8D%E7%A5%9E%E9%BE%8D%E7%9A%87",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E8%B5%A4%E3%81%AE%E4%B8%96%E7%95%8C%EF%BC%8F%E8%B5%A4%E3%81%8D%E7%A5%9E%E9%BE%8D%E7%9A%87",
+    "title_jp": "赤の世界／赤き神龍皇",
+    "entries": [
+      {
+        "number": "BS52-TX01(A)",
+        "name_jp": "赤の世界",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "ネクサス",
+          "card_type_code": "nexus",
+          "deck_limit": 1,
+          "cost": 3,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "起幻",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 0,
+              "battle_points": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "《",
+                  "name_jp": "転醒",
+                  "code": "tensei",
+                  "parameter_jp": "自分のカウント5以下(転醒は同時に使えない)"
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "Lv1《転醒：自分のカウント5以下(転醒は同時に使えない)》",
+              "text_jp": "コスト5以上の自分の赤のスピリットがアタックしたか、このネクサスが相手の効果でフィールドを離れるとき、このネクサスに自分の[ソウルコア]を置いて裏返せる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このネクサスの配置時』",
+              "header_jp": "Lv1『このネクサスの配置時』",
+              "text_jp": "最もBPの低い相手のスピリット1体を破壊する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『自分のアタックステップ』",
+              "header_jp": "Lv1『自分のアタックステップ』",
+              "text_jp": "本来のコストが5以上の自分の赤1色のスピリットのバトル終了時、相手のライフのコア1個をリザーブに置く。\nこの効果は重複しない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "船弥さ吉",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "赤の世界は、竜が支配する炎渦巻く戦いの世界。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      },
+      {
+        "number": "BS52-TX01(B)",
+        "name_jp": "赤き神龍皇",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": 1,
+          "cost": 6,
+          "reduction": {
+            "plain": null,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "起幻",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "jp": "古竜",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 6000
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "この面に裏返ったとき、フィールドに残り、カウント+1する(ボイドからコア1個を自分のカウントエリアに置く)",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットの転醒時』",
+              "header_jp": "Lv1『このスピリットの転醒時』",
+              "text_jp": "BP10000以下の相手のスピリット1体を破壊する。\n自分のカウント2以上のとき、この「BP破壊効果」の上限を+10000する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "根幻回帰",
+                  "code": "kongen_kaiki",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "Lv1【根幻回帰】",
+              "text_jp": "相手の効果でフィールドを離れるとき、裏返して配置できる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 4,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "Lv1",
+              "text_jp": "本来のコストが5以上の自分の赤のスピリットすべてに赤シンボル1つを追加する。\nこの効果は重複しない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "船弥さ吉",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "赤の世界が生み出した、竜の中の竜の神。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      },
+      {
+        "number": "BS73-TCP01(A)",
+        "name_jp": "赤の世界",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "ネクサス",
+          "card_type_code": "nexus",
+          "deck_limit": 1,
+          "cost": 3,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "起幻",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "jp": "眷属",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 0,
+              "battle_points": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "《",
+                  "name_jp": "転醒",
+                  "code": "tensei",
+                  "parameter_jp": "自分のカウント6以下(転醒は同時に使えない)"
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "Lv1《転醒：自分のカウント6以下(転醒は同時に使えない)》",
+              "text_jp": "コスト5以上の自分の赤のスピリットがアタックしたか、このネクサスが相手の効果でフィールドを離れるとき、このネクサスに自分の[ソウルコア]を置いて裏返せる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このネクサスの配置時』",
+              "header_jp": "Lv1『このネクサスの配置時』",
+              "text_jp": "最もBPの低い相手のスピリット/アルティメット1体を破壊でき、破壊したとき、自分のカウント4以上なら、自分はデッキから1枚ドローする。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『自分のアタックステップ』",
+              "header_jp": "Lv1『自分のアタックステップ』",
+              "text_jp": "〔重複不可〕本来のコストが5以上の自分の赤1色のスピリットのバトル終了時、相手のライフのコア1個をリザーブに置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "船弥さ吉",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "赤の世界。強きものだけが生き残る弱肉強食の世界。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      },
+      {
+        "number": "BS73-TCP01(B)",
+        "name_jp": "赤き神龍皇",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": 1,
+          "cost": 6,
+          "reduction": {
+            "plain": null,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "起幻",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "jp": "眷属",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "jp": "古竜",
+              "code": null,
+              "en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 7000
+            },
+            {
+              "level": 2,
+              "cores": 3,
+              "battle_points": 10000
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "この面に裏返ったとき、フィールドに残り、カウント+1する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットの転醒/アタック時』",
+              "header_jp": "Lv1・Lv2『このスピリットの転醒/アタック時』",
+              "text_jp": "BP20000以下の相手のスピリット/アルティメット1体を破壊する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "根幻回帰",
+                  "code": "kongen_kaiki",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "Lv1・Lv2【根幻回帰】",
+              "text_jp": "相手の効果でフィールドを離れるとき、裏返して配置できる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 4,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "Lv1・Lv2",
+              "text_jp": "〔重複不可〕本来のコストが5以上の自分の赤のスピリットすべてに赤シンボル1つを追加する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "船弥さ吉",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "竜の神は、赤の世界に君臨する。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "赤の世界",
+        "field": "families",
+        "values": [
+          [
+            "BS52-TX01(A)",
+            "('起幻',)"
+          ],
+          [
+            "BS73-TCP01(A)",
+            "('起幻', '眷属')"
+          ]
+        ]
+      },
+      {
+        "name_jp": "赤の世界",
+        "field": "effects",
+        "values": [
+          [
+            "BS52-TX01(A)",
+            "(Effect(position=1, form='header', levels=(1,), label=None, keywords=(Keyword(bracket='《', name='転醒', parameter='自分のカウント5以下(転醒は同時に使えない)'),), timing=None, header='Lv1《転醒：自分のカウント5以下(転醒は同時に使えない)》', text='コスト5以上の自分の赤のスピリットがアタックしたか、このネクサスが相手の効果でフィールドを離れるとき、このネクサスに自分の[ソウルコア]を置いて裏返せる。'), Effect(position=2, form='header', levels=(1,), label=None, keywords=(), timing='『このネクサスの配置時』', header='Lv1『このネクサスの配置時』', text='最もBPの低い相手のスピリット1体を破壊する。'), Effect(position=3, form='header', levels=(1,), label=None, keywords=(), timing='『自分のアタックステップ』', header='Lv1『自分のアタックステップ』', text='本来のコストが5以上の自分の赤1色のスピリットのバトル終了時、相手のライフのコア1個をリザーブに置く。\\nこの効果は重複しない。'))"
+          ],
+          [
+            "BS73-TCP01(A)",
+            "(Effect(position=1, form='header', levels=(1,), label=None, keywords=(Keyword(bracket='《', name='転醒', parameter='自分のカウント6以下(転醒は同時に使えない)'),), timing=None, header='Lv1《転醒：自分のカウント6以下(転醒は同時に使えない)》', text='コスト5以上の自分の赤のスピリットがアタックしたか、このネクサスが相手の効果でフィールドを離れるとき、このネクサスに自分の[ソウルコア]を置いて裏返せる。'), Effect(position=2, form='header', levels=(1,), label=None, keywords=(), timing='『このネクサスの配置時』', header='Lv1『このネクサスの配置時』', text='最もBPの低い相手のスピリット/アルティメット1体を破壊でき、破壊したとき、自分のカウント4以上なら、自分はデッキから1枚ドローする。'), Effect(position=3, form='header', levels=(1,), label=None, keywords=(), timing='『自分のアタックステップ』', header='Lv1『自分のアタックステップ』', text='〔重複不可〕本来のコストが5以上の自分の赤1色のスピリットのバトル終了時、相手のライフのコア1個をリザーブに置く。'))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "赤の世界",
+        "field": "flavor",
+        "values": [
+          [
+            "BS52-TX01(A)",
+            "'赤の世界は、竜が支配する炎渦巻く戦いの世界。'"
+          ],
+          [
+            "BS73-TCP01(A)",
+            "'赤の世界。強きものだけが生き残る弱肉強食の世界。'"
+          ]
+        ]
+      },
+      {
+        "name_jp": "赤き神龍皇",
+        "field": "families",
+        "values": [
+          [
+            "BS52-TX01(B)",
+            "('起幻', '古竜')"
+          ],
+          [
+            "BS73-TCP01(B)",
+            "('起幻', '眷属', '古竜')"
+          ]
+        ]
+      },
+      {
+        "name_jp": "赤き神龍皇",
+        "field": "levels",
+        "values": [
+          [
+            "BS52-TX01(B)",
+            "(Level(level=1, cores=1, battle_points=6000),)"
+          ],
+          [
+            "BS73-TCP01(B)",
+            "(Level(level=1, cores=1, battle_points=7000), Level(level=2, cores=3, battle_points=10000))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "赤き神龍皇",
+        "field": "effects",
+        "values": [
+          [
+            "BS52-TX01(B)",
+            "(Effect(position=1, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='この面に裏返ったとき、フィールドに残り、カウント+1する(ボイドからコア1個を自分のカウントエリアに置く)'), Effect(position=2, form='header', levels=(1,), label=None, keywords=(), timing='『このスピリットの転醒時』', header='Lv1『このスピリットの転醒時』', text='BP10000以下の相手のスピリット1体を破壊する。\\n自分のカウント2以上のとき、この「BP破壊効果」の上限を+10000する。'), Effect(position=3, form='header', levels=(1,), label=None, keywords=(Keyword(bracket='【', name='根幻回帰', parameter=None),), timing=None, header='Lv1【根幻回帰】', text='相手の効果でフィールドを離れるとき、裏返して配置できる。'), Effect(position=4, form='header', levels=(1,), label=None, keywords=(), timing=None, header='Lv1', text='本来のコストが5以上の自分の赤のスピリットすべてに赤シンボル1つを追加する。\\nこの効果は重複しない。'))"
+          ],
+          [
+            "BS73-TCP01(B)",
+            "(Effect(position=1, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='この面に裏返ったとき、フィールドに残り、カウント+1する。'), Effect(position=2, form='header', levels=(1, 2), label=None, keywords=(), timing='『このスピリットの転醒/アタック時』', header='Lv1・Lv2『このスピリットの転醒/アタック時』', text='BP20000以下の相手のスピリット/アルティメット1体を破壊する。'), Effect(position=3, form='header', levels=(1, 2), label=None, keywords=(Keyword(bracket='【', name='根幻回帰', parameter=None),), timing=None, header='Lv1・Lv2【根幻回帰】', text='相手の効果でフィールドを離れるとき、裏返して配置できる。'), Effect(position=4, form='header', levels=(1, 2), label=None, keywords=(), timing=None, header='Lv1・Lv2', text='〔重複不可〕本来のコストが5以上の自分の赤のスピリットすべてに赤シンボル1つを追加する。'))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "赤き神龍皇",
+        "field": "flavor",
+        "values": [
+          [
+            "BS52-TX01(B)",
+            "'赤の世界が生み出した、竜の中の竜の神。'"
+          ],
+          [
+            "BS73-TCP01(B)",
+            "'竜の神は、赤の世界に君臨する。'"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "BS52-TX01(A)",
+        "product_name_jp": "転醒編 第1章：輪廻転生",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E8%BB%A2%E9%86%92%E7%B7%A8%20%E7%AC%AC1%E7%AB%A0%EF%BC%9A%E8%BC%AA%E5%BB%BB%E8%BB%A2%E7%94%9F",
+        "product_code": "BS52",
+        "product_type_code": null,
+        "rarity_jp": "転醒X",
+        "rarity_code": "TX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "7",
+        "release_date": "2020-04-25",
+        "section": "収録"
+      },
+      {
+        "number": "BS52-TX01(B)",
+        "product_name_jp": "転醒編 第1章：輪廻転生",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E8%BB%A2%E9%86%92%E7%B7%A8%20%E7%AC%AC1%E7%AB%A0%EF%BC%9A%E8%BC%AA%E5%BB%BB%E8%BB%A2%E7%94%9F",
+        "product_code": "BS52",
+        "product_type_code": null,
+        "rarity_jp": "転醒X",
+        "rarity_code": "TX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "7",
+        "release_date": "2020-04-25",
+        "section": "収録"
+      },
+      {
+        "number": "BS52-TX01(A)",
+        "product_name_jp": "Xレアパック2021",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?X%E3%83%AC%E3%82%A2%E3%83%91%E3%83%83%E3%82%AF2021",
+        "product_code": "BSC38",
+        "product_type_code": null,
+        "rarity_jp": "転醒X",
+        "rarity_code": "TX",
+        "variant_jp": "パラレルあり",
+        "variant_code": "parallel",
+        "detail_jp": null,
+        "note_jp": "パラレルあり",
+        "block_icon": "8",
+        "release_date": "2021-05-29",
+        "section": "収録"
+      },
+      {
+        "number": "BS52-TX01(B)",
+        "product_name_jp": "Xレアパック2021",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?X%E3%83%AC%E3%82%A2%E3%83%91%E3%83%83%E3%82%AF2021",
+        "product_code": "BSC38",
+        "product_type_code": null,
+        "rarity_jp": "転醒X",
+        "rarity_code": "TX",
+        "variant_jp": "パラレルあり",
+        "variant_code": "parallel",
+        "detail_jp": null,
+        "note_jp": "パラレルあり",
+        "block_icon": "8",
+        "release_date": "2021-05-29",
+        "section": "収録"
+      },
+      {
+        "number": "BS52-TX01(A)",
+        "product_name_jp": "メガデッキ【光主の共鳴】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%A1%E3%82%AC%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E5%85%89%E4%B8%BB%E3%81%AE%E5%85%B1%E9%B3%B4%E3%80%91",
+        "product_code": "SD63",
+        "product_type_code": null,
+        "rarity_jp": "転醒X",
+        "rarity_code": "TX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "8",
+        "release_date": "2022-03-26",
+        "section": "収録"
+      },
+      {
+        "number": "BS52-TX01(B)",
+        "product_name_jp": "メガデッキ【光主の共鳴】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%A1%E3%82%AC%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E5%85%89%E4%B8%BB%E3%81%AE%E5%85%B1%E9%B3%B4%E3%80%91",
+        "product_code": "SD63",
+        "product_type_code": null,
+        "rarity_jp": "転醒X",
+        "rarity_code": "TX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "8",
+        "release_date": "2022-03-26",
+        "section": "収録"
+      },
+      {
+        "number": "BS73-TCP01(A)",
+        "product_name_jp": "契約編：環 第2章：天地転世",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%92%B0%20%E7%AC%AC2%E7%AB%A0%EF%BC%9A%E5%A4%A9%E5%9C%B0%E8%BB%A2%E4%B8%96",
+        "product_code": "BS73",
+        "product_type_code": null,
+        "rarity_jp": "CP",
+        "rarity_code": "CP",
+        "variant_jp": "SECRETあり",
+        "variant_code": "secret",
+        "detail_jp": null,
+        "note_jp": "SECRETあり",
+        "block_icon": "12",
+        "release_date": "2025-08-30",
+        "section": "収録"
+      },
+      {
+        "number": "BS73-TCP01(B)",
+        "product_name_jp": "契約編：環 第2章：天地転世",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%92%B0%20%E7%AC%AC2%E7%AB%A0%EF%BC%9A%E5%A4%A9%E5%9C%B0%E8%BB%A2%E4%B8%96",
+        "product_code": "BS73",
+        "product_type_code": null,
+        "rarity_jp": "CP",
+        "rarity_code": "CP",
+        "variant_jp": "SECRETあり",
+        "variant_code": "secret",
+        "detail_jp": null,
+        "note_jp": "SECRETあり",
+        "block_icon": "12",
+        "release_date": "2025-08-30",
+        "section": "収録"
+      },
+      {
+        "number": "BS73-TCP01(A)",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "12",
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "BS73-TCP01(B)",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "12",
+        "release_date": null,
+        "section": "ブロックアイコン"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS52-TX01(A)",
+        "large_url": "https://batspi.com/card/BS5/BS52-TX01A.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS52-TX01A.jpg",
+        "caption": [
+          "転醒編 第1章：輪廻転生"
+        ]
+      },
+      {
+        "number": "BS52-TX01(A)",
+        "large_url": "https://batspi.com/card/BS5/BS52-TX01A-2.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS52-TX01A-2.jpg",
+        "caption": [
+          "Xレアパック2021"
+        ]
+      },
+      {
+        "number": "BS52-TX01(A)",
+        "large_url": "https://batspi.com/card/BS5/BS52-TX01A-3.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS52-TX01A-3.jpg",
+        "caption": [
+          "メガデッキ【光主の共鳴】"
+        ]
+      },
+      {
+        "number": "BS52-TX01(B)",
+        "large_url": "https://batspi.com/card/BS5/BS52-TX01B.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS52-TX01B.jpg",
+        "caption": [
+          "転醒編 第1章：輪廻転生"
+        ]
+      },
+      {
+        "number": "BS52-TX01(B)",
+        "large_url": "https://batspi.com/card/BS5/BS52-TX01B-2.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS52-TX01B-2.jpg",
+        "caption": [
+          "Xレアパック2021"
+        ]
+      },
+      {
+        "number": "BS52-TX01(B)",
+        "large_url": "https://batspi.com/card/BS5/BS52-TX01B-3.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS52-TX01B-3.jpg",
+        "caption": [
+          "メガデッキ【光主の共鳴】"
+        ]
+      },
+      {
+        "number": "BS73-TCP01(A)",
+        "large_url": "https://batspi.com/card/BS7/BS73-TCP01A.jpg",
+        "small_url": "https://batspi.com/card/BS7/small/BS73-TCP01A.jpg",
+        "caption": [
+          "契約編：環 第2章：天地転世"
+        ]
+      },
+      {
+        "number": "BS73-TCP01(A)",
+        "large_url": "https://batspi.com/card/BS7/BS73-TCP01A-2.jpg",
+        "small_url": "https://batspi.com/card/BS7/small/BS73-TCP01A-2.jpg",
+        "caption": [
+          "契約編：環 第2章：天地転世",
+          "シークレット"
+        ]
+      },
+      {
+        "number": "BS73-TCP01(B)",
+        "large_url": "https://batspi.com/card/BS7/BS73-TCP01B.jpg",
+        "small_url": "https://batspi.com/card/BS7/small/BS73-TCP01B.jpg",
+        "caption": [
+          "契約編：環 第2章：天地転世"
+        ]
+      },
+      {
+        "number": "BS73-TCP01(B)",
+        "large_url": "https://batspi.com/card/BS7/BS73-TCP01B-2.jpg",
+        "small_url": "https://batspi.com/card/BS7/small/BS73-TCP01B-2.jpg",
+        "caption": [
+          "契約編：環 第2章：天地転世",
+          "シークレット"
+        ]
+      }
+    ],
+    "unmapped": [
+      {
+        "kind": "families",
+        "jp": "古竜",
+        "number": "BS52-TX01(B)"
+      },
+      {
+        "kind": "families",
+        "jp": "古竜",
+        "number": "BS73-TCP01(B)"
+      },
+      {
+        "kind": "families",
+        "jp": "眷属",
+        "number": "BS73-TCP01(A)"
+      },
+      {
+        "kind": "families",
+        "jp": "眷属",
+        "number": "BS73-TCP01(B)"
+      },
+      {
+        "kind": "families",
+        "jp": "起幻",
+        "number": "BS52-TX01(A)"
+      },
+      {
+        "kind": "families",
+        "jp": "起幻",
+        "number": "BS52-TX01(B)"
+      },
+      {
+        "kind": "families",
+        "jp": "起幻",
+        "number": "BS73-TCP01(A)"
+      },
+      {
+        "kind": "families",
+        "jp": "起幻",
+        "number": "BS73-TCP01(B)"
+      }
+    ]
+  }
+}

@@ -6,7 +6,8 @@ from pathlib import Path
 
 from bs_database.glossary import Glossary, load_glossary
 from bs_database.ingest.cache import CachedPage
-from bs_database.ingest.parsed_store import write_card_json
+from bs_database.ingest.parsed_store import parsed_path, write_card_json
+from bs_database.normalize.pipeline import normalize_tree
 from bs_database.parsers.batspi.card import parse_card_page
 from bs_database.parsers.card_models import CardPage
 
@@ -44,3 +45,29 @@ def write_parsed_fixture(parsed_dir: Path, name: str) -> Path:
     content = (HTML_DIR / name).read_bytes()
     cached = CachedPage(page.url, "batspi", content, 200, FETCHED, True)
     return write_card_json(parsed_dir, page, cached)
+
+
+NORMALIZED_GOLDENS = Path(__file__).parent / "goldens" / "normalized"
+REGEN_COMMAND = "uv run python tests/tools/regen_normalized_goldens.py"
+
+
+def normalized_documents(work_dir: Path) -> dict[str, str]:
+    """Run html, parse, parsed store and ``normalize_tree`` for every card fixture.
+
+    Returns ``{fixture name: normalized JSON text}``. ``work_dir`` must be empty and writable.
+    """
+
+    parsed, normalized = work_dir / "parsed", work_dir / "normalized"
+    names = card_fixture_names()
+    for name in names:
+        write_parsed_fixture(parsed, name)
+    normalize_tree(parsed, normalized, real_glossary())
+    return {
+        name: parsed_path(normalized, "batspi", fixture_url(name)).read_text(encoding="utf-8")
+        for name in names
+    }
+
+
+def golden_path(name: str) -> Path:
+    """Golden file of a fixture, e.g. ``card_spirit.html`` -> ``card_spirit.json``."""
+    return NORMALIZED_GOLDENS / f"{Path(name).stem}.json"
