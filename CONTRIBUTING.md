@@ -154,6 +154,10 @@ Use the issue forms: **Epic**, **Task** (always has a parent epic), **Bug** and 
 - `priority:P0`–`P3`
 - `status:*`: blocked, needs-info, awaiting-approval
 
+### Milestones
+
+A milestone is a release target named `vX.Y.Z`; its description gives the release theme. An epic and all its sub-issues share the epic's milestone (`wf-subissue add` copies it), standalone bugs and spikes get the milestone of the release that will ship them, and an issue without a milestone is unscheduled. Milestones group work by *when it ships*; epics group it by topic. The owner decides which milestone an epic targets.
+
 ## Commits
 
 [Conventional Commits](https://www.conventionalcommits.org/), checked by commitlint in CI and by a pre-commit `commit-msg` hook:
@@ -189,4 +193,4 @@ Add dependencies with `uv add <pkg>` (or `uv add --dev <pkg>` for dev tools) and
 
 ## Releases
 
-SemVer, and a schema-breaking change bumps the major version. Cut `release/X.Y.Z` from `dev`, generate the CHANGELOG with `uvx git-cliff --tag vX.Y.Z`, pass Gate D, merge into `main`, tag it, publish a GitHub Release (the built database is attached as an asset), then back-merge into `dev`.
+SemVer, and a schema-breaking change bumps the major version. Cut `release/X.Y.Z` from `dev`, generate the CHANGELOG with `uvx git-cliff --tag vX.Y.Z`, pass Gate D, merge into `main`, tag it, publish a GitHub Release (the built database is attached as an asset), then back-merge into `dev`. The release's scope is its milestone: open issues in it are finished or moved before Gate D, and the release closes the milestone.

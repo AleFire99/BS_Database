@@ -1,6 +1,6 @@
 # Config read by the global wf-* Claude Code skills (repo: AleFire99/claude-workflow).
 # A repo opts into the workflow by having this file.
-workflow_version: 0.1.0          # claude-workflow version this repo was bootstrapped with
+workflow_version: 0.3.0          # claude-workflow version this repo was bootstrapped with
 project:
   owner: AleFire99
   number: 3                      # https://github.com/users/AleFire99/projects/3
@@ -25,6 +25,8 @@ labels:
   epic: type:epic
   task: type:task
   areas: [scraper, translation, db, images, docs, infra]
+milestones:                      # milestone = release target; epic + sub-issues share one
+  naming: vX.Y.Z
 checks:                          # required status checks (rulesets)
   - lint-test
   - docs
