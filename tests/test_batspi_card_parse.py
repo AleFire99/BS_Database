@@ -150,3 +150,42 @@ def test_headingless_page_with_number_mismatch_raises() -> None:
     html = f"<html><body><span class='cardno'>BS01-001</span>{block}{block}</body></html>"
     with pytest.raises(ParseError, match="card numbers"):
         parse_card_page(html, "u")
+
+
+def diff_fields(stem: str) -> dict[str, list[str]]:
+    result: dict[str, list[str]] = {}
+    for d in parse(stem).differences:
+        result.setdefault(d.name_ja, []).append(d.field)
+    return result
+
+
+def test_goradon_levels_differ(caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level(logging.INFO, logger=LOGGER):
+        page = parse("card_spirit_bs01")
+    assert len(page.differences) == 1
+    diff = page.differences[0]
+    assert (diff.name_ja, diff.field) == ("ゴラドン", "levels")
+    assert [number for number, _ in diff.values] == ["BS01-001", "BSC22-001"]
+    assert any("per-number values differ" in r.getMessage() for r in caplog.records)
+
+
+@pytest.mark.parametrize("stem", ["card_magic_flash", "card_spirit", "card_magic"])
+def test_no_differences(stem: str) -> None:
+    assert parse(stem).differences == ()
+
+
+def test_flip_compares_same_name_faces_only() -> None:
+    assert diff_fields("card_flip") == {
+        "赤の世界": ["families"],
+        "赤き神龍皇": ["families", "levels"],
+    }
+
+
+def test_other_differences() -> None:
+    assert diff_fields("card_brave") == {
+        "砲凰竜フェニック・キャノン": ["symbols", "families", "levels"]
+    }
+    assert diff_fields("card_ultimate") == {
+        "アルティメット・ジークフリード": ["reduction", "families", "levels", "overclock"]
+    }
+    assert diff_fields("card_promo") == {"焔竜翼人マ・ドー": ["families"]}

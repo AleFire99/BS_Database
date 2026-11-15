@@ -4,6 +4,7 @@
 colours, families, levels, symbols). Text and printings are added by #71.
 """
 
+import dataclasses
 import logging
 import re
 
@@ -19,6 +20,7 @@ from bs_database.parsers.card_models import (
     Overclock,
     Reduction,
     SymbolCount,
+    ValueDifference,
 )
 from bs_database.parsers.errors import ParseError
 
@@ -245,6 +247,25 @@ def _title(soup: BeautifulSoup) -> str:
     return text.removesuffix(_TITLE_SUFFIX).strip()
 
 
+def _differences(entries: list[CardEntry]) -> tuple[ValueDifference, ...]:
+    """Gameplay fields that differ between numbers of the same name (#63)."""
+    groups: dict[str, list[CardEntry]] = {}
+    for entry in entries:
+        groups.setdefault(entry.name_ja, []).append(entry)
+    found: list[ValueDifference] = []
+    for name_ja, group in groups.items():
+        if len(group) < 2:
+            continue
+        for field in dataclasses.fields(Gameplay):
+            first = getattr(group[0].gameplay, field.name)
+            if all(getattr(e.gameplay, field.name) == first for e in group[1:]):
+                continue
+            values = tuple((e.number, repr(getattr(e.gameplay, field.name))) for e in group)
+            found.append(ValueDifference(name_ja, field.name, values))
+            log.info("per-number values differ: %s field=%s values=%s", name_ja, field.name, values)
+    return tuple(found)
+
+
 def parse_card_page(html: str, url: str) -> CardPage:
     """Parse a batspi card page into identity and gameplay values (pure, no I/O)."""
     soup = BeautifulSoup(html, "html.parser")
@@ -283,4 +304,4 @@ def parse_card_page(html: str, url: str) -> CardPage:
         if not name_ja:
             raise ParseError(f"no card name for {number} in {url}")
         entries.append(CardEntry(number, name_ja, name_en, _parse_gameplay(pre, url)))
-    return CardPage(SCHEMA_VERSION, url, title, tuple(entries), ())
+    return CardPage(SCHEMA_VERSION, url, title, tuple(entries), _differences(entries))
