@@ -4,11 +4,13 @@ import pytest
 import requests
 
 from bs_database.ingest.http import (
+    Blocked,
     BudgetExhausted,
     Fetched,
     HttpClient,
     HttpResponse,
     RequestsTransport,
+    RetryAfterTooLong,
     Skipped,
     TransportError,
 )
@@ -109,10 +111,115 @@ def test_budget_stops_cleanly() -> None:
     assert len(transport.calls) == 3
 
 
-def test_non_200_is_skipped() -> None:
-    url = f"{BASE}index.php?gone"
-    client, _, _ = make({url: [HttpResponse(404, {}, b"")]})
-    assert client.fetch(url) == Skipped(url, "status 404", 404)
+def resp(status: int, body: str = "", **headers: str) -> HttpResponse:
+    return HttpResponse(status, headers, body.encode())
+
+
+URL = f"{BASE}index.php?page"
+
+
+@pytest.mark.parametrize("status", [404, 410, 301, 501])
+def test_other_statuses_skip_without_retry(status: int) -> None:
+    client, transport, clock = make({URL: [resp(status)]})
+    assert client.fetch(URL) == Skipped(URL, f"status {status}", status)
+    assert len(transport.calls) == 1
+    assert clock.sleeps == []
+
+
+@pytest.mark.parametrize("status", [429, 500, 502, 503, 504])
+def test_retry_then_success(status: int) -> None:
+    client, transport, clock = make({URL: [resp(status), resp(status), resp(status), ok()]})
+    assert isinstance(client.fetch(URL), Fetched)
+    assert clock.sleeps == [5.0, 3.0, 15.0, 3.0, 45.0, 3.0]
+    times = [t for t, _, _ in transport.calls]
+    assert [b - a for a, b in zip(times, times[1:], strict=False)] == [8.0, 18.0, 48.0]
+    assert client.requests_made == 4
+
+
+@pytest.mark.parametrize("status", [429, 500, 502, 503, 504])
+def test_retries_exhausted_is_skipped(status: int) -> None:
+    client, transport, clock = make({URL: [resp(status)] * 4})
+    assert client.fetch(URL) == Skipped(URL, f"status {status}", status)
+    assert len(transport.calls) == 4
+    assert clock.sleeps == [5.0, 3.0, 15.0, 3.0, 45.0, 3.0]
+
+
+def test_timeout_and_connection_errors_retry() -> None:
+    client, transport, _ = make(
+        {URL: [TransportError("t", timeout=True), TransportError("c"), ok()]}
+    )
+    assert isinstance(client.fetch(URL), Fetched)
+    assert len(transport.calls) == 3
+
+
+def test_transport_errors_exhausted_is_skipped() -> None:
+    client, _, _ = make({URL: [TransportError("t", timeout=True)] * 4})
+    result = client.fetch(URL)
+    assert isinstance(result, Skipped)
+    assert result.status is None
+
+
+def test_retries_count_against_budget() -> None:
+    client, transport, _ = make({URL: [resp(500)] * 4}, max_requests=2)
+    with pytest.raises(BudgetExhausted):
+        client.fetch(URL)
+    assert len(transport.calls) == 2
+
+
+def test_retry_after_overrides_shorter_backoff() -> None:
+    client, transport, _ = make({URL: [resp(429, **{"Retry-After": "20"}), ok()]})
+    client.fetch(URL)
+    times = [t for t, _, _ in transport.calls]
+    assert times[1] - times[0] == 23.0
+
+
+def test_retry_after_shorter_than_backoff_is_ignored() -> None:
+    client, transport, _ = make({URL: [resp(429, **{"retry-after": "1"}), ok()]})
+    client.fetch(URL)
+    times = [t for t, _, _ in transport.calls]
+    assert times[1] - times[0] == 8.0
+
+
+def test_retry_after_too_long_stops() -> None:
+    client, transport, _ = make({URL: [resp(429, **{"Retry-After": "400"})]})
+    with pytest.raises(RetryAfterTooLong):
+        client.fetch(URL)
+    assert len(transport.calls) == 1
+
+
+def test_retry_after_http_date_is_ignored() -> None:
+    date = "Wed, 21 Oct 2026 07:28:00 GMT"
+    client, transport, _ = make({URL: [resp(503, **{"Retry-After": date}), ok()]})
+    client.fetch(URL)
+    times = [t for t, _, _ in transport.calls]
+    assert times[1] - times[0] == 8.0
+
+
+@pytest.mark.parametrize(
+    "response",
+    [
+        resp(403),
+        resp(200, "<title>Just a moment...</title>"),
+        resp(503, "<script src='/cdn-cgi/challenge-platform/x'></script>"),
+    ],
+)
+def test_blocked_stops_without_further_request(response: HttpResponse) -> None:
+    client, transport, _ = make({URL: [response, ok()]})
+    with pytest.raises(Blocked):
+        client.fetch(URL)
+    assert len(transport.calls) == 1
+
+
+def test_pacing_holds_across_retry_sequences() -> None:
+    urls = [f"{BASE}index.php?p{i}" for i in range(6)]
+    script: dict[str, list[HttpResponse | TransportError]] = {
+        u: [resp(500), ok()] if i % 2 else [ok()] for i, u in enumerate(urls)
+    }
+    client, transport, _ = make(script)
+    for u in urls:
+        client.fetch(u)
+    times = [t for t, _, _ in transport.calls]
+    assert all(b - a >= 3.0 for a, b in zip(times, times[1:], strict=False))
 
 
 def test_requests_transport_maps_response(monkeypatch: pytest.MonkeyPatch) -> None:

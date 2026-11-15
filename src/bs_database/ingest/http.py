@@ -12,7 +12,7 @@ from typing import Protocol
 
 import requests
 
-from bs_database.ingest.policy import StopRun
+from bs_database.ingest.policy import StopRun, is_challenge
 from bs_database.settings import Settings
 
 log = logging.getLogger(__name__)
@@ -20,6 +20,18 @@ log = logging.getLogger(__name__)
 
 class BudgetExhausted(StopRun):
     """The per-run request budget is used up: a clean stop, resume on the next run."""
+
+
+class Blocked(StopRun):
+    """A 403 or a challenge page: the site blocks us, stop the run (policy 3.5)."""
+
+
+class RetryAfterTooLong(StopRun):
+    """The server asks to wait longer than ``MAX_RETRY_AFTER`` seconds."""
+
+
+MAX_RETRY_AFTER = 300
+RETRY_STATUSES = frozenset({429, 500, 502, 503, 504})
 
 
 class TransportError(Exception):
@@ -115,8 +127,10 @@ class HttpClient:
         *,
         transport: Transport | None = None,
         clock: Clock | None = None,
+        backoff: tuple[float, ...] = (5.0, 15.0, 45.0),
     ) -> None:
         self._settings = settings
+        self._backoff = backoff
         self._transport: Transport = transport or RequestsTransport()
         self._clock: Clock = clock or SystemClock()
         self._last_request: float | None = None
@@ -140,13 +154,44 @@ class HttpClient:
         finally:
             self._last_request = self._clock.monotonic()
 
+    @staticmethod
+    def _retry_after(resp: HttpResponse) -> float | None:
+        """``Retry-After`` in integer seconds; an HTTP-date (or junk) is ignored."""
+        for key, value in resp.headers.items():
+            if key.lower() == "retry-after" and value.strip().isdigit():
+                return float(value.strip())
+        return None
+
+    def _wait(self, seconds: float) -> None:
+        """Back off; the delay then counts from the end of the backoff ("on top")."""
+        self._clock.sleep(seconds)
+        self._last_request = self._clock.monotonic()
+
     def fetch(self, url: str) -> Fetched | Skipped:
-        try:
-            resp = self._request(url)
-        except TransportError as exc:
-            log.warning("skip %s: %s", url, exc)
-            return Skipped(url, f"transport error: {exc}")
-        if resp.status == 200:
-            return Fetched(url, resp.status, resp.content, resp.headers)
-        log.warning("skip %s: status %s", url, resp.status)
-        return Skipped(url, f"status {resp.status}", resp.status)
+        """Fetch one URL with retries; may raise ``Blocked``, ``RetryAfterTooLong``, ``StopRun``."""
+        for attempt in range(len(self._backoff) + 1):
+            try:
+                resp = self._request(url)
+            except TransportError as exc:
+                reason, status, retry_after = f"transport error: {exc}", None, None
+            else:
+                if resp.status == 403 or is_challenge(resp.text):
+                    raise Blocked(f"403 or challenge page: {url}")
+                if resp.status == 200:
+                    return Fetched(url, resp.status, resp.content, resp.headers)
+                if resp.status not in RETRY_STATUSES:
+                    log.warning("skip %s: status %s", url, resp.status)
+                    return Skipped(url, f"status {resp.status}", resp.status)
+                reason, status = f"status {resp.status}", resp.status
+                retry_after = self._retry_after(resp)
+                if retry_after is not None and retry_after > MAX_RETRY_AFTER:
+                    raise RetryAfterTooLong(f"Retry-After {retry_after:g} s: {url}")
+            if attempt == len(self._backoff):
+                log.warning("skip %s: %s, retries exhausted", url, reason)
+                return Skipped(url, reason, status)
+            wait = self._backoff[attempt]
+            if retry_after is not None:
+                wait = max(wait, retry_after)
+            log.info("retry %s in %g s: %s", url, wait, reason)
+            self._wait(wait)
+        raise AssertionError("unreachable")  # pragma: no cover
