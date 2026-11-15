@@ -6,6 +6,7 @@ absolute with ``urljoin``; no URL is built from a name.
 
 import logging
 import re
+import unicodedata
 from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
 from urllib.parse import urljoin
@@ -189,9 +190,7 @@ def _targets(label: str | None, numbers: Sequence[str], context: str) -> list[st
         return exact
     found = [n for n in numbers if _faceless(n) == label]
     if not found:
-        log.warning(
-            "printing number is not a card number: %s field=number value=%r", context, label
-        )
+        log.warning("number is not a card number: %s field=number value=%r", context, label)
     return found
 
 
@@ -225,6 +224,8 @@ def parse_printings(soup: BeautifulSoup, url: str, numbers: Sequence[str]) -> tu
                     SECTION_PRINTINGS,
                 )
             )
+    if rows and not any(p.section == SECTION_PRINTINGS for p in printings):
+        raise ParseError(f"{len(rows)} 収録 rows but none resolves to a card number in {url}")
     for index, block in enumerate(blocks):
         try:
             targets = [
@@ -253,12 +254,16 @@ def parse_printings(soup: BeautifulSoup, url: str, numbers: Sequence[str]) -> tu
     return tuple(printings)
 
 
+def _product_key(name: str) -> str:
+    return unicodedata.normalize("NFKC", name).strip()
+
+
 def _join(
     blocks: list[_BlockRow], name: str, number: str, used: set[tuple[int, str]]
 ) -> _BlockRow | None:
     """First unused block-icon row of the same product that lists ``number`` (or no number)."""
     for index, block in enumerate(blocks):
-        if block.name != name or (index, number) in used:
+        if _product_key(block.name) != _product_key(name) or (index, number) in used:
             continue
         if block.numbers and _faceless(number) not in {_faceless(n) for n in block.numbers}:
             continue
@@ -303,19 +308,13 @@ def parse_images(soup: BeautifulSoup, url: str, numbers: Sequence[str]) -> tuple
             rest = lines[1:]
             while rest and not rest[-1]:
                 rest.pop()
-            if lines[0] not in numbers:
-                log.warning(
-                    "gallery number is not a card number: %s field=number value=%r",
-                    url,
-                    lines[0],
+            for number in _targets(lines[0], numbers, url):
+                images.append(
+                    CardImage(
+                        number,
+                        urljoin(url, href),
+                        urljoin(url, small) if small else None,
+                        tuple(rest),
+                    )
                 )
-                continue
-            images.append(
-                CardImage(
-                    lines[0],
-                    urljoin(url, href),
-                    urljoin(url, small) if small else None,
-                    tuple(rest),
-                )
-            )
     return tuple(images)

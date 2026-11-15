@@ -81,14 +81,6 @@ def test_no_section_gives_no_printings() -> None:
     assert run("<html><body></body></html>", ["A-001"]) == ()
 
 
-def test_label_without_entry_warns(caplog: pytest.LogCaptureFixture) -> None:
-    rows = '<ul><li><strong>Z-999</strong><br/><a href="x">P</a> &lt;C&gt;</li></ul>'
-    with caplog.at_level(logging.WARNING, logger=LOGGER):
-        assert run(page(rows), ["A-001"]) == ()
-    assert "field=number" in caplog.text
-    assert "Z-999" in caplog.text
-
-
 def test_face_less_label_fans_out_and_exact_label_does_not() -> None:
     rows = (
         '<ul><li><strong>F-01</strong><br/><a href="x">P</a> &lt;C&gt;</li>'
@@ -220,3 +212,34 @@ def test_gallery_number_unknown_warns(caplog: pytest.LogCaptureFixture) -> None:
         assert images(GALLERY.format(extra=""), ["B-002"]) == ()
     assert "field=number" in caplog.text
     assert "A-001" in caplog.text
+
+
+def test_all_rows_unresolvable_raises() -> None:
+    rows = '<ul><li><strong>Z-999</strong><br/><a href="x">P</a> &lt;C&gt;</li></ul>'
+    with pytest.raises(ParseError, match="none resolves"):
+        run(page(rows), ["A-001"])
+
+
+def test_one_unresolvable_row_still_only_warns(caplog: pytest.LogCaptureFixture) -> None:
+    rows = (
+        '<ul><li><strong>Z-999</strong><br/><a href="x">P</a> &lt;C&gt;</li>'
+        '<li><strong>A-001</strong><br/><a href="x">Q</a> &lt;C&gt;</li></ul>'
+    )
+    with caplog.at_level(logging.WARNING, logger=LOGGER):
+        got = run(page(rows), ["A-001"])
+    assert [p.product_name_ja for p in got] == ["Q"]
+    assert "Z-999" in caplog.text
+
+
+def test_gallery_faceless_caption_fans_out_to_both_faces() -> None:
+    html = GALLERY.format(extra="").replace("A-001<br", "F-01<br")
+    got = images(html, ["F-01(A)", "F-01(B)"])
+    assert [i.number for i in got] == ["F-01(A)", "F-01(B)"]
+    assert got[0].large_url == got[1].large_url
+
+
+def test_block_join_normalises_product_names() -> None:
+    blocks = f'[BS01]{ES}<a href="b">ＢＳ　Ｐ１</a>{ES}(A-001){ES}ブロックアイコン:&lt;3&gt;{ES}'
+    rows = '<p><a href="x">BS P1</a> &lt;C&gt;</p>'
+    (got,) = run(page(rows, blocks), ["A-001"])
+    assert (got.product_name_ja, got.product_code, got.block_icon) == ("BS P1", "BS01", "3")
