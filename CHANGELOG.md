@@ -3,6 +3,28 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.0] - 2026-11-15
+
+### Added
+
+- **http:** Policy-compliant HTTP client with retries, robots.txt gate and request budget (#80)
+- **parse:** Batspi discovery parsers for the index, set pages and promo list (#81)
+- **parse:** Batspi card parser for identity and gameplay values (#82)
+- **state:** SQLite ingestion state store and per-page state machine (#83)
+- **cache:** Raw HTML cache with sidecar metadata and hybrid policy-gated lookup (#84)
+- **parse:** Batspi card parser for effects, keywords, printings, credits and images (#85)
+- **cli:** Bsdb scrape pipeline with cache, state tracking, resume and run report (#86)
+- **scraper:** Polite, resumable, tested batspi ingestion pipeline (epic #10) (#87)
+
+### Changed
+
+- **ingest:** Target ingestion layout, move policy helpers, remove legacy scrapers (#75)
+
+### Internal
+
+- **commitlint:** Ignore the one legacy #83 subject that starts with an acronym
+- **commitlint:** Allow subjects that start with an acronym
+
 ## [0.3.0] - 2026-11-15
 
 ### Documentation
