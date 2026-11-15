@@ -2,9 +2,9 @@
 
 import functools
 import json
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 import pytest
 
@@ -12,6 +12,7 @@ from bs_database.ingest.http import HttpClient, HttpResponse
 from bs_database.parsers.batspi.card import parse_card_page
 from bs_database.parsers.batspi.index import parse_index
 from bs_database.settings import Settings
+from bs_database.translate.types import Lang, TranslationResult
 
 HTML_DIR = Path(__file__).parent / "fixtures" / "html"
 MANIFEST: dict[str, dict[str, object]] = json.loads(
@@ -103,3 +104,65 @@ def memoise_parsers(monkeypatch: pytest.MonkeyPatch) -> None:
     """Make the pipeline use memoised (identical) card and index parsers."""
     monkeypatch.setattr("bs_database.ingest.pipeline.parse_card_page", _CACHED_CARD)
     monkeypatch.setattr("bs_database.ingest.pipeline.parse_index", _CACHED_INDEX)
+
+
+class FakeEngine:
+    """A translator that upper-cases and records every call; ``fail`` texts come back failed."""
+
+    name = "fake"
+
+    def __init__(self, fail: frozenset[str] = frozenset()) -> None:
+        self.calls: list[list[str]] = []
+        self.fail = fail
+
+    def translate(
+        self, texts: Sequence[str], *, src: Lang = "jp", tgt: Lang = "en"
+    ) -> list[TranslationResult]:
+        self.calls.append(list(texts))
+        return [
+            TranslationResult(None, "failed", self.name)
+            if t in self.fail
+            else TranslationResult(f"<{t}>", "machine", self.name)
+            for t in texts
+        ]
+
+
+class FakeJsonTransport:
+    """Scripted JSON POST transport: each entry of ``script`` is a response or an exception.
+
+    When the script is used up, the default answer upper-cases the texts (HTTP 200).
+    """
+
+    def __init__(self, script: Sequence[HttpResponse | Exception] = ()) -> None:
+        self.script = list(script)
+        self.calls: list[dict[str, Any]] = []
+
+    def post(
+        self,
+        url: str,
+        *,
+        headers: Mapping[str, str],
+        json_body: Mapping[str, Any],
+        timeout: tuple[float, float],
+    ) -> HttpResponse:
+        self.calls.append(
+            {
+                "url": url,
+                "headers": dict(headers),
+                "body": dict(json_body),
+                "timeout": timeout,
+            }
+        )
+        if self.script:
+            item = self.script.pop(0)
+            if isinstance(item, Exception):
+                raise item
+            return item
+        return ok_response(json_body["text"])
+
+
+def ok_response(texts: Sequence[str]) -> HttpResponse:
+    payload = {
+        "translations": [{"detected_source_language": "JA", "text": t.upper()} for t in texts]
+    }
+    return HttpResponse(200, {}, json.dumps(payload).encode())
