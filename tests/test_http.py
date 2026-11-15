@@ -1,4 +1,5 @@
 from collections.abc import Mapping
+from pathlib import Path
 
 import pytest
 import requests
@@ -7,10 +8,12 @@ from bs_database.ingest.http import (
     Blocked,
     BudgetExhausted,
     Fetched,
+    Fetcher,
     HttpClient,
     HttpResponse,
     RequestsTransport,
     RetryAfterTooLong,
+    RobotsUnavailable,
     Skipped,
     TransportError,
 )
@@ -54,19 +57,45 @@ class FakeTransport:
         return item
 
 
+ROBOTS_URL = f"{BASE}robots.txt"
+# batspi.com robots.txt as fetched on 2026-11-14 (docs/sources/batspi.md, "Robots policy").
+ROBOTS = """User-agent: *
+Disallow: /index.php?%E3%82%AB%E3%83%BC%E3%83%89%E6%83%85%E5%A0%B1%E7%B5%9E%E8%BE%BC%E3%81%BF&
+Disallow: /?
+Disallow: /index.php/
+
+User-agent: bingbot
+User-agent: Sogou web spider
+User-agent: SemrushBot
+User-agent: Baiduspider
+
+Disallow: /
+"""
+
+
 def ok(body: str = "<html>ok</html>") -> HttpResponse:
     return HttpResponse(200, {}, body.encode())
 
 
 def make(
-    script: Mapping[str, list[HttpResponse | TransportError]], max_requests: int = 1000
+    script: Mapping[str, list[HttpResponse | TransportError]],
+    max_requests: int = 1000,
+    with_robots: bool = True,
 ) -> tuple[HttpClient, FakeTransport, FakeClock]:
     clock = FakeClock()
-    transport = FakeTransport(clock, script)
+    full = dict(script)
+    if with_robots:
+        full.setdefault(ROBOTS_URL, [HttpResponse(200, {}, ROBOTS.encode())])
+    transport = FakeTransport(clock, full)
     settings = Settings(  # type: ignore[call-arg]
         _env_file=None, request_delay=3.0, max_requests=max_requests
     )
     return HttpClient(settings, transport=transport, clock=clock), transport, clock
+
+
+def pages(transport: FakeTransport) -> list[tuple[float, str, Mapping[str, str]]]:
+    """Recorded calls without the robots.txt request."""
+    return [c for c in transport.calls if c[1] != ROBOTS_URL]
 
 
 def test_user_agent_on_every_call() -> None:
@@ -74,8 +103,8 @@ def test_user_agent_on_every_call() -> None:
     client, transport, _ = make({u: [ok()] for u in urls})
     for u in urls:
         assert isinstance(client.fetch(u), Fetched)
-    assert len(transport.calls) == 3
-    for _, _, headers in transport.calls:
+    assert len(transport.calls) == 4
+    for _, _, headers in transport.calls:  # robots.txt included
         assert headers == {"User-Agent": client._settings.user_agent}
         assert headers["User-Agent"].startswith("bs-database/")
 
@@ -95,20 +124,20 @@ def test_pacing_between_requests() -> None:
     client, transport, _ = make({u: [ok()] for u in urls})
     for u in urls:
         client.fetch(u)
-    times = [t for t, _, _ in transport.calls]
+    times = [t for t, _, _ in pages(transport)]
     assert len(times) == 20
     assert all(b - a >= 3.0 for a, b in zip(times, times[1:], strict=False))
 
 
 def test_budget_stops_cleanly() -> None:
     urls = [f"{BASE}index.php?p{i}" for i in range(5)]
-    client, transport, _ = make({u: [ok()] for u in urls}, max_requests=3)
+    client, transport, _ = make({u: [ok()] for u in urls}, max_requests=4)
     for u in urls[:3]:
         assert isinstance(client.fetch(u), Fetched)
     with pytest.raises(BudgetExhausted):
         client.fetch(urls[3])
-    assert client.requests_made == 3
-    assert len(transport.calls) == 3
+    assert client.requests_made == 4
+    assert len(transport.calls) == 4
 
 
 def resp(status: int, body: str = "", **headers: str) -> HttpResponse:
@@ -122,26 +151,26 @@ URL = f"{BASE}index.php?page"
 def test_other_statuses_skip_without_retry(status: int) -> None:
     client, transport, clock = make({URL: [resp(status)]})
     assert client.fetch(URL) == Skipped(URL, f"status {status}", status)
-    assert len(transport.calls) == 1
-    assert clock.sleeps == []
+    assert len(pages(transport)) == 1
+    assert clock.sleeps == [3.0]  # only the pacing wait after robots.txt
 
 
 @pytest.mark.parametrize("status", [429, 500, 502, 503, 504])
 def test_retry_then_success(status: int) -> None:
     client, transport, clock = make({URL: [resp(status), resp(status), resp(status), ok()]})
     assert isinstance(client.fetch(URL), Fetched)
-    assert clock.sleeps == [5.0, 3.0, 15.0, 3.0, 45.0, 3.0]
-    times = [t for t, _, _ in transport.calls]
+    assert clock.sleeps == [3.0, 5.0, 3.0, 15.0, 3.0, 45.0, 3.0]
+    times = [t for t, _, _ in pages(transport)]
     assert [b - a for a, b in zip(times, times[1:], strict=False)] == [8.0, 18.0, 48.0]
-    assert client.requests_made == 4
+    assert client.requests_made == 5  # robots.txt + 4 page requests
 
 
 @pytest.mark.parametrize("status", [429, 500, 502, 503, 504])
 def test_retries_exhausted_is_skipped(status: int) -> None:
     client, transport, clock = make({URL: [resp(status)] * 4})
     assert client.fetch(URL) == Skipped(URL, f"status {status}", status)
-    assert len(transport.calls) == 4
-    assert clock.sleeps == [5.0, 3.0, 15.0, 3.0, 45.0, 3.0]
+    assert len(pages(transport)) == 4
+    assert clock.sleeps == [3.0, 5.0, 3.0, 15.0, 3.0, 45.0, 3.0]
 
 
 def test_timeout_and_connection_errors_retry() -> None:
@@ -149,7 +178,7 @@ def test_timeout_and_connection_errors_retry() -> None:
         {URL: [TransportError("t", timeout=True), TransportError("c"), ok()]}
     )
     assert isinstance(client.fetch(URL), Fetched)
-    assert len(transport.calls) == 3
+    assert len(pages(transport)) == 3
 
 
 def test_transport_errors_exhausted_is_skipped() -> None:
@@ -160,23 +189,23 @@ def test_transport_errors_exhausted_is_skipped() -> None:
 
 
 def test_retries_count_against_budget() -> None:
-    client, transport, _ = make({URL: [resp(500)] * 4}, max_requests=2)
+    client, transport, _ = make({URL: [resp(500)] * 4}, max_requests=3)
     with pytest.raises(BudgetExhausted):
         client.fetch(URL)
-    assert len(transport.calls) == 2
+    assert len(pages(transport)) == 2  # robots.txt took one request of the budget
 
 
 def test_retry_after_overrides_shorter_backoff() -> None:
     client, transport, _ = make({URL: [resp(429, **{"Retry-After": "20"}), ok()]})
     client.fetch(URL)
-    times = [t for t, _, _ in transport.calls]
+    times = [t for t, _, _ in pages(transport)]
     assert times[1] - times[0] == 23.0
 
 
 def test_retry_after_shorter_than_backoff_is_ignored() -> None:
     client, transport, _ = make({URL: [resp(429, **{"retry-after": "1"}), ok()]})
     client.fetch(URL)
-    times = [t for t, _, _ in transport.calls]
+    times = [t for t, _, _ in pages(transport)]
     assert times[1] - times[0] == 8.0
 
 
@@ -184,14 +213,14 @@ def test_retry_after_too_long_stops() -> None:
     client, transport, _ = make({URL: [resp(429, **{"Retry-After": "400"})]})
     with pytest.raises(RetryAfterTooLong):
         client.fetch(URL)
-    assert len(transport.calls) == 1
+    assert len(pages(transport)) == 1
 
 
 def test_retry_after_http_date_is_ignored() -> None:
     date = "Wed, 21 Oct 2026 07:28:00 GMT"
     client, transport, _ = make({URL: [resp(503, **{"Retry-After": date}), ok()]})
     client.fetch(URL)
-    times = [t for t, _, _ in transport.calls]
+    times = [t for t, _, _ in pages(transport)]
     assert times[1] - times[0] == 8.0
 
 
@@ -207,7 +236,7 @@ def test_blocked_stops_without_further_request(response: HttpResponse) -> None:
     client, transport, _ = make({URL: [response, ok()]})
     with pytest.raises(Blocked):
         client.fetch(URL)
-    assert len(transport.calls) == 1
+    assert len(pages(transport)) == 1
 
 
 def test_pacing_holds_across_retry_sequences() -> None:
@@ -218,7 +247,7 @@ def test_pacing_holds_across_retry_sequences() -> None:
     client, transport, _ = make(script)
     for u in urls:
         client.fetch(u)
-    times = [t for t, _, _ in transport.calls]
+    times = [t for t, _, _ in pages(transport)]
     assert all(b - a >= 3.0 for a, b in zip(times, times[1:], strict=False))
 
 
@@ -259,3 +288,89 @@ def test_requests_transport_maps_errors(
     with pytest.raises(TransportError) as info:
         RequestsTransport().get(BASE, headers={}, timeout=(1.0, 2.0))
     assert info.value.timeout is is_timeout
+
+
+def test_client_satisfies_fetcher() -> None:
+    client, _, _ = make({})
+    fetcher: Fetcher = client
+    assert fetcher.allowed(f"{BASE}index.php?ok") is None
+
+
+def test_robots_fetched_once_for_many_urls() -> None:
+    urls = [f"{BASE}index.php?p{i}" for i in range(5)]
+    client, transport, _ = make({u: [ok()] for u in urls})
+    for u in urls:
+        assert client.allowed(u) is None
+        assert isinstance(client.fetch(u), Fetched)
+    assert [c[1] for c in transport.calls].count(ROBOTS_URL) == 1
+    assert transport.calls[0][1] == ROBOTS_URL
+    assert client.requests_made == len(transport.calls) == 6
+
+
+def test_allowed_sends_no_page_request() -> None:
+    client, transport, _ = make({})
+    assert client.allowed(f"{BASE}index.php?%E3%82%B4") is None
+    assert [c[1] for c in transport.calls] == [ROBOTS_URL]
+
+
+def test_robots_404_allows_all() -> None:
+    client, _, _ = make({ROBOTS_URL: [resp(404)], URL: [ok()]})
+    assert isinstance(client.fetch(URL), Fetched)
+
+
+@pytest.mark.parametrize(
+    "response",
+    [
+        resp(403),
+        resp(500),
+        resp(301),
+        TransportError("t", timeout=True),
+        resp(200, "Just a moment..."),
+    ],
+)
+def test_robots_unavailable_stops(response: HttpResponse | TransportError) -> None:
+    client, transport, _ = make({ROBOTS_URL: [response]})
+    with pytest.raises(RobotsUnavailable):
+        client.fetch(URL)
+    assert len(transport.calls) == 1  # no retry, no page request
+
+
+def test_robots_counts_in_budget() -> None:
+    client, transport, _ = make({URL: [ok()]}, max_requests=1)
+    with pytest.raises(BudgetExhausted):
+        client.fetch(URL)
+    assert [c[1] for c in transport.calls] == [ROBOTS_URL]
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        f"{BASE}index.php?cmd=edit&page=x",
+        f"{BASE}index.php?word=abc",
+        f"{BASE}NextCard.php?x=1",
+        f"{BASE}bbs/thread",
+        f"{BASE}index.php/foo",
+        f"{BASE}?x",
+        f"{BASE}index.php?%E3%82%AB%E3%83%BC%E3%83%89%E6%83%85%E5%A0%B1%E7%B5%9E%E8%BE%BC%E3%81%BF&c=1",
+    ],
+)
+def test_disallowed_urls_skipped_and_never_requested(url: str) -> None:
+    client, transport, _ = make({})
+    result = client.fetch(url)
+    assert isinstance(result, Skipped)
+    assert result.reason.startswith("disallowed")
+    assert client.allowed(url) == result
+    assert [c[1] for c in transport.calls] == [ROBOTS_URL]
+
+
+def test_only_http_module_imports_requests() -> None:
+    src = Path(__file__).resolve().parent.parent / "src"
+    offenders = [
+        path.relative_to(src).as_posix()
+        for path in src.rglob("*.py")
+        if any(
+            line.startswith(("import requests", "from requests"))
+            for line in path.read_text(encoding="utf-8").splitlines()
+        )
+    ]
+    assert offenders == ["bs_database/ingest/http.py"]

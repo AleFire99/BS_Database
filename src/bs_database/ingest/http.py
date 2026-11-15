@@ -6,13 +6,20 @@ a time, paced by ``Settings.request_delay`` and capped by ``Settings.max_request
 
 import logging
 import time
+import urllib.robotparser
 from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Protocol
 
 import requests
 
-from bs_database.ingest.policy import StopRun, is_challenge
+from bs_database.ingest.policy import (
+    BASE_URL,
+    StopRun,
+    check_allowed,
+    is_challenge,
+    split_robots,
+)
 from bs_database.settings import Settings
 
 log = logging.getLogger(__name__)
@@ -24,6 +31,10 @@ class BudgetExhausted(StopRun):
 
 class Blocked(StopRun):
     """A 403 or a challenge page: the site blocks us, stop the run (policy 3.5)."""
+
+
+class RobotsUnavailable(StopRun):
+    """robots.txt could not be read (anything but 200/404, a timeout or a challenge page)."""
 
 
 class RetryAfterTooLong(StopRun):
@@ -134,6 +145,8 @@ class HttpClient:
         self._transport: Transport = transport or RequestsTransport()
         self._clock: Clock = clock or SystemClock()
         self._last_request: float | None = None
+        self._robots: urllib.robotparser.RobotFileParser | None = None
+        self._query_prefixes: list[str] = []
         self.requests_made = 0
 
     def _request(self, url: str) -> HttpResponse:
@@ -167,8 +180,43 @@ class HttpClient:
         self._clock.sleep(seconds)
         self._last_request = self._clock.monotonic()
 
+    def _load_robots(self) -> urllib.robotparser.RobotFileParser:
+        """Fetch robots.txt once per client (paced and budgeted, no retries)."""
+        if self._robots is not None:
+            return self._robots
+        url = f"{BASE_URL}robots.txt"
+        try:
+            resp = self._request(url)
+        except TransportError as exc:
+            raise RobotsUnavailable(f"robots.txt not fetched: {exc}") from exc
+        if is_challenge(resp.text):
+            raise RobotsUnavailable("robots.txt returned a challenge page")
+        parser = urllib.robotparser.RobotFileParser()
+        if resp.status == 200:
+            lines, self._query_prefixes = split_robots(resp.text)
+            parser.parse(lines)
+        elif resp.status == 404:
+            parser.parse([])  # no rules: everything is allowed
+        else:
+            raise RobotsUnavailable(f"robots.txt returned status {resp.status}")
+        parser.modified()
+        self._robots = parser
+        return parser
+
+    def allowed(self, url: str) -> Skipped | None:
+        """Policy gate: ``None`` if ``url`` may be fetched, else a ``Skipped``. Nothing is sent."""
+        robots = self._load_robots()
+        try:
+            check_allowed(url, robots, self._query_prefixes)
+        except StopRun as exc:
+            log.warning("skip %s", exc)
+            return Skipped(url, f"disallowed: {exc}")
+        return None
+
     def fetch(self, url: str) -> Fetched | Skipped:
-        """Fetch one URL with retries; may raise ``Blocked``, ``RetryAfterTooLong``, ``StopRun``."""
+        """Gate, then fetch with retries; may raise ``Blocked``, ``RetryAfterTooLong``, etc."""
+        if (skipped := self.allowed(url)) is not None:
+            return skipped
         for attempt in range(len(self._backoff) + 1):
             try:
                 resp = self._request(url)
