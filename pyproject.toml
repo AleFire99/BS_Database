@@ -1,7 +1,7 @@
 [project]
 name = "bs-database"
 version = "0.4.0"
-description = "Battle Spirits card database: scrapers, translation and DB tooling."
+description = "Battle Spirits card database: scraper, normalization and DB tooling."
 requires-python = ">=3.12"
 dependencies = [
     "beautifulsoup4>=4.15.0",
@@ -51,12 +51,13 @@ source = ["src"]
 branch = true
 
 [tool.coverage.report]
-# Gate for the scraper rewrite (#71) and the glossary (#92). The legacy modules
-# (db.py, cli.py, normalize.py) are rewritten by later epics and are not gated here.
+# Gate for the scraper rewrite (#71), the glossary (#92) and the normalize package (#93).
+# The legacy modules (db.py, cli.py) are rewritten by later epics and are not gated here.
 include = [
     "src/bs_database/ingest/*",
     "src/bs_database/parsers/*",
     "src/bs_database/glossary.py",
+    "src/bs_database/normalize/*",
 ]
 fail_under = 97
 show_missing = true
