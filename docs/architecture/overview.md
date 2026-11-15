@@ -7,19 +7,21 @@ This document describes the `bs_database` package as restructured in E2 ([#7](ht
 ```mermaid
 flowchart LR
     subgraph bs_database
-        CLI["cli<br/>(bsdb: scrape stub, normalize, build)"]
+        CLI["cli<br/>(bsdb: scrape, normalize, build)"]
         SET["settings<br/>(BSDB_* env)"]
         LOG["log"]
-        subgraph ingest["ingest (stubs, #67-#73)"]
+        subgraph ingest["ingest (#67, #68, #72, #73)"]
             POL["policy<br/>(robots, deny list, challenge)"]
             HTTP["http"]
             CACHE["cache"]
             STATE["state"]
             PIPE["pipeline"]
+            PSTORE["parsed_store, atomic"]
+            REPORT["report"]
         end
-        subgraph parsers["parsers (card: #70, #71, index/set: #69)"]
+        subgraph parsers["parsers (#69, #70, #71)"]
             MODELS["models"]
-            BPARSE["batspi: index, set_page, card, card_text, card_sections"]
+            BPARSE["batspi: index, set_page, promo_list, numbers, card, card_text, card_sections"]
         end
         NORM["normalize"]
         DBM["db<br/>(models, build_db)"]
@@ -33,6 +35,14 @@ flowchart LR
     CLI --> LOG
     CLI --> NORM
     CLI --> DBM
+    CLI --> PIPE
+    PIPE --> HTTP
+    PIPE --> CACHE
+    PIPE --> STATE
+    PIPE --> PSTORE
+    PIPE --> REPORT
+    PIPE --> BPARSE
+    HTTP --> POL
 
     CJ --> NORM
     FM --> NORM
@@ -40,7 +50,7 @@ flowchart LR
     CJ --> DBM --> DB
 ```
 
-The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). `ingest.policy` (the scraping policy helpers) and the card parser (`parsers.batspi.card`, with `parsers.card_models` and `parsers.errors`, see below) have code today; the other modules are docstring stubs owned by the issues named in them. `bsdb scrape` is a stub that exits with an error until the rewrite lands. The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
+The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). They are complete: `bsdb scrape` runs the whole pipeline (HTTP client, cache, parsers, state store, parsed JSON, run report), documented in [scraper.md](scraper.md). The parsed JSON is not loaded into the database yet; the loader is [#12](https://github.com/AleFire99/BS_Database/issues/12). The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
 
 ### Card page parser
 
@@ -55,7 +65,7 @@ The `ingest` and `parsers` packages hold the target layout of the scraper rewrit
 - **Images.** Each `ul.ppy-imglist` item becomes a `CardImage` with the large and small URLs read from the page (never built from a name) and the caption lines; the first caption line is the card number. Assigning images to printings is left to #12/#13.
 - **#63 text differences.** `CardPage.differences` also compares `effects`, the side conditions and `flavor`. Credits and `flavor_note` are printing-level and excluded.
 - **Fields without a schema column.** `deck_limit` (`制限カード<N>`), `overclock`, `OC条件`, `コンセプト`, `Printing.detail_ja` and `note_ja`, `flavor_note` and the effect `form`/`label` structure are parsed but have no column in the [target schema](../data-model/target-schema.md); #12 decides where they go.
-- **Coverage gate.** `pyproject.toml` runs coverage with branches and fails below 95% over `ingest/` and `parsers/` only; the legacy modules (`db.py`, `cli.py`, `normalize.py`) are not gated. CI already runs `uv run pytest --cov`.
+- **Coverage gate.** `pyproject.toml` runs coverage with branches and fails below 97% over `ingest/` and `parsers/` only; the legacy modules (`db.py`, `cli.py`, `normalize.py`) are not gated. CI already runs `uv run pytest --cov`.
 
 ## Target data flow
 
@@ -89,12 +99,16 @@ sequenceDiagram
     actor Dev as Developer
     participant C as bsdb (cli)
     participant J as card JSON files
+    participant I as ingest.pipeline
+    participant P as data/parsed
     participant N as normalize
     participant D as db.build_db
     participant DB as SQLite
 
     Dev->>C: bsdb scrape
-    C-->>Dev: error: being rewritten (#10), exit code 1
+    C->>I: run_pipeline (index, sets, cards)
+    I->>P: parsed JSON per card page, state in ingest.db
+    C-->>Dev: run report, exit code 0, 1 or 3
     Dev->>C: bsdb normalize
     C->>N: normalize_tree(json_dir, family mapping)
     N->>J: rewrite JSON in place
@@ -108,17 +122,20 @@ sequenceDiagram
 
 | Module | Responsibility | Inputs | Outputs |
 | --- | --- | --- | --- |
-| `bs_database.cli` | Typer app (`bsdb`): `scrape` (stub), `normalize`, `build`, global `--log-level` and `--version` | `Settings`, command options | calls the modules below |
+| `bs_database.cli` | Typer app (`bsdb`): `scrape` (pipeline, [scraper.md](scraper.md)), `normalize`, `build`, global `--log-level` and `--version` | `Settings`, command options | calls the modules below |
 | `bs_database.settings` | `Settings` (pydantic-settings): `BSDB_*` env and `.env`, paths derived from `data_dir` | environment | URLs, directories, request delay |
 | `bs_database.log` | `configure_logging` | level name | root logger setup |
 | `bs_database.ingest.policy` | Scraping policy helpers: base URL, User-Agent, deny list, robots.txt split and check, challenge detection | URL, robots rules, page text | `StopRun` or a boolean |
-| `bs_database.ingest.http` | HTTP client with the policy gate (stub, #67) | n/a | n/a |
-| `bs_database.ingest.cache` | Raw-HTML cache (stub, #68) | n/a | n/a |
-| `bs_database.ingest.state` | Run state and resume (stub, #72) | n/a | n/a |
-| `bs_database.ingest.pipeline` | Ingestion orchestration (stub, #73) | n/a | n/a |
-| `bs_database.parsers.models` | Parsed record models (stub, #69) | n/a | n/a |
-| `bs_database.parsers.card_models`, `.errors` | Card page DTOs with `SCHEMA_VERSION`, and `ParseError` | n/a | n/a |
-| `bs_database.parsers.batspi.index`, `.set_page` | batspi.com page parsers (stubs, #69) | cached HTML | parsed records |
+| `bs_database.ingest.http` | HTTP client: policy gate, pacing, request budget, backoff, `Skipped` and `StopRun` outcomes (#67) | URL | `Fetched`, `Skipped` or a `StopRun` |
+| `bs_database.ingest.cache` | Raw-HTML cache with sidecar, and `CachedFetcher` (cache first, then the client) (#68) | URL | `CachedPage` or `Skipped` |
+| `bs_database.ingest.atomic` | Atomic file write (temp file, fsync, rename), shared by the cache and the parsed store | path, bytes | file |
+| `bs_database.ingest.state` | Per-page state machine and SQLite store: resume, retry, permanent failures ([ingestion-state.md](ingestion-state.md), #72) | page transitions | `data/state/ingest.db` |
+| `bs_database.ingest.pipeline` | `run_pipeline`: index, sets and cards through the cache, parsers and state store (#73) | `Settings`, `CachedFetcher`, `StateStore`, `RunOptions` | `RunReport` |
+| `bs_database.ingest.parsed_store` | Parsed card pages as versioned JSON, named by the URL digest (#73) | `CardPage`, `CachedPage` | `data/parsed/<source>/<sha256>.json` |
+| `bs_database.ingest.report` | `RunReport`, its text rendering and the exit-code mapping (#73) | run results | summary text, exit code |
+| `bs_database.parsers.models` | Discovery DTOs: index products, list entries, set pages, promo list (#69) | n/a | n/a |
+| `bs_database.parsers.card_models`, `.errors` | Card page DTOs with `SCHEMA_VERSION`, and `ParseError` (`NoCardList` for a set page without cards) | n/a | n/a |
+| `bs_database.parsers.batspi.index`, `.set_page`, `.promo_list`, `.numbers` | batspi.com discovery parsers and card-number parser (#69) | cached HTML | parsed records |
 | `bs_database.parsers.batspi.card`, `.card_text`, `.card_sections` | Card page parser: identity and gameplay values (#70); effects, credits, flavour, printings and images (#71) | cached HTML, URL | `CardPage` |
 | `bs_database.normalize` | Normalize family names, type, image path in place | card JSON tree, `data/family_mapping.txt` | rewritten JSON files |
 | `bs_database.db` | SQLAlchemy models, JSON loader, color derivation, `build_db` | card JSON tree | SQLite rows |
@@ -144,13 +161,13 @@ Tags refer to the epic addressing each item: E2 restructure ([#7](https://github
 | Resolved: dependency list | Unused `selenium`, `webdriver-manager`, `libretranslatepy`, `lxml` dropped; used packages declared | E2 |
 | Resolved: database committed to git | `battle_spirits.db` untracked and ignored in #23 (release artefact is E9) | E2, E9 |
 | Resolved: no tests, CI or lint | pytest with goldens, ruff, mypy strict, CI and pre-commit | E2 |
-| Resolved: legacy scrapers and fandom code | Removed in #66 (commit `f90747b` has them); fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the card parser exists (#70); the other new ingestion modules are stubs implemented in #67-#73 | E5 |
+| Resolved: legacy scrapers and fandom code | Removed in #66 (commit `f90747b` has them); fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the new ingestion modules (#67-#73), the parsers (#69-#71) and `bsdb scrape` are implemented | E5 |
 | Machine translation of names and families | `GoogleTranslator` output is stored as canonical names; family names are patched with ad-hoc rules in `normalize` plus `family_mapping.txt` (e.g. "Snake" forced to "Dark Snake", naive plural stripping) | E6 |
 | Translation failures stored as data | `translate()` returns `"Error: ..."` strings that would be persisted | E6 |
 | Colors derived from translated symbol | Symbol-to-color map in `db.py` lacks `white`; multicolor strings (e.g. "Red purple green white yellow blue") match nothing. Designed in the target schema: `colors` with White and a `card_colors` junction filled from the Japanese colour segment ([target-schema](../data-model/target-schema.md#card_colors)); the fix is in E6/E7. | E3, E6 |
-| No caching, retries or User-Agent | The legacy scrapers were removed in #66; the new client, cache and state are #67, #68 and #72. Requirements are set in the [scraping policy](../sources/policy.md#5-requirements-for-the-scraper-rewrite-10) | E5 |
-| Brittle HTML selectors | `<pre>` line positions, `#mw-content-text > div > table:nth-child(2)`, `<p>` and `zip(matches, a_tags)` pairing | E4, E5 |
-| Card effects/text not scraped | Only name, type, cost, symbol, family, core requirements; `reduction` is scraped to JSON but never loaded into the DB. Designed in the target schema: `card_effects`, `card_reductions` and flavor text ([effects](../data-model/target-schema.md#effects-and-keywords), [reductions](../data-model/target-schema.md#card_reductions)); the fix is in E5/E7. | E3, E5 |
+| Resolved: no caching, retries or User-Agent | The legacy scrapers were removed in #66; the new client, cache, state and pipeline (#67, #68, #72, #73) provide them. Requirements are set in the [scraping policy](../sources/policy.md#5-requirements-for-the-scraper-rewrite-10) | E5 |
+| Resolved: brittle HTML selectors | The legacy selectors went with the scrapers; the new parsers read named structure and raise `ParseError` on anything unknown instead of guessing (#69-#71) | E4, E5 |
+| Card effects/text not loaded | Effects, keywords, credits, flavour, printings and images are parsed into `data/parsed` since #71 and #73. The legacy `build` still loads only name, type, cost, symbol, family and core requirements, and `reduction` never reaches the DB. Designed in the target schema: `card_effects`, `card_reductions` and flavor text ([effects](../data-model/target-schema.md#effects-and-keywords), [reductions](../data-model/target-schema.md#card_reductions)); the loader is E7 (#12). | E3, E7 |
 | Cards without a `<pre>` block are saved with null fields | `batspi_card` falls back to all-`None`, then `insert_card` fails on missing `type` | E5, E7 |
 | Loader is not idempotent for requirements and is slow | Per-card commits and per-row `get_or_create` queries; existing cards are skipped, so changes are never updated | E7 |
 | No validation of loaded data | No constraints, no checks on set coverage or duplicates | E7 |

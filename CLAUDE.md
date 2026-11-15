@@ -19,7 +19,7 @@ Full human-readable version: [CONTRIBUTING.md](CONTRIBUTING.md). Board: GitHub P
 
 A complete, normalized database of the **Japanese Battle Spirits** TCG (sets, cards, families, cores, effects, images), distributed as a versioned release artefact. The sister project [BSS_app](https://github.com/AleFire99/BSS_app) does the same for Battle Spirits Saga, with a SQLite schema, a Telegram bot and a mobile app, and is the reference for conventions.
 
-Current state: the legacy scripts were restructured into the `bs_database` package with the `bsdb` CLI (epic #7), behaviour-preserving. Next: data model (#8), sources (#9), scraper rewrite (#10) and the rest of the roadmap #11–#14; see [docs/architecture/overview.md](docs/architecture/overview.md) for known issues.
+Current state: the legacy scripts were restructured into the `bs_database` package with the `bsdb` CLI (epic #7), behaviour-preserving. Data model (#8) and sources (#9) are done and the scraper rewrite (#10) is implemented (`bsdb scrape`); next: the rest of the roadmap #11–#14; see [docs/architecture/overview.md](docs/architecture/overview.md) for known issues.
 
 ## Commands
 
@@ -36,9 +36,9 @@ uv run pre-commit run --all-files
 
 | Path | Role |
 | --- | --- |
-| `src/bs_database/cli.py` | Typer app, entry point `bsdb` (`scrape` stub, `normalize`, `build`) |
+| `src/bs_database/cli.py` | Typer app, entry point `bsdb` (`scrape`, `normalize`, `build`) |
 | `src/bs_database/settings.py`, `log.py` | `BSDB_*` settings and logging setup |
-| `src/bs_database/ingest/`, `parsers/` | Target scraper layout (epic #10): `ingest.policy` has the scraping policy helpers, the other modules are stubs (#67-#73); `bsdb scrape` is a stub |
+| `src/bs_database/ingest/`, `parsers/` | Scraper (epic #10): `ingest.policy`/`http`/`cache` (polite fetching), `ingest.state` (resume), `ingest.pipeline`/`report`/`parsed_store` (`bsdb scrape`), `parsers/` (pure HTML parsers); see [docs/architecture/scraper.md](docs/architecture/scraper.md) |
 | `src/bs_database/normalize.py` | Family-name and type normalization (uses `data/family_mapping.txt`) |
 | `src/bs_database/db.py` | SQLAlchemy models and JSON → SQLite loader (`build_db`) |
 | `tests/` | pytest suite; `tests/goldens/` and `tests/fixtures/` come from the legacy code (tag `v0.1.0`); `tests/tools/db_counts.py` prints per-table row counts |

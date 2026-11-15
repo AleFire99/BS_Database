@@ -1,6 +1,6 @@
 # Ingestion state
 
-Every page the ingestion pipeline touches (index, set or card) has one row in a small SQLite store, `data/state/ingest.db` (git-ignored; the path is wired by #73). The store makes runs resumable: a page that reached a stage is never redone, and a failed page is kept and retried on a later run. Implemented in `src/bs_database/ingest/state.py` (#72).
+Every page the ingestion pipeline touches (index, set or card) has one row in a small SQLite store, `data/state/ingest.db` (git-ignored; driven by `bsdb scrape`, see [scraper pipeline](scraper.md)). The store makes runs resumable: a page that reached a stage is never redone, and a failed page is kept and retried on a later run. Implemented in `src/bs_database/ingest/state.py` (#72).
 
 ## State machine
 
@@ -35,7 +35,7 @@ stateDiagram-v2
 - `mark_failed(url, reason)` stores `failed_from`, `last_error`, and increments `attempts`.
 - `mark_failed(url, reason, permanent=True)` is for failures that retrying cannot fix (a 404, policy 3.5: "log and skip, no retry"). It sets `attempts` to `max_attempts`, so the page is exhausted at once: `retry` raises `RetriesExhausted`, `iter_pending` skips it and `iter_exhausted` reports it. The state machine does not change.
 - A successful `advance` resets `attempts` to 0 and clears the error.
-- `retry(url)` moves `failed` back to `failed_from`. When `attempts >= max_attempts` (constructor argument, default 3) it raises `RetriesExhausted`.
+- `retry(url)` moves `failed` back to `failed_from`, so a failed card page restarts at the stage that failed (a parse error re-parses from the cache, a fetch failure fetches again). When `attempts >= max_attempts` (constructor argument, default 3) it raises `RetriesExhausted`.
 - `max_attempts` counts failures of one page in the pipeline (3 failures, then exhausted). It is distinct from the HTTP retries of policy 3.5, which live in the HTTP client.
 - `advance` on a `failed` page raises `IllegalTransition`; only `retry` leaves `failed`.
 - `iter_pending()` returns unfinished pages and failed pages that can still be retried; `iter_exhausted()` lists the pages that ran out of attempts so a failure never disappears silently. Failed rows are returned in state `failed`, regardless of the `state=` filter, which matches the current state and not `failed_from`.
