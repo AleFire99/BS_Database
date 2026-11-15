@@ -45,18 +45,22 @@ sequenceDiagram
         else Skipped such as 404
             H-->>F: Skipped
             F-->>P: Skipped
-            P->>S: mark_failed(url, reason)
         end
     end
-    P->>S: advance(url, fetched, sha256)
-    P->>R: parse_card_page(text, url)
-    alt ParseError
-        R-->>P: error
-        P->>S: mark_failed(url, parse error)
-    else parsed
-        R-->>P: CardPage
-        P->>J: write_card_json (atomic)
-        P->>S: advance(url, parsed)
+    alt Skipped
+        P->>S: mark_failed(url, reason)
+        Note over P,S: 404 and policy skips are permanent, the page is not parsed
+    else page obtained
+        P->>S: advance(url, fetched, sha256)
+        P->>R: parse_card_page(text, url)
+        alt ParseError
+            R-->>P: error
+            P->>S: mark_failed(url, parse error)
+        else parsed
+            R-->>P: CardPage
+            P->>J: write_card_json (atomic)
+            P->>S: advance(url, parsed)
+        end
     end
 ```
 
