@@ -41,14 +41,30 @@ def _header(headers: Mapping[str, str], name: str) -> str | None:
     return None
 
 
+def _fsync_dir(directory: Path) -> None:
+    fd = os.open(directory, os.O_RDONLY)
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
 def _atomic_write(path: Path, data: bytes) -> None:
-    """Write ``data`` to ``path`` via a same-directory temp file, fsync, then ``os.replace``."""
+    """Write ``data`` to ``path`` via a same-directory temp file, fsync, then ``os.replace``.
+
+    The parent directory is fsynced after the replace; a failed write removes the temp file.
+    """
     tmp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
-    with tmp.open("wb") as fh:
-        fh.write(data)
-        fh.flush()
-        os.fsync(fh.fileno())
-    os.replace(tmp, path)
+    try:
+        with tmp.open("wb") as fh:
+            fh.write(data)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(tmp, path)
+    except BaseException:
+        tmp.unlink(missing_ok=True)
+        raise
+    _fsync_dir(path.parent)
 
 
 class RawCache:
@@ -143,7 +159,12 @@ class CachedFetcher:
         self._now = now
 
     def _fresh(self, page: CachedPage) -> bool:
-        return self._max_age is None or self._now() - page.fetched_at <= self._max_age
+        if self._max_age is None:
+            return True
+        now = self._now()
+        if now.tzinfo is None:  # a naive clock is taken as UTC
+            now = now.replace(tzinfo=UTC)
+        return now - page.fetched_at <= self._max_age
 
     def get(self, url: str, source: str = "batspi") -> CachedPage | Skipped:
         if (skipped := self._fetcher.local_gate(url)) is not None:

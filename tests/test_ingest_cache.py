@@ -113,6 +113,35 @@ def _fail_on(monkeypatch: pytest.MonkeyPatch, suffix: str) -> None:
     monkeypatch.setattr(os, "replace", replace)
 
 
+def test_failed_write_removes_tmp_file(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    cache = RawCache(tmp_path)
+    _fail_on(monkeypatch, ".html")
+    with pytest.raises(OSError):
+        cache.store(URL, "batspi", b"a", {})
+    assert not list((tmp_path / "batspi").glob("*.tmp"))
+
+
+def test_parent_dir_fsynced_after_each_replace(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    events: list[str] = []
+    real_replace, real_fsync = os.replace, os.fsync
+
+    def replace(src: str | Path, dst: str | Path) -> None:
+        events.append("replace")
+        real_replace(src, dst)
+
+    def fsync(fd: int) -> None:
+        events.append("fsync")
+        real_fsync(fd)
+
+    monkeypatch.setattr(os, "replace", replace)
+    monkeypatch.setattr(os, "fsync", fsync)
+    RawCache(tmp_path).store(URL, "batspi", b"a", {})
+    # file fsync, replace, dir fsync -- for the html, then again for the sidecar
+    assert events == ["fsync", "replace", "fsync"] * 2
+
+
 def test_crash_before_sidecar_leaves_orphan_html(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -300,3 +329,21 @@ def test_sources_get_separate_directories(tmp_path: Path) -> None:
     cf.get(PAGE, "other")
     assert fake.fetches == 2
     assert {p.parent.name for p in tmp_path.rglob("*.html")} == {"batspi", "other"}
+
+
+def test_offset_sidecar_and_naive_clock(tmp_path: Path) -> None:
+    fake = FakeFetcher()
+    clock = Clock()
+    cf = CachedFetcher(fake, RawCache(tmp_path), max_age=timedelta(days=1), now=clock)
+    cf.get(PAGE)
+    _, sidecar = RawCache(tmp_path).paths(PAGE, "batspi")
+    meta = json.loads(sidecar.read_text())
+    meta["fetched_at"] = "2026-11-15T14:00:00+02:00"  # == 12:00 UTC
+    sidecar.write_text(json.dumps(meta))
+    clock.t = datetime(2026, 11, 15, 18, 0)  # naive, taken as UTC
+    page = cf.get(PAGE)
+    assert isinstance(page, CachedPage) and page.from_cache
+    assert page.fetched_at == WHEN
+    clock.t = datetime(2026, 11, 17, 12, 0)
+    stale = cf.get(PAGE)
+    assert isinstance(stale, CachedPage) and not stale.from_cache
