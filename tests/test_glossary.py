@@ -17,12 +17,13 @@ MINIMAL: dict[str, str] = {
     "card_types": f"{H}\nスピリット,spirit,Spirit,\n",
     "rarities": f"{H},sort_order\nC,C,Common,,1\nR,R,Rare,,2\n",
     "variants": f"{H}\n,normal,Normal,\nSECRETあり,secret,Secret,\n",
-    "product_types": f"{H}\n,booster,Booster,\n",
+    "product_types": f"{H}\n,booster,Booster,\n,starter,Starter,\n",
     "keywords": f"{H}\n激突,clash,,\nミラージュ,mirage,Mirage,\n",
     "families": f"{H},aliases_en,no_split\nA・B,,,,,1\n爬獣,,Reptile Beast,,Rep,\n",
     "family_legacy_en": (
         "legacy_en,preferred_en,jp,notes\nRebirth,Reptile Beast,爬獣,\nSky,Fang,,\n"
     ),
+    "product_code_prefixes": "prefix,code,notes\nBS,booster,\nBSC,starter,\n",
 }
 
 
@@ -193,3 +194,41 @@ def test_entries_are_read_only(tmp_path: Path) -> None:
     with pytest.raises(TypeError):
         g.entries["colors"] = ()  # type: ignore[index]
     assert g.lookup("colors", "赤") is not None
+
+
+PH = "prefix,code,notes"
+
+
+def test_prefix_longest_match_wins(tmp_path: Path) -> None:
+    g = load_glossary(make(tmp_path))
+    assert g.product_type_for_code("BSC01") == "starter"
+    assert g.product_type_for_code("BS01") == "booster"
+    assert g.product_type_for_code("XX01") is None
+    assert g.product_type_for_code(None) is None
+    assert g.product_type_for_code("") is None
+
+
+def test_prefix_file_may_be_empty(tmp_path: Path) -> None:
+    g = load_glossary(make(tmp_path, product_code_prefixes=f"{PH}\n"))
+    assert g.product_prefixes == ()
+
+
+def test_prefix_unknown_type(tmp_path: Path) -> None:
+    errs = errors_of(tmp_path, product_code_prefixes=f"{PH}\nBS,nope,\n")
+    assert "product_code_prefixes.csv:2: unknown product type 'nope'" in errs
+
+
+def test_prefix_duplicate_and_empty(tmp_path: Path) -> None:
+    errs = errors_of(tmp_path, product_code_prefixes=f"{PH}\n,booster,\nBS,booster,\nBS,booster,\n")
+    assert "product_code_prefixes.csv:2: empty prefix" in errs
+    assert "product_code_prefixes.csv:4: duplicate prefix 'BS'" in errs
+
+
+def test_prefix_unsorted(tmp_path: Path) -> None:
+    errs = errors_of(tmp_path, product_code_prefixes=f"{PH}\nSD,booster,\nBS,booster,\n")
+    assert "product_code_prefixes.csv:3: rows not sorted by prefix" in errs
+
+
+def test_prefix_bad_header(tmp_path: Path) -> None:
+    errs = errors_of(tmp_path, product_code_prefixes="code,prefix,notes\n")
+    assert any("product_code_prefixes.csv:1: header" in e for e in errs)
