@@ -5,7 +5,6 @@ description = "Battle Spirits card database: scrapers, translation and DB toolin
 requires-python = ">=3.12"
 dependencies = [
     "beautifulsoup4>=4.15.0",
-    "deep-translator>=1.11.4",
     "pydantic-settings>=2.16.3",
     "requests>=2.34.2",
     "sqlalchemy>=2.1.8",
@@ -49,3 +48,11 @@ strict = true
 
 [tool.coverage.run]
 source = ["src"]
+branch = true
+
+[tool.coverage.report]
+# Gate for the scraper rewrite (#71): ingest/ and parsers/ only. The legacy modules
+# (db.py, cli.py, normalize.py) are rewritten by later epics and are not gated here.
+include = ["src/bs_database/ingest/*", "src/bs_database/parsers/*"]
+fail_under = 97
+show_missing = true

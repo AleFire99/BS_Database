@@ -1,0 +1,320 @@
+"""Printings (収録 and block-icon sections) and gallery images of a card page (#71).
+
+Pure functions over a parsed page. Product links are read from the page and made
+absolute with ``urljoin``; no URL is built from a name.
+"""
+
+import logging
+import re
+import unicodedata
+from collections.abc import Iterator, Sequence
+from dataclasses import dataclass
+from urllib.parse import urljoin
+
+from bs4 import BeautifulSoup
+from bs4.element import Comment, NavigableString, PageElement, Tag
+
+from bs_database.parsers.card_models import CardImage, Printing
+from bs_database.parsers.errors import ParseError
+
+log = logging.getLogger(__name__)
+
+SECTION_PRINTINGS = "収録"
+SECTION_BLOCK_ICON = "ブロックアイコン"
+
+_FACE_RE = re.compile(r"\([A-Z]\)$")
+_ROW_RE = re.compile(
+    r"^(?P<detail>[^<(（]*?)\s*(?:<(?P<rar>[^<>]+)>)?\s*(?:[(（](?P<note>.*)[)）])?$"
+)
+_LINK = "\x00"
+_BLOCK_RE = re.compile(
+    rf"^(?:\[(?P<code>[^\]]+)\])?\s*{_LINK}\s*(?:\((?P<nums>[^)]*)\))?\s*"
+    r"(?:ブロックアイコン:<(?P<icon>[^>]*)>)?\s*"
+    r"(?:(?P<y>\d{4})年(?P<m>\d{1,2})月(?P<d>\d{1,2})日)?$"
+)
+
+# A token is ("t", text), ("a", text, href), ("strong", text) or ("br",).
+_Token = tuple[str, ...]
+
+
+def _faceless(number: str) -> str:
+    return _FACE_RE.sub("", number)
+
+
+def _attr(tag: Tag, name: str) -> str | None:
+    value = tag.get(name)
+    return value if isinstance(value, str) else None
+
+
+def _tokens(node: Tag) -> Iterator[_Token]:
+    for child in node.children:
+        if isinstance(child, Comment):
+            continue
+        if isinstance(child, NavigableString):
+            yield ("t", str(child))
+        elif isinstance(child, Tag):
+            if child.name == "br":
+                yield ("br",)
+            elif child.name == "a":
+                yield ("a", child.get_text().strip(), _attr(child, "href") or "")
+            elif child.name == "strong":
+                yield ("strong", child.get_text().strip())
+            elif child.name in ("ul", "li", "p"):
+                yield ("br",)
+                yield from _tokens(child)
+                yield ("br",)
+            else:
+                yield from _tokens(child)
+
+
+def _find_section(soup: BeautifulSoup, exact: str | None, prefix: str | None) -> Tag | None:
+    for heading in soup.find_all("h4"):
+        text = heading.get_text().replace("†", "").strip()
+        if (exact is not None and text == exact) or (
+            prefix is not None and text.startswith(prefix)
+        ):
+            return heading
+    return None
+
+
+def _section_lines(heading: Tag) -> list[list[_Token]]:
+    """Lines of tokens between a section heading and the next heading or jump menu."""
+    tokens: list[_Token] = []
+    sibling: PageElement | None = heading.next_sibling
+    while sibling is not None:
+        if isinstance(sibling, Tag):
+            if sibling.name == "h4" or "jumpmenu" in (sibling.get("class") or []):
+                break
+            if sibling.name == "div" and sibling.find("ins") is not None:
+                sibling = sibling.next_sibling
+                continue
+            if sibling.name == "br":
+                tokens.append(("br",))
+            elif sibling.name == "a":
+                tokens.append(("a", sibling.get_text().strip(), _attr(sibling, "href") or ""))
+            else:
+                wrapper = ("br",) if sibling.name in ("ul", "p") else None
+                if wrapper:
+                    tokens.append(wrapper)
+                tokens.extend(_tokens(sibling))
+                if wrapper:
+                    tokens.append(wrapper)
+        elif isinstance(sibling, NavigableString) and not isinstance(sibling, Comment):
+            tokens.append(("t", str(sibling)))
+        sibling = sibling.next_sibling
+    lines: list[list[_Token]] = [[]]
+    for token in tokens:
+        if token[0] == "br":
+            lines.append([])
+        else:
+            lines[-1].append(token)
+    return [line for line in lines if line]
+
+
+@dataclass(frozen=True, slots=True)
+class _Row:
+    label: str | None
+    name: str
+    href: str | None
+    detail: str | None
+    rarity: str | None
+    note: str | None
+
+
+@dataclass(frozen=True, slots=True)
+class _BlockRow:
+    code: str | None
+    name: str
+    numbers: tuple[str, ...]
+    icon: str | None
+    date: str | None
+
+
+def _printing_rows(heading: Tag) -> list[_Row]:
+    rows: list[_Row] = []
+    label: str | None = None
+    for line in _section_lines(heading):
+        strong = next((t[1] for t in line if t[0] == "strong"), None)
+        if strong:
+            label = strong
+        link = next((t for t in line if t[0] == "a"), None)
+        text = "".join(t[1] for t in line if t[0] == "t").replace("　", " ").strip()
+        match = _ROW_RE.match(text)
+        if link is not None:
+            detail = (match["detail"] or None) if match else (text or None)
+            rarity = match["rar"] if match else None
+            note = match["note"] if match else None
+            rows.append(_Row(label, link[1], link[2], detail, rarity, note))
+        elif text:
+            name = (match["detail"] if match else text) or text
+            rows.append(
+                _Row(
+                    label,
+                    name,
+                    None,
+                    None,
+                    match["rar"] if match else None,
+                    match["note"] if match else None,
+                )
+            )
+    return rows
+
+
+def _block_rows(heading: Tag, context: str) -> list[_BlockRow]:
+    rows: list[_BlockRow] = []
+    for line in _section_lines(heading):
+        link = next((t for t in line if t[0] == "a"), None)
+        text = "".join(_LINK if t[0] == "a" else t[1] for t in line if t[0] != "strong")
+        text = re.sub(r"[ 　 ]", " ", text).strip()
+        match = _BLOCK_RE.match(text) if link is not None else None
+        if link is None or match is None:
+            if text:
+                log.warning(
+                    "unparseable block-icon line: %s field=blockicon value=%r", context, text
+                )
+            continue
+        numbers = tuple(n.strip() for n in (match["nums"] or "").split(",") if n.strip())
+        date = f"{match['y']}-{int(match['m']):02d}-{int(match['d']):02d}" if match["y"] else None
+        rows.append(_BlockRow(match["code"], link[1], numbers, match["icon"] or None, date))
+    return rows
+
+
+def _targets(label: str | None, numbers: Sequence[str], context: str) -> list[str]:
+    """Entry numbers a label applies to (one per face for a face-less label)."""
+    if label is None:
+        if len({_faceless(n) for n in numbers}) == 1:
+            return list(numbers)
+        raise ParseError(f"printing row without a card number on a multi-number page in {context}")
+    exact = [n for n in numbers if n == label]
+    if exact:
+        return exact
+    found = [n for n in numbers if _faceless(n) == label]
+    if not found:
+        log.warning("number is not a card number: %s field=number value=%r", context, label)
+    return found
+
+
+def parse_printings(soup: BeautifulSoup, url: str, numbers: Sequence[str]) -> tuple[Printing, ...]:
+    """Return the printings of every card number: 収録 rows joined with block-icon rows.
+
+    Block-icon rows that match no 収録 row become printings with ``rarity=None`` and
+    ``section="ブロックアイコン"``.
+    """
+    heading = _find_section(soup, SECTION_PRINTINGS, None)
+    rows = _printing_rows(heading) if heading is not None else []
+    block_heading = _find_section(soup, None, "収録/掲載")
+    blocks = _block_rows(block_heading, url) if block_heading is not None else []
+    used: set[tuple[int, str]] = set()
+    printings: list[Printing] = []
+    for row in rows:
+        href = urljoin(url, row.href) if row.href else None
+        for number in _targets(row.label, numbers, url):
+            joined = _join(blocks, row.name, number, used)
+            printings.append(
+                Printing(
+                    number,
+                    row.name,
+                    href,
+                    row.rarity,
+                    row.detail,
+                    row.note,
+                    joined.code if joined else None,
+                    joined.icon if joined else None,
+                    joined.date if joined else None,
+                    SECTION_PRINTINGS,
+                )
+            )
+    if rows and not any(p.section == SECTION_PRINTINGS for p in printings):
+        raise ParseError(f"{len(rows)} 収録 rows but none resolves to a card number in {url}")
+    for index, block in enumerate(blocks):
+        try:
+            targets = [
+                n for label in block.numbers or (None,) for n in _targets(label, numbers, url)
+            ]
+        except ParseError as error:
+            log.warning("block-icon row skipped: %s field=blockicon value=%r", error, block.name)
+            continue
+        for number in targets:
+            if (index, number) in used:
+                continue
+            printings.append(
+                Printing(
+                    number,
+                    block.name,
+                    None,
+                    None,
+                    None,
+                    None,
+                    block.code,
+                    block.icon,
+                    block.date,
+                    SECTION_BLOCK_ICON,
+                )
+            )
+    return tuple(printings)
+
+
+def _product_key(name: str) -> str:
+    return unicodedata.normalize("NFKC", name).strip()
+
+
+def _join(
+    blocks: list[_BlockRow], name: str, number: str, used: set[tuple[int, str]]
+) -> _BlockRow | None:
+    """First unused block-icon row of the same product that lists ``number`` (or no number)."""
+    for index, block in enumerate(blocks):
+        if _product_key(block.name) != _product_key(name) or (index, number) in used:
+            continue
+        if block.numbers and _faceless(number) not in {_faceless(n) for n in block.numbers}:
+            continue
+        used.add((index, number))
+        return block
+    return None
+
+
+def _caption_lines(caption: Tag) -> list[str]:
+    lines = [""]
+    for node in caption.children:
+        if isinstance(node, Tag) and node.name == "br":
+            lines.append("")
+        else:
+            lines[-1] += node.get_text() if isinstance(node, Tag) else str(node)
+    return [line.strip() for line in lines]
+
+
+def parse_images(soup: BeautifulSoup, url: str, numbers: Sequence[str]) -> tuple[CardImage, ...]:
+    """Return the gallery images (one per ``<li>`` of each ``ul.ppy-imglist``).
+
+    URLs are read from ``a[href]`` and ``img[src]`` and made absolute; file names are
+    never built. The first caption line is the card number, the rest is the caption.
+    """
+    images: list[CardImage] = []
+    for gallery in soup.select("ul.ppy-imglist"):
+        if gallery.find_parent("li") is not None:
+            continue
+        for item in gallery.find_all("li", recursive=False):
+            link = item.find("a")
+            thumb = item.find("img")
+            caption = item.find("span", class_="ppy-extcaption")
+            href = _attr(link, "href") if isinstance(link, Tag) else None
+            if href is None:
+                raise ParseError(f"gallery image without a link in {url}")
+            if not isinstance(caption, Tag):
+                raise ParseError(f"gallery image {href!r} without a caption in {url}")
+            lines = _caption_lines(caption)
+            if not lines[0]:
+                raise ParseError(f"gallery image {href!r} without a card number in {url}")
+            small = _attr(thumb, "src") if isinstance(thumb, Tag) else None
+            rest = lines[1:]
+            while rest and not rest[-1]:
+                rest.pop()
+            for number in _targets(lines[0], numbers, url):
+                images.append(
+                    CardImage(
+                        number,
+                        urljoin(url, href),
+                        urljoin(url, small) if small else None,
+                        tuple(rest),
+                    )
+                )
+    return tuple(images)

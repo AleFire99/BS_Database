@@ -106,9 +106,11 @@ The page name is not a stable key. Two cards can share a name (a card reprinted 
 
 ### Index page
 
-The index `index.php?カードリスト` is one HTML page with no pagination: all links come in a single response, and the page has no paging elements. The fixture [index.html](../../tests/fixtures/html/index.html) (`Last-modified: 2026-02-05`) has **577 product links** in the sections below (counted by section heading, links to wiki tools excluded). Seven further links use `cmd=edit&page=…` and point to pages that do not exist yet; they must be skipped:
+The index `index.php?カードリスト` is one HTML page with no pagination: all links come in a single response, and the page has no paging elements. The fixture [index.html](../../tests/fixtures/html/index.html) (`Last-modified: 2026-02-05`) has **577 product links** in the sections below (counted by section heading; links to wiki tools are excluded). Seven further links use `cmd=edit&page=…` and point to pages that do not exist yet; they must be skipped:
 
 `BATTLE SPIRITS スペシャルスタッフトークショー 2025`, `バトスピフェスタ2008`, `ガンダムカップ2024`, `バトルスピリッツ 覇者の咆哮`, `バトルスピリッツ デジタルスターター`, `バトルスピリッツ ヒーローズソウル`, `バトルスピリッツ 輝石の覇者`.
+
+Counting rule used by the parser (`parse_index`): a link counts when it sits under an `h3` of the first `h2` (`カードリスト`) and its `href` starts with `index.php?`. Links inside a heading (`バトルスキー`, `バトスピショップバトル`, `バトスピフレンドリーバトル`) count with the heading's own path. Links to index sub-pages (`カードリスト/…`, such as the `書籍特典` heading link) and `cmd=edit` links do not count. `配布品・付録/書籍特典` therefore has 33 links. Six names are listed twice (`プロモーションカード`, `バトスピ部`, `光導デッキ コンプリートボックス`, `最強ヒーローデッキ`, `バトスピショップバトル`, `バトスピフレンドリーバトル`), so there are 571 distinct names.
 
 The structure is `h2 カードリスト` → `h3` category → optional `h4` subcategory → links. A page can appear under more than one heading (for example `プロモーションカード`).
 
@@ -203,6 +205,8 @@ The card number is the identity key on batspi.com: it is the text in front of th
 | `P###`, `P##-##`, `P##-X##`, `P##-G##` | Promo | `P001`, `P25-06`, `P20-19` |
 | `26RBS##-…`, `26RSD##-…` | Cards of a 2026 "26R" series, seen in the related-card list | `26RBS02-CP01`, `26RSD01-013` |
 
+Shapes found on the set and promo fixtures that the table does not list: `P##-EXG##`, `BS##-SP##` (`BS48-SP01`), `PB##-D##`, `PB##-DD##`, `PB##-H##`, `PB##-RVXX##`, `RP26-01`, `RPX26-01`, and a trailing variant letter (`P16-09R`, `CP14-X01R`, `X003A`). The promo list prints nine `PB` numbers with a space inside, `PB17-RV X01`..`X03`, `PB39-RV X01`..`X05` and `PB44-RV X01`; the parser reports them as unknown numbers instead of guessing.
+
 Promo prefixes: the page `プロモーションカード` is organised by number family. Its section headings (live 2026-11-14) are: `Pナンバー`, `CPナンバー`, `RVナンバー`, `PBナンバー`, `PXナンバー`, `Xナンバー`, `EXナンバー`, `BS-SPナンバー`, `LMナンバー`, `SJナンバー`, `KAナンバー`, `KFナンバー`, `GXナンバー`, `BSCOナンバー`, `BSHナンバー`, `EXGナンバー`, `ナンバーなし`. The sub-headings include numbers by campaign year (`P13ナンバー`, `P14ナンバー<1>`, … `P25ナンバー<12>`, `RP26ナンバー<A>`) and variants such as `BS-CPナンバー<2>`, `BSC-CPナンバー<2>`, `CB-CPナンバー<4>`, `SD-CPナンバー<9>`, `RBS-CPナンバー<A>`. Entry formats seen in the list: `P001`, `P20-19`, `PB18-…`, `PX14-…`, `SJ12-…`, `LM13-…`, `KA12-01`, `KF-01`, `BSCO-001`, `BSH-001`, `EXG2-001`, `EX001`, `X009`. The section `ナンバーなし` is for cards without a number (not sampled in detail).
 
 A card name is not unique across numbers, and one card page serves several numbers (next section). The number prefix does not always match the set: a `BS##-RV###` or `BSC##` card appears in the lists of unrelated products.
@@ -244,7 +248,7 @@ A page holds every number that shares the card name. The Spirit fixture has one 
 Consequences for a parser:
 
 - The `<pre>` blocks and the `<h3>` print headings are in the same order. The pairing by position is the only link between a number and its text; the pre block carries no number itself.
-- The first `<pre>` of the page is not enough: it is only the first printed number. The scraper of [batspi_card.py](../../src/bs_database/scrapers/batspi_card.py) reads `soup.find("pre")`, so it sees only the first print.
+- The first `<pre>` of the page is not enough: it is only the first printed number. The scraper of [batspi_card.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py) reads `soup.find("pre")`, so it sees only the first print.
 - Extra `<pre>` blocks appear after a card block under a collapsed label `(エラッタ前) ▼` ("before the erratum"). They hold the old wording, may contain only the changed lines (the first one on the Brave page is two lines long) and do not start with a type line. The Q&A answers are `<pre>` blocks too (`はい、破壊できます。…`). A card block is identified by a first line that is a card type.
 - The same print can differ between numbers in cost, BP, family and text, so each number is a separate printing with its own data. How this maps to card and printing is decided in [ADR 0004](../adr/0004-card-printing-identity.md), not here.
 
