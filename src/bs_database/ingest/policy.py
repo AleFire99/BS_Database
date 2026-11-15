@@ -30,6 +30,15 @@ def split_robots(text: str) -> tuple[list[str], list[str]]:
     return lines, prefixes
 
 
+def local_check(url: str) -> str | None:
+    """Network-free policy checks (off-site, deny list): the reason to skip ``url``, or ``None``."""
+    if not url.startswith(BASE_URL):
+        return "disallowed: off-site"
+    if any(marker in url for marker in DENY_MARKERS):
+        return f"disallowed: deny list: {url}"
+    return None
+
+
 def check_allowed(
     url: str, robots: urllib.robotparser.RobotFileParser, query_prefixes: list[str]
 ) -> None:

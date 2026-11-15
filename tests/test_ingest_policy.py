@@ -75,3 +75,12 @@ def test_disallowed_urls_stop_the_run(
 def test_challenge_detection() -> None:
     assert is_challenge("<title>Just a moment...</title>")
     assert not is_challenge("<pre>スピリット</pre>")
+
+
+def test_local_check_is_network_free() -> None:
+    from bs_database.ingest.policy import local_check
+
+    assert local_check(f"{BASE_URL}index.php?x") is None
+    assert local_check("https://example.com/") == "disallowed: off-site"
+    reason = local_check(f"{BASE_URL}index.php?cmd=x")
+    assert reason is not None and "deny list" in reason

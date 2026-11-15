@@ -8,10 +8,12 @@ leave an html without a sidecar (a miss, overwritten later), never a sidecar wit
 import hashlib
 import json
 import os
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
+
+from bs_database.ingest.http import Fetched, Fetcher, Skipped
 
 CACHED_STATUS = 200
 
@@ -109,4 +111,52 @@ class RawCache:
             fetched_at = fetched_at.replace(tzinfo=UTC)
         return CachedPage(
             url, source, content, CACHED_STATUS, fetched_at, True, etag, last_modified
+        )
+
+
+def _utcnow() -> datetime:
+    return datetime.now(UTC)
+
+
+class CachedFetcher:
+    """A ``Fetcher`` behind the disk cache; the one entry point for the pipeline (#73).
+
+    Lookup order: the network-free local gate (off-site, deny list) on every call; a valid,
+    fresh entry is returned with no network at all (not even robots.txt); on a miss ``fetch``
+    applies the full gate. Only status-200 pages are stored; ``Skipped`` and ``StopRun`` pass
+    through untouched and write nothing.
+    """
+
+    def __init__(
+        self,
+        fetcher: Fetcher,
+        cache: RawCache,
+        *,
+        refresh: bool = False,
+        max_age: timedelta | None = None,
+        now: Callable[[], datetime] = _utcnow,
+    ) -> None:
+        self._fetcher = fetcher
+        self._cache = cache
+        self._refresh = refresh
+        self._max_age = max_age
+        self._now = now
+
+    def _fresh(self, page: CachedPage) -> bool:
+        return self._max_age is None or self._now() - page.fetched_at <= self._max_age
+
+    def get(self, url: str, source: str = "batspi") -> CachedPage | Skipped:
+        if (skipped := self._fetcher.local_gate(url)) is not None:
+            return skipped
+        page = None if self._refresh else self._cache.load(url, source)
+        if page is not None and self._fresh(page):
+            return page
+        result = self._fetcher.fetch(url)
+        if isinstance(result, Skipped):
+            return result
+        return self._store(result, source)
+
+    def _store(self, fetched: Fetched, source: str) -> CachedPage:
+        return self._cache.store(
+            fetched.url, source, fetched.content, fetched.headers, fetched_at=self._now()
         )

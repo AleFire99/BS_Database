@@ -19,6 +19,7 @@ from bs_database.ingest.policy import (
     StopRun,
     check_allowed,
     is_challenge,
+    local_check,
     split_robots,
 )
 from bs_database.settings import Settings
@@ -131,6 +132,8 @@ class Skipped:
 
 
 class Fetcher(Protocol):
+    def local_gate(self, url: str) -> Skipped | None: ...
+
     def allowed(self, url: str) -> Skipped | None: ...
 
     def fetch(self, url: str) -> Fetched | Skipped: ...
@@ -208,11 +211,17 @@ class HttpClient:
         self._robots = parser
         return parser
 
+    def local_gate(self, url: str) -> Skipped | None:
+        """Network-free part of the gate (off-site, deny list); never touches robots.txt."""
+        if (reason := local_check(url)) is not None:
+            log.warning("skip %s", reason)
+            return Skipped(url, reason)
+        return None
+
     def allowed(self, url: str) -> Skipped | None:
         """Policy gate: ``None`` if ``url`` may be fetched, else a ``Skipped``. Nothing is sent."""
-        if not url.startswith(BASE_URL):
-            log.warning("skip off-site %s", url)
-            return Skipped(url, "disallowed: off-site")
+        if (skipped := self.local_gate(url)) is not None:
+            return skipped
         robots = self._load_robots()
         try:
             check_allowed(url, robots, self._query_prefixes)

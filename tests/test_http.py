@@ -17,6 +17,7 @@ from bs_database.ingest.http import (
     Skipped,
     TransportError,
 )
+from bs_database.ingest.policy import local_check
 from bs_database.settings import Settings
 
 BASE = "https://batspi.com/"
@@ -365,7 +366,9 @@ def test_disallowed_urls_skipped_and_never_requested(url: str) -> None:
     assert isinstance(result, Skipped)
     assert result.reason.startswith("disallowed")
     assert client.allowed(url) == result
-    assert [c[1] for c in transport.calls] == [ROBOTS_URL]
+    # deny-list URLs are refused by the local gate before robots.txt is even loaded
+    expected = [] if local_check(url) else [ROBOTS_URL]
+    assert [c[1] for c in transport.calls] == expected
 
 
 def test_only_http_module_imports_requests() -> None:
