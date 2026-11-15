@@ -100,4 +100,5 @@ Option 1. batspi.com is the single source of truth in v1. Inside batspi the foll
 
 - Issue: [#56](https://github.com/AleFire99/BS_Database/issues/56), epic [#9](https://github.com/AleFire99/BS_Database/issues/9)
 - Evidence: [coverage-matrix.md](../sources/coverage-matrix.md), [batspi.md](../sources/batspi.md), [official.md](../sources/official.md), [fandom.md](../sources/fandom.md)
+- Amended by [ADR 0008](0008-normalization-and-translation.md) ([#91](https://github.com/AleFire99/BS_Database/issues/91)): the batspi `<h3>` English name uses the translation source `batspi`, not `official`.
 - Related: [ADR 0004](0004-card-printing-identity.md), [ADR 0005](0005-text-first-effects-and-translations.md), [ADR 0006](0006-scraping-and-redistribution-policy.md), [policy.md](../sources/policy.md)

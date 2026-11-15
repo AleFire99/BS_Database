@@ -32,7 +32,7 @@ Naming, lookups and keys follow [ADR 0003](0003-naming-and-schema-versioning.md)
 
 ## Options considered
 
-1. **Per-column `_ja` / `_en` with per-row translation metadata.** Each translatable text has an `X_jp` and an `X_en` column. Each row with English text carries `en_source_id` and `en_status_id` pointing to two small lookups.
+1. **Per-column `_jp` / `_en` with per-row translation metadata.** Each translatable text has an `X_jp` and an `X_en` column. Each row with English text carries `en_source_id` and `en_status_id` pointing to two small lookups.
    - Pros: plain SQL with no extra joins; foreign keys keep the metadata valid; readable queries; matches the `name_jp` / `name_en` columns already in [ADR 0003](0003-naming-and-schema-versioning.md) and [ADR 0004](0004-card-printing-identity.md).
    - Cons: a third language needs new columns (a schema change); the source and status are per row, not per column, so one row cannot say that its name is official and its flavor text is machine translated.
 2. **A generic `translations(entity, row_id, field, lang, text, source)` table.**

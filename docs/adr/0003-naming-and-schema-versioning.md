@@ -39,7 +39,7 @@ Use **option 2**: snake_case conventions, keeping the BSS_app entity split but n
 - **Columns:** lower snake_case, singular (`battle_points`, not `battlePoints`).
   - Booleans are named `is_…` or `has_…`.
   - Timestamps are named `…_at` and stored as ISO-8601 UTC TEXT.
-  - Language suffixes are `_jp` and `_en` (never `_ja`). They are used only on data entities: `cards`, `families`, `products` and effect text. The Japanese source text is kept there so a bad machine translation can be redone.
+  - Language suffixes are `_jp` and `_en` (`jp`, not `ja`). They are used only on data entities: `cards`, `families`, `products` and effect text. The Japanese source text is kept there so a bad machine translation can be redone.
   - Lookup rows have a stable `code` (for example `red`) plus a single English `name`. They have no `_jp`/`_en` columns; the normalization stage ([#11](https://github.com/AleFire99/BS_Database/issues/11), [ADR 0008](0008-normalization-and-translation.md)) maps Japanese source text to the `code` (see [target-schema.md](../data-model/target-schema.md#jp-source-to-code)). The loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)) only inserts rows.
 - **Keys:**
   - The primary key is `id INTEGER PRIMARY KEY` (a rowid alias).

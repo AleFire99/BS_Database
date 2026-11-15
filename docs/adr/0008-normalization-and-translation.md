@@ -11,7 +11,7 @@ Facts that shape the choice:
 
 - The legacy `normalize.py` works on English machine-translated JSON and rewrites files in place. Its heuristics only patch bad English (see the audit below).
 - [ADR 0005](0005-text-first-effects-and-translations.md) stores each English text next to its Japanese source, with `en_source_id` and `en_status_id` per row.
-- [ADR 0007](0007-source-of-truth.md) makes batspi the only source. Its `<h3>` sometimes prints an official English name.
+- [ADR 0007](0007-source-of-truth.md) makes batspi the only source. Its `<h3>` sometimes prints an English name, transcribed by the wiki.
 - The Japanese source separates families with `・`, so no splitting heuristics are needed.
 - The `ja` to `jp` rename was decided at Gate A on #11 ([#91](https://github.com/AleFire99/BS_Database/issues/91)): `jp` is used everywhere, see the amendment in [ADR 0003](0003-naming-and-schema-versioning.md).
 

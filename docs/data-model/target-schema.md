@@ -1247,7 +1247,7 @@ Summary of where this model departs from the sister project [BSS_app](https://gi
 | Levels | `Core` (`BP`, `Cores`) | `card_levels` (`battle_points`, `cores`) | Plural rule, readable names; `battle_points` NULL for Nexus. |
 | Effects | `Effects`, `Conditions`, `Steps`, `EffectSteps` | `card_effects` as text, `card_effect_levels`, `card_effect_keywords`; structured tables deferred | Text-first effects in v1 ([ADR 0005](../adr/0005-text-first-effects-and-translations.md)); a structured model can be added later. |
 | Keyword modifier | `EffectKeywords.Modifier` | `card_effect_keywords.parameter_jp` | Kept as printed text, not structured. |
-| Languages | no i18n | `_ja`/`_en` columns plus `translation_sources` and `translation_statuses` | Japanese source is kept; translation provenance is tracked (ADR 0005). |
+| Languages | no i18n | `_jp`/`_en` columns plus `translation_sources` and `translation_statuses` | Japanese source is kept; translation provenance is tracked (ADR 0005). |
 | Provenance and images | none | `sources`, `source_pages`, link tables, `printing_images`, `image_sizes` | Reproducible builds and per-printing images. |
 | Versioning | none | `PRAGMA user_version` and `schema_meta` | Cheap compatibility check (ADR 0003). |
 | Q&A | `QA_cards`, `QA_keywords` | none | Out of scope for v1. |
