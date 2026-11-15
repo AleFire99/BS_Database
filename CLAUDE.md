@@ -48,7 +48,7 @@ uv run pre-commit run --all-files
 ## Data sources
 
 - batspi.com (JP card pages: primary card data)
-- battle-spirits.fandom.com (EN wiki: set lists and images)
+- battle-spirits.fandom.com: dropped for v1 (Cloudflare-blocked, R9); see [docs/sources/fandom.md](docs/sources/fandom.md)
 
 Scrape politely: cache raw HTML and rate-limit requests. The policy is defined in E4 #9.
 

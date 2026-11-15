@@ -35,7 +35,7 @@ Wiki **text** is therefore CC-BY-SA (attribution and share-alike would apply to 
 
 ## 4. Repository state
 
-- The fandom fixtures in [tests/fixtures/html/](../../tests/fixtures/html/fixtures.json) are **synthetic**: the real site was blocked on 2026-11-14. The `Rarity` column and the card page layout are not verified (see [field-inventory.md](../data-model/field-inventory.md)).
+- The fandom fixtures were **synthetic** and were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66) (last at commit `f90747b`): the real site was blocked on 2026-11-14. The `Rarity` column and the card page layout are not verified (see [field-inventory.md](../data-model/field-inventory.md)).
 - [fandom_sets.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/fandom_sets.py), [fandom_images.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/fandom_images.py) are **legacy** code, removed with the fandom settings in [#66](https://github.com/AleFire99/BS_Database/issues/66) (links point at commit `f90747b`).
 
 ## 5. Verdict
