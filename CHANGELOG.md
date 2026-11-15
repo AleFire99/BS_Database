@@ -24,6 +24,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - **commitlint:** Ignore the one legacy #83 subject that starts with an acronym
 - **commitlint:** Allow subjects that start with an acronym
+- **changelog:** Separate git-cliff releases with a blank line
 
 ## [0.3.0] - 2026-11-15
 
