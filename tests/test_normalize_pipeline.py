@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+from collections.abc import Callable
 from pathlib import Path
 
 import pytest
@@ -103,12 +104,42 @@ def test_closed_unmapped_term_fails_the_page_but_not_the_run(tmp_path: Path) -> 
     assert not (out / "batspi" / bad.name).exists()
 
 
-def test_unreadable_parsed_file_is_counted_failed(tmp_path: Path) -> None:
-    parsed = tmp_path / "parsed"
-    path = write_parsed_fixture(parsed, "card_spirit.html")
+def _break_schema(path: Path) -> None:
     document = json.loads(path.read_text(encoding="utf-8"))
     document["schema_version"] = "1.0.0"
     path.write_text(json.dumps(document), encoding="utf-8")
+
+
+def _break_page_schema(path: Path) -> None:
+    document = json.loads(path.read_text(encoding="utf-8"))
+    document["page"]["schema_version"] = "1.0.0"
+    path.write_text(json.dumps(document), encoding="utf-8")
+
+
+def _break_json(path: Path) -> None:
+    path.write_text("{not json", encoding="utf-8")
+
+
+def _drop_key(path: Path) -> None:
+    document = json.loads(path.read_text(encoding="utf-8"))
+    del document["page"]["entries"]
+    path.write_text(json.dumps(document), encoding="utf-8")
+
+
+def _make_directory(path: Path) -> None:
+    path.unlink()
+    path.mkdir()
+
+
+@pytest.mark.parametrize(
+    "breaker", [_break_schema, _break_page_schema, _break_json, _drop_key, _make_directory]
+)
+def test_unreadable_parsed_file_is_counted_failed(
+    tmp_path: Path, breaker: Callable[[Path], None]
+) -> None:
+    parsed = tmp_path / "parsed"
+    path = write_parsed_fixture(parsed, "card_spirit.html")
+    breaker(path)
     result = normalize_tree(parsed, tmp_path / "normalized", real_glossary())
     assert (result.written, result.failed) == (0, (path,))
 

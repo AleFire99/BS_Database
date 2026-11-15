@@ -171,7 +171,7 @@ def normalize_tree(parsed_dir: Path, normalized_dir: Path, glossary: Glossary) -
     for path in sorted(parsed_dir.glob("*/*.json")):
         try:
             page, provenance = read_card_page(path)
-        except (ValueError, KeyError, TypeError) as exc:
+        except (OSError, ValueError, KeyError, TypeError) as exc:
             log.error("cannot read %s: %s", path, exc)
             failed.append(path)
             continue

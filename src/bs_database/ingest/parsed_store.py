@@ -168,6 +168,10 @@ def read_card_page(path: Path) -> tuple[CardPage, dict[str, Any]]:
             "re-parse from the HTML cache"
         )
     p = document["page"]
+    if p.get("schema_version") != SCHEMA_VERSION:
+        raise ValueError(
+            f"{path}: page schema_version {p.get('schema_version')!r}, expected {SCHEMA_VERSION!r}"
+        )
     page = CardPage(
         schema_version=p["schema_version"],
         url=p["url"],
