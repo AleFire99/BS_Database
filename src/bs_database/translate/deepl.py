@@ -1,5 +1,8 @@
 """The DeepL engine (#94, ADR 0008): ``POST /v2/translate`` with retries and quota handling.
 
+A single text over the byte cap is sent alone in its own batch; if DeepL answers 413, only
+that batch fails and the run goes on.
+
 Only this module knows DeepL's language codes. The API key is a ``SecretStr``: it is read
 only to build the ``Authorization`` header and never appears in a log, exception or repr.
 """
@@ -60,15 +63,20 @@ class RequestsJsonTransport:
         json_body: Mapping[str, Any],
         timeout: tuple[float, float],
     ) -> HttpResponse:
+        # The TransportError is raised outside the ``except`` blocks, so no requests exception
+        # (whose message could echo request details) is chained as __context__ or __cause__.
+        failure: str | None = None
+        timed_out = False
         try:
             resp = self._session.post(
                 url, headers=dict(headers), json=json_body, timeout=timeout, allow_redirects=False
             )
         except requests.Timeout as exc:
-            raise TransportError(type(exc).__name__, timeout=True) from None
+            failure, timed_out = type(exc).__name__, True
         except requests.RequestException as exc:
-            # the message is dropped on purpose: it could echo request details
-            raise TransportError(type(exc).__name__) from None
+            failure = type(exc).__name__
+        if failure is not None:
+            raise TransportError(failure, timeout=timed_out)
         return HttpResponse(resp.status_code, dict(resp.headers), resp.content)
 
 
