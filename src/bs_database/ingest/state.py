@@ -73,20 +73,22 @@ class SchemaTooNew(RuntimeError):
 
 DEFAULT_MAX_ATTEMPTS = 3
 
-MIGRATIONS: tuple[str, ...] = (
-    """
-    CREATE TABLE pages (
-      url TEXT PRIMARY KEY,
-      kind TEXT NOT NULL CHECK (kind IN ('index','set','card')),
-      state TEXT NOT NULL,
-      failed_from TEXT,
-      attempts INTEGER NOT NULL DEFAULT 0,
-      last_error TEXT,
-      content_sha256 TEXT,
-      updated_at TEXT NOT NULL
-    );
-    CREATE INDEX pages_state ON pages(state, kind);
-    """,
+MIGRATIONS: tuple[tuple[str, ...], ...] = (
+    (
+        """
+        CREATE TABLE pages (
+          url TEXT PRIMARY KEY,
+          kind TEXT NOT NULL CHECK (kind IN ('index','set','card')),
+          state TEXT NOT NULL,
+          failed_from TEXT,
+          attempts INTEGER NOT NULL DEFAULT 0,
+          last_error TEXT,
+          content_sha256 TEXT,
+          updated_at TEXT NOT NULL
+        )
+        """,
+        "CREATE INDEX pages_state ON pages(state, kind)",
+    ),
 )
 
 
@@ -126,7 +128,12 @@ def _utc_now() -> datetime:
 
 
 class StateStore:
-    """Durable per-page state in SQLite. Every API call is one transaction."""
+    """Durable per-page state in SQLite. Every API call is one transaction.
+
+    ``max_attempts`` counts failures of one page in the pipeline (3 failures,
+    then exhausted). It is distinct from the HTTP retries of policy 3.5, which
+    live in the HTTP client.
+    """
 
     def __init__(
         self,
@@ -141,7 +148,11 @@ class StateStore:
         self._conn = sqlite3.connect(path, isolation_level=None)
         self._conn.execute("PRAGMA journal_mode=WAL")
         self._conn.execute("PRAGMA synchronous=NORMAL")
-        self._migrate()
+        try:
+            self._migrate()
+        except BaseException:
+            self._conn.close()
+            raise
 
     def _migrate(self) -> None:
         with self._tx():
@@ -151,10 +162,9 @@ class StateStore:
                 raise SchemaTooNew(
                     f"database schema {version} is newer than supported {len(MIGRATIONS)}"
                 )
-            for number, script in enumerate(MIGRATIONS[version:], start=version + 1):
-                for statement in script.split(";"):
-                    if statement.strip():
-                        self._conn.execute(statement)
+            for number, statements in enumerate(MIGRATIONS[version:], start=version + 1):
+                for statement in statements:
+                    self._conn.execute(statement)
                 self._conn.execute(f"PRAGMA user_version = {number}")
 
     @contextmanager
@@ -198,6 +208,8 @@ class StateStore:
             raise IllegalTransition("use mark_failed to fail a page")
         with self._tx() as conn:
             current = self._locked_get(conn, url)
+            if current.state is IngestState.FAILED:
+                raise IllegalTransition("use retry")
             check_transition(current.state, new_state)
             conn.execute(
                 "UPDATE pages SET state = ?, failed_from = NULL, attempts = 0, "
@@ -252,7 +264,9 @@ class StateStore:
     ) -> list[PageRecord]:
         """Pages with work left: unfinished ones plus failed ones still retryable.
 
-        Failed pages are returned in state ``failed``; call ``retry`` on them.
+        Failed pages are returned in state ``failed`` (call ``retry`` on them),
+        regardless of the ``state`` filter, which matches the current state only
+        and never ``failed_from``.
         """
         sql = f"SELECT {_COLUMNS} FROM pages WHERE state != ? AND (state != ? OR attempts < ?)"
         args: list[str | int] = [

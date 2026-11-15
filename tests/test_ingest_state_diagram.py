@@ -22,12 +22,15 @@ def _first_mermaid_block() -> list[str]:
 
 
 def _parse() -> set[tuple[str, str]]:
-    edges: set[tuple[str, str]] = set()
+    edges: list[tuple[str, str]] = []
     for line in _first_mermaid_block():
+        if not line.strip() or line.strip() == "stateDiagram-v2":
+            continue
         m = EDGE.match(line)
-        if m:
-            edges.add((m.group(1), m.group(2)))
-    return edges
+        assert m, f"unparsed diagram line: {line!r}"
+        edges.append((m.group(1), m.group(2)))
+    assert len(edges) == len(set(edges)), "duplicate edges"
+    return set(edges)
 
 
 def test_diagram_edges_match_transition_table() -> None:

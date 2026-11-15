@@ -35,7 +35,9 @@ stateDiagram-v2
 - `mark_failed(url, reason)` stores `failed_from`, `last_error`, and increments `attempts`.
 - A successful `advance` resets `attempts` to 0 and clears the error.
 - `retry(url)` moves `failed` back to `failed_from`. When `attempts >= max_attempts` (constructor argument, default 3) it raises `RetriesExhausted`.
-- `iter_pending()` returns unfinished pages and failed pages that can still be retried; `iter_exhausted()` lists the pages that ran out of attempts so a failure never disappears silently.
+- `max_attempts` counts failures of one page in the pipeline (3 failures, then exhausted). It is distinct from the HTTP retries of policy 3.5, which live in the HTTP client.
+- `advance` on a `failed` page raises `IllegalTransition`; only `retry` leaves `failed`.
+- `iter_pending()` returns unfinished pages and failed pages that can still be retried; `iter_exhausted()` lists the pages that ran out of attempts so a failure never disappears silently. Failed rows are returned in state `failed`, regardless of the `state=` filter, which matches the current state and not `failed_from`.
 
 ## Schema
 

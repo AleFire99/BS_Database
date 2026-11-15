@@ -234,3 +234,40 @@ def test_resume_after_kill_does_not_redo_completed_pages(tmp_path: Path) -> None
             store.advance(rec.url, S.FETCHED)
         assert [r.url for r in store.iter_pending(state=S.PARSED)] == ["u0", "u1", "u2"]
     assert fetched == ["u3", "u4"]
+
+
+def test_advance_on_failed_row_raises_and_exhausted_stays_failed(tmp_path: Path) -> None:
+    with StateStore(tmp_path / "s.db", max_attempts=1, now=lambda: T0) as store:
+        store.upsert_discovered("u", PageKind.CARD)
+        store.mark_failed("u", "x")
+        with pytest.raises(IllegalTransition):
+            store.advance("u", S.FETCHED)
+        with pytest.raises(RetriesExhausted):
+            store.retry("u")
+        rec = store.get("u")
+        assert rec.state is S.FAILED and rec.attempts == 1
+
+
+def test_failed_migration_closes_connection(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    db = tmp_path / "s.db"
+    make_store(db).close()
+    with sqlite3.connect(db) as conn:
+        conn.execute("PRAGMA user_version = 99")
+    closed: list[bool] = []
+    real_connect = sqlite3.connect
+
+    class Spy:
+        def __init__(self, conn: sqlite3.Connection) -> None:
+            self._c = conn
+
+        def __getattr__(self, name: str) -> object:
+            if name == "close":
+                closed.append(True)
+            return getattr(self._c, name)
+
+    monkeypatch.setattr(sqlite3, "connect", lambda *a, **k: Spy(real_connect(*a, **k)))
+    with pytest.raises(SchemaTooNew):
+        make_store(db)
+    assert closed
