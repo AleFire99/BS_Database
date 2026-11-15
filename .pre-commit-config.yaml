@@ -39,5 +39,5 @@ repos:
         name: no-ja-suffix
         description: Use the _jp suffix, never _ja (ADR 0003)
         language: pygrep
-        entry: '\b\w+_ja\b'
+        entry: '(?<!\w)\w*_ja\b'
         files: '^(src/|tests/.*\.py$|docs/)'
