@@ -14,7 +14,7 @@ def parse_promo_list(html: str) -> PromoList:
     first = next((i for i, e in enumerate(elements) if e.name == "h2"), None)
     if first is None:
         raise ParseError("no title heading")
-    entries = iter_entries(elements[first + 1 :])
+    entries, missing = iter_entries(elements[first + 1 :])
     if not entries:
         raise ParseError("no card entries")
-    return PromoList(tuple(entries))
+    return PromoList(tuple(entries), tuple(missing))

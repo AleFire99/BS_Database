@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup, Tag
 from bs_database.ingest.policy import BASE_URL
 from bs_database.parsers.batspi.numbers import parse_number
 from bs_database.parsers.errors import ParseError
-from bs_database.parsers.models import ListEntry
+from bs_database.parsers.models import ListEntry, MissingEntry
 
 _PREFIX = "index.php?"
 
@@ -63,7 +63,7 @@ def edit_target(a: Tag) -> str | None:
     return values[0] if values else None
 
 
-_NUMBER = re.compile(r"^[0-9A-Za-z][0-9A-Za-z()\- ]{0,24}$")
+_NUMBER = re.compile(r"^(?=.*\d)[0-9A-Za-z][0-9A-Za-z()\- ]{0,24}$")
 _RARITY = re.compile(r"^[^\s()（）]+")
 _COPIES = re.compile(r"\((\d+)\)")
 
@@ -82,15 +82,19 @@ def _text(node: object) -> str:
     return node.get_text() if isinstance(node, Tag) else str(node)
 
 
-def _entry(line: list[object], section: tuple[str, ...]) -> ListEntry | None:
+def _entry(line: list[object], section: tuple[str, ...]) -> ListEntry | MissingEntry | None:
     idx = next((i for i, n in enumerate(line) if isinstance(n, Tag) and n.name == "a"), None)
     if idx is None:
         return None
     a = line[idx]
     assert isinstance(a, Tag)
     number = "".join(_text(n) for n in line[:idx]).strip()
+    if not _NUMBER.match(number):
+        return None
     href = page_href(a)
-    if href is None or not _NUMBER.match(number):
+    if href is None:
+        if edit_target(a) is not None:
+            return MissingEntry(number, a.get_text().strip(), section)
         return None
     after = "".join(_text(n) for n in line[idx + 1 :]).strip()
     rarity = None
@@ -116,7 +120,7 @@ def _entry(line: list[object], section: tuple[str, ...]) -> ListEntry | None:
     )
 
 
-def iter_entries(elements: Iterable[Tag]) -> list[ListEntry]:
+def iter_entries(elements: Iterable[Tag]) -> tuple[list[ListEntry], list[MissingEntry]]:
     """Collect card lines from ``h2/h3/h4/p`` elements given in document order.
 
     ``section`` of each entry is the current (h3, h4) heading texts.
@@ -124,6 +128,7 @@ def iter_entries(elements: Iterable[Tag]) -> list[ListEntry]:
     h3: str | None = None
     h4: str | None = None
     entries: list[ListEntry] = []
+    missing: list[MissingEntry] = []
     for el in elements:
         if el.name == "h2":
             h3 = h4 = None
@@ -135,6 +140,8 @@ def iter_entries(elements: Iterable[Tag]) -> list[ListEntry]:
             section = tuple(x for x in (h3, h4) if x)
             for line in _lines(el):
                 entry = _entry(line, section)
-                if entry is not None:
+                if isinstance(entry, MissingEntry):
+                    missing.append(entry)
+                elif entry is not None:
                     entries.append(entry)
-    return entries
+    return entries, missing

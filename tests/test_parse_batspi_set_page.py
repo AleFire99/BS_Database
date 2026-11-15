@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from bs_database.parsers.batspi.numbers import parse_number
+from bs_database.parsers.batspi.promo_list import parse_promo_list
 from bs_database.parsers.batspi.set_page import parse_set_page
 from bs_database.parsers.errors import ParseError
 from bs_database.parsers.models import ListEntry, SetPage
@@ -215,3 +216,29 @@ def test_every_fixture_number_parses() -> None:
 def test_invalid_release_date_is_none() -> None:
     html = _page('<p>A-01 <a href="index.php?a">A</a></p>').replace("2020年3月4日", "2020年2月30日")
     assert parse_set_page(html).release_date is None
+
+
+_EDIT = '<a href="index.php?cmd=edit&amp;page=New%20Card&amp;refer=x">New Card</a>'
+
+
+def test_missing_card_page_is_recorded() -> None:
+    page = parse_set_page(
+        _page(
+            f'<p>BS01-001 <a href="index.php?a">A</a><br/>BS01-002 {_EDIT}<br/>'
+            'Some prose <a href="index.php?cmd=edit&amp;page=p">edit</a></p>'
+        )
+    )
+    assert [e.number for e in page.entries] == ["BS01-001"]
+    assert [(m.number, m.name, m.section) for m in page.missing] == [
+        ("BS01-002", "New Card", ("赤",))
+    ]
+
+
+def test_missing_card_page_in_promo_list() -> None:
+    html = (
+        '<div id="body"><h2>t</h2><h3>P</h3><p>P001 <a href="index.php?a">A</a><br/>'
+        f"P002 {_EDIT}</p></div>"
+    )
+    page = parse_promo_list(html)
+    assert len(page.entries) == 1
+    assert [m.number for m in page.missing] == ["P002"]

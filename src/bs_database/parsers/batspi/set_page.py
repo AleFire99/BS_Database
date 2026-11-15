@@ -51,5 +51,7 @@ def parse_set_page(html: str) -> SetPage:
         if el.name != "p" and heading_text(el) in _STOP:
             break
         selected.append(el)
-    entries = iter_entries(selected)
-    return SetPage(heading_text(h2s[0]), release_date, _set_code(entries), tuple(entries))
+    entries, missing = iter_entries(selected)
+    return SetPage(
+        heading_text(h2s[0]), release_date, _set_code(entries), tuple(entries), tuple(missing)
+    )

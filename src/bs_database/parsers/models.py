@@ -47,6 +47,15 @@ class ListEntry:
 
 
 @dataclass(frozen=True, slots=True)
+class MissingEntry:
+    """A card line whose page does not exist yet (``cmd=edit`` link)."""
+
+    number: str
+    name: str
+    section: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
 class SetPage:
     """A parsed set page."""
 
@@ -54,6 +63,7 @@ class SetPage:
     release_date: str | None
     set_code: str | None
     entries: tuple[ListEntry, ...]
+    missing: tuple[MissingEntry, ...] = ()
 
     @property
     def unknown_numbers(self) -> tuple[str, ...]:
@@ -66,6 +76,7 @@ class PromoList:
     """The promotion card list."""
 
     entries: tuple[ListEntry, ...]
+    missing: tuple[MissingEntry, ...] = ()
 
     @property
     def unknown_numbers(self) -> tuple[str, ...]:
