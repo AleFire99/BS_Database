@@ -7,7 +7,7 @@ codes is the loader's job (#12).
 
 from dataclasses import dataclass
 
-SCHEMA_VERSION = "1.1.0"
+SCHEMA_VERSION = "2.0.0"
 
 
 @dataclass(frozen=True, slots=True)
@@ -114,11 +114,11 @@ class Printing:
     """One 収録 row (or block-icon-only row) of a card number."""
 
     number: str
-    product_name_ja: str
+    product_name_jp: str
     product_href: str | None
     rarity: str | None
-    detail_ja: str | None
-    note_ja: str | None
+    detail_jp: str | None
+    note_jp: str | None
     product_code: str | None
     block_icon: str | None
     release_date: str | None
@@ -140,7 +140,7 @@ class CardEntry:
     """One card number on the page with its names and gameplay values."""
 
     number: str
-    name_ja: str
+    name_jp: str
     name_en: str | None
     gameplay: Gameplay
     text: CardText | None = None
@@ -153,7 +153,7 @@ class ValueDifference:
     ``values`` holds ``(number, rendered value)`` pairs.
     """
 
-    name_ja: str
+    name_jp: str
     field: str
     values: tuple[tuple[str, str], ...]
 
@@ -164,7 +164,7 @@ class CardPage:
 
     schema_version: str
     url: str
-    title_ja: str
+    title_jp: str
     entries: tuple[CardEntry, ...]
     differences: tuple[ValueDifference, ...]
     printings: tuple[Printing, ...] = ()

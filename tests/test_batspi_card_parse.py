@@ -33,7 +33,7 @@ def parse(stem: str) -> CardPage:
 
 
 def identity(page: CardPage) -> list[tuple[str, str, str | None]]:
-    return [(e.number, e.name_ja, e.name_en) for e in page.entries]
+    return [(e.number, e.name_jp, e.name_en) for e in page.entries]
 
 
 IDENTITIES = [
@@ -127,7 +127,7 @@ def test_title_name_conflict_warns(caplog: pytest.LogCaptureFixture) -> None:
         parse_card_page(html, "u")
     messages = [r.getMessage() for r in caplog.records]
     assert len(messages) == 1
-    assert "name_ja" in messages[0]
+    assert "name_jp" in messages[0]
     assert "光爪の武芸者ヘルハウンド" in messages[0] and "別の名前" in messages[0]
 
 
@@ -139,7 +139,7 @@ def test_blank_heading_name_falls_back_to_title() -> None:
         "<pre>マジック\n4(2)/赤\nシンボル：なし</pre></body></html>"
     )
     entry = parse_card_page(html, "u").entries[0]
-    assert (entry.number, entry.name_ja) == ("BS01-001", "題名")
+    assert (entry.number, entry.name_jp) == ("BS01-001", "題名")
 
 
 def test_page_without_card_block_raises() -> None:
@@ -163,7 +163,7 @@ def test_headingless_page_with_number_mismatch_raises() -> None:
 def diff_fields(stem: str) -> dict[str, list[str]]:
     result: dict[str, list[str]] = {}
     for d in parse(stem).differences:
-        result.setdefault(d.name_ja, []).append(d.field)
+        result.setdefault(d.name_jp, []).append(d.field)
     return result
 
 
@@ -172,7 +172,7 @@ def test_goradon_levels_differ(caplog: pytest.LogCaptureFixture) -> None:
         page = parse("card_spirit_bs01")
     assert len(page.differences) == 1
     diff = page.differences[0]
-    assert (diff.name_ja, diff.field) == ("ゴラドン", "levels")
+    assert (diff.name_jp, diff.field) == ("ゴラドン", "levels")
     assert [number for number, _ in diff.values] == ["BS01-001", "BSC22-001"]
     assert any("per-number values differ" in r.getMessage() for r in caplog.records)
 
