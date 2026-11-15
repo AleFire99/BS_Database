@@ -13,7 +13,7 @@ FIXTURES = sorted(glob.glob(str(ROOT / "tests" / "fixtures" / "html" / "card_*.h
 
 
 # Kinds seeded so far; each seeding commit extends this set.
-SEEDED = {"colors", "symbols", "card_types", "rarities"}
+SEEDED = {"colors", "symbols", "card_types", "rarities", "variants", "product_types", "keywords"}
 HEADERS = {
     "rarities": "jp,code,en,notes,sort_order",
     "families": "jp,code,en,notes,aliases_en,no_split",
