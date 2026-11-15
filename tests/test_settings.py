@@ -115,3 +115,14 @@ def test_deepl_key_read_and_hidden(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_empty_deepl_key_is_unset(monkeypatch: pytest.MonkeyPatch, value: str) -> None:
     monkeypatch.setenv("BSDB_DEEPL_API_KEY", value)
     assert Settings().deepl_api_key is None
+
+
+def test_mt_model_dir_default_follows_data_dir(monkeypatch: pytest.MonkeyPatch) -> None:
+    assert Settings().mt_model_dir == Path("data/models/quickmt-ja-en")
+    monkeypatch.setenv("BSDB_DATA_DIR", "/x")
+    assert Settings().mt_model_dir == Path("/x/models/quickmt-ja-en")
+
+
+def test_mt_model_dir_override(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("BSDB_MT_MODEL_DIR", "/m")
+    assert Settings().mt_model_dir == Path("/m")
