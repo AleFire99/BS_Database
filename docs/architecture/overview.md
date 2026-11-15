@@ -7,7 +7,7 @@ This document describes the `bs_database` package as restructured in E2 ([#7](ht
 ```mermaid
 flowchart LR
     subgraph Sources
-        WIKI["battle-spirits.fandom.com<br/>(EN wiki: set lists, images)"]
+        WIKI["battle-spirits.fandom.com<br/>(EN wiki: set lists, images;<br/>legacy, dropped for v1)"]
         BAT["batspi.com<br/>(JP card pages)"]
     end
 
@@ -52,6 +52,31 @@ flowchart LR
     FM --> NORM
     NORM --> CJ
     CJ --> DBM --> DB
+```
+
+## Target data flow
+
+The pipeline that the roadmap epics build, following the [scraping policy](../sources/policy.md), [ADR 0006](../adr/0006-scraping-and-redistribution-policy.md) and [ADR 0007](../adr/0007-source-of-truth.md). batspi.com is the only source fetched in v1. The fandom wiki is dropped ([fandom.md](../sources/fandom.md)), and the official site is a survey only ([official.md](../sources/official.md)). Field-level coverage is in the [coverage matrix](../sources/coverage-matrix.md).
+
+```mermaid
+flowchart LR
+    BAT["batspi.com<br/>(JP fan wiki)"]
+    FAN["battle-spirits.fandom.com<br/>(dropped for v1)"]
+    OFF["battlespirits.com<br/>(survey only)"]
+
+    subgraph E5["Scraper (#10)"]
+        GATE["Policy gate<br/>robots.txt, deny list,<br/>3 s delay, User-Agent"]
+        CACHE[("Raw-HTML cache<br/>data/cache/html")]
+        PARSE["Parsers<br/>precedence per ADR 0007"]
+    end
+
+    NT["Normalize and translate (#11)"]
+    BUILD["SQLite build and validation (#12)"]
+    REL["Release artefact (#14)<br/>data and text, no images"]
+
+    BAT --> GATE --> CACHE --> PARSE --> NT --> BUILD --> REL
+    FAN -. "not fetched" .-> GATE
+    OFF -. "not fetched" .-> GATE
 ```
 
 ## CLI flow
@@ -117,6 +142,8 @@ Kept quirks (ported unchanged, covered by golden tests): translation failures re
 
 ## Known issues / tech debt
 
+The legacy data model is described in [current-schema.md](../data-model/current-schema.md); its replacement is designed in the [target schema](../data-model/target-schema.md), with a per-column [legacy mapping](../data-model/legacy-mapping.md). Rows tagged E3 below link to the part of the target schema that addresses them; the implementation stays in the later epics.
+
 Tags refer to the epic addressing each item: E2 restructure ([#7](https://github.com/AleFire99/BS_Database/issues/7)), E3 data model ([#8](https://github.com/AleFire99/BS_Database/issues/8)), E4 source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9)), E5 scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)), E6 normalization and translation ([#11](https://github.com/AleFire99/BS_Database/issues/11)), E7 DB build and validation ([#12](https://github.com/AleFire99/BS_Database/issues/12)), E8 images ([#13](https://github.com/AleFire99/BS_Database/issues/13)), E9 distribution ([#14](https://github.com/AleFire99/BS_Database/issues/14)).
 
 | Issue | Evidence | Epic |
@@ -128,14 +155,14 @@ Tags refer to the epic addressing each item: E2 restructure ([#7](https://github
 | Resolved: dependency list | Unused `selenium`, `webdriver-manager`, `libretranslatepy`, `lxml` dropped; used packages declared | E2 |
 | Resolved: database committed to git | `battle_spirits.db` untracked and ignored in #23 (release artefact is E9) | E2, E9 |
 | Resolved: no tests, CI or lint | pytest with goldens, ruff, mypy strict, CI and pre-commit | E2 |
-| battle-spirits.fandom.com behind Cloudflare challenge | Legacy fandom scrapers and `bsdb images` fail against the live wiki; tests use synthetic fixtures | E5, E8 |
+| battle-spirits.fandom.com behind Cloudflare challenge | Legacy fandom scrapers and `bsdb images` fail against the live wiki; tests use synthetic fixtures. Fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the scrapers are removed or disabled in E5 | E5, E8 |
 | Dead-ish code kept as is | `extract_card_infos` returns only the last table; `fandom_sets` is not wired to the CLI | E5 |
 | Machine translation of names and families | `GoogleTranslator` output is stored as canonical names; family names are patched with ad-hoc rules in `normalize` plus `family_mapping.txt` (e.g. "Snake" forced to "Dark Snake", naive plural stripping) | E6 |
 | Translation failures stored as data | `translate()` returns `"Error: ..."` strings that would be persisted | E6 |
-| Colors derived from translated symbol | Symbol-to-color map in `db.py` lacks `white`; multicolor strings (e.g. "Red purple green white yellow blue") match nothing | E3, E6 |
-| No caching, retries or User-Agent | Every run re-downloads and re-translates (one translation request per field); only a configurable `request_delay` exists | E5 |
+| Colors derived from translated symbol | Symbol-to-color map in `db.py` lacks `white`; multicolor strings (e.g. "Red purple green white yellow blue") match nothing. Designed in the target schema: `colors` with White and a `card_colors` junction filled from the Japanese colour segment ([target-schema](../data-model/target-schema.md#card_colors)); the fix is in E6/E7. | E3, E6 |
+| No caching, retries or User-Agent | Every run re-downloads and re-translates (one translation request per field); only a configurable `request_delay` exists. Requirements are set in the [scraping policy](../sources/policy.md#5-requirements-for-the-scraper-rewrite-10) | E5 |
 | Brittle HTML selectors | `<pre>` line positions, `#mw-content-text > div > table:nth-child(2)`, `<p>` and `zip(matches, a_tags)` pairing | E4, E5 |
-| Card effects/text not scraped | Only name, type, cost, symbol, family, core requirements; `reduction` is scraped to JSON but never loaded into the DB | E3, E5 |
+| Card effects/text not scraped | Only name, type, cost, symbol, family, core requirements; `reduction` is scraped to JSON but never loaded into the DB. Designed in the target schema: `card_effects`, `card_reductions` and flavor text ([effects](../data-model/target-schema.md#effects-and-keywords), [reductions](../data-model/target-schema.md#card_reductions)); the fix is in E5/E7. | E3, E5 |
 | Cards without a `<pre>` block are saved with null fields | `batspi_card` falls back to all-`None`, then `insert_card` fails on missing `type` | E5, E7 |
 | Loader is not idempotent for requirements and is slow | Per-card commits and per-row `get_or_create` queries; existing cards are skipped, so changes are never updated | E7 |
 | No validation of loaded data | No constraints, no checks on set coverage or duplicates | E7 |

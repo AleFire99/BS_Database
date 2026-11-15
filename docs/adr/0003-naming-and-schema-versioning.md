@@ -1,0 +1,117 @@
+# 0003. Naming conventions, BSS_app alignment and schema versioning
+
+- Status: Proposed
+- Date: 2026-11-14
+
+## Context
+
+The data model epic ([#8](https://github.com/AleFire99/BS_Database/issues/8)) designs a new normalized schema. Several tasks ([#28](https://github.com/AleFire99/BS_Database/issues/28) to [#32](https://github.com/AleFire99/BS_Database/issues/32)) and the DB build ([#12](https://github.com/AleFire99/BS_Database/issues/12)) need one shared set of naming rules and a versioning scheme before any DDL is written.
+
+Facts that shape the choice:
+
+- The legacy schema (see [current-schema.md](../data-model/current-schema.md)) is already snake_case and plural, but it is inconsistent: `cards.card_id` is a TEXT print number that clashes with the `<table>_id` foreign key pattern, and `core_requirements.battlePoints` is camelCase.
+- The sister project [BSS_app](https://github.com/AleFire99/BSS_app) uses PascalCase plural tables quoted with backticks, `<Singular>ID` integer primary keys (except `Cards.CardID`, a TEXT such as `BSS01-001`), free-text `Cards.Rarity`, no schema versioning and no i18n.
+- Gate A decisions on #8: SQLite ([ADR 0002](0002-storage-technology.md)), snake_case plural tables with `id` primary keys, text-first effects, and surrogate integer primary keys with the printing number as a UNIQUE column on printings (refined by [ADR 0004](0004-card-printing-identity.md): the number is UNIQUE on `card_numbers`).
+- Each release rebuilds the database from scratch (ADR 0002), so in-place migrations are not needed.
+
+## Decision drivers
+
+- One predictable convention that the Python and SQLAlchemy code and SQL users can guess without reading the DDL.
+- Continuity with the existing legacy schema and package.
+- Recognisable structure for people who know BSS_app.
+- No quoting needed in hand-written SQL.
+- Consumers can cheaply check which schema a file contains.
+
+## Options considered
+
+1. **Adopt BSS_app conventions as-is.** Maximum parity, and BSS_app tooling could be reused unchanged. Cons: PascalCase and backtick quoting are unidiomatic for Python and SQLAlchemy, they contradict the existing legacy schema and the Gate A decision, and a TEXT primary key on cards conflicts with the surrogate key decision.
+2. **snake_case per this ADR.** Lower snake_case plural tables, `id` primary keys, no quoting, natural keys as UNIQUE constraints. Fits Python idiom, the legacy schema and Gate A. Cons: names differ from BSS_app, so any shared tooling needs a mapping (views can bridge this).
+3. **Mixed.** snake_case for new tables, PascalCase where BSS_app has an equivalent. Cons: two styles in one file, so nobody can predict a name, and it is the worst option for maintainability.
+
+## Decision
+
+Use **option 2**: snake_case conventions, keeping the BSS_app entity split but not its spelling.
+
+### Naming rules
+
+- **Tables:** lower snake_case, plural nouns (`cards`, `printings`, `card_types`).
+- **Junction tables:** `<a_singular>_<b_plural>` (`card_colors`, `card_families`), as in the legacy schema.
+- **Columns:** lower snake_case, singular (`battle_points`, not `battlePoints`).
+  - Booleans are named `is_…` or `has_…`.
+  - Timestamps are named `…_at` and stored as ISO-8601 UTC TEXT.
+  - Language suffixes (`name_ja`, `name_en`) are used only on data entities: `cards`, `families`, `products` and effect text. The Japanese source text is kept there so a bad machine translation can be redone.
+  - Lookup rows have a stable `code` (for example `red`) plus a single English `name`. They have no `_ja`/`_en` columns; the loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)) maps Japanese source text to the `code` (see [target-schema.md](../data-model/target-schema.md#jp-source-to-code)).
+- **Keys:**
+  - The primary key is `id INTEGER PRIMARY KEY` (a rowid alias).
+  - The only exception is pure junction tables (only foreign keys plus optional attributes such as a count): they use a composite primary key of their foreign key columns, as in BSS_app.
+  - Foreign keys are `<referenced_singular>_id`.
+  - Natural keys are UNIQUE constraints and never primary keys (for example `card_numbers.number`, `products.code`; see [ADR 0004](0004-card-printing-identity.md)).
+  - The legacy `cards.card_id` (TEXT print number) is retired because it clashes with the foreign key convention.
+- **Constraint and index names:** `pk_`, `fk_`, `uq_`, `ck_` or `ix_` followed by `<table>_<cols>`. Implemented as a SQLAlchemy `naming_convention` in #12.
+- **Quoting:** none required. Avoid reserved words as bare table names (`order`, `set`); plural names such as `sets` are safe. Columns such as `level` are legal unquoted in SQLite, but each such case is flagged in review.
+- **Enum-like values:** lookup tables with foreign keys instead of CHECK lists, so a new card type or rarity needs no schema change. The one exception is ISO 639-1 language codes (for example `family_aliases.lang`), which may use a CHECK list.
+
+### BSS_app → BS_Database
+
+The concepts (lookups, junctions, reductions with a count, per-level rows, effects linked to levels and keywords) are kept. Names follow the rules above. Names for the gameplay entities are final as of [#30](https://github.com/AleFire99/BS_Database/issues/30); effect entities are final as of [#31](https://github.com/AleFire99/BS_Database/issues/31) (see [ADR 0005](0005-text-first-effects-and-translations.md)).
+
+| BSS_app | BS_Database | Reason for the deviation |
+| --- | --- | --- |
+| `Cards` (`CardID` TEXT PK, e.g. `BSS01-001`) | `cards`, `card_numbers` (`number` UNIQUE) and `printings`, see [ADR 0004](0004-card-printing-identity.md) | Surrogate keys (Gate A); one number can have several printings, so the number is a UNIQUE natural key on `card_numbers`. |
+| `Cards.Rarity` (free TEXT) | `rarities` lookup, `printings.rarity_id` ([ADR 0004](0004-card-printing-identity.md)) | Enum-like values use lookup tables. |
+| `CardTypes` | `card_types` | Case and key style; `Name` becomes a stable `code` plus an English `name`. |
+| `Sets` | `products` (+ `product_types`), see [ADR 0004](0004-card-printing-identity.md) | Promos, magazines and distributions are releases too, so a set is one product type; `Name` (e.g. `BSS01`) becomes a UNIQUE `code`; `products` keep `name_ja` and `name_en` as a data entity. |
+| `Colors` | `colors` | Case and key style; `Name` becomes a stable `code` plus an English `name`. |
+| `Symbols` (`ColorID`) | `symbols` (`color_id`) | Case and key style only. |
+| `Subtypes` | `families` (final, #30) | Battle Spirits calls them families (系統); the legacy schema already uses `families`. |
+| `Keywords` | `keywords` | Case and key style only. |
+| `Steps` | Deferred (ADR 0005) | Effects are text-first in v1. A future structured model would add `steps` as an additive extension. |
+| `Conditions` | Deferred (ADR 0005) | Effects are text-first in v1. A future structured model would add `conditions` as an additive extension. |
+| `CardColors` | `card_colors` | Case and key style only. |
+| `CardSymbols` | `card_symbols` | Case and key style only. |
+| `CardSubtypes` | `card_families` | Follows the rename of `Subtypes`. |
+| `CardReductions` (`CardID`, `ColorID`, `Count`) | `card_reductions` (`card_id`, `symbol_id`, `count`) | Hangs off the card, not the printing. Keyed by symbol instead of colour (deviation from BSS_app `ColorID`) because reductions include the god symbol 神, which is not a colour. `count` is a legal column name. |
+| `Core` (`CoreID`, `CardID`, `Level`, `BP`, `Cores`) | `card_levels` (`id`, `card_id`, `level`, `battle_points`, `cores`) (final, #30) | Singular table name breaks the plural rule; `BP` becomes `battle_points`, `Cores` becomes `cores`. `battle_points` is NULL for levels without BP (Nexus). |
+| `Effects` (`EffectID`, `CardID`, `ConditionID`, `Description`) | `card_effects` (final, #31) | One row per effect block; `Description` becomes `text_ja` / `text_en`, plus timing and kind. See [target-schema.md](../data-model/target-schema.md#effects-and-keywords). |
+| `EffectLevels` (`EffectID`, `CoreID`) | `card_effect_levels` (final, #31) | References `card_levels` instead of `Core`. |
+| `EffectKeywords` (`EffectID`, `KeywordID`, `Modifier`) | `card_effect_keywords` (final, #31) | Composite key; `Modifier` becomes `parameter_ja` (text, not structured). |
+| `EffectSteps` | Deferred (ADR 0005) | Effects are text-first in v1. |
+| `QA_cards` (`QA_cardID`…) | none | Out of scope for v1. |
+| `QA_keywords` (`QA_keyID`…) | none | Out of scope for v1. |
+
+If BSS_app tooling is ever shared, compatibility views can map the names without changing the core schema.
+
+### Schema versioning
+
+- `PRAGMA user_version` holds `major * 10000 + minor * 100 + patch`, so minor and patch are capped at 99. Consumers can check it with one integer read. Example: schema `1.2.0` is stored as `10200`, and `0.3.7` as `307`.
+- A single-row `schema_meta` table records the details. It is a deliberate exception to the plural rule (it holds one record, not a collection), and the single row is enforced with `id INTEGER PRIMARY KEY CHECK (id = 1)`:
+
+| Column | Type | Meaning | Example |
+| --- | --- | --- | --- |
+| `schema_version` | TEXT | Schema SemVer | `1.2.0` |
+| `data_version` | TEXT | Release tag of the data | `v0.3.0` |
+| `built_at` | TEXT | ISO-8601 UTC build time | `2026-11-14T10:00:00Z` |
+| `source_snapshot` | TEXT | Identifier of the raw source snapshot used | to be defined in #9/#12 |
+| `generator` | TEXT | `bs_database` package version that built the file | `0.2.0` |
+
+- Schema SemVer rules:
+  - major: a breaking rename or removal;
+  - minor: an additive table or column;
+  - patch: constraint or documentation change only.
+- The data version (git tag of the release) is independent of the schema version. A new data release can keep the same schema version.
+- No in-place migrations (ADR 0002). Breaking changes are listed in the CHANGELOG.
+- Implementation is handed off to #12.
+
+## Consequences
+
+- #28 to #32 and #12 follow these rules; a deviation needs an amendment to this ADR.
+- Names differ from BSS_app, so shared tooling needs a mapping or views.
+- The legacy tables and columns (`cards.card_id`, `battlePoints`) are renamed when the package schema is rebuilt in #12.
+- Names in the table were finalised by #29 to #31; further edits are allowed while this ADR is Proposed.
+- Consumers get a cheap integer compatibility check and a self-describing file.
+- The SQLAlchemy `naming_convention` and the `schema_meta` writer must be implemented in #12.
+
+## Links
+
+- Issue: [#27](https://github.com/AleFire99/BS_Database/issues/27) (epic [#8](https://github.com/AleFire99/BS_Database/issues/8))
+- Builds on [0002](0002-storage-technology.md).
