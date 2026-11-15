@@ -1,7 +1,8 @@
 """Parser for batspi.com card pages. Implemented in #70 and #71.
 
 #70 reads identity (numbers, names) and gameplay values (type, cost, reduction,
-colours, families, levels, symbols). Text and printings are added by #71.
+colours, families, levels, symbols). #71 adds effects, side conditions, credits and
+flavour (``card_text``), then printings and images (``card_sections``).
 """
 
 import dataclasses
@@ -11,10 +12,13 @@ import re
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString, Tag
 
+from bs_database.parsers.batspi.card_sections import parse_images, parse_printings
+from bs_database.parsers.batspi.card_text import parse_card_text
 from bs_database.parsers.card_models import (
     SCHEMA_VERSION,
     CardEntry,
     CardPage,
+    CardText,
     Gameplay,
     Level,
     Overclock,
@@ -212,8 +216,11 @@ def _own_numbers(soup: BeautifulSoup) -> list[str]:
     return numbers
 
 
-def _parse_gameplay(pre: Tag, url: str) -> Gameplay:
-    lines = [line.rstrip("\r") for line in pre.get_text().split("\n")]
+def _pre_lines(pre: Tag) -> list[str]:
+    return [line.rstrip("\r") for line in pre.get_text().split("\n")]
+
+
+def _parse_gameplay(lines: list[str], url: str) -> Gameplay:
     if len(lines) < 2:
         raise ParseError(f"card block without a cost line in {url}")
     card_type, deck_limit = parse_type_line(lines[0])
@@ -241,6 +248,13 @@ def _parse_gameplay(pre: Tag, url: str) -> Gameplay:
     )
 
 
+def _parse_text(lines: list[str], gameplay: Gameplay, number: str, url: str) -> CardText:
+    """Parse the lines after the type, cost and level lines of a card block."""
+    start = 3 if len(lines) > 2 and LEVEL_LINE_RE.match(lines[2]) else 2
+    levels = {level.level for level in gameplay.levels}
+    return parse_card_text(lines[start:], levels, f"{number} in {url}")
+
+
 def _title(soup: BeautifulSoup) -> str:
     if soup.title is None:
         return ""
@@ -248,8 +262,21 @@ def _title(soup: BeautifulSoup) -> str:
     return text.removesuffix(_TITLE_SUFFIX).strip()
 
 
+_TEXT_DIFF_FIELDS = (
+    "effects",
+    "fusion_conditions",
+    "summon_condition",
+    "overclock_condition",
+    "flavor",
+)
+
+
 def _differences(entries: list[CardEntry]) -> tuple[ValueDifference, ...]:
-    """Gameplay fields that differ between numbers of the same name (#63)."""
+    """Gameplay and text fields that differ between numbers of the same name (#63).
+
+    Credits (illustrators, concepts) and the flavour note are printing-level and
+    excluded: they differ per print by nature.
+    """
     groups: dict[str, list[CardEntry]] = {}
     for entry in entries:
         groups.setdefault(entry.name_ja, []).append(entry)
@@ -257,13 +284,19 @@ def _differences(entries: list[CardEntry]) -> tuple[ValueDifference, ...]:
     for name_ja, group in groups.items():
         if len(group) < 2:
             continue
+        sources: list[tuple[str, list[tuple[str, object]]]] = []
         for field in dataclasses.fields(Gameplay):
-            first = getattr(group[0].gameplay, field.name)
-            if all(getattr(e.gameplay, field.name) == first for e in group[1:]):
+            sources.append(
+                (field.name, [(e.number, getattr(e.gameplay, field.name)) for e in group])
+            )
+        for name in _TEXT_DIFF_FIELDS:
+            sources.append((name, [(e.number, getattr(e.text, name, None)) for e in group]))
+        for name, pairs in sources:
+            if all(value == pairs[0][1] for _, value in pairs[1:]):
                 continue
-            values = tuple((e.number, repr(getattr(e.gameplay, field.name))) for e in group)
-            found.append(ValueDifference(name_ja, field.name, values))
-            log.info("per-number values differ: %s field=%s values=%s", name_ja, field.name, values)
+            values = tuple((number, repr(value)) for number, value in pairs)
+            found.append(ValueDifference(name_ja, name, values))
+            log.info("per-number values differ: %s field=%s values=%s", name_ja, name, values)
     return tuple(found)
 
 
@@ -304,5 +337,18 @@ def parse_card_page(html: str, url: str) -> CardPage:
             name_ja = title
         if not name_ja:
             raise ParseError(f"no card name for {number} in {url}")
-        entries.append(CardEntry(number, name_ja, name_en, _parse_gameplay(pre, url)))
-    return CardPage(SCHEMA_VERSION, url, title, tuple(entries), _differences(entries))
+        lines = _pre_lines(pre)
+        gameplay = _parse_gameplay(lines, url)
+        text = _parse_text(lines, gameplay, number, url)
+        entries.append(CardEntry(number, name_ja, name_en, gameplay, text))
+    printings = parse_printings(soup, url, [e.number for e in entries])
+    images = parse_images(soup, url, [e.number for e in entries])
+    return CardPage(
+        SCHEMA_VERSION,
+        url,
+        title,
+        tuple(entries),
+        _differences(entries),
+        printings=printings,
+        images=images,
+    )

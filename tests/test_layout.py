@@ -18,6 +18,8 @@ MODULES = [
     "bs_database.parsers.batspi.index",
     "bs_database.parsers.batspi.set_page",
     "bs_database.parsers.batspi.card",
+    "bs_database.parsers.batspi.card_text",
+    "bs_database.parsers.batspi.card_sections",
 ]
 
 

@@ -116,7 +116,7 @@ def test_conflicting_h3_number_warns(caplog: pytest.LogCaptureFixture) -> None:
     with caplog.at_level(logging.WARNING, logger=LOGGER):
         page = parse_card_page(html, "u")
     assert page.entries[0].number == "BS10-999"
-    warnings = [r.getMessage() for r in caplog.records]
+    warnings = [r.getMessage() for r in caplog.records if r.name == LOGGER]
     assert len(warnings) == 1
     assert "BS10-999" in warnings[0] and "number" in warnings[0] and "BS10-062" in warnings[0]
 
@@ -177,26 +177,43 @@ def test_goradon_levels_differ(caplog: pytest.LogCaptureFixture) -> None:
     assert any("per-number values differ" in r.getMessage() for r in caplog.records)
 
 
-@pytest.mark.parametrize("stem", ["card_magic_flash", "card_spirit", "card_magic"])
+@pytest.mark.parametrize("stem", ["card_spirit", "card_nexus", "card_magic"])
 def test_no_differences(stem: str) -> None:
     assert parse(stem).differences == ()
 
 
 def test_flip_compares_same_name_faces_only() -> None:
     assert diff_fields("card_flip") == {
-        "赤の世界": ["families"],
-        "赤き神龍皇": ["families", "levels"],
+        "赤の世界": ["families", "effects", "flavor"],
+        "赤き神龍皇": ["families", "levels", "effects", "flavor"],
     }
 
 
 def test_other_differences() -> None:
     assert diff_fields("card_brave") == {
-        "砲凰竜フェニック・キャノン": ["symbols", "families", "levels"]
+        "砲凰竜フェニック・キャノン": [
+            "symbols",
+            "families",
+            "levels",
+            "effects",
+            "fusion_conditions",
+            "flavor",
+        ]
     }
     assert diff_fields("card_ultimate") == {
-        "アルティメット・ジークフリード": ["reduction", "families", "levels", "overclock"]
+        "アルティメット・ジークフリード": [
+            "reduction",
+            "families",
+            "levels",
+            "overclock",
+            "effects",
+            "summon_condition",
+            "overclock_condition",
+            "flavor",
+        ]
     }
-    assert diff_fields("card_promo") == {"焔竜翼人マ・ドー": ["families"]}
+    assert diff_fields("card_promo") == {"焔竜翼人マ・ドー": ["families", "effects", "flavor"]}
+    assert diff_fields("card_magic_flash") == {"ダブルドロー": ["effects", "flavor"]}
 
 
 def sc(symbol: str, count: int = 1) -> SymbolCount:
