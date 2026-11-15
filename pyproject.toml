@@ -48,3 +48,11 @@ strict = true
 
 [tool.coverage.run]
 source = ["src"]
+branch = true
+
+[tool.coverage.report]
+# Gate for the scraper rewrite (#71): ingest/ and parsers/ only. The legacy modules
+# (db.py, cli.py, normalize.py) are rewritten by later epics and are not gated here.
+include = ["src/bs_database/ingest/*", "src/bs_database/parsers/*"]
+fail_under = 95
+show_missing = true
