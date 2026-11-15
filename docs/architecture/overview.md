@@ -6,53 +6,41 @@ This document describes the `bs_database` package as restructured in E2 ([#7](ht
 
 ```mermaid
 flowchart LR
-    subgraph Sources
-        WIKI["battle-spirits.fandom.com<br/>(EN wiki: set lists, images;<br/>legacy, dropped for v1)"]
-        BAT["batspi.com<br/>(JP card pages)"]
-    end
-
     subgraph bs_database
-        CLI["cli<br/>(bsdb: scrape, normalize, build, images)"]
+        CLI["cli<br/>(bsdb: scrape stub, normalize, build)"]
         SET["settings<br/>(BSDB_* env)"]
         LOG["log"]
-        subgraph scrapers
-            BSETS["batspi_sets"]
-            BLINKS["batspi_links"]
-            BCARD["batspi_card<br/>(+ GoogleTranslator ja to en)"]
-            FSETS["fandom_sets"]
-            FIMG["fandom_images"]
+        subgraph ingest["ingest (stubs, #67-#73)"]
+            POL["policy<br/>(robots, deny list, challenge)"]
+            HTTP["http"]
+            CACHE["cache"]
+            STATE["state"]
+            PIPE["pipeline"]
+        end
+        subgraph parsers["parsers (stubs, #69-#71)"]
+            MODELS["models"]
+            BPARSE["batspi: index, set_page, card"]
         end
         NORM["normalize"]
         DBM["db<br/>(models, build_db)"]
     end
 
-    URLS[("data/extracted_urls.txt")]
     CJ[("data/json/card_json/BSxx/*.json")]
-    SJ[("data/json/set_json/BSxx.json")]
     FM[("data/family_mapping.txt")]
     DB[("battle_spirits.db<br/>(untracked build output)")]
-    IMG[("data/images/BSxx/*.jpg")]
 
     CLI --> SET
     CLI --> LOG
-    CLI --> BSETS
-    CLI --> BLINKS
-    CLI --> BCARD
-    CLI --> FIMG
     CLI --> NORM
     CLI --> DBM
 
-    BAT --> BSETS --> URLS
-    URLS --> BLINKS
-    BAT --> BLINKS --> BCARD
-    BAT --> BCARD --> CJ
-    WIKI --> FSETS --> SJ
-    WIKI --> FIMG --> IMG
     CJ --> NORM
     FM --> NORM
     NORM --> CJ
     CJ --> DBM --> DB
 ```
+
+The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). Only `ingest.policy` has code today (the scraping policy helpers); the other modules are docstring stubs owned by the issues named in them. `bsdb scrape` is a stub that exits with an error until the rewrite lands. The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
 
 ## Target data flow
 
@@ -85,26 +73,13 @@ flowchart LR
 sequenceDiagram
     actor Dev as Developer
     participant C as bsdb (cli)
-    participant B as batspi.com
-    participant T as GoogleTranslator
     participant J as card JSON files
     participant N as normalize
     participant D as db.build_db
     participant DB as SQLite
-    participant W as fandom wiki
 
-    Dev->>C: bsdb scrape [--refresh-urls] [--set BSxx]
-    loop each set URL
-        C->>B: GET set page (batspi_links)
-        B-->>C: HTML
-        loop each card
-            C->>B: GET card page (batspi_card)
-            B-->>C: HTML
-            C->>T: translate name, type, symbol, family
-            T-->>C: English text
-            C->>J: write BSxx/BSxx-NNN.json
-        end
-    end
+    Dev->>C: bsdb scrape
+    C-->>Dev: error: being rewritten (#10), exit code 1
     Dev->>C: bsdb normalize
     C->>N: normalize_tree(json_dir, family mapping)
     N->>J: rewrite JSON in place
@@ -112,25 +87,22 @@ sequenceDiagram
     C->>D: build_db(json_dir, db_path)
     D->>J: read each JSON
     D->>DB: insert card, type, colors, families, core requirements
-    Dev->>C: bsdb images [--sets 19-71]
-    C->>W: GET set and card pages (fandom_images)
-    W-->>C: HTML and image files
 ```
-
-`bsdb images` is independent of the other commands.
 
 ## Components
 
 | Module | Responsibility | Inputs | Outputs |
 | --- | --- | --- | --- |
-| `bs_database.cli` | Typer app (`bsdb`): `scrape`, `normalize`, `build`, `images`, global `--log-level` and `--version` | `Settings`, command options | calls the modules below |
+| `bs_database.cli` | Typer app (`bsdb`): `scrape` (stub), `normalize`, `build`, global `--log-level` and `--version` | `Settings`, command options | calls the modules below |
 | `bs_database.settings` | `Settings` (pydantic-settings): `BSDB_*` env and `.env`, paths derived from `data_dir` | environment | URLs, directories, request delay |
 | `bs_database.log` | `configure_logging` | level name | root logger setup |
-| `bs_database.scrapers.batspi_sets` | Collect set page links from the batspi card list | batspi card list URL | `extracted_urls.txt` |
-| `bs_database.scrapers.batspi_links` | Extract `(card_id, link)` pairs from a set page | set page URL | list of tuples |
-| `bs_database.scrapers.batspi_card` | Parse a card page, translate fields, write JSON | card page URL | `data/json/card_json/BSxx/BSxx-NNN.json` |
-| `bs_database.scrapers.fandom_sets` | Parse set tables from the EN wiki (not wired to the CLI) | set page URL | `data/json/set_json/BSxx.json` |
-| `bs_database.scrapers.fandom_images` | Download card images from the EN wiki | wiki set and card pages | `data/images/BSxx/<card_id>.jpg` |
+| `bs_database.ingest.policy` | Scraping policy helpers: base URL, User-Agent, deny list, robots.txt split and check, challenge detection | URL, robots rules, page text | `StopRun` or a boolean |
+| `bs_database.ingest.http` | HTTP client with the policy gate (stub, #67) | n/a | n/a |
+| `bs_database.ingest.cache` | Raw-HTML cache (stub, #68) | n/a | n/a |
+| `bs_database.ingest.state` | Run state and resume (stub, #72) | n/a | n/a |
+| `bs_database.ingest.pipeline` | Ingestion orchestration (stub, #73) | n/a | n/a |
+| `bs_database.parsers.models` | Parsed record models (stub, #69, #70) | n/a | n/a |
+| `bs_database.parsers.batspi.index`, `.set_page`, `.card` | batspi.com page parsers (stubs, #69-#71) | cached HTML | parsed records |
 | `bs_database.normalize` | Normalize family names, type, image path in place | card JSON tree, `data/family_mapping.txt` | rewritten JSON files |
 | `bs_database.db` | SQLAlchemy models, JSON loader, color derivation, `build_db` | card JSON tree | SQLite rows |
 | `data/family_mapping.txt` | Manual `machine translation = canonical name` overrides | n/a | used by `normalize` |
@@ -138,7 +110,7 @@ sequenceDiagram
 | `example_query.sql` | Sample SQL queries | n/a | n/a |
 | `Notes.md` | Informal notes (card type list) | n/a | n/a |
 
-Kept quirks (ported unchanged, covered by golden tests): translation failures return `"Error: ..."` strings; an unspaced mixed reduction gives `[]`; `extract_card_infos` returns only the last table; the image set loop builds `<set_url><nn>` without `BS`; the fandom scrapers have no rate limiting; `fandom_sets` needs the `<tbody>` the wiki serves; the family order from the legacy normalizer was a set, so goldens are sorted.
+Kept quirks (covered by golden tests): the family order from the legacy normalizer was a set, so goldens are sorted. The quirks of the removed scrapers are described in the [legacy mapping](../data-model/legacy-mapping.md).
 
 ## Known issues / tech debt
 
@@ -155,12 +127,11 @@ Tags refer to the epic addressing each item: E2 restructure ([#7](https://github
 | Resolved: dependency list | Unused `selenium`, `webdriver-manager`, `libretranslatepy`, `lxml` dropped; used packages declared | E2 |
 | Resolved: database committed to git | `battle_spirits.db` untracked and ignored in #23 (release artefact is E9) | E2, E9 |
 | Resolved: no tests, CI or lint | pytest with goldens, ruff, mypy strict, CI and pre-commit | E2 |
-| battle-spirits.fandom.com behind Cloudflare challenge | Legacy fandom scrapers and `bsdb images` fail against the live wiki; tests use synthetic fixtures. Fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the scrapers are removed or disabled in E5 | E5, E8 |
-| Dead-ish code kept as is | `extract_card_infos` returns only the last table; `fandom_sets` is not wired to the CLI | E5 |
+| Resolved: legacy scrapers and fandom code | Removed in #66 (commit `f90747b` has them); fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the new ingestion modules are stubs implemented in #67-#73 | E5 |
 | Machine translation of names and families | `GoogleTranslator` output is stored as canonical names; family names are patched with ad-hoc rules in `normalize` plus `family_mapping.txt` (e.g. "Snake" forced to "Dark Snake", naive plural stripping) | E6 |
 | Translation failures stored as data | `translate()` returns `"Error: ..."` strings that would be persisted | E6 |
 | Colors derived from translated symbol | Symbol-to-color map in `db.py` lacks `white`; multicolor strings (e.g. "Red purple green white yellow blue") match nothing. Designed in the target schema: `colors` with White and a `card_colors` junction filled from the Japanese colour segment ([target-schema](../data-model/target-schema.md#card_colors)); the fix is in E6/E7. | E3, E6 |
-| No caching, retries or User-Agent | Every run re-downloads and re-translates (one translation request per field); only a configurable `request_delay` exists. Requirements are set in the [scraping policy](../sources/policy.md#5-requirements-for-the-scraper-rewrite-10) | E5 |
+| No caching, retries or User-Agent | The legacy scrapers were removed in #66; the new client, cache and state are #67, #68 and #72. Requirements are set in the [scraping policy](../sources/policy.md#5-requirements-for-the-scraper-rewrite-10) | E5 |
 | Brittle HTML selectors | `<pre>` line positions, `#mw-content-text > div > table:nth-child(2)`, `<p>` and `zip(matches, a_tags)` pairing | E4, E5 |
 | Card effects/text not scraped | Only name, type, cost, symbol, family, core requirements; `reduction` is scraped to JSON but never loaded into the DB. Designed in the target schema: `card_effects`, `card_reductions` and flavor text ([effects](../data-model/target-schema.md#effects-and-keywords), [reductions](../data-model/target-schema.md#card_reductions)); the fix is in E5/E7. | E3, E5 |
 | Cards without a `<pre>` block are saved with null fields | `batspi_card` falls back to all-`None`, then `insert_card` fails on missing `type` | E5, E7 |

@@ -36,9 +36,9 @@ uv run pre-commit run --all-files
 
 | Path | Role |
 | --- | --- |
-| `src/bs_database/cli.py` | Typer app, entry point `bsdb` (`scrape`, `normalize`, `build`, `images`) |
+| `src/bs_database/cli.py` | Typer app, entry point `bsdb` (`scrape` stub, `normalize`, `build`) |
 | `src/bs_database/settings.py`, `log.py` | `BSDB_*` settings and logging setup |
-| `src/bs_database/scrapers/` | `batspi_sets`, `batspi_links`, `batspi_card` (batspi.com + JP→EN machine translation), `fandom_sets`, `fandom_images` |
+| `src/bs_database/ingest/`, `parsers/` | Target scraper layout (epic #10): `ingest.policy` has the scraping policy helpers, the other modules are stubs (#67-#73); `bsdb scrape` is a stub |
 | `src/bs_database/normalize.py` | Family-name and type normalization (uses `data/family_mapping.txt`) |
 | `src/bs_database/db.py` | SQLAlchemy models and JSON → SQLite loader (`build_db`) |
 | `tests/` | pytest suite; `tests/goldens/` and `tests/fixtures/` come from the legacy code (tag `v0.1.0`); `tests/tools/db_counts.py` prints per-table row counts |
