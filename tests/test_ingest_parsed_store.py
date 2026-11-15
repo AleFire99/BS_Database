@@ -46,7 +46,7 @@ def test_content_and_provenance(tmp_path: Path) -> None:
         "fetched_at": "2026-11-15T12:00:00+00:00",
         "from_cache": True,
     }
-    assert doc["page"]["title_ja"] == page.title_ja
+    assert doc["page"]["title_jp"] == page.title_jp
     assert doc["page"]["url"] == cached.url
     assert len(doc["page"]["entries"]) == len(page.entries)
 

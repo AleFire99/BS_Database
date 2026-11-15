@@ -11,3 +11,4 @@ One ADR per decision, using the [template](0000-template.md). Numbers are sequen
 | [0005](0005-text-first-effects-and-translations.md) | Text-first effects and translation storage | Proposed | 2026-11-14 |
 | [0006](0006-scraping-and-redistribution-policy.md) | Scraping and redistribution policy | Accepted | 2026-11-14 |
 | [0007](0007-source-of-truth.md) | Source of truth per field and conflict resolution | Accepted | 2026-11-14 |
+| [0008](0008-normalization-and-translation.md) | Normalization and translation design | Proposed | 2026-11-15 |

@@ -148,17 +148,17 @@ def _h3_text(h3: Tag) -> str:
 
 
 def _split_heading(text: str) -> tuple[str, str | None, str | None]:
-    """Split ``名前/English <number>`` into ``(name_ja, name_en, number)``."""
+    """Split ``名前/English <number>`` into ``(name_jp, name_en, number)``."""
     number: str | None = None
     match = _TRAILING_NUMBER_RE.search(text)
     if match:
         number = match.group(1).strip()
         text = text[: match.start()]
-    name_ja, name_en = text.strip(), None
+    name_jp, name_en = text.strip(), None
     english = re.search(r"/(?=[A-Za-z0-9])", text)
     if english:
-        name_ja, name_en = text[: english.start()].strip(), text[english.end() :].strip()
-    return name_ja, name_en or None, number
+        name_jp, name_en = text[: english.start()].strip(), text[english.end() :].strip()
+    return name_jp, name_en or None, number
 
 
 def _is_print_heading(h3: Tag) -> bool:
@@ -279,9 +279,9 @@ def _differences(entries: list[CardEntry]) -> tuple[ValueDifference, ...]:
     """
     groups: dict[str, list[CardEntry]] = {}
     for entry in entries:
-        groups.setdefault(entry.name_ja, []).append(entry)
+        groups.setdefault(entry.name_jp, []).append(entry)
     found: list[ValueDifference] = []
-    for name_ja, group in groups.items():
+    for name_jp, group in groups.items():
         if len(group) < 2:
             continue
         sources: list[tuple[str, list[tuple[str, object]]]] = []
@@ -295,8 +295,8 @@ def _differences(entries: list[CardEntry]) -> tuple[ValueDifference, ...]:
             if all(value == pairs[0][1] for _, value in pairs[1:]):
                 continue
             values = tuple((number, repr(value)) for number, value in pairs)
-            found.append(ValueDifference(name_ja, name, values))
-            log.info("per-number values differ: %s field=%s values=%s", name_ja, name, values)
+            found.append(ValueDifference(name_jp, name, values))
+            log.info("per-number values differ: %s field=%s values=%s", name_jp, name, values)
     return tuple(found)
 
 
@@ -310,7 +310,7 @@ def parse_card_page(html: str, url: str) -> CardPage:
     own = _own_numbers(soup)
     entries: list[CardEntry] = []
     for index, (heading, pre) in enumerate(blocks):
-        name_ja, name_en, h3_number = (
+        name_jp, name_en, h3_number = (
             _split_heading(_h3_text(heading)) if heading is not None else ("", None, None)
         )
         if h3_number is not None:
@@ -323,24 +323,24 @@ def parse_card_page(html: str, url: str) -> CardPage:
             raise ParseError(
                 f"{len(blocks)} card blocks without h3 numbers but {len(own)} card numbers in {url}"
             )
-        if name_ja:
+        if name_jp:
             titles = title.split("／")
-            if title and name_ja not in (title, *titles):
+            if title and name_jp not in (title, *titles):
                 log.warning(
-                    "source conflict: field=name_ja number=%s h3=%r title=%r in %s",
+                    "source conflict: field=name_jp number=%s h3=%r title=%r in %s",
                     number,
-                    name_ja,
+                    name_jp,
                     title,
                     url,
                 )
         else:
-            name_ja = title
-        if not name_ja:
+            name_jp = title
+        if not name_jp:
             raise ParseError(f"no card name for {number} in {url}")
         lines = _pre_lines(pre)
         gameplay = _parse_gameplay(lines, url)
         text = _parse_text(lines, gameplay, number, url)
-        entries.append(CardEntry(number, name_ja, name_en, gameplay, text))
+        entries.append(CardEntry(number, name_jp, name_en, gameplay, text))
     printings = parse_printings(soup, url, [e.number for e in entries])
     images = parse_images(soup, url, [e.number for e in entries])
     return CardPage(

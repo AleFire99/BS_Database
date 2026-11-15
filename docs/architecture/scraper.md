@@ -105,10 +105,10 @@ Failures are of two kinds:
 
 ```json
 {
-  "schema_version": "1.1.0",
+  "schema_version": "2.0.0",
   "url": "https://batspi.com/index.php?...",
   "provenance": {"source": "batspi", "fetched_at": "2026-11-15T12:00:00+00:00", "from_cache": true},
-  "page": {"title_ja": "...", "entries": ["..."], "printings": ["..."], "images": ["..."]}
+  "page": {"title_jp": "...", "entries": ["..."], "printings": ["..."], "images": ["..."]}
 }
 ```
 
