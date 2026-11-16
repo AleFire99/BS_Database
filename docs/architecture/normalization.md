@@ -47,7 +47,7 @@ The output path is `normalized_dir/<source>/<sha>.json`, the same stem as the pa
 ## Rules
 
 - **Closed kinds** (`colors`, `symbols`, `card_types`, `rarities`, `variants`, `product_types`): a value with no glossary entry is an **error**. The page is not written, it is counted as failed, and the run continues.
-- **Families.** The parser splits on `・`; adjacent tokens are re-joined when the joined text is a glossary family marked `no_split`. Order is source order, duplicates removed. A family with no glossary row gets `code = None` and an unmapped **warning**. A row whose `code` is still empty is **uncurated** (ADR 0008, D7): `code = None`, listed apart from unmapped terms, never a warning. A glossary `en` gives `en_source = manual`, `en_status = reviewed`; without one, `en = None`, `en_source = None`, `en_status = pending`.
+- **Families.** The parser splits on `・`; adjacent tokens are re-joined when the joined text is a glossary family marked `no_split`. Tokens are stripped of surrounding whitespace first (a family with a trailing space is the same family; keyword names too). Order is source order, duplicates removed. A family with no glossary row gets `code = None` and an unmapped **warning**. A row whose `code` is still empty is **uncurated** (ADR 0008, D7): `code = None`, listed apart from unmapped terms, never a warning. A glossary `en` gives `en_source = manual`, `en_status = reviewed`; without one, `en = None`, `en_source = None`, `en_status = pending`.
 - **Keywords.** No row gives `code = None` and an unmapped warning; a row with an empty `code` is uncurated.
 - **Rarity.** `None` stays `None`; a value missing from the glossary is a closed error.
 - **Variant.** The printing note is looked up in `variants`; a miss means `normal` and is never unmapped (ADR 0008, D5).
@@ -60,7 +60,7 @@ Lookup order: a glossary family `en` stays (`manual`, `reviewed`); a name printe
 
 ## Curation and review
 
-The glossaries were curated in [#96](https://github.com/AleFire99/BS_Database/issues/96) from the full scrape. `bsdb glossary review --legacy-db <v0.1.0 battle_spirits.db> [--out DIR]` reads `data/normalized/` and the glossary and proposes rows for the owner. It writes `review.md` plus `families.csv`, `keywords.csv` and `family_legacy_en.csv` into `data/review/` (default) and changes nothing under `data/glossary/`. A family's English name is proposed from, in order: the glossary row, a strong legacy link through an alias, a strong legacy link, the machine translation. A legacy link is *strong* with at least 2 votes and at least 80% of the votes of that Japanese family; a weak link only lists its candidates. Keywords get no proposed English name. The owner copies the CSVs and fills the rest by hand, see [CONTRIBUTING](../../CONTRIBUTING.md#curating-with-the-review-command). The *Mapped* column of the prefix table applies the prefix rule only. A product with a title marker (for example the collab starter `SD54`) can show `starter` there while normalize gives `collab`; the *Unresolved* count uses the full rule. Issue [#104](https://github.com/AleFire99/BS_Database/issues/104) adds a fandom wiki source to the review.
+The glossaries were curated in [#96](https://github.com/AleFire99/BS_Database/issues/96) from the full scrape. `bsdb glossary review --legacy-db <v0.1.0 battle_spirits.db> [--out DIR]` reads `data/normalized/` and the glossary and proposes rows for the owner. It writes `review.md` plus `families.csv`, `keywords.csv` and `family_legacy_en.csv` into `data/review/` (default) and changes nothing under `data/glossary/`. A family's English name is proposed from, in order: the glossary row, a fandom name (with `--fandom`), a strong legacy link through an alias, a strong legacy link, the machine translation. A legacy link is *strong* with at least 2 votes and at least 80% of the votes of that Japanese family; a weak link only lists its candidates. Keywords get an English name only from fandom. The owner copies the CSVs and fills the rest by hand, see [CONTRIBUTING](../../CONTRIBUTING.md#curating-with-the-review-command). The *Mapped* column of the prefix table applies the prefix rule only. A product with a title marker (for example the collab starter `SD54`) can show `starter` there while normalize gives `collab`; the *Unresolved* count uses the full rule. Fandom names are described in [Glossary review and fandom names](#glossary-review-and-fandom-names).
 
 ## Known gaps
 
@@ -123,6 +123,23 @@ Term = {kind, jp, pages, samples: [up to 5 sorted URLs]}
 ```
 
 `chars_to_translate` is the number of Japanese characters in the distinct texts of that category that still need the engine (no glossary or batspi name), which sizes a run and the `--max-chars` budget. The Markdown report shows only the first sample of each term; the JSON keeps up to 5. Terms and translation counts describe the parsed tree as pass 1 read it; the written and failed page counts are final (a page that changes or breaks between the two passes is counted as failed).
+
+## Glossary review and fandom names
+
+`bsdb glossary review --legacy-db <db>` ([#96](https://github.com/AleFire99/BS_Database/issues/96)) proposes glossary rows from `data/normalized` for the owner and never changes `data/glossary`. Two optional steps add fandom names ([ADR 0009](../adr/0009-fandom-api-glossary-names.md), [#104](https://github.com/AleFire99/BS_Database/issues/104), [fandom dossier](../sources/fandom.md)):
+
+```mermaid
+flowchart LR
+    API["fandom api.php (names only)"] -->|"bsdb glossary fandom"| JSON["data/review/fandom_names.json"]
+    JSON -->|"--fandom"| REV["bsdb glossary review"]
+    NORM["data/normalized"] --> REV
+    LEG["legacy v0.1.0 snapshot"] --> REV
+    REV --> OUT["review.md and ready-to-copy CSVs"]
+```
+
+- `bsdb glossary fandom [--out DIR]` reads `Category:Family`, `Category:Keywords` and the `Card Rarity` page (about 20 requests, cached, 0 when cached) and writes `fandom_names.json`: `families` and `keywords` (`jp`, `en`, `romaji`, `title`), `rarities` (`jp`, `en`, `letter`), `unmatched` page titles and `requests_made`. A 403 or challenge page exits 3.
+- `bsdb glossary review --fandom FILE` is optional. Family English name priority: glossary, fandom, legacy alias, legacy snapshot, machine. A fandom name that differs from the proposal is listed in Candidates. Keywords take the fandom English name when it matches (NFKC key, whitespace ignored). Codes are proposed from the fandom romaji (slugified, macrons stripped), falling back to the slug of the English name; a code wanted twice is left blank and flagged. Rows that came from fandom carry `notes` = `fandom: <page title>`. `review.md` gets a rarity table (fandom JP, letter, EN, matching batspi rarity) and a line with the family count per source.
+- Without `--fandom` the output is as before.
 
 ## Tests
 

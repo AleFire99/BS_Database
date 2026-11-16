@@ -58,6 +58,10 @@ The target run is `scrape`, `normalize`, `build`. `scrape` writes parsed JSON pe
 
 - [BSS_app](https://github.com/AleFire99/BSS_app): Battle Spirits Saga companion app.
 
+## Attribution
+
+Glossary names proposed from the [Battle Spirits fandom wiki](https://battle-spirits.fandom.com) (CC-BY-SA), see [docs/sources/fandom.md](docs/sources/fandom.md) and [ADR 0009](docs/adr/0009-fandom-api-glossary-names.md).
+
 ## License
 
 TBD

@@ -13,6 +13,8 @@ from bs_database.review.build import (
     FAMILY_COLUMNS,
     KEYWORD_COLUMNS,
     LEGACY_COLUMNS,
+    FamilyRow,
+    KeywordRow,
     Review,
 )
 
@@ -49,6 +51,28 @@ def _votes(strong: bool, best: int, total: int) -> str:
     return f"{best}/{total} {'strong' if strong else 'weak'}"
 
 
+def _candidates(f: FamilyRow) -> str:
+    parts = [f"{name} x{n}" for name, n in f.candidates]
+    if f.fandom_en and f.fandom_en.casefold() != f.en.casefold():
+        parts.append(f"fandom: {f.fandom_en}")
+    return ", ".join(parts)
+
+
+def _keyword_status(k: KeywordRow) -> str:
+    if k.code_conflict:
+        return f"code conflict: {k.code_conflict}"
+    if k.known:
+        return "known"
+    if k.fandom_title:
+        return f"new: from fandom ({k.fandom_title})"
+    return "new: needs code and EN"
+
+
+def source_summary(review: Review) -> str:
+    """``fandom 12, glossary 3, ..., none 4``: families per proposal source."""
+    return ", ".join(f"{source or 'none'} {n}" for source, n in review.family_sources)
+
+
 def render_markdown(review: Review) -> str:
     """The review tables for the owner."""
     lines = [
@@ -61,6 +85,8 @@ def render_markdown(review: Review) -> str:
     if review.no_legacy:
         sample = ", ".join(review.no_legacy[:NO_LEGACY_SAMPLE])
         lines += [f"First {min(NO_LEGACY_SAMPLE, len(review.no_legacy))} (sorted): {sample}", ""]
+    if review.with_fandom:
+        lines += [f"Family names by source: {source_summary(review)}.", ""]
     lines += [
         "Notes: copy `families.csv` and `family_legacy_en.csv` together (the legacy `jp` values "
         "must exist in the families). After filling codes by hand, re-sort `families.csv` and "
@@ -77,7 +103,7 @@ def render_markdown(review: Review) -> str:
                 f.en,
                 f.source,
                 _votes(f.strong, f.votes, f.total),
-                ", ".join(f"{name} x{n}" for name, n in f.candidates),
+                _candidates(f),
             ]
             for f in review.families
         ],
@@ -86,10 +112,7 @@ def render_markdown(review: Review) -> str:
     lines += _section("Families", len(review.families), family_table)
     keyword_table = _table(
         ["JP", "Cards", "Code", "EN", "Status"],
-        [
-            [k.jp, k.cards, k.code, k.en, "known" if k.known else "new: needs code and EN"]
-            for k in review.keywords
-        ],
+        [[k.jp, k.cards, k.code, k.en, _keyword_status(k)] for k in review.keywords],
         right=1,
     )
     lines += _section(
@@ -98,6 +121,22 @@ def render_markdown(review: Review) -> str:
         keyword_table,
         "No machine proposals: the owner writes the English names.",
     )
+    if review.with_fandom:
+        rarity_table = _table(
+            ["Fandom JP", "Letter", "EN", "batspi rarity", "Printings"],
+            [
+                [r.fandom_jp, r.letter, r.en, ", ".join(r.batspi), r.printings]
+                for r in review.rarities
+            ],
+            right=0,
+        )
+        lines += _section(
+            "Rarities",
+            len(review.rarities),
+            rarity_table,
+            "Fandom rarities matched to batspi ones by letter or Japanese name; "
+            "rows without a fandom JP are batspi rarities nothing matches.",
+        )
     split_table = _table(["Joined", "Cards"], [[r.joined, r.cards] for r in review.no_split], 1)
     lines += _section(
         "no_split candidates",

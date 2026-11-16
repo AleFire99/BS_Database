@@ -37,13 +37,13 @@ uv run pre-commit run --all-files
 
 | Path | Role |
 | --- | --- |
-| `src/bs_database/cli.py` | Typer app, entry point `bsdb` (`scrape`, `normalize`, `build`, `glossary review`) |
+| `src/bs_database/cli.py` | Typer app, entry point `bsdb` (`scrape`, `normalize`, `build`, `glossary review`, `glossary fandom`) |
 | `src/bs_database/settings.py`, `log.py` | `BSDB_*` settings and logging setup |
 | `src/bs_database/ingest/`, `parsers/` | Scraper (epic #10): `ingest.policy`/`http`/`cache` (polite fetching), `ingest.state` (resume), `ingest.pipeline`/`report`/`parsed_store` (`bsdb scrape`), `parsers/` (pure HTML parsers); see [docs/architecture/scraper.md](docs/architecture/scraper.md) |
 | `src/bs_database/glossary.py`, `data/glossary/*.csv` | Glossary loader/validator and the 10 curated CSVs (JP to code and English); see [CONTRIBUTING.md](CONTRIBUTING.md#adding-a-glossary-entry) |
 | `src/bs_database/normalize/`, `glossary.py` | `bsdb normalize` (#93): `records`, `rules`, `pipeline`, `translation`, `report` (#95: machine-translated names, `--strict`, `_report.json`) map `data/parsed` to `data/normalized` through `data/glossary/*.csv`; see [docs/architecture/normalization.md](docs/architecture/normalization.md) |
 | `src/bs_database/translate/` | Translator (#94): `Translator` protocol, `NullTranslator`, `QuickMTTranslator` (#102, offline, optional `mt` group), SQLite `TranslationCache`, `CachedTranslator`, `make_translator`; see [docs/architecture/translation.md](docs/architecture/translation.md) |
-| `src/bs_database/review/` | `bsdb glossary review --legacy-db <v0.1.0 db> [--out]` (#96): corpus, legacy join, proposals; writes `review.md` and ready-to-copy CSVs to `data/review/`; see [CONTRIBUTING.md](CONTRIBUTING.md#curating-with-the-review-command) |
+| `src/bs_database/review/`, `ingest/fandom.py`, `parsers/fandom.py` | `bsdb glossary review --legacy-db <v0.1.0 db> [--out] [--fandom]` (#96) and `bsdb glossary fandom` (#104): corpus, legacy join, fandom `api.php` names (client, parser, `fandom_names.json`, only feeding the review per [ADR 0009](docs/adr/0009-fandom-api-glossary-names.md)), proposals; writes `review.md` and ready-to-copy CSVs to `data/review/`; see [CONTRIBUTING.md](CONTRIBUTING.md#curating-with-the-review-command) |
 | `src/bs_database/db.py` | SQLAlchemy models and legacy JSON → SQLite loader (`build_db`, `bsdb build --input`) |
 | `tests/` | pytest suite; `tests/goldens/` and `tests/fixtures/` come from the legacy code (tag `v0.1.0`); `tests/tools/db_counts.py` prints per-table row counts |
 | `battle_spirits.db` | Build output, untracked and git-ignored |
