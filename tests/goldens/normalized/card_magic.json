@@ -36,10 +36,10 @@
           "families": [
             {
               "jp": "武迅",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "bujin",
+              "en": "Martial",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [],
@@ -176,12 +176,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "武迅",
-        "number": "BS72-075"
-      }
-    ]
+    "uncurated": []
   }
 }

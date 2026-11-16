@@ -53,17 +53,17 @@
           "families": [
             {
               "jp": "眷属",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kenzoku",
+              "en": "Devotee",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "武迅",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "bujin",
+              "en": "Martial",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -175,17 +175,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "武迅",
-        "number": "BS72-007"
-      },
-      {
-        "kind": "families",
-        "jp": "眷属",
-        "number": "BS72-007"
-      }
-    ]
+    "uncurated": []
   }
 }

@@ -42,10 +42,10 @@
           "families": [
             {
               "jp": "皇獣",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "koujuu",
+              "en": "Emperor Beast",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -179,12 +179,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "皇獣",
-        "number": "BS72-069"
-      }
-    ]
+    "uncurated": []
   }
 }

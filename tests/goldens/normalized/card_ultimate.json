@@ -42,17 +42,17 @@
           "families": [
             {
               "jp": "新生",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "shinsei",
+              "en": "Incarnate",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "古竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "koryuu",
+              "en": "Ancient Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -193,24 +193,24 @@
           "families": [
             {
               "jp": "極契約",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kyoku_keiyaku",
+              "en": "Extreme Contract",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "新生",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "shinsei",
+              "en": "Incarnate",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "古竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "koryuu",
+              "en": "Ancient Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -781,32 +781,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "古竜",
-        "number": "SD19-X01"
-      },
-      {
-        "kind": "families",
-        "jp": "古竜",
-        "number": "SD67-CP01"
-      },
-      {
-        "kind": "families",
-        "jp": "新生",
-        "number": "SD19-X01"
-      },
-      {
-        "kind": "families",
-        "jp": "新生",
-        "number": "SD67-CP01"
-      },
-      {
-        "kind": "families",
-        "jp": "極契約",
-        "number": "SD67-CP01"
-      }
-    ]
+    "uncurated": []
   }
 }

@@ -47,17 +47,17 @@
           "families": [
             {
               "jp": "機竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kiryu",
+              "en": "Machine Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "星魂",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "seikon",
+              "en": "Astral Soul",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -180,24 +180,24 @@
           "families": [
             {
               "jp": "異魔神",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "imajin",
+              "en": "Imagine",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "星魂",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "seikon",
+              "en": "Astral Soul",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "機竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kiryu",
+              "en": "Machine Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -713,32 +713,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "星魂",
-        "number": "BS10-062"
-      },
-      {
-        "kind": "families",
-        "jp": "星魂",
-        "number": "BS38-RV022"
-      },
-      {
-        "kind": "families",
-        "jp": "機竜",
-        "number": "BS10-062"
-      },
-      {
-        "kind": "families",
-        "jp": "機竜",
-        "number": "BS38-RV022"
-      },
-      {
-        "kind": "families",
-        "jp": "異魔神",
-        "number": "BS38-RV022"
-      }
-    ]
+    "uncurated": []
   }
 }

@@ -42,17 +42,17 @@
           "families": [
             {
               "jp": "創界神",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "guranwoka_lit_soukaishin_world_creator_deity",
+              "en": "Grandwalker",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "オリン",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "orin",
+              "en": "Olym",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -310,17 +310,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "オリン",
-        "number": "BS44-X07"
-      },
-      {
-        "kind": "families",
-        "jp": "創界神",
-        "number": "BS44-X07"
-      }
-    ]
+    "uncurated": []
   }
 }

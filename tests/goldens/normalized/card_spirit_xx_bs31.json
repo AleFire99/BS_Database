@@ -42,10 +42,10 @@
           "families": [
             {
               "jp": "絶晶神",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "zesshoushin",
+              "en": "Crystalline Deity",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -214,12 +214,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "絶晶神",
-        "number": "BS31-XX02"
-      }
-    ]
+    "uncurated": []
   }
 }

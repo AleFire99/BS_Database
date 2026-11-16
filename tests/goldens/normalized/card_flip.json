@@ -42,10 +42,10 @@
           "families": [
             {
               "jp": "起幻",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -161,17 +161,17 @@
           "families": [
             {
               "jp": "起幻",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "古竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "koryuu",
+              "en": "Ancient Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -300,17 +300,17 @@
           "families": [
             {
               "jp": "起幻",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "眷属",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kenzoku",
+              "en": "Devotee",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -426,24 +426,24 @@
           "families": [
             {
               "jp": "起幻",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "眷属",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kenzoku",
+              "en": "Devotee",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "古竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "koryuu",
+              "en": "Ancient Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -927,47 +927,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "古竜",
-        "number": "BS52-TX01(B)"
-      },
-      {
-        "kind": "families",
-        "jp": "古竜",
-        "number": "BS73-TCP01(B)"
-      },
-      {
-        "kind": "families",
-        "jp": "眷属",
-        "number": "BS73-TCP01(A)"
-      },
-      {
-        "kind": "families",
-        "jp": "眷属",
-        "number": "BS73-TCP01(B)"
-      },
-      {
-        "kind": "families",
-        "jp": "起幻",
-        "number": "BS52-TX01(A)"
-      },
-      {
-        "kind": "families",
-        "jp": "起幻",
-        "number": "BS52-TX01(B)"
-      },
-      {
-        "kind": "families",
-        "jp": "起幻",
-        "number": "BS73-TCP01(A)"
-      },
-      {
-        "kind": "families",
-        "jp": "起幻",
-        "number": "BS73-TCP01(B)"
-      }
-    ]
+    "uncurated": []
   }
 }

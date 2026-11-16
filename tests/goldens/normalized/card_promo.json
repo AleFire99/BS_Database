@@ -42,17 +42,17 @@
           "families": [
             {
               "jp": "竜人",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "ryujin",
+              "en": "Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "翼竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "yokuryu",
+              "en": "Winged Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -125,17 +125,17 @@
           "families": [
             {
               "jp": "竜人",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "ryujin",
+              "en": "Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "翼竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "yokuryu",
+              "en": "Winged Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -208,24 +208,24 @@
           "families": [
             {
               "jp": "起幻",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "竜人",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "ryujin",
+              "en": "Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "翼竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "yokuryu",
+              "en": "Winged Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -534,42 +534,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "竜人",
-        "number": "EX001"
-      },
-      {
-        "kind": "families",
-        "jp": "竜人",
-        "number": "P001"
-      },
-      {
-        "kind": "families",
-        "jp": "竜人",
-        "number": "P20-19"
-      },
-      {
-        "kind": "families",
-        "jp": "翼竜",
-        "number": "EX001"
-      },
-      {
-        "kind": "families",
-        "jp": "翼竜",
-        "number": "P001"
-      },
-      {
-        "kind": "families",
-        "jp": "翼竜",
-        "number": "P20-19"
-      },
-      {
-        "kind": "families",
-        "jp": "起幻",
-        "number": "P20-19"
-      }
-    ]
+    "uncurated": []
   }
 }
