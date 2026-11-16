@@ -1,9 +1,29 @@
 jp,code,en,notes,sort_order
+AX,AX,AX,unconfirmed,22
 C,C,Common,,1
 CP,CP,Campaign Promo,"provisional, owner to confirm",7
 EX,EX,Extra,,8
+GX,GX,GX,unconfirmed,20
+KA,KA,KA,unconfirmed,25
+KF,KF,KF,unconfirmed,21
+LM,LM,LM,unconfirmed,17
+M,M,Master Rare,fandom: Card Rarity,9
+-,NONE,No rarity,printed as -,16
+NX,NX,NX,unconfirmed,23
 P,P,Promo,,6
+PB,PB,Premium Bandai Promo,,13
+PC,PCR,Premium Card Set,,18
+PX,PX,Promo X,,15
+PXV,PXV,Promo XV,,24
 R,R,Rare,,2
-転醒X,TX,Awakening X,"provisional, owner to confirm",5
-X,X,X Rare,,3
-XX,XX,XX Rare,,4
+SAGA,SAGA,Saga,,26
+SJ,SJ,SJ,unconfirmed,14
+転醒R,TR,Rebirth Rare,fandom: Card Rarity,11
+転醒X,TX,Rebirth X-Rare,fandom: Card Rarity,5
+U,U,Uncommon,fandom: Card Rarity,10
+X,X,X-Rare,,3
+10thX,X10TH,10thX-Rare,fandom: Card Rarity,12
+X、X（ホログラフィック仕様）,XHOLO,X-Rare (holographic),one-off text variant of X,27
+X（Mレア仕様）,XM,X-Rare (Master Rare finish),one-off text variant of X,28
+XV,XV,XV-Rare,,19
+XX,XX,XX-Rare,,4
