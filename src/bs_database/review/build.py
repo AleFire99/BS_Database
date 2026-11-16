@@ -6,14 +6,19 @@ in the glossary schema, ready to copy into ``data/glossary`` once the owner agre
 Proposed English name of a family, in priority order:
 
 1. the glossary row's own ``en`` (``glossary``);
-2. a strong legacy link whose legacy name has a ``family_legacy_en`` alias: the preferred
+2. the fandom wiki name, when a fandom file is given and the Japanese names match (``fandom``,
+   ADR 0009);
+3. a strong legacy link whose legacy name has a ``family_legacy_en`` alias: the preferred
    name (``alias``);
-3. a strong legacy link: the legacy name (``legacy``);
-4. the machine translation of the normalize run (``machine``);
-5. blank.
+4. a strong legacy link: the legacy name (``legacy``);
+5. the machine translation of the normalize run (``machine``);
+6. blank.
 
-A weak legacy link never proposes a name; it is shown with its candidates instead.
-Keywords get no proposal: the owner writes their English names.
+A weak legacy link never proposes a name; it is shown with its candidates instead. A fandom
+name that differs from the proposal is shown among the candidates too.
+Keywords take the glossary row, else the fandom name when one matches; otherwise the owner
+writes the English name. A code is proposed from the fandom romaji (slugified), falling back to
+the slug of the English name; a code that two rows want is left blank.
 """
 
 import re
@@ -23,7 +28,9 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
 from bs_database.glossary import ProductPrefix, prefix_type_code
+from bs_database.parsers.fandom import FandomName, jp_key
 from bs_database.review.corpus import Corpus, ProductStat, product_prefix
+from bs_database.review.fandom import FandomData
 from bs_database.review.legacy import LinkResult
 
 Row = Mapping[str, str]
@@ -36,6 +43,8 @@ SOURCE_GLOSSARY = "glossary"
 SOURCE_ALIAS = "alias"
 SOURCE_LEGACY = "legacy"
 SOURCE_MACHINE = "machine"
+SOURCE_FANDOM = "fandom"
+SOURCES = (SOURCE_GLOSSARY, SOURCE_FANDOM, SOURCE_ALIAS, SOURCE_LEGACY, SOURCE_MACHINE)
 NO_SPLIT_MIN_CARDS = 2
 SAMPLE_PRODUCTS = 3
 
@@ -61,6 +70,8 @@ class FamilyRow:
     strong: bool
     candidates: tuple[tuple[str, int], ...]
     conflict: bool
+    fandom_en: str = ""
+    fandom_title: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -72,6 +83,22 @@ class KeywordRow:
     code: str
     en: str
     known: bool
+    fandom_title: str = ""
+    code_conflict: str = ""
+
+
+@dataclass(frozen=True, slots=True)
+class RarityRow:
+    """A fandom rarity with the batspi rarity strings it matches (by letter or Japanese name).
+
+    A row with an empty ``fandom_jp`` is a batspi rarity that no fandom rarity matches.
+    """
+
+    fandom_jp: str
+    letter: str
+    en: str
+    batspi: tuple[str, ...]
+    printings: int
 
 
 @dataclass(frozen=True, slots=True)
@@ -128,14 +155,44 @@ class Review:
     keyword_csv: tuple[tuple[str, ...], ...]
     legacy_csv: tuple[tuple[str, ...], ...]
     no_legacy: tuple[str, ...]
+    rarities: tuple[RarityRow, ...] = ()
+    with_fandom: bool = False
+
+    @property
+    def family_sources(self) -> tuple[tuple[str, int], ...]:
+        """Families per proposal source (``""`` is no proposal), in priority order."""
+        counts = [(s, sum(1 for f in self.families if f.source == s)) for s in SOURCES]
+        return (*counts, ("", sum(1 for f in self.families if not f.source)))
+
+
+def _by_key(names: Sequence[FandomName]) -> dict[str, FandomName]:
+    """Fandom names by matching key; the first (sorted) page wins when keys collide."""
+    out: dict[str, FandomName] = {}
+    for name in names:
+        out.setdefault(jp_key(name.jp), name)
+    return out
+
+
+def _fandom_code(name: FandomName | None) -> str:
+    """Code slug from the fandom romaji, else from the fandom English name, else blank."""
+    if name is None:
+        return ""
+    return slugify(name.romaji or "") or slugify(name.en)
 
 
 def _proposal(
-    jp: str, existing_en: str, link: LinkResult, aliases: Mapping[str, str], corpus: Corpus
+    jp: str,
+    existing_en: str,
+    link: LinkResult,
+    aliases: Mapping[str, str],
+    corpus: Corpus,
+    fandom: FandomName | None = None,
 ) -> tuple[str, str]:
     """``(en, source)`` for a family, in the priority order of the module docstring."""
     if existing_en:
         return existing_en, SOURCE_GLOSSARY
+    if fandom is not None and fandom.en:
+        return fandom.en, SOURCE_FANDOM
     candidate = link.links.get(jp)
     if candidate is not None and candidate.strong:
         legacy_name = candidate.best[0]
@@ -150,22 +207,28 @@ def _proposal(
 
 
 def _family_rows(
-    corpus: Corpus, link: LinkResult, glossary_rows: Sequence[Row], aliases: Mapping[str, str]
+    corpus: Corpus,
+    link: LinkResult,
+    glossary_rows: Sequence[Row],
+    aliases: Mapping[str, str],
+    fandom: Mapping[str, FandomName] | None = None,
 ) -> tuple[list[FamilyRow], list[SlugConflict], list[tuple[str, ...]]]:
+    fandom = fandom or {}
     existing = {r["jp"]: r for r in glossary_rows}
     jps = sorted(set(existing) | set(corpus.family_cards))
+    matched = {jp: fandom.get(jp_key(jp)) for jp in jps}
     proposed: dict[str, tuple[str, str]] = {}
     for jp in jps:
         row = existing.get(jp, {})
-        proposed[jp] = _proposal(jp, row.get("en", ""), link, aliases, corpus)
+        proposed[jp] = _proposal(jp, row.get("en", ""), link, aliases, corpus, matched[jp])
+    slugs = {jp: _fandom_code(matched[jp]) or slugify(proposed[jp][0]) for jp in jps}
     taken = {r["code"] for r in glossary_rows if r["code"]}
     wanted: dict[str, list[str]] = defaultdict(list)
     for jp in jps:
         if existing.get(jp, {}).get("code"):
             continue
-        slug = slugify(proposed[jp][0])
-        if slug:
-            wanted[slug].append(jp)
+        if slugs[jp]:
+            wanted[slugs[jp]].append(jp)
     conflicts = [
         SlugConflict(slug, tuple(owners))
         for slug, owners in sorted(wanted.items())
@@ -179,9 +242,13 @@ def _family_rows(
         en, source = proposed[jp]
         code = row.get("code", "")
         if not code and jp not in conflicted:
-            code = slugify(en)
+            code = slugs[jp]
         vote = link.links.get(jp)
         best, votes = vote.best if vote else ("", 0)
+        name = matched[jp]
+        notes = row.get("notes", "")
+        if source == SOURCE_FANDOM and name is not None and not notes:
+            notes = f"fandom: {name.title}"
         rows.append(
             FamilyRow(
                 jp,
@@ -195,43 +262,90 @@ def _family_rows(
                 vote.strong if vote else False,
                 vote.candidates if vote else (),
                 jp in conflicted,
+                name.en if name is not None else "",
+                name.title if name is not None else "",
             )
         )
-        csv_rows.append(
-            (
-                jp,
-                code,
-                en,
-                row.get("notes", ""),
-                row.get("aliases_en", ""),
-                row.get("no_split", ""),
-            )
-        )
+        csv_rows.append((jp, code, en, notes, row.get("aliases_en", ""), row.get("no_split", "")))
     csv_rows.sort(key=lambda r: (r[1], r[0]))
     rows.sort(key=lambda r: (-r.cards, r.jp))
     return rows, conflicts, csv_rows
 
 
 def _keyword_rows(
-    corpus: Corpus, glossary_rows: Sequence[Row]
+    corpus: Corpus,
+    glossary_rows: Sequence[Row],
+    fandom: Mapping[str, FandomName] | None = None,
 ) -> tuple[list[KeywordRow], list[tuple[str, ...]]]:
+    fandom = fandom or {}
     existing = {r["jp"]: r for r in glossary_rows}
-    rows = [
-        KeywordRow(
-            jp,
-            corpus.keyword_cards.get(jp, 0),
-            existing.get(jp, {}).get("code", ""),
-            existing.get(jp, {}).get("en", ""),
-            jp in existing,
+    jps = sorted(set(existing) | set(corpus.keyword_cards))
+    matched = {jp: fandom.get(jp_key(jp)) for jp in jps}
+    proposed = {jp: _fandom_code(matched[jp]) for jp in jps}
+    taken = {r["code"] for r in glossary_rows if r["code"]}
+    wanted: dict[str, list[str]] = defaultdict(list)
+    for jp in jps:
+        if not existing.get(jp, {}).get("code") and proposed[jp]:
+            wanted[proposed[jp]].append(jp)
+    clashing = {slug for slug, owners in wanted.items() if len(owners) > 1 or slug in taken}
+    rows: list[KeywordRow] = []
+    csv_rows: list[tuple[str, ...]] = []
+    for jp in jps:
+        row = existing.get(jp, {})
+        name = matched[jp]
+        code = row.get("code", "")
+        clash = ""
+        if not code and proposed[jp]:
+            if proposed[jp] in clashing:
+                clash = proposed[jp]
+            else:
+                code = proposed[jp]
+        en = row.get("en", "") or (name.en if name is not None else "")
+        notes = row.get("notes", "")
+        from_fandom = name is not None and (not row.get("en") or not row.get("code"))
+        if from_fandom and name is not None and not notes:
+            notes = f"fandom: {name.title}"
+        rows.append(
+            KeywordRow(
+                jp,
+                corpus.keyword_cards.get(jp, 0),
+                code,
+                en,
+                jp in existing,
+                name.title if name is not None else "",
+                clash,
+            )
         )
-        for jp in sorted(set(existing) | set(corpus.keyword_cards))
-    ]
-    csv_rows: list[tuple[str, ...]] = [
-        (r.jp, r.code, r.en, existing.get(r.jp, {}).get("notes", "")) for r in rows
-    ]
+        csv_rows.append((jp, code, en, notes))
     csv_rows.sort(key=lambda r: (r[1], r[0]))
     rows.sort(key=lambda r: (-r.cards, r.jp))
     return rows, csv_rows
+
+
+def _rarity_rows(corpus: Corpus, data: FandomData) -> list[RarityRow]:
+    """Fandom rarities matched to batspi ones by letter or Japanese name, then the leftovers."""
+    batspi = {jp_key(jp): jp for jp in corpus.rarity_printings}
+    used: set[str] = set()
+    rows: list[RarityRow] = []
+    for r in data.rarities:
+        keys = {jp_key(r.jp)} | ({jp_key(r.letter)} if r.letter else set())
+        hits = tuple(sorted(batspi[k] for k in keys if k in batspi))
+        used.update(hits)
+        rows.append(
+            RarityRow(
+                r.jp,
+                r.letter or "",
+                r.en,
+                hits,
+                sum(corpus.rarity_printings[h] for h in hits),
+            )
+        )
+    rows += [
+        RarityRow("", "", "", (jp,), n)
+        for jp, n in sorted(corpus.rarity_printings.items())
+        if jp not in used
+    ]
+    return rows
 
 
 def _no_split_rows(corpus: Corpus, known: set[str]) -> list[NoSplitRow]:
@@ -305,11 +419,14 @@ def build_review(
     keyword_rows: Sequence[Row],
     legacy_rows: Sequence[Row],
     prefix_rows: Sequence[Row],
+    fandom: FandomData | None = None,
 ) -> Review:
     """Build every review table and CSV from already-read inputs."""
     aliases = {r["legacy_en"].casefold(): r["preferred_en"] for r in legacy_rows}
-    families, conflicts, family_csv = _family_rows(corpus, link, family_rows, aliases)
-    keywords, keyword_csv = _keyword_rows(corpus, keyword_rows)
+    fam_names = _by_key(fandom.families) if fandom else None
+    kw_names = _by_key(fandom.keywords) if fandom else None
+    families, conflicts, family_csv = _family_rows(corpus, link, family_rows, aliases, fam_names)
+    keywords, keyword_csv = _keyword_rows(corpus, keyword_rows, kw_names)
     known = {r["jp"] for r in family_rows}
     legacy, legacy_csv = _legacy_rows(link, legacy_rows)
     return Review(
@@ -327,4 +444,6 @@ def build_review(
         tuple(keyword_csv),
         tuple(legacy_csv),
         link.no_legacy,
+        tuple(_rarity_rows(corpus, fandom)) if fandom else (),
+        fandom is not None,
     )

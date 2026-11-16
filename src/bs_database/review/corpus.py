@@ -2,7 +2,7 @@
 
 import re
 from collections.abc import Iterable, Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 NO_PRODUCT_CODE = ""
@@ -27,7 +27,8 @@ class Corpus:
     ``keyword_cards`` count distinct card numbers. ``family_machine_en`` holds the machine
     English of a family, when the normalize run produced one. ``pairs`` counts the cards
     on which two families are adjacent. ``products`` is keyed by product code
-    (``NO_PRODUCT_CODE`` for printings without one).
+    (``NO_PRODUCT_CODE`` for printings without one). ``rarity_printings`` counts printings per
+    batspi ``rarity_jp``.
     """
 
     card_families: Mapping[str, frozenset[str]]
@@ -36,6 +37,7 @@ class Corpus:
     keyword_cards: Mapping[str, int]
     pairs: Mapping[tuple[str, str], int]
     products: Mapping[str, ProductStat]
+    rarity_printings: Mapping[str, int] = field(default_factory=dict)
 
 
 def product_prefix(product_code: str) -> str:
@@ -60,6 +62,7 @@ class _Builder:
         self.product_numbers: dict[str, set[str]] = {}
         self.product_unresolved: dict[str, set[str]] = {}
         self.product_types: dict[str, set[str]] = {}
+        self.rarities: dict[str, int] = {}
 
     def add_entry(self, entry: dict[str, Any]) -> None:
         number: str = entry["number"]
@@ -76,6 +79,8 @@ class _Builder:
                 self.keyword_cards.setdefault(keyword["name_jp"], set()).add(number)
 
     def add_printing(self, printing: dict[str, Any]) -> None:
+        if rarity := printing.get("rarity_jp"):
+            self.rarities[rarity] = self.rarities.get(rarity, 0) + 1
         code = printing["product_code"] or NO_PRODUCT_CODE
         number = printing["number"]
         self.product_names.setdefault(code, set()).add(printing["product_name_jp"])
@@ -103,6 +108,7 @@ class _Builder:
             {jp: len(n) for jp, n in self.keyword_cards.items()},
             {pair: len(n) for pair, n in self.pairs.items()},
             products,
+            dict(self.rarities),
         )
 
 

@@ -18,6 +18,7 @@ from bs_database.parsers.fandom import (
     parse_name,
     parse_rarities,
 )
+from bs_database.review.source import ReviewError
 
 FANDOM_JSON = "fandom_names.json"
 FAMILY_CATEGORY = "Category:Family"
@@ -91,3 +92,27 @@ def write_names(path: Path, data: FandomData) -> None:
     text = json.dumps(data.to_json(), ensure_ascii=False, indent=2) + "\n"
     path.parent.mkdir(parents=True, exist_ok=True)
     atomic_write(path, text.encode("utf-8"))
+
+
+def _list(doc: Any, key: str) -> list[Any]:
+    value = doc[key]
+    if not isinstance(value, list):
+        raise TypeError(f"{key} is not a list")
+    return value
+
+
+def load_names(path: Path) -> FandomData:
+    """Read ``fandom_names.json``; raises ``ReviewError`` for a missing or malformed file."""
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        unmatched = doc["unmatched"]
+        return FandomData(
+            [FandomName(**n) for n in _list(doc, "families")],
+            [FandomName(**n) for n in _list(doc, "keywords")],
+            [FandomRarity(**r) for r in _list(doc, "rarities")],
+            [str(t) for t in unmatched["families"]],
+            [str(t) for t in unmatched["keywords"]],
+            int(doc["requests_made"]),
+        )
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise ReviewError(f"cannot read fandom names {path}: {exc}") from exc
