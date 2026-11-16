@@ -39,6 +39,14 @@
     "card_type": "ネクサス",
     "trimmed": false
   },
+  "card_nexus_cost_slash.html": {
+    "url": "https://batspi.com/index.php?%E5%B7%A8%E7%8D%A3%E3%81%AE%E6%A3%AE",
+    "fetched": "2026-11-16",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "ネクサス",
+    "trimmed": true
+  },
   "card_nexus_soukaishin.html": {
     "url": "https://batspi.com/index.php?%E5%89%B5%E7%95%8C%E7%A5%9E%E3%82%A2%E3%83%9D%E3%83%AD%E3%83%BC%E3%83%B3",
     "fetched": "2026-11-14",

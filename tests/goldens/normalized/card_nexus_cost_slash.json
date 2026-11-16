@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.1.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E5%B7%A8%E7%8D%A3%E3%81%AE%E6%A3%AE",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E5%B7%A8%E7%8D%A3%E3%81%AE%E6%A3%AE",
+    "title_jp": "巨獣の森",
+    "entries": [
+      {
+        "number": "BS18-067",
+        "name_jp": "巨獣の森",
+        "name_en": "The Giant Beast Forest",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "ネクサス",
+          "card_type_code": "nexus",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "白",
+              "code": "white"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "白",
+              "symbol_code": "white",
+              "count": 1
+            }
+          ],
+          "families": [],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 0,
+              "battle_points": null
+            },
+            {
+              "level": 2,
+              "cores": 2,
+              "battle_points": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『相手のアタックステップ』",
+              "header_jp": "Lv1・Lv2『相手のアタックステップ』",
+              "text_jp": "系統：「巨獣」/「機獣」を持つ自分のスピリットがブロックしたとき、ボイドからコア1個をそのスピリットに置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『相手のアタックステップ』",
+              "header_jp": "Lv2『相手のアタックステップ』",
+              "text_jp": "ステップ開始時、相手のスピリット1体を指定できる。\nそのスピリットは、このステップの最初に可能ならば必ずアタックする。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "吉村正人",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "大型の獣たちは、死期が近付くと姿を隠す。\n6つの世界すべてに、それぞれ用意された墓場があるのだ。\n一見して、それは墓場とはわからないのだが……。\n―放浪者ロロ『異界見聞録』名所千選666―",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "BS18-067",
+        "product_name_jp": "覇王編 第5弾：覇王大決戦",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E8%A6%87%E7%8E%8B%E7%B7%A8%20%E7%AC%AC5%E5%BC%BE%EF%BC%9A%E8%A6%87%E7%8E%8B%E5%A4%A7%E6%B1%BA%E6%88%A6",
+        "product_code": "BS18",
+        "product_type_code": "booster",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2012-07-28",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS18-067",
+        "large_url": "https://batspi.com/card/BS1/BS18-067.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS18-067.jpg",
+        "caption": [
+          "覇王編 第5弾：覇王大決戦"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

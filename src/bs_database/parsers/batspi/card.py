@@ -36,7 +36,8 @@ SYMBOL_GLYPHS = COLORS + "神極"
 REDUCTION_GLYPHS = SYMBOL_GLYPHS + "全"
 
 TYPE_LINE_RE = re.compile(rf"^({'|'.join(CARD_TYPES)})\s*(?:\(制限カード<(\d+)>\))?\s*$")
-COST_LINE_RE = re.compile(r"^(\d+)\(([^()]*)\)/([^/]+)(?:/(.+))?$")
+COST_LINE_RE = re.compile(r"^(\d+)\(([^()]*)\)/([^/]*)(?:/(.*))?$")
+NO_COLOR_TOKEN = "(なし)"  # the colour slot of a colourless card, e.g. ``15(0)/(なし)``
 LEVEL_LINE_RE = re.compile(r"^<\d+>Lv\d")
 _LEVEL_TOKEN_RE = re.compile(r"^<(\d+)>Lv(\d+)$")
 _FUSION_TOKEN_RE = re.compile(r"^<\d+>合体\+(\d+)$")
@@ -69,8 +70,12 @@ def _parts(text: str, pattern: re.Pattern[str], what: str) -> tuple[SymbolCount,
 
 
 def parse_cost_line(line: str) -> tuple[int, Reduction, tuple[str, ...], tuple[str, ...]]:
-    """Return ``(cost, reduction, colors, families)`` from ``N(reduction)/colours[/families]``."""
-    match = COST_LINE_RE.match(line)
+    """Return ``(cost, reduction, colors, families)`` from ``N(reduction)/colours[/families]``.
+
+    Tolerates what the pages print: trailing blanks, a trailing ``/`` (``4(2)/白/``), and
+    ``(なし)`` or nothing for a colourless card.
+    """
+    match = COST_LINE_RE.match(line.strip())
     if match is None:
         raise ParseError(f"unknown cost line: {line!r}")
     cost = int(match.group(1))
@@ -81,11 +86,12 @@ def parse_cost_line(line: str) -> tuple[int, Reduction, tuple[str, ...], tuple[s
         reduction = Reduction(plain=int(inner), parts=())
     else:
         reduction = Reduction(plain=None, parts=_parts(inner, _PART_RE, "reduction"))
-    colors = tuple(match.group(3))
+    color_text = match.group(3).strip()
+    colors = () if color_text in ("", NO_COLOR_TOKEN) else tuple(color_text)
     for color in colors:
         if color not in COLORS:
             raise ParseError(f"unknown colour {color!r} in cost line: {line!r}")
-    family_text = match.group(4)
+    family_text = (match.group(4) or "").strip().rstrip("/").strip()
     families = tuple(family_text.split("・")) if family_text else ()
     return cost, reduction, colors, families
 

@@ -56,6 +56,12 @@ def sc(*pairs: tuple[str, int]) -> tuple[SymbolCount, ...]:
         ),
         ("1(1)/赤紫緑白黄青", (1, Reduction(1, ()), tuple("赤紫緑白黄青"), ())),
         ("0(0)/白/絶晶神", (0, Reduction(0, ()), ("白",), ("絶晶神",))),
+        # #108: colourless card, trailing blank, stray trailing slash
+        ("15(0)/(なし)", (15, Reduction(0, ()), (), ())),
+        ("4(2)/青 ", (4, Reduction(2, ()), ("青",), ())),
+        ("4(2)/白/", (4, Reduction(2, ()), ("白",), ())),
+        ("3(紫1極1)/紫 ", (3, Reduction(None, sc(("紫", 1), ("極", 1))), ("紫",), ())),
+        ("2(1)/白/眷属 ", (2, Reduction(1, ()), ("白",), ("眷属",))),
     ],
 )
 def test_cost_line(line: str, expected: object) -> None:

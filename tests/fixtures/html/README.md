@@ -15,6 +15,7 @@ Saved pages that stand in for the network in tests. The manifest [fixtures.json]
 | `card_spirit_xx_bs31.html` | `六絶神 鉄壁のクロム・リゼルファー` | XX rare |
 | `card_promo.html` | `焔竜翼人マ・ドー` | Promo numbers |
 | `card_magic_flash.html` | `ダブルドロー` | Magic with `メイン：` and `フラッシュ：` |
+| `card_nexus_cost_slash.html` | `巨獣の森` | #108: cost line `4(2)/白/` (trailing slash) |
 | `set_bs01.html` | `第一弾` | Oldest set page |
 | `set_bs52.html` | `転醒編 第1章：輪廻転生` | Awakening era |
 | `set_sd54.html` | Collab starter `ガンダム ～OPERATION UC～` | Copy counts |
@@ -43,4 +44,4 @@ uv run python tests/tools/fixture_fetch.py --raw-dir <dir outside the repo> \
     "card_brave.html|砲凰竜フェニック・キャノン|card|ブレイヴ"
 ```
 
-Each argument is `FILE|PAGE NAME|KIND|CARD TYPE`. Add `--partial` to allow a partial page, or `--offline` to trim again from the raw pages in `--raw-dir` with no request. The tool is run by hand. Its robots.txt and deny-list logic is in `bs_database.ingest.policy`, covered by `tests/test_ingest_policy.py`.
+Each argument is `FILE|PAGE NAME|KIND|CARD TYPE`. Add `--partial` to allow a partial page, or `--offline` to trim again from the raw pages in `--raw-dir` with no request. `--from-cache` trims pages already in the local scrape cache (`BSDB_DATA_DIR`), with no request and no `--raw-dir`. The tool is run by hand. Its robots.txt and deny-list logic is in `bs_database.ingest.policy`, covered by `tests/test_ingest_policy.py`.
