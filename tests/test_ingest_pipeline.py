@@ -521,3 +521,39 @@ def test_offline_miss_is_a_retryable_skip(tmp_path: Path) -> None:
     assert record.state is S.FAILED and record.attempts == 1  # not exhausted at once
     assert report.index_unobtainable and report.exit_code == 1
     assert not _permanent(Skipped("u", OFFLINE_REASON))
+
+
+def listing_index(*names: str) -> bytes:
+    """A minimal card list index whose products are the given fixture pages."""
+    links = "".join(
+        f'<p><a href="{fixture_url(name).removeprefix("https://batspi.com/")}">{name}</a></p>'
+        for name in names
+    )
+    return f'<div id="body"><h2>カードリスト</h2><h3>一覧</h3>{links}</div>'.encode()
+
+
+def test_single_card_page_listed_as_a_set_is_parsed_as_a_card(tmp_path: Path) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    site = FakeSite(clock)
+    site.pages[INDEX_URL] = listing_index("card_spirit_listed_as_set.html")
+    url = fixture_url("card_spirit_listed_as_set.html")
+    report = crawl(settings, site, clock, RunOptions())
+    assert report.failures == [] and report.cards_parsed == 1
+    assert state_of(settings, url).state is S.PARSED
+    (doc,) = parsed_files(settings).values()
+    assert doc["url"] == url and doc["page"]["entries"][0]["number"] == "P022"
+    # a second run walks the page again from the cache and writes the same card
+    again = FakeSite(clock)
+    report2 = crawl(settings, again, clock, RunOptions())
+    assert again.calls == [] and report2.failures == [] and report2.cards_parsed == 1
+
+
+def test_year_list_listed_as_a_set_discovers_its_cards(tmp_path: Path) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    site = FakeSite(clock)
+    site.pages[INDEX_URL] = listing_index("list_year_event_gifts.html")
+    url = fixture_url("list_year_event_gifts.html")
+    report = crawl(settings, site, clock, RunOptions(limit=0))
+    assert report.failures == []
+    assert state_of(settings, url).state is S.PARSED
+    assert counts(settings)[S.DISCOVERED] > 10  # the year entries, none fetched

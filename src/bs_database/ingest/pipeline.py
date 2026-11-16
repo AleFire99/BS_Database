@@ -25,7 +25,7 @@ from bs_database.ingest.state import (
 )
 from bs_database.parsers.batspi.card import parse_card_page
 from bs_database.parsers.batspi.index import parse_index
-from bs_database.parsers.batspi.promo_list import parse_promo_list
+from bs_database.parsers.batspi.promo_list import parse_promo_list, parse_year_list
 from bs_database.parsers.batspi.set_page import parse_set_page
 from bs_database.parsers.errors import NoCardList, ParseError
 from bs_database.parsers.models import IndexProduct, ListEntry, MissingEntry
@@ -192,11 +192,14 @@ class _Run:
         except NoCardList:
             self.report.sets_without_cards.append(name)
         except ParseError as exc:
-            if done:
-                self.report.warnings.append(f"set revisit failed: {name}: parse error: {exc}")
-            else:
-                self.fail(product_url, f"parse error: {exc}")
-            return
+            alternative = self.not_a_set(product_url, name, page)
+            if alternative is None:
+                if done:
+                    self.report.warnings.append(f"set revisit failed: {name}: parse error: {exc}")
+                else:
+                    self.fail(product_url, f"parse error: {exc}")
+                return
+            entries, missing, unknown = alternative
         for entry in entries:
             self.store.upsert_discovered(entry.url, PageKind.CARD)
             self.visited_cards.add(entry.url)
@@ -207,6 +210,31 @@ class _Run:
             self.report.notes.append(DiscoveryNote(name, unknown, len(missing)))
         if not done:
             self.store.advance(product_url, _S.PARSED)
+
+    def not_a_set(
+        self, url: str, name: str, page: CachedPage
+    ) -> tuple[tuple[ListEntry, ...], tuple[MissingEntry, ...], tuple[str, ...]] | None:
+        """What a product page that is not a set is, if the index lists it as one (#108).
+
+        Some products are a single card page (the page is parsed as a card, from the same
+        cached HTML) or a list split by year (its entries are discovered like a set's).
+        ``None`` when it is neither.
+        """
+        try:
+            card = parse_card_page(page.text, url)
+        except ParseError:
+            pass
+        else:
+            log.info("%s: a single card page listed as a set, parsed as a card", name)
+            write_card_json(self.settings.parsed_dir, card, page)
+            self.report.cards_parsed += 1
+            return (), (), ()
+        try:
+            listing = parse_year_list(page.text)
+        except ParseError:
+            return None
+        log.info("%s: a year-sectioned list listed as a set", name)
+        return listing.entries, listing.missing, listing.unknown_numbers
 
     def sets(self, products: tuple[IndexProduct, ...] | None) -> None:
         if products is None:

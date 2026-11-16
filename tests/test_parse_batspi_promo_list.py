@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from bs_database.parsers.batspi.promo_list import parse_promo_list
+from bs_database.parsers.batspi.promo_list import parse_promo_list, parse_year_list
 from bs_database.parsers.errors import ParseError
 
 
@@ -68,3 +68,21 @@ def test_malformed(html: str) -> None:
 def test_index_page_is_rejected() -> None:
     with pytest.raises(ParseError):
         parse_promo_list(_html("index"))
+
+
+def test_year_list_has_no_h2_and_is_read_by_parse_year_list() -> None:
+    """バトルスキーイベント提供記念品 (#108): an h3 title and h4 years."""
+    html = _html("list_year_event_gifts")
+    with pytest.raises(ParseError, match="no title heading"):
+        parse_promo_list(html)
+    listing = parse_year_list(html)
+    assert listing.entries
+    assert {e.section[-1] for e in listing.entries} >= {"2016年", "2017年"}
+    assert all(e.section[0] == "バトルスキーイベント提供記念品" for e in listing.entries)
+    first = listing.entries[0]
+    assert (first.number, first.name) == ("SD26-013", "フェイタルドロー")
+
+
+def test_year_list_without_entries_raises() -> None:
+    with pytest.raises(ParseError, match="no card entries"):
+        parse_year_list('<div id="body"><h3>t</h3></div>')

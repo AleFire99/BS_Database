@@ -23,6 +23,8 @@ Saved pages that stand in for the network in tests. The manifest [fixtures.json]
 | `card_spirit_printing_unnumbered.html` | `魔刃将ヘル・ブレド` | #108: 収録 rows with no number on a two-number page (attached to every number, with a warning) |
 | `card_spirit_shared_block.html` | `巨人皇子アレクサンダー4世` | #108: one `<pre>` and an h3 without a number, two own numbers (`EX023`, `P027`) |
 | `card_magic_image_placeholder.html` | `禁忌のエクストリーム` | #108: gallery `<li>` linking `NOTFOUND.jpg` with no caption |
+| `card_spirit_listed_as_set.html` | `拳闘巨人ジャスティン` | #108: a single card page that the index lists as a set |
+| `list_year_event_gifts.html` | `バトルスキーイベント提供記念品` | #108: list split by year (h3 title, h4 years, no h2); **partial** (first sections only) |
 | `set_bs01.html` | `第一弾` | Oldest set page |
 | `set_bs52.html` | `転醒編 第1章：輪廻転生` | Awakening era |
 | `set_sd54.html` | Collab starter `ガンダム ～OPERATION UC～` | Copy counts |
