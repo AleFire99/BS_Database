@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.1.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E7%B4%85%E7%8E%89%E3%81%AE%E5%B7%A8%E9%BE%8D%E3%83%9C%E3%83%AB%E3%82%AC%E3%83%B3%E3%83%89",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E7%B4%85%E7%8E%89%E3%81%AE%E5%B7%A8%E9%BE%8D%E3%83%9C%E3%83%AB%E3%82%AC%E3%83%B3%E3%83%89",
+    "title_jp": "紅玉の巨龍ボルガンド",
+    "entries": [
+      {
+        "number": "BS17-008",
+        "name_jp": "紅玉の巨龍ボルガンド",
+        "name_en": "The RubyDragon Volgand",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 7,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 2
+            }
+          ],
+          "families": [
+            {
+              "jp": "翼竜",
+              "code": "yokuryu",
+              "en": "Winged Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 4000
+            },
+            {
+              "level": 2,
+              "cores": 3,
+              "battle_points": 8000
+            },
+            {
+              "level": 3,
+              "cores": 4,
+              "battle_points": 10000
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2,
+                3
+              ],
+              "label": "フラッシュ",
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "覚醒",
+                  "code": "kakusei",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "Lv1・Lv2・Lv3:フラッシュ【覚醒】",
+              "text_jp": "自分のスピリットのコアを、好きなだけこのスピリットに置くことができる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "草彅琢仁",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "隻腕のマナカの一撃が、7本の腕で受け止められた。\n―正史 マナカ伝 647年の章―",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "BS17-008",
+        "product_name_jp": "覇王編 第4弾：剣舞う世界",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E8%A6%87%E7%8E%8B%E7%B7%A8%20%E7%AC%AC4%E5%BC%BE%EF%BC%9A%E5%89%A3%E8%88%9E%E3%81%86%E4%B8%96%E7%95%8C",
+        "product_code": "BS17",
+        "product_type_code": "booster",
+        "rarity_jp": "U",
+        "rarity_code": "U",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2012-05-25",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS17-008",
+        "large_url": "https://batspi.com/card/BS1/BS17-008.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS17-008.jpg",
+        "caption": [
+          "覇王編 第4弾：剣舞う世界"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

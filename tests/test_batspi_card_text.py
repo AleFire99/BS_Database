@@ -83,6 +83,31 @@ HEADERS = [
     ("【OC中】Lv3・Lv4『x』", (3, 4), None, (Keyword("【", "OC中", None),), "『x』"),
     ("メイン：", (), "メイン", (), None),
     ("フラッシュ：", (), "フラッシュ", (), None),
+    # #108: a blank after the levels, an ascii colon, the timing before the parameter or keyword
+    (
+        "Lv1・Lv2・Lv3 【粉砕】『このスピリットのアタック時』",
+        (1, 2, 3),
+        None,
+        (Keyword("【", "粉砕", None),),
+        "『このスピリットのアタック時』",
+    ),
+    ("Lv1・Lv2 『x』", (1, 2), None, (), "『x』"),
+    (
+        "Lv1・Lv2・Lv3:フラッシュ【覚醒】",
+        (1, 2, 3),
+        "フラッシュ",
+        (Keyword("【", "覚醒", None),),
+        None,
+    ),
+    ("Lv2『x』〔ターン1回〕", (2,), None, (), "『x』"),
+    ("Lv2『x』【起動：フラッシュ】", (2,), None, (Keyword("【", "起動", "フラッシュ"),), "『x』"),
+    (
+        "『x』【起動：フラッシュ】〔ターン1回〕",
+        (),
+        None,
+        (Keyword("【", "起動", "フラッシュ"),),
+        "『x』",
+    ),
 ]
 
 

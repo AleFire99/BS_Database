@@ -16,6 +16,9 @@ Saved pages that stand in for the network in tests. The manifest [fixtures.json]
 | `card_promo.html` | `焔竜翼人マ・ドー` | Promo numbers |
 | `card_magic_flash.html` | `ダブルドロー` | Magic with `メイン：` and `フラッシュ：` |
 | `card_nexus_cost_slash.html` | `巨獣の森` | #108: cost line `4(2)/白/` (trailing slash) |
+| `card_spirit_header_space.html` | `コジロンド・ゴレム` | #108: header `Lv1・Lv2・Lv3 【粉砕】『…』` (blank after the levels) |
+| `card_spirit_header_colon.html` | `紅玉の巨龍ボルガンド` | #108: header `Lv1・Lv2・Lv3:フラッシュ【覚醒】` (ascii colon) |
+| `card_spirit_header_timing.html` | `仮面ライダーマリカ ピーチエナジーアームズ` | #108: header `『…』【起動：フラッシュ】〔ターン1回〕` (timing first) |
 | `set_bs01.html` | `第一弾` | Oldest set page |
 | `set_bs52.html` | `転醒編 第1章：輪廻転生` | Awakening era |
 | `set_sd54.html` | Collab starter `ガンダム ～OPERATION UC～` | Copy counts |

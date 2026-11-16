@@ -16,9 +16,10 @@ log = logging.getLogger(__name__)
 
 _BRACKET = r"【[^】]*】|《[^》]*》"
 _HEADER_RE = re.compile(
-    rf"^(?P<pre>(?:{_BRACKET})*)(?P<lv>Lv\d+(?:[・･]Lv\d+)*)?：?"
-    rf"(?P<label>(?:メイン|フラッシュ))?：?(?P<post>(?:{_BRACKET})*)"
-    r"(?P<param>〔[^〕]*〕)?(?P<timing>『[^』]*』)?$"
+    rf"^(?P<pre>(?:{_BRACKET})*)(?P<lv>Lv\d+(?:[・･]Lv\d+)*)?\s*[：:]?\s*"
+    rf"(?P<label>(?:メイン|フラッシュ))?[：:]?(?P<post>(?:{_BRACKET})*)"
+    r"(?P<param>〔[^〕]*〕)?(?P<timing>『[^』]*』)?"
+    rf"(?P<post2>(?:{_BRACKET})*)(?P<param2>〔[^〕]*〕)?$"
 )
 _BRACKET_RE = re.compile(rf"({_BRACKET})")
 _LEVEL_SCOPE_RE = re.compile(r"Lv(\d+)")
@@ -119,7 +120,7 @@ def parse_body(
                 "keyword_line" if standalone else "header",
                 scope,
                 match.group("label"),
-                _keywords(match.group("pre") + match.group("post")),
+                _keywords(match.group("pre") + match.group("post") + match.group("post2")),
                 match.group("timing"),
                 line,
             )

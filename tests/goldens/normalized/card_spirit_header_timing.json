@@ -1,0 +1,378 @@
+{
+  "schema_version": "1.1.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E4%BB%AE%E9%9D%A2%E3%83%A9%E3%82%A4%E3%83%80%E3%83%BC%E3%83%9E%E3%83%AA%E3%82%AB%20%E3%83%94%E3%83%BC%E3%83%81%E3%82%A8%E3%83%8A%E3%82%B8%E3%83%BC%E3%82%A2%E3%83%BC%E3%83%A0%E3%82%BA",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E4%BB%AE%E9%9D%A2%E3%83%A9%E3%82%A4%E3%83%80%E3%83%BC%E3%83%9E%E3%83%AA%E3%82%AB%20%E3%83%94%E3%83%BC%E3%83%81%E3%82%A8%E3%83%8A%E3%82%B8%E3%83%BC%E3%82%A2%E3%83%BC%E3%83%A0%E3%82%BA",
+    "title_jp": "仮面ライダーマリカ ピーチエナジーアームズ",
+    "entries": [
+      {
+        "number": "CB09-017",
+        "name_jp": "仮面ライダーマリカ ピーチエナジーアームズ",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 5,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "仮面",
+              "code": "kamen",
+              "en": "Kamen",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "戦姫",
+              "code": "war_princess",
+              "en": "War Princess",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 5000
+            },
+            {
+              "level": 2,
+              "cores": 3,
+              "battle_points": 8000
+            },
+            {
+              "level": 3,
+              "cores": 6,
+              "battle_points": 15000
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このカード/スピリットのシンボルと軽減シンボルは黄としても扱う。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                1,
+                2,
+                3
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv1・Lv2・Lv3『このスピリットのアタック時』",
+              "text_jp": "BP7000以下の相手のスピリット1体を破壊する。\nこの効果で破壊したとき、このスピリットは回復する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                2,
+                3
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『自分のアタックステップ』",
+              "header_jp": "Lv2・Lv3『自分のアタックステップ』",
+              "text_jp": "カード名に「バロン」/「デューク」を含む自分のスピリットがいる間、このスピリットに赤のシンボル1つを追加する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "五浦マリ",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "湊耀子がゲネシスドライバーとピーチエナジーロックシードを用いて変身した姿。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      },
+      {
+        "number": "26RCB01-007",
+        "name_jp": "仮面ライダーマリカ ピーチエナジーアームズ",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "GAIM",
+              "code": "gaim",
+              "en": "GAIM",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "仮面",
+              "code": "kamen",
+              "en": "Kamen",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 4000
+            },
+            {
+              "level": 2,
+              "cores": 2,
+              "battle_points": 5000
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "Lv1-2『お互いのアタックステップ』【起動：フラッシュ】〔ターン1回〕\n自分の「仮面ライダー斬月」1体を指定する。このスピリットの[ソウルコア]以外のコア1個をそれに置き、このバトル中、それをBP+3000する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                2
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "起動",
+                  "code": "kidou_activate",
+                  "parameter_jp": "フラッシュ"
+                }
+              ],
+              "timing_jp": "『お互いのアタックステップ』",
+              "header_jp": "Lv2『お互いのアタックステップ』【起動：フラッシュ】〔ターン1回〕",
+              "text_jp": "自分の「仮面ライダーバロン」1体を指定する。このスピリットの[ソウルコア]以外のコア1個をそれに置き、このバトル中、それをBP+3000する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "Kazuyuki Hayashi",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "湊耀子がゲネシスドライバーとピーチエナジーロックシードを用いて変身した姿。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "仮面ライダーマリカ ピーチエナジーアームズ",
+        "field": "cost",
+        "values": [
+          [
+            "CB09-017",
+            "5"
+          ],
+          [
+            "26RCB01-007",
+            "4"
+          ]
+        ]
+      },
+      {
+        "name_jp": "仮面ライダーマリカ ピーチエナジーアームズ",
+        "field": "families",
+        "values": [
+          [
+            "CB09-017",
+            "('仮面', '戦姫')"
+          ],
+          [
+            "26RCB01-007",
+            "('GAIM', '仮面')"
+          ]
+        ]
+      },
+      {
+        "name_jp": "仮面ライダーマリカ ピーチエナジーアームズ",
+        "field": "levels",
+        "values": [
+          [
+            "CB09-017",
+            "(Level(level=1, cores=1, battle_points=5000), Level(level=2, cores=3, battle_points=8000), Level(level=3, cores=6, battle_points=15000))"
+          ],
+          [
+            "26RCB01-007",
+            "(Level(level=1, cores=1, battle_points=4000), Level(level=2, cores=2, battle_points=5000))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "仮面ライダーマリカ ピーチエナジーアームズ",
+        "field": "effects",
+        "values": [
+          [
+            "CB09-017",
+            "(Effect(position=1, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='このカード/スピリットのシンボルと軽減シンボルは黄としても扱う。'), Effect(position=2, form='header', levels=(1, 2, 3), label=None, keywords=(), timing='『このスピリットのアタック時』', header='Lv1・Lv2・Lv3『このスピリットのアタック時』', text='BP7000以下の相手のスピリット1体を破壊する。\\nこの効果で破壊したとき、このスピリットは回復する。'), Effect(position=3, form='header', levels=(2, 3), label=None, keywords=(), timing='『自分のアタックステップ』', header='Lv2・Lv3『自分のアタックステップ』', text='カード名に「バロン」/「デューク」を含む自分のスピリットがいる間、このスピリットに赤のシンボル1つを追加する。'))"
+          ],
+          [
+            "26RCB01-007",
+            "(Effect(position=1, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='Lv1-2『お互いのアタックステップ』【起動：フラッシュ】〔ターン1回〕\\n自分の「仮面ライダー斬月」1体を指定する。このスピリットの[ソウルコア]以外のコア1個をそれに置き、このバトル中、それをBP+3000する。'), Effect(position=2, form='header', levels=(2,), label=None, keywords=(Keyword(bracket='【', name='起動', parameter='フラッシュ'),), timing='『お互いのアタックステップ』', header='Lv2『お互いのアタックステップ』【起動：フラッシュ】〔ターン1回〕', text='自分の「仮面ライダーバロン」1体を指定する。このスピリットの[ソウルコア]以外のコア1個をそれに置き、このバトル中、それをBP+3000する。'))"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "CB09-017",
+        "product_name_jp": "コラボブースター【仮面ライダー ～新世界への進化～】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%B3%E3%83%A9%E3%83%9C%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90%E4%BB%AE%E9%9D%A2%E3%83%A9%E3%82%A4%E3%83%80%E3%83%BC%20%EF%BD%9E%E6%96%B0%E4%B8%96%E7%95%8C%E3%81%B8%E3%81%AE%E9%80%B2%E5%8C%96%EF%BD%9E%E3%80%91",
+        "product_code": "CB09",
+        "product_type_code": "collab",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "6",
+        "release_date": "2019-08-31",
+        "section": "収録"
+      },
+      {
+        "number": "26RCB01-007",
+        "product_name_jp": "コラボブースター【仮面ライダー 運命の戦線】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%B3%E3%83%A9%E3%83%9C%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90%E4%BB%AE%E9%9D%A2%E3%83%A9%E3%82%A4%E3%83%80%E3%83%BC%20%E9%81%8B%E5%91%BD%E3%81%AE%E6%88%A6%E7%B7%9A%E3%80%91",
+        "product_code": "26RCB01",
+        "product_type_code": "collab",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "A",
+        "release_date": "2026-06-20",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "26RCB01-007",
+        "large_url": "https://batspi.com/card/26R/26RCB01-007.jpg",
+        "small_url": "https://batspi.com/card/26R/small/26RCB01-007.jpg",
+        "caption": [
+          "コラボブースター【仮面ライダー 運命の戦線】"
+        ]
+      },
+      {
+        "number": "CB09-017",
+        "large_url": "https://batspi.com/card/CB0/CB09-017.jpg",
+        "small_url": "https://batspi.com/card/CB0/small/CB09-017.jpg",
+        "caption": [
+          "コラボブースター【仮面ライダー ～新世界への進化～】"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}
