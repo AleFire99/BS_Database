@@ -119,6 +119,7 @@ class _Row:
     detail: str | None
     rarity: str | None
     note: str | None
+    text: str  # the whole row text outside the link: it may print the card number(s)
 
 
 @dataclass(frozen=True, slots=True)
@@ -144,7 +145,7 @@ def _printing_rows(heading: Tag) -> list[_Row]:
             detail = (match["detail"] or None) if match else (text or None)
             rarity = match["rar"] if match else None
             note = match["note"] if match else None
-            rows.append(_Row(label, link[1], link[2], detail, rarity, note))
+            rows.append(_Row(label, link[1], link[2], detail, rarity, note, text))
         elif text:
             name = (match["detail"] if match else text) or text
             rows.append(
@@ -155,6 +156,7 @@ def _printing_rows(heading: Tag) -> list[_Row]:
                     None,
                     match["rar"] if match else None,
                     match["note"] if match else None,
+                    text,
                 )
             )
     return rows
@@ -179,19 +181,64 @@ def _block_rows(heading: Tag, context: str) -> list[_BlockRow]:
     return rows
 
 
-def _targets(label: str | None, numbers: Sequence[str], context: str) -> list[str]:
-    """Entry numbers a label applies to (one per face for a face-less label)."""
-    if label is None:
-        if len({_faceless(n) for n in numbers}) == 1:
-            return list(numbers)
-        raise ParseError(f"printing row without a card number on a multi-number page in {context}")
+def _printed_numbers(text: str, numbers: Sequence[str]) -> list[str]:
+    """The page numbers a row prints in its text, e.g. ``<C> (BS18-076)`` or ``(X005A、X005D)``."""
+    found: list[str] = []
+    for number in numbers:
+        bare = re.escape(_faceless(number))
+        if re.search(rf"(?<![A-Za-z0-9-]){bare}(?![A-Za-z0-9-])", text) and number not in found:
+            found.append(number)
+    return found
+
+
+def _label_numbers(label: str, numbers: Sequence[str]) -> list[str]:
     exact = [n for n in numbers if n == label]
     if exact:
         return exact
     found = [n for n in numbers if _faceless(n) == label]
-    if not found:
+    if found:
+        return found
+    # a label without the variant letter (``X003``) stands for ``X003A``, ``X003D``, ...
+    return [n for n in numbers if re.fullmatch(re.escape(label) + r"[A-Z](?:\([AB]\))?", n)]
+
+
+def _targets(
+    label: str | None,
+    numbers: Sequence[str],
+    context: str,
+    *,
+    text: str = "",
+    fallback_all: bool = False,
+) -> list[str]:
+    """Entry numbers a label (or the card numbers printed in the row ``text``) applies to.
+
+    The label gives the candidates (one per face for a face-less label); numbers printed in
+    the row text narrow them down, or stand in when there is no label. A row without any
+    number on a multi-number page raises ``ParseError``, or with ``fallback_all`` applies to
+    every number of the page and logs a warning (#108).
+    """
+    printed = _printed_numbers(text, numbers) if text else []
+    if label is not None:
+        candidates = _label_numbers(label, numbers)
+        if candidates:
+            return [n for n in candidates if n in printed] or candidates
+        if printed:
+            return printed
         log.warning("number is not a card number: %s field=number value=%r", context, label)
-    return found
+        return []
+    if printed:
+        return printed
+    if len({_faceless(n) for n in numbers}) == 1:
+        return list(numbers)
+    if fallback_all:
+        log.warning(
+            "printing row without a card number is attached to all numbers: %s field=number "
+            "value=%r",
+            context,
+            text.strip(),
+        )
+        return list(numbers)
+    raise ParseError(f"printing row without a card number on a multi-number page in {context}")
 
 
 def parse_printings(soup: BeautifulSoup, url: str, numbers: Sequence[str]) -> tuple[Printing, ...]:
@@ -208,7 +255,7 @@ def parse_printings(soup: BeautifulSoup, url: str, numbers: Sequence[str]) -> tu
     printings: list[Printing] = []
     for row in rows:
         href = urljoin(url, row.href) if row.href else None
-        for number in _targets(row.label, numbers, url):
+        for number in _targets(row.label, numbers, url, text=row.text, fallback_all=True):
             joined = _join(blocks, row.name, number, used)
             printings.append(
                 Printing(

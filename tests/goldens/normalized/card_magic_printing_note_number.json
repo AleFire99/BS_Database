@@ -1,0 +1,252 @@
+{
+  "schema_version": "1.1.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E3%82%AF%E3%83%AA%E3%82%B9%E3%82%BF%E3%83%AB%E3%82%AF%E3%83%A9%E3%83%83%E3%82%AF",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E3%82%AF%E3%83%AA%E3%82%B9%E3%82%BF%E3%83%AB%E3%82%AF%E3%83%A9%E3%83%83%E3%82%AF",
+    "title_jp": "クリスタルクラック",
+    "entries": [
+      {
+        "number": "BS18-076",
+        "name_jp": "クリスタルクラック",
+        "name_en": "Crystal Crack",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "マジック",
+          "card_type_code": "magic",
+          "deck_limit": null,
+          "cost": 5,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "紫",
+              "code": "purple"
+            }
+          ],
+          "symbols": [],
+          "families": [],
+          "levels": [],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [],
+              "label": "フラッシュ",
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "フラッシュ：",
+              "text_jp": "相手のスピリット1体のコアを、1個だけになるように相手のトラッシュに置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "槻城ゆう子",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      },
+      {
+        "number": "BS56-RV002",
+        "name_jp": "クリスタルクラック",
+        "name_en": "Crystal Crack",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "マジック",
+          "card_type_code": "magic",
+          "deck_limit": null,
+          "cost": 5,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "紫",
+              "code": "purple"
+            }
+          ],
+          "symbols": [],
+          "families": [],
+          "levels": [],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "keyword_line",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "ミラージュ",
+                  "code": "mirage",
+                  "parameter_jp": "コスト2(1)(このカードは手札からセットできる)"
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "【ミラージュ：コスト2(1)(このカードは手札からセットできる)】",
+              "text_jp": "【ミラージュ：コスト2(1)(このカードは手札からセットできる)】",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "セット中",
+                  "code": "setto_chu",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『相手のアタックステップ』",
+              "header_jp": "【セット中】『相手のアタックステップ』",
+              "text_jp": "ターンに1回、自分のライフが減るとき、自分のトラッシュにあるカード名に「騎士」/「キャメロット」を含む紫のカード2枚をゲームから除外することで、減るコアの数を-1個する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [],
+              "label": "フラッシュ",
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "フラッシュ：",
+              "text_jp": "相手のスピリット/アルティメット1体のコアを、1個になるようにトラッシュに置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "槻城ゆう子",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "クリスタルクラック",
+        "field": "effects",
+        "values": [
+          [
+            "BS18-076",
+            "(Effect(position=1, form='header', levels=(), label='フラッシュ', keywords=(), timing=None, header='フラッシュ：', text='相手のスピリット1体のコアを、1個だけになるように相手のトラッシュに置く。'),)"
+          ],
+          [
+            "BS56-RV002",
+            "(Effect(position=1, form='keyword_line', levels=(), label=None, keywords=(Keyword(bracket='【', name='ミラージュ', parameter='コスト2(1)(このカードは手札からセットできる)'),), timing=None, header='【ミラージュ：コスト2(1)(このカードは手札からセットできる)】', text='【ミラージュ：コスト2(1)(このカードは手札からセットできる)】'), Effect(position=2, form='header', levels=(), label=None, keywords=(Keyword(bracket='【', name='セット中', parameter=None),), timing='『相手のアタックステップ』', header='【セット中】『相手のアタックステップ』', text='ターンに1回、自分のライフが減るとき、自分のトラッシュにあるカード名に「騎士」/「キャメロット」を含む紫のカード2枚をゲームから除外することで、減るコアの数を-1個する。'), Effect(position=3, form='header', levels=(), label='フラッシュ', keywords=(), timing=None, header='フラッシュ：', text='相手のスピリット/アルティメット1体のコアを、1個になるようにトラッシュに置く。'))"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "BS18-076",
+        "product_name_jp": "覇王編 第5弾：覇王大決戦",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E8%A6%87%E7%8E%8B%E7%B7%A8%20%E7%AC%AC5%E5%BC%BE%EF%BC%9A%E8%A6%87%E7%8E%8B%E5%A4%A7%E6%B1%BA%E6%88%A6",
+        "product_code": "BS18",
+        "product_type_code": "booster",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "BS18-076",
+        "block_icon": null,
+        "release_date": "2012-07-28",
+        "section": "収録"
+      },
+      {
+        "number": "BS56-RV002",
+        "product_name_jp": "真・転醒編 第1章：世界の真実",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E7%9C%9F%E3%83%BB%E8%BB%A2%E9%86%92%E7%B7%A8%20%E7%AC%AC1%E7%AB%A0%EF%BC%9A%E4%B8%96%E7%95%8C%E3%81%AE%E7%9C%9F%E5%AE%9F",
+        "product_code": "BS56",
+        "product_type_code": "booster",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "BS56-RV002",
+        "block_icon": "8",
+        "release_date": "2021-04-24",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS18-076",
+        "large_url": "https://batspi.com/card/BS1/BS18-076.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS18-076.jpg",
+        "caption": [
+          "覇王編 第5弾：覇王大決戦"
+        ]
+      },
+      {
+        "number": "BS56-RV002",
+        "large_url": "https://batspi.com/card/BS5/BS56-RV002.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS56-RV002.jpg",
+        "caption": [
+          "真・転醒編 第1章：世界の真実"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

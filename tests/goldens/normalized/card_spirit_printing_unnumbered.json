@@ -1,0 +1,669 @@
+{
+  "schema_version": "1.1.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E9%AD%94%E5%88%83%E5%B0%86%E3%83%98%E3%83%AB%E3%83%BB%E3%83%96%E3%83%AC%E3%83%89",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E9%AD%94%E5%88%83%E5%B0%86%E3%83%98%E3%83%AB%E3%83%BB%E3%83%96%E3%83%AC%E3%83%89",
+    "title_jp": "魔刃将ヘル・ブレド",
+    "entries": [
+      {
+        "number": "P004",
+        "name_jp": "魔刃将ヘル・ブレド",
+        "name_en": "The EdgeGeneral Hell-Blade",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 6,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "紫",
+              "code": "purple"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "紫",
+              "symbol_code": "purple",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "魔影",
+              "code": "maei",
+              "en": "Evil Shadow",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 3000
+            },
+            {
+              "level": 2,
+              "cores": 4,
+              "battle_points": 7000
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv1・Lv2『このスピリットのアタック時』",
+              "text_jp": "BPを比べ相手のスピリットだけを破壊したとき、疲労している相手のスピリット上のコア1個を相手のトラッシュに置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "末弥純",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "魔界の王の影として、闇のさらに闇に生きる。\nだれにも知られることもなく……。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      },
+      {
+        "number": "P20-07",
+        "name_jp": "魔刃将ヘル・ブレド",
+        "name_en": "The EdgeGeneral Hell-Blade",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "紫",
+              "code": "purple"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "紫",
+              "symbol_code": "purple",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "起幻",
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "魔影",
+              "code": "maei",
+              "en": "Evil Shadow",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 3000
+            },
+            {
+              "level": 2,
+              "cores": 3,
+              "battle_points": 7000
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv1・Lv2『このスピリットのアタック時』",
+              "text_jp": "疲労状態の相手のスピリットのコア1個をトラッシュに置く。\nさらに、自分のカウント2以上のとき、疲労状態の相手のスピリットのコア1個をトラッシュに置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『自分のアタックステップ』",
+              "header_jp": "Lv2『自分のアタックステップ』",
+              "text_jp": "自分のカウント1につき、系統：「起幻」を持つ自分の紫1色のスピリットすべてをBP+2000する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "末弥純",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "古くから紫の世界の貴族階級「エル」に仕えている謎の人物。\n「エル」は「三源爵」を快く思っていないと思われる。これは重要ね。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "魔刃将ヘル・ブレド",
+        "field": "cost",
+        "values": [
+          [
+            "P004",
+            "6"
+          ],
+          [
+            "P20-07",
+            "4"
+          ]
+        ]
+      },
+      {
+        "name_jp": "魔刃将ヘル・ブレド",
+        "field": "families",
+        "values": [
+          [
+            "P004",
+            "('魔影',)"
+          ],
+          [
+            "P20-07",
+            "('起幻', '魔影')"
+          ]
+        ]
+      },
+      {
+        "name_jp": "魔刃将ヘル・ブレド",
+        "field": "levels",
+        "values": [
+          [
+            "P004",
+            "(Level(level=1, cores=1, battle_points=3000), Level(level=2, cores=4, battle_points=7000))"
+          ],
+          [
+            "P20-07",
+            "(Level(level=1, cores=1, battle_points=3000), Level(level=2, cores=3, battle_points=7000))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "魔刃将ヘル・ブレド",
+        "field": "effects",
+        "values": [
+          [
+            "P004",
+            "(Effect(position=1, form='header', levels=(1, 2), label=None, keywords=(), timing='『このスピリットのアタック時』', header='Lv1・Lv2『このスピリットのアタック時』', text='BPを比べ相手のスピリットだけを破壊したとき、疲労している相手のスピリット上のコア1個を相手のトラッシュに置く。'),)"
+          ],
+          [
+            "P20-07",
+            "(Effect(position=1, form='header', levels=(1, 2), label=None, keywords=(), timing='『このスピリットのアタック時』', header='Lv1・Lv2『このスピリットのアタック時』', text='疲労状態の相手のスピリットのコア1個をトラッシュに置く。\\nさらに、自分のカウント2以上のとき、疲労状態の相手のスピリットのコア1個をトラッシュに置く。'), Effect(position=2, form='header', levels=(2,), label=None, keywords=(), timing='『自分のアタックステップ』', header='Lv2『自分のアタックステップ』', text='自分のカウント1につき、系統：「起幻」を持つ自分の紫1色のスピリットすべてをBP+2000する。'))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "魔刃将ヘル・ブレド",
+        "field": "flavor",
+        "values": [
+          [
+            "P004",
+            "'魔界の王の影として、闇のさらに闇に生きる。\\nだれにも知られることもなく……。'"
+          ],
+          [
+            "P20-07",
+            "'古くから紫の世界の貴族階級「エル」に仕えている謎の人物。\\n「エル」は「三源爵」を快く思っていないと思われる。これは重要ね。'"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "P004",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "P004",
+        "block_icon": "7",
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピショップバトル",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97%E3%83%90%E3%83%88%E3%83%AB",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "参加賞",
+        "note_jp": "2008年11月～",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P20-07",
+        "product_name_jp": "バトスピショップバトル",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97%E3%83%90%E3%83%88%E3%83%AB",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "参加賞",
+        "note_jp": "2008年11月～",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピフェスタ2008ガンスリンガー3勝賞品",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P20-07",
+        "product_name_jp": "バトスピフェスタ2008ガンスリンガー3勝賞品",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "ブースタードラフト参加賞",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "2009年4～5月",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P20-07",
+        "product_name_jp": "ブースタードラフト参加賞",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "2009年4～5月",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P20-07",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "P20-07",
+        "block_icon": "7",
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピショップバトル",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97%E3%83%90%E3%83%88%E3%83%AB",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "2020年9月2位・3位記念品＆参加(上位16名)記念品",
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P20-07",
+        "product_name_jp": "バトスピショップバトル",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97%E3%83%90%E3%83%88%E3%83%AB",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "2020年9月2位・3位記念品＆参加(上位16名)記念品",
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピMAX2011",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピMAX2012",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピチャンピオンシップ2009",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピチャンピオンシップ2010",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピチャンピオンシップ2011～12宮ツアー～",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピチャンピオンシップMAX",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "P20-07",
+        "product_name_jp": "バトスピ トレジャーパック2021",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピ覇王チャンピオンシップ",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "P004",
+        "product_name_jp": "バトスピフェスタ2010",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      }
+    ],
+    "images": [
+      {
+        "number": "P004",
+        "large_url": "https://batspi.com/card/ETC/P004.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/P004.jpg",
+        "caption": [
+          "プロモーションカード"
+        ]
+      },
+      {
+        "number": "P20-07",
+        "large_url": "https://batspi.com/card/ETC/P20-07.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/P20-07.jpg",
+        "caption": [
+          "プロモーションカード"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}
