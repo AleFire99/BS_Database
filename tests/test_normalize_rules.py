@@ -160,3 +160,19 @@ def test_keywords_hit_and_miss() -> None:
     assert got[2].parameter_jp == "1"
     assert [t.jp for t in u.terms()] == ["新"]
     assert [t.jp for t in u.uncurated_terms()] == ["激突"]
+
+
+def test_family_tokens_are_stripped_and_merged() -> None:
+    u = UnmappedCollector()
+    got = rules.map_families(G, ("爬獣 ", "爬獣", "　", " A", "B　"), "N", u)
+    assert [r.jp for r in got] == ["爬獣", "A・B"]
+    assert u.terms() == ()
+
+
+def test_keyword_names_are_stripped() -> None:
+    u = UnmappedCollector()
+    got = rules.map_keywords(
+        G, (Keyword("【", " 神託　", None), Keyword("【", "新 ", None)), "N", u
+    )
+    assert [(k.name_jp, k.code) for k in got] == [("神託", "shintaku"), ("新", None)]
+    assert [t.jp for t in u.terms()] == ["新"]

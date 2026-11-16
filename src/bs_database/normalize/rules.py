@@ -92,8 +92,11 @@ def product_type_code(
 def merge_family_tokens(glossary: Glossary, tokens: tuple[str, ...]) -> tuple[str, ...]:
     """Re-join adjacent tokens whose ``・``-joined form is a ``no_split`` glossary family.
 
-    The parser splits on ``・``. Order is source order and duplicates are removed.
+    The parser splits on ``・``. Tokens are stripped of surrounding whitespace (``衣装 `` and
+    ``衣装`` are the same family) and empty ones dropped. Order is source order and duplicates
+    are removed.
     """
+    tokens = tuple(t for token in tokens if (t := token.strip()))
     merged: list[str] = []
     i = 0
     while i < len(tokens):
@@ -156,11 +159,15 @@ def map_families(
 def map_keywords(
     glossary: Glossary, keywords: tuple[Keyword, ...], number: str, unmapped: UnmappedCollector
 ) -> tuple[KeywordRecord, ...]:
-    """Keyword tokens to records; no code gives ``None`` (unmapped or uncurated, see above)."""
+    """Keyword tokens to records; no code gives ``None`` (unmapped or uncurated, see above).
+
+    The name is stripped of surrounding whitespace.
+    """
     records: list[KeywordRecord] = []
     for k in keywords:
-        entry = glossary.lookup("keywords", k.name)
+        name = k.name.strip()
+        entry = glossary.lookup("keywords", name)
         code = entry.code if entry is not None and entry.code else None
-        _report_miss(unmapped, "keywords", k.name, number, entry)
-        records.append(KeywordRecord(k.bracket, k.name, code, k.parameter))
+        _report_miss(unmapped, "keywords", name, number, entry)
+        records.append(KeywordRecord(k.bracket, name, code, k.parameter))
     return tuple(records)
