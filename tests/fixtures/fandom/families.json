@@ -1,0 +1,103 @@
+{
+ "batchcomplete": "",
+ "query": {
+  "pages": {
+   "16292": {
+    "ns": 0,
+    "pageid": 16292,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''Machine Beast''' (''機獣; kijuu'') is a family premiered in [[BS01]]. Almost all Machine Beast cards are White, and as the name suggests, are mechanical animals. Since S",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "Machine Beast"
+   },
+   "65315": {
+    "ns": 0,
+    "pageid": 65315,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''Armor''' (''アーマー体; Āmā-tai'') is a family in the Battle Spirits trading card game. [[File:Capture.PNG|thumb]]",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "Armor (Family)"
+   },
+   "68188": {
+    "ns": 0,
+    "pageid": 68188,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''Baby''' (幼年期；''Yōnenki'') is a family premiered in [[CB07]], currently only possessed by [[Culumon]].",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "Baby"
+   },
+   "73163": {
+    "ns": 0,
+    "pageid": 73163,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''Bike''' (バイク；''baiku'') is a family introduced in [[CB15]], and can exist in all colors.  ",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "Bike"
+   },
+   "74042": {
+    "ns": 0,
+    "pageid": 74042,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''A-LAWS''' (アロウズ) is a family premiered in [[CB16]], exclusive to Blue Spirits. They also have [[Bushido]] as their signature keyword, which in lore is their ideology. ",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "A-LAWS"
+   },
+   "95282": {
+    "ns": 0,
+    "pageid": 95282,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''Abyssen''' (深淵；''shin-en'') is a family premiered in [[26RSD10]]. Cards in the family are primarily [[Green]]. ",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "Abyssen"
+   }
+  }
+ }
+}
