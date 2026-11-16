@@ -1,6 +1,6 @@
 # Source dossier: Battle Spirits fandom wiki
 
-The English-language community wiki at `battle-spirits.fandom.com`. **Verdict: dropped for v1** (Gate A decision of epic [#9](https://github.com/AleFire99/BS_Database/issues/9)). This dossier records the access evidence so the decision can be revisited. Survey task: [#52](https://github.com/AleFire99/BS_Database/issues/52). All facts below were observed on **2026-11-14** with a generic user agent (`Mozilla/5.0 (compatible; bs-database-research)`), spaced at least 4 s apart, and **without any Cloudflare bypass**. Access can change, so re-check before relying on any row.
+The English-language community wiki at `battle-spirits.fandom.com`. **Verdict: dropped for v1** (Gate A decision of epic [#9](https://github.com/AleFire99/BS_Database/issues/9)), with one narrow exception: the `api.php` is used for glossary **names** only, see section 6 and [ADR 0009](../adr/0009-fandom-api-glossary-names.md) (Proposed). This dossier records the access evidence so the decision can be revisited. Survey task: [#52](https://github.com/AleFire99/BS_Database/issues/52). All facts below were observed on **2026-11-14** with a generic user agent (`Mozilla/5.0 (compatible; bs-database-research)`), spaced at least 4 s apart, and **without any Cloudflare bypass**. Access can change, so re-check before relying on any row.
 
 ## 1. Access evidence (2026-11-14)
 
@@ -12,7 +12,7 @@ The English-language community wiki at `battle-spirits.fandom.com`. **Verdict: d
 | `api.php?action=query&meta=siteinfo&format=json` | HTTP 200, JSON | MediaWiki 1.43.10 |
 | `api.php?action=query&meta=siteinfo&siprop=rightsinfo&format=json` | HTTP 200, JSON | Licence, see section 3 |
 
-The `api.php` answer is recorded as an **observation only**. It was not explored beyond `siteinfo`, and it is **not pursued** for v1.
+The `api.php` answer is recorded as an **observation only**. It was not explored beyond `siteinfo`, and it was **not pursued** at that time (see section 6 for the names-only use).
 
 ## 2. What the wiki offers
 
@@ -42,3 +42,26 @@ Wiki **text** is therefore CC-BY-SA (attribution and share-alike would apply to 
 
 - **Dropped for v1.** No scraping, no bypass of the Cloudflare challenge, API not pursued.
 - Revisit only if a real need for English names appears and access is available through a permitted route; the CC-BY-SA text licence would then have to be honoured.
+
+## 6. Names through the API (ADR 0009, #104)
+
+[ADR 0009](../adr/0009-fandom-api-glossary-names.md) (status Proposed) allows reading English family, keyword and rarity **names** through `api.php`, for the glossary review only. It does not change the verdict for cards, pages or images.
+
+Probe on **2026-11-16** (generic client, no bypass):
+
+| Request | Result |
+| --- | --- |
+| `api.php?action=query&...` | HTTP 200, JSON |
+| `list=categorymembers` `Category:Family` | 357 pages |
+| `list=categorymembers` `Category:Keywords` | 305 pages |
+| `prop=revisions` of the `Card Rarity` page | wikitext with one section per rarity |
+
+Rules (see the ADR):
+
+- Only `https://battle-spirits.fandom.com/api.php` with `action=query` is requested, serially, paced by `BSDB_REQUEST_DELAY`, about 20 requests. `robots.txt` is behind the challenge, so a fixed allow-list replaces it. A 403 or challenge page stops the run (exit 3).
+- `bsdb glossary fandom` writes `data/review/fandom_names.json`; raw answers are cached under the cache directory (git-ignored) and never redistributed. `bsdb glossary review --fandom <file>` then ranks the fandom name above legacy and machine names. Normalize never reads fandom.
+- The parser reads only the opening sentence of a page, `'''EN''' (JP; romaji)`. Pages that do not match (for example `AFO`) are listed as unmatched, not guessed.
+- Only short names are taken. A glossary row that came from fandom has `notes` = `fandom: <page title>`.
+- batspi Japanese stays authoritative; fandom Japanese is only a matching key (NFKC, whitespace ignored).
+
+**Attribution.** Names derived from the Battle Spirits fandom wiki ([battle-spirits.fandom.com](https://battle-spirits.fandom.com)) are used under CC-BY-SA 3.0; thanks to its contributors. No fandom-derived row is committed to `data/glossary/` before ADR 0009 is accepted.
