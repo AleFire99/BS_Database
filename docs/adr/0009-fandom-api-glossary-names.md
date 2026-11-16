@@ -1,6 +1,6 @@
 # 0009. Fandom api as a glossary name source
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-16
 
 ## Context

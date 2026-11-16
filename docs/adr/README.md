@@ -12,4 +12,4 @@ One ADR per decision, using the [template](0000-template.md). Numbers are sequen
 | [0006](0006-scraping-and-redistribution-policy.md) | Scraping and redistribution policy | Accepted | 2026-11-14 |
 | [0007](0007-source-of-truth.md) | Source of truth per field and conflict resolution | Accepted | 2026-11-14 |
 | [0008](0008-normalization-and-translation.md) | Normalization and translation design | Proposed | 2026-11-15 |
-| [0009](0009-fandom-api-glossary-names.md) | Fandom api as a glossary name source | Proposed | 2026-11-16 |
+| [0009](0009-fandom-api-glossary-names.md) | Fandom api as a glossary name source | Accepted | 2026-11-16 |

@@ -1,6 +1,6 @@
 # Source dossier: Battle Spirits fandom wiki
 
-The English-language community wiki at `battle-spirits.fandom.com`. **Verdict: dropped for v1** (Gate A decision of epic [#9](https://github.com/AleFire99/BS_Database/issues/9)), with one narrow exception: the `api.php` is used for glossary **names** only, see section 6 and [ADR 0009](../adr/0009-fandom-api-glossary-names.md) (Proposed). This dossier records the access evidence so the decision can be revisited. Survey task: [#52](https://github.com/AleFire99/BS_Database/issues/52). All facts below were observed on **2026-11-14** with a generic user agent (`Mozilla/5.0 (compatible; bs-database-research)`), spaced at least 4 s apart, and **without any Cloudflare bypass**. Access can change, so re-check before relying on any row.
+The English-language community wiki at `battle-spirits.fandom.com`. **Verdict: dropped for v1** (Gate A decision of epic [#9](https://github.com/AleFire99/BS_Database/issues/9)), with one narrow exception: the `api.php` is used for glossary **names** only, see section 6 and [ADR 0009](../adr/0009-fandom-api-glossary-names.md) (Accepted). This dossier records the access evidence so the decision can be revisited. Survey task: [#52](https://github.com/AleFire99/BS_Database/issues/52). All facts below were observed on **2026-11-14** with a generic user agent (`Mozilla/5.0 (compatible; bs-database-research)`), spaced at least 4 s apart, and **without any Cloudflare bypass**. Access can change, so re-check before relying on any row.
 
 ## 1. Access evidence (2026-11-14)
 
@@ -45,7 +45,7 @@ Wiki **text** is therefore CC-BY-SA (attribution and share-alike would apply to 
 
 ## 6. Names through the API (ADR 0009, #104)
 
-[ADR 0009](../adr/0009-fandom-api-glossary-names.md) (status Proposed) allows reading English family, keyword and rarity **names** through `api.php`, for the glossary review only. It does not change the verdict for cards, pages or images.
+[ADR 0009](../adr/0009-fandom-api-glossary-names.md) (Accepted) allows reading English family, keyword and rarity **names** through `api.php`, for the glossary review only. It does not change the verdict for cards, pages or images.
 
 Probe on **2026-11-16** (generic client, no bypass):
 
