@@ -51,6 +51,36 @@ def test_parse_name_variants(
     assert name(group, title) == FandomName(jp=jp, en=en, romaji=romaji, title=title)
 
 
+@pytest.mark.parametrize(
+    ("text", "jp", "en", "romaji"),
+    [
+        # bold JP inside the parentheses (Mirror Monster)
+        (
+            "'''Mirror Monster''' ('''ミラーモンスター'''; mila-monsutar) is a family",
+            "ミラーモンスター",
+            "Mirror Monster",
+            "mila-monsutar",
+        ),
+        # "short for": the bold right before the parentheses is the name (NZ)
+        (
+            "'''NZ''', short for '''Neo Zeon''' (ネオ・ジオン), is a family",
+            "ネオ・ジオン",
+            "Neo Zeon",
+            None,
+        ),
+        # italic opening glued to the closing bold (Creation Deity)
+        (
+            "'''Creation Deity '''''(創造神; sousoushin)'' is a family",
+            "創造神",
+            "Creation Deity",
+            "sousoushin",
+        ),
+    ],
+)
+def test_parse_name_strips_wiki_markup(text: str, jp: str, en: str, romaji: str | None) -> None:
+    assert parse_name("T", text) == FandomName(jp=jp, en=en, romaji=romaji, title="T")
+
+
 def test_page_without_a_parenthesised_name_is_unmatched() -> None:
     assert name(KEYWORDS, "AFO") is None
 

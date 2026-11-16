@@ -9,7 +9,10 @@ import re
 import unicodedata
 from dataclasses import dataclass
 
-_BOLD_PAREN = re.compile(r"'''(?P<en>[^\n]+?)'''[^\S\n]*\((?P<body>[^)\n]*)\)")
+# ``en`` never spans another bold marker (``'''NZ''', short for '''Neo Zeon''' (…)`` gives
+# ``Neo Zeon``), and an italic opening right after the bold (``'''X '''''(…)''``) is allowed.
+_BOLD_PAREN = re.compile(r"'''(?P<en>(?:(?!''')[^\n])+?)'''(?:'')?[^\S\n]*\((?P<body>[^)\n]*)\)")
+_QUOTES = re.compile(r"'{2,}")
 _RUBY = re.compile(r"\{\{\s*ruby\s*\|\s*([^|}]*?)\s*(?:\|[^}]*)?\}\}", re.IGNORECASE)
 _SEPARATOR = re.compile(r"[;；,，]")
 _HEADING = re.compile(r"^=+[ \t]*(?P<title>.+?)[ \t]*=+[ \t]*$", re.MULTILINE)
@@ -42,7 +45,7 @@ def _has_japanese(text: str) -> bool:
 
 def _split_paren(body: str) -> tuple[str, str | None] | None:
     """``(jp, romaji)`` from the text inside the parentheses, or ``None`` without Japanese."""
-    body = _RUBY.sub(r"\1", body).replace("''", "")
+    body = _QUOTES.sub("", _RUBY.sub(r"\1", body))
     parts = _SEPARATOR.split(body, maxsplit=1)
     first, rest = parts[0], (parts[1] if len(parts) > 1 else "")
     jp = " ".join(first.split())
