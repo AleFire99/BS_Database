@@ -418,7 +418,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?X%E3%83%AC%E3%82%A2%E3%83%91%E3%83%83%E3%82%AF%20%E3%80%90%E9%BE%8D%E7%9A%87%E3%82%B8%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AA%E3%83%BC%E3%83%89%E3%80%91",
         "product_code": "BSC01",
-        "product_type_code": null,
+        "product_type_code": "booster",
         "rarity_jp": "EX",
         "rarity_code": "EX",
         "variant_jp": null,
