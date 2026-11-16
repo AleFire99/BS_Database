@@ -51,12 +51,29 @@ The output path is `normalized_dir/<source>/<sha>.json`, the same stem as the pa
 - **Keywords.** No row gives `code = None` and an unmapped warning; a row with an empty `code` is uncurated.
 - **Rarity.** `None` stays `None`; a value missing from the glossary is a closed error.
 - **Variant.** The printing note is looked up in `variants`; a miss means `normal` and is never unmapped (ADR 0008, D5).
-- **Product type.** A `product_types` title marker contained in the product name gives the code (ADR 0008, D6); no marker gives `None`. A product-code prefix rule is curated in [#96](https://github.com/AleFire99/BS_Database/issues/96).
+- **Product type.** A `product_types` title marker contained in the product name gives the code (ADR 0008, D6). Without a marker, the **longest** prefix of the printing's `product_code` listed in `product_code_prefixes.csv` gives the code (ADR 0008, D9): `26RBS`, `BS`, `BSC` are `booster`, `SD` is `starter`, `26RCB`, `CB`, `CBX` are `collab`, `PB`, `PC` are `other`. So `BSC` wins over `BS` and `26RBS` over `BS`. No marker and no matching prefix (or no product code) gives `None`.
 - **English texts.** `name_en` is set only when the batspi `<h3>` printed one (source `batspi`, status `reviewed`). Card names, product names and families that have no English name yet are translated (see below). Effect, flavour and condition `_en` stay `None` with status `pending`.
 
 ## Translation
 
 Lookup order: a glossary family `en` stays (`manual`, `reviewed`); a name printed by batspi stays (`batspi`, `reviewed`); everything else goes to the cache, then the engine. Requests are ordered families, then card names, then product names, each sorted by Japanese text, so short family names are never starved by `--max-chars`. A `machine` result sets `en`, `en_source = machine` and `en_status = machine`. A `failed` or `pending` result leaves `en = None`, no source, and that status. With the `NullTranslator` the output has no machine text (equal to the goldens).
+
+## Curation and review
+
+The glossaries were curated in [#96](https://github.com/AleFire99/BS_Database/issues/96) from the full scrape. `bsdb glossary review --legacy-db <v0.1.0 battle_spirits.db> [--out DIR]` reads `data/normalized/` and the glossary and proposes rows for the owner. It writes `review.md` plus `families.csv`, `keywords.csv` and `family_legacy_en.csv` into `data/review/` (default) and changes nothing under `data/glossary/`. A family's English name is proposed from, in order: the glossary row, a strong legacy link through an alias, a strong legacy link, the machine translation. A legacy link is *strong* with at least 2 votes and at least 80% of the votes of that Japanese family; a weak link only lists its candidates. Keywords get no proposed English name. The owner copies the CSVs and fills the rest by hand, see [CONTRIBUTING](../../CONTRIBUTING.md#curating-with-the-review-command). Issue [#104](https://github.com/AleFire99/BS_Database/issues/104) adds a fandom wiki source to the review (ADR 0009).
+
+## Known gaps
+
+Result of the full scrape: 12,833 card pages normalized, 0 closed unmapped terms. Left open on purpose:
+
+| Term | Kind | Why |
+| --- | --- | --- |
+| `歌鳥･漂精` | family | Two families joined by `･` (not `・`); needs a split rule |
+| `Sバースト:自分のライフ減少後` | keyword | Not curated |
+| `《バースト封印》` | keyword | Not curated |
+| `呪滅劇` | keyword | Probably a batspi typo of `呪滅撃` |
+
+Every printing **with** a product code resolves to a product type. 4,943 printings in 646 products **without** a product code (campaign cards, shop battles, events, premium boxes) still have `product_type_code = null`; the prefix rule does not cover them, and a follow-up is needed.
 
 ## Normalized document
 
@@ -105,13 +122,13 @@ Exit 1 when a page failed (a closed unmapped term or an unreadable file), the gl
 Term = {kind, jp, pages, samples: [up to 5 sorted URLs]}
 ```
 
-The Markdown report shows only the first sample of each term; the JSON keeps up to 5. Terms and translation counts describe the parsed tree as pass 1 read it; the written and failed page counts are final (a page that changes or breaks between the two passes is counted as failed).
+`chars_to_translate` is the number of Japanese characters in the distinct texts of that category that still need the engine (no glossary or batspi name), which sizes a run and the `--max-chars` budget. The Markdown report shows only the first sample of each term; the JSON keeps up to 5. Terms and translation counts describe the parsed tree as pass 1 read it; the written and failed page counts are final (a page that changes or breaks between the two passes is counted as failed).
 
 ## Tests
 
 - Unit tests per rule on a hand-built glossary (`tests/test_normalize_rules.py`).
 - Goldens in `tests/goldens/normalized/` for every card fixture: HTML, parse, parsed store, `normalize_tree`. They are regenerated only by `uv run python tests/tools/regen_normalized_goldens.py`, never by a pytest flag.
 - Idempotency (byte-equal reruns) and a hash check that `parsed/` is untouched.
-- The goldens list the 15 uncurated families under `uncurated` until [#96](https://github.com/AleFire99/BS_Database/issues/96) curates them and regenerates the goldens.
+- The goldens are regenerated after the #96 curation, so they carry the curated codes and English family names.
 - Translation helpers, the report and a fake engine over the fixtures: the second run makes zero engine calls and its pages and `_report.json` are byte-equal.
 - `tests/test_normalize_strict.py` is the CI check: `bsdb normalize --strict` over every card fixture with the real glossary and no key must exit 0 with no unmapped terms. It runs in the normal pytest step.
