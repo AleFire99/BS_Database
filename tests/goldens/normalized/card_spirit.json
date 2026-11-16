@@ -53,17 +53,17 @@
           "families": [
             {
               "jp": "眷属",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kenzoku",
+              "en": "Devotee",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "武迅",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "bujin",
+              "en": "Martial",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -143,7 +143,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%92%B0%20%E7%AC%AC1%E7%AB%A0%EF%BC%9A%E5%BB%BB%E5%B8%B0%E5%86%8D%E9%86%92",
         "product_code": "BS72",
-        "product_type_code": null,
+        "product_type_code": "booster",
         "rarity_jp": "R",
         "rarity_code": "R",
         "variant_jp": "SECRETあり",
@@ -175,17 +175,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "武迅",
-        "number": "BS72-007"
-      },
-      {
-        "kind": "families",
-        "jp": "眷属",
-        "number": "BS72-007"
-      }
-    ]
+    "uncurated": []
   }
 }

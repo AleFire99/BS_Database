@@ -75,22 +75,28 @@ def variant_code(glossary: Glossary, note: str | None) -> tuple[str | None, str]
     return None, DEFAULT_VARIANT
 
 
-def product_type_code(glossary: Glossary, product_name: str) -> str | None:
-    """Product type from a title marker contained in the product name (ADR 0008, D6).
+def product_type_code(
+    glossary: Glossary, product_name: str, product_code: str | None = None
+) -> str | None:
+    """Product type: a title marker in the name wins, else the longest ``product_code`` prefix.
 
-    Products without a marker get ``None``: the prefix rule is curated in #96.
+    A collab starter such as ``SD54`` stays ``collab`` because its title carries the marker
+    (ADR 0008, D6). No marker and no matching prefix gives ``None``.
     """
     for entry in glossary.entries["product_types"]:
         if entry.jp and entry.jp in product_name:
             return entry.code
-    return None
+    return glossary.product_type_for_code(product_code)
 
 
 def merge_family_tokens(glossary: Glossary, tokens: tuple[str, ...]) -> tuple[str, ...]:
     """Re-join adjacent tokens whose ``・``-joined form is a ``no_split`` glossary family.
 
-    The parser splits on ``・``. Order is source order and duplicates are removed.
+    The parser splits on ``・``. Tokens are stripped of surrounding whitespace (``衣装 `` and
+    ``衣装`` are the same family) and empty ones dropped. Order is source order and duplicates
+    are removed.
     """
+    tokens = tuple(t for token in tokens if (t := token.strip()))
     merged: list[str] = []
     i = 0
     while i < len(tokens):
@@ -153,11 +159,15 @@ def map_families(
 def map_keywords(
     glossary: Glossary, keywords: tuple[Keyword, ...], number: str, unmapped: UnmappedCollector
 ) -> tuple[KeywordRecord, ...]:
-    """Keyword tokens to records; no code gives ``None`` (unmapped or uncurated, see above)."""
+    """Keyword tokens to records; no code gives ``None`` (unmapped or uncurated, see above).
+
+    The name is stripped of surrounding whitespace.
+    """
     records: list[KeywordRecord] = []
     for k in keywords:
-        entry = glossary.lookup("keywords", k.name)
+        name = k.name.strip()
+        entry = glossary.lookup("keywords", name)
         code = entry.code if entry is not None and entry.code else None
-        _report_miss(unmapped, "keywords", k.name, number, entry)
-        records.append(KeywordRecord(k.bracket, k.name, code, k.parameter))
+        _report_miss(unmapped, "keywords", name, number, entry)
+        records.append(KeywordRecord(k.bracket, name, code, k.parameter))
     return tuple(records)

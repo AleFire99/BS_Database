@@ -19,10 +19,17 @@ from bs_database.ingest.state import StateStore
 from bs_database.log import configure_logging
 from bs_database.normalize.pipeline import normalize_tree
 from bs_database.normalize.report import REPORT_MD, build_report, write_report
+from bs_database.review.render import REVIEW_MD, write_review
+from bs_database.review.run import run_review
+from bs_database.review.source import ReviewError
 from bs_database.settings import Settings
 from bs_database.translate import make_translator
 
 app = typer.Typer(no_args_is_help=True, help="bsdb: Battle Spirits card database tooling.")
+
+
+glossary_app = typer.Typer(no_args_is_help=True, help="Glossary curation tools.")
+app.add_typer(glossary_app, name="glossary")
 
 
 def _version_callback(value: bool) -> None:
@@ -121,6 +128,47 @@ def normalize(
         warnings = len(report["unmapped"]["warnings"])
         typer.echo(f"strict: {warnings} unmapped terms without a glossary row", err=True)
         raise typer.Exit(1)
+
+
+@glossary_app.command("review")
+def glossary_review(
+    ctx: typer.Context,
+    legacy_db: Annotated[
+        Path,
+        typer.Option("--legacy-db", help="The v0.1.0 battle_spirits.db snapshot (read-only)."),
+    ],
+    out: Annotated[
+        Path | None,
+        typer.Option("--out", help="Output directory (default: <data dir>/review)."),
+    ] = None,
+) -> None:
+    """Propose glossary rows from data/normalized and the legacy snapshot, for the owner.
+
+    Writes review.md (families, keywords, no_split candidates, product-code prefixes, slug
+    conflicts, legacy pairs) and ready-to-copy families.csv, keywords.csv and
+    family_legacy_en.csv. Nothing under data/glossary is changed. Copy families.csv and
+    family_legacy_en.csv together, and re-sort families.csv and keywords.csv by code after
+    filling codes by hand (the loader requires it).
+    """
+    settings = _settings(ctx)
+    try:
+        load_glossary(settings.glossary_dir)
+    except GlossaryError as exc:
+        typer.echo(f"error: invalid glossary in {settings.glossary_dir}:\n{exc}", err=True)
+        raise typer.Exit(1) from exc
+    try:
+        review = run_review(settings.normalized_dir, settings.glossary_dir, legacy_db)
+    except ReviewError as exc:
+        typer.echo(f"error: {exc}", err=True)
+        raise typer.Exit(1) from exc
+    target = out or settings.data_dir / "review"
+    write_review(target, review)
+    typer.echo(
+        f"Review: {len(review.families)} families, {len(review.keywords)} keywords, "
+        f"{len(review.no_split)} no_split candidates, {len(review.prefixes)} prefixes, "
+        f"{len(review.conflicts)} slug conflicts"
+    )
+    typer.echo(f"Written to {target / REVIEW_MD} and the CSV files next to it")
 
 
 @app.command()

@@ -15,7 +15,7 @@ from bs_database.glossary import CLOSED
 from bs_database.ingest.atomic import atomic_write
 from bs_database.normalize.pipeline import TreeResult
 
-REPORT_SCHEMA_VERSION = "1.0.0"
+REPORT_SCHEMA_VERSION = "1.1.0"
 REPORT_JSON = "_report.json"
 REPORT_MD = "_report.md"
 SAMPLE_URLS = 5
@@ -40,6 +40,7 @@ def _coverage(result: TreeResult, category: str) -> dict[str, int]:
     return {
         "distinct": len(distinct),
         "from_glossary_or_batspi": len(distinct) - len(requested),
+        "chars_to_translate": sum(len(t) for t in requested),
         "machine": statuses.count("machine"),
         "pending": statuses.count("pending"),
         "failed": statuses.count("failed"),
@@ -101,14 +102,15 @@ def render_markdown(report: Mapping[str, Any]) -> str:
     lines += [
         "## Translation",
         "",
-        "| Category | Distinct | Glossary or batspi | Machine | Pending | Failed |",
-        "| --- | ---: | ---: | ---: | ---: | ---: |",
+        "| Category | Distinct | Glossary or batspi | To translate (chars) | Machine | Pending "
+        "| Failed |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for category in CATEGORIES:
         c = report["translation"][category]
         lines.append(
             f"| {category} | {c['distinct']} | {c['from_glossary_or_batspi']} | "
-            f"{c['machine']} | {c['pending']} | {c['failed']} |"
+            f"{c['chars_to_translate']} | {c['machine']} | {c['pending']} | {c['failed']} |"
         )
     return "\n".join([*lines, ""])
 

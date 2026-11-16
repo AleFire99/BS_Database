@@ -14,7 +14,7 @@ from pathlib import Path
 
 import pytest
 from fakes import FakeEngine
-from golden_support import GLOSSARY_DIR, write_parsed_fixture
+from golden_support import GLOSSARY_DIR, blank_family_curation, write_parsed_fixture
 from typer.testing import CliRunner
 
 from bs_database import __version__
@@ -219,6 +219,7 @@ def test_normalize_strict_passes_on_the_real_glossary(glossary_data: Path) -> No
 
 
 def test_normalize_strict_fails_on_an_unmapped_family_but_writes_pages(glossary_data: Path) -> None:
+    blank_family_curation(glossary_data / "glossary")
     _parsed_data(glossary_data, "card_flip.html")
     assert runner.invoke(app, ["normalize"]).exit_code == 0
     report = json.loads((glossary_data / "normalized" / "_report.json").read_text("utf-8"))

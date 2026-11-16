@@ -42,17 +42,17 @@
           "families": [
             {
               "jp": "創界神",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "guranwoka_lit_soukaishin_world_creator_deity",
+              "en": "Grandwalker",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "オリン",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "orin",
+              "en": "Olym",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -195,7 +195,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?%E7%A5%9E%E7%85%8C%E8%87%A8%E7%B7%A8%20%E7%AC%AC1%E7%AB%A0%EF%BC%9A%E5%89%B5%E7%95%8C%E7%A5%9E%E3%81%AE%E9%BC%93%E5%8B%95",
         "product_code": "BS44",
-        "product_type_code": null,
+        "product_type_code": "booster",
         "rarity_jp": "X",
         "rarity_code": "X",
         "variant_jp": null,
@@ -233,7 +233,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?%E3%83%A1%E3%82%AC%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E3%83%80%E3%83%96%E3%83%AB%E3%83%8E%E3%83%B4%E3%82%A1%E3%83%87%E3%83%83%E3%82%ADX%E3%80%91",
         "product_code": "SD51",
-        "product_type_code": null,
+        "product_type_code": "starter",
         "rarity_jp": "X",
         "rarity_code": "X",
         "variant_jp": null,
@@ -252,7 +252,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?%E3%83%A1%E3%82%AC%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E5%A4%AA%E9%99%BD%E7%A5%9E%E3%81%AE%E9%A1%95%E7%8F%BE%E3%80%91",
         "product_code": "SD68",
-        "product_type_code": null,
+        "product_type_code": "starter",
         "rarity_jp": "X",
         "rarity_code": "X",
         "variant_jp": null,
@@ -310,17 +310,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "オリン",
-        "number": "BS44-X07"
-      },
-      {
-        "kind": "families",
-        "jp": "創界神",
-        "number": "BS44-X07"
-      }
-    ]
+    "uncurated": []
   }
 }

@@ -5,7 +5,12 @@ from pathlib import Path
 from typing import Any
 
 from fakes import FakeEngine
-from golden_support import card_fixture_names, real_glossary, write_parsed_fixture
+from golden_support import (
+    card_fixture_names,
+    real_glossary,
+    uncurated_glossary,
+    write_parsed_fixture,
+)
 
 from bs_database.normalize.pipeline import TreeResult, normalize_tree
 from bs_database.normalize.report import (
@@ -22,7 +27,7 @@ from bs_database.translate.cached import CachedTranslator
 
 
 def _fixture_run(
-    tmp_path: Path, *, engine: FakeEngine | None = None
+    tmp_path: Path, *, engine: FakeEngine | None = None, uncurated: bool = False
 ) -> tuple[TreeResult, dict[str, Any]]:
     parsed = tmp_path / "parsed"
     for name in card_fixture_names():
@@ -32,17 +37,18 @@ def _fixture_run(
         if engine is not None
         else NullTranslator()
     )
-    result = normalize_tree(parsed, tmp_path / "normalized", real_glossary(), translator)
+    glossary = uncurated_glossary() if uncurated else real_glossary()
+    result = normalize_tree(parsed, tmp_path / "normalized", glossary, translator)
     return result, build_report(result, translator.name, parsed)
 
 
 def test_fixture_report_has_uncurated_families_and_nothing_unmapped(tmp_path: Path) -> None:
-    result, report = _fixture_run(tmp_path)
+    result, report = _fixture_run(tmp_path, uncurated=True)
     assert report["engine"] == "null"
     assert report["pages"] == {"written": result.written, "failed": []}
     assert report["unmapped"] == {"closed": [], "warnings": []}
     uncurated = report["uncurated"]
-    assert len(uncurated) == 15
+    assert len(uncurated) == 16
     assert {t["kind"] for t in uncurated} == {"families"}
     assert uncurated == sorted(uncurated, key=lambda t: (t["kind"], t["jp"]))
     for term in uncurated:
@@ -63,6 +69,17 @@ def test_translation_counts_with_null_and_fake_engine(tmp_path: Path) -> None:
         assert c["pending"] == 0
         assert c["machine"] == c["distinct"] - c["from_glossary_or_batspi"]
     assert online["translation"]["names"]["machine"] > 0
+
+
+def test_chars_to_translate_counts_requested_texts(tmp_path: Path) -> None:
+    result, report = _fixture_run(tmp_path)
+    for category in ("families", "names", "products"):
+        requested = getattr(result.requests, category)
+        assert report["translation"][category]["chars_to_translate"] == sum(
+            len(t) for t in requested
+        )
+    assert report["translation"]["names"]["chars_to_translate"] > 0
+    assert "| To translate (chars) |" in render_markdown(report)
 
 
 def test_unmapped_and_failed_pages_are_reported(tmp_path: Path) -> None:
@@ -93,18 +110,18 @@ def test_report_files_are_deterministic_and_outside_the_page_glob(tmp_path: Path
 
 
 def test_markdown_lists_sections_and_empty_state(tmp_path: Path) -> None:
-    _, report = _fixture_run(tmp_path)
+    _, report = _fixture_run(tmp_path, uncurated=True)
     text = render_markdown(report)
     assert text.startswith("# Normalize report\n")
     assert "## Unmapped, closed (errors) (0)\n\nNone." in text
-    assert "## Uncurated (glossary row without a code) (15)" in text
+    assert "## Uncurated (glossary row without a code) (16)" in text
     assert "| names | " in text
     assert "## Failed pages" not in text
 
 
 def test_markdown_lists_failed_pages() -> None:
     report = {
-        "schema_version": "1.0.0",
+        "schema_version": "1.1.0",
         "engine": "null",
         "pages": {"written": 0, "failed": ["batspi/x.json"]},
         "unmapped": {"closed": [], "warnings": []},
@@ -113,6 +130,7 @@ def test_markdown_lists_failed_pages() -> None:
             c: {
                 "distinct": 0,
                 "from_glossary_or_batspi": 0,
+                "chars_to_translate": 0,
                 "machine": 0,
                 "pending": 0,
                 "failed": 0,
@@ -145,7 +163,7 @@ def test_second_run_report_is_byte_equal_and_makes_no_engine_calls(tmp_path: Pat
 
 def test_markdown_escapes_table_cells() -> None:
     report = {
-        "schema_version": "1.0.0",
+        "schema_version": "1.1.0",
         "engine": "null",
         "pages": {"written": 1, "failed": []},
         "unmapped": {
@@ -159,6 +177,7 @@ def test_markdown_escapes_table_cells() -> None:
             c: {
                 "distinct": 0,
                 "from_glossary_or_batspi": 0,
+                "chars_to_translate": 0,
                 "machine": 0,
                 "pending": 0,
                 "failed": 0,

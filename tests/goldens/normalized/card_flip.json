@@ -42,10 +42,10 @@
           "families": [
             {
               "jp": "起幻",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -161,17 +161,17 @@
           "families": [
             {
               "jp": "起幻",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "古竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "koryuu",
+              "en": "Ancient Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -300,17 +300,17 @@
           "families": [
             {
               "jp": "起幻",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "眷属",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kenzoku",
+              "en": "Devotee",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -426,24 +426,24 @@
           "families": [
             {
               "jp": "起幻",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "眷属",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "kenzoku",
+              "en": "Devotee",
+              "en_source": "manual",
+              "en_status": "reviewed"
             },
             {
               "jp": "古竜",
-              "code": null,
-              "en": null,
-              "en_source": null,
-              "en_status": "pending"
+              "code": "koryuu",
+              "en": "Ancient Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
             }
           ],
           "levels": [
@@ -659,7 +659,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?%E8%BB%A2%E9%86%92%E7%B7%A8%20%E7%AC%AC1%E7%AB%A0%EF%BC%9A%E8%BC%AA%E5%BB%BB%E8%BB%A2%E7%94%9F",
         "product_code": "BS52",
-        "product_type_code": null,
+        "product_type_code": "booster",
         "rarity_jp": "転醒X",
         "rarity_code": "TX",
         "variant_jp": null,
@@ -678,7 +678,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?%E8%BB%A2%E9%86%92%E7%B7%A8%20%E7%AC%AC1%E7%AB%A0%EF%BC%9A%E8%BC%AA%E5%BB%BB%E8%BB%A2%E7%94%9F",
         "product_code": "BS52",
-        "product_type_code": null,
+        "product_type_code": "booster",
         "rarity_jp": "転醒X",
         "rarity_code": "TX",
         "variant_jp": null,
@@ -697,7 +697,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?X%E3%83%AC%E3%82%A2%E3%83%91%E3%83%83%E3%82%AF2021",
         "product_code": "BSC38",
-        "product_type_code": null,
+        "product_type_code": "booster",
         "rarity_jp": "転醒X",
         "rarity_code": "TX",
         "variant_jp": "パラレルあり",
@@ -716,7 +716,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?X%E3%83%AC%E3%82%A2%E3%83%91%E3%83%83%E3%82%AF2021",
         "product_code": "BSC38",
-        "product_type_code": null,
+        "product_type_code": "booster",
         "rarity_jp": "転醒X",
         "rarity_code": "TX",
         "variant_jp": "パラレルあり",
@@ -735,7 +735,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?%E3%83%A1%E3%82%AC%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E5%85%89%E4%B8%BB%E3%81%AE%E5%85%B1%E9%B3%B4%E3%80%91",
         "product_code": "SD63",
-        "product_type_code": null,
+        "product_type_code": "starter",
         "rarity_jp": "転醒X",
         "rarity_code": "TX",
         "variant_jp": null,
@@ -754,7 +754,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?%E3%83%A1%E3%82%AC%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E5%85%89%E4%B8%BB%E3%81%AE%E5%85%B1%E9%B3%B4%E3%80%91",
         "product_code": "SD63",
-        "product_type_code": null,
+        "product_type_code": "starter",
         "rarity_jp": "転醒X",
         "rarity_code": "TX",
         "variant_jp": null,
@@ -773,7 +773,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%92%B0%20%E7%AC%AC2%E7%AB%A0%EF%BC%9A%E5%A4%A9%E5%9C%B0%E8%BB%A2%E4%B8%96",
         "product_code": "BS73",
-        "product_type_code": null,
+        "product_type_code": "booster",
         "rarity_jp": "CP",
         "rarity_code": "CP",
         "variant_jp": "SECRETあり",
@@ -792,7 +792,7 @@
         "product_en_status": "pending",
         "product_href": "https://batspi.com/index.php?%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%92%B0%20%E7%AC%AC2%E7%AB%A0%EF%BC%9A%E5%A4%A9%E5%9C%B0%E8%BB%A2%E4%B8%96",
         "product_code": "BS73",
-        "product_type_code": null,
+        "product_type_code": "booster",
         "rarity_jp": "CP",
         "rarity_code": "CP",
         "variant_jp": "SECRETあり",
@@ -927,47 +927,6 @@
       }
     ],
     "unmapped": [],
-    "uncurated": [
-      {
-        "kind": "families",
-        "jp": "古竜",
-        "number": "BS52-TX01(B)"
-      },
-      {
-        "kind": "families",
-        "jp": "古竜",
-        "number": "BS73-TCP01(B)"
-      },
-      {
-        "kind": "families",
-        "jp": "眷属",
-        "number": "BS73-TCP01(A)"
-      },
-      {
-        "kind": "families",
-        "jp": "眷属",
-        "number": "BS73-TCP01(B)"
-      },
-      {
-        "kind": "families",
-        "jp": "起幻",
-        "number": "BS52-TX01(A)"
-      },
-      {
-        "kind": "families",
-        "jp": "起幻",
-        "number": "BS52-TX01(B)"
-      },
-      {
-        "kind": "families",
-        "jp": "起幻",
-        "number": "BS73-TCP01(A)"
-      },
-      {
-        "kind": "families",
-        "jp": "起幻",
-        "number": "BS73-TCP01(B)"
-      }
-    ]
+    "uncurated": []
   }
 }

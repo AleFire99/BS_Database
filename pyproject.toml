@@ -62,6 +62,7 @@ include = [
     "src/bs_database/ingest/*",
     "src/bs_database/parsers/*",
     "src/bs_database/glossary.py",
+    "src/bs_database/review/*",
     "src/bs_database/normalize/*",
     "src/bs_database/translate/*",
 ]

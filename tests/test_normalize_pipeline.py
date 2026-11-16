@@ -7,7 +7,13 @@ from pathlib import Path
 
 import pytest
 from fakes import FakeEngine
-from golden_support import card_fixture_names, parse_fixture, real_glossary, write_parsed_fixture
+from golden_support import (
+    card_fixture_names,
+    parse_fixture,
+    real_glossary,
+    uncurated_glossary,
+    write_parsed_fixture,
+)
 
 from bs_database.normalize.pipeline import normalize_page, normalize_tree
 from bs_database.translate import NullTranslator
@@ -60,7 +66,7 @@ def test_pending_when_no_batspi_name() -> None:
 
 
 def test_uncurated_families_are_listed_apart_and_sorted() -> None:
-    result = normalize_page(parse_fixture("card_flip.html"), real_glossary())
+    result = normalize_page(parse_fixture("card_flip.html"), uncurated_glossary())
     assert result.unmapped == ()
     assert result.uncurated
     assert all(t.kind in ("families", "keywords") for t in result.uncurated)
@@ -278,7 +284,7 @@ def test_same_text_as_family_and_name_is_translated_once_for_both(tmp_path: Path
     entry["name_en"] = None
     path.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
     engine = FakeEngine()
-    normalize_tree(parsed, out, real_glossary(), CachedTranslator(engine, _cache(tmp_path)))
+    normalize_tree(parsed, out, uncurated_glossary(), CachedTranslator(engine, _cache(tmp_path)))
     assert engine.calls[0].count(family) == 1
     page = json.loads(next(out.rglob("*.json")).read_text(encoding="utf-8"))["page"]
     first = page["entries"][0]
@@ -293,7 +299,7 @@ def test_engine_receives_families_then_names_then_products_sorted(tmp_path: Path
         write_parsed_fixture(parsed, name)
     engine = FakeEngine()
     result = normalize_tree(
-        parsed, tmp_path / "out", real_glossary(), CachedTranslator(engine, _cache(tmp_path))
+        parsed, tmp_path / "out", uncurated_glossary(), CachedTranslator(engine, _cache(tmp_path))
     )
     sent = [t for call in engine.calls for t in call]  # chunks of 50, in order
     r = result.requests

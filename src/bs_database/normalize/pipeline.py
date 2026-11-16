@@ -127,7 +127,7 @@ def _printing(p: Printing, glossary: Glossary, u: UnmappedCollector) -> Printing
         product_en_status=STATUS_PENDING,
         product_href=p.product_href,
         product_code=p.product_code,
-        product_type_code=rules.product_type_code(glossary, p.product_name_jp),
+        product_type_code=rules.product_type_code(glossary, p.product_name_jp, p.product_code),
         rarity_jp=p.rarity,
         rarity_code=rules.rarity_code(glossary, p.rarity, p.number, u),
         variant_jp=variant_jp,

@@ -55,7 +55,7 @@ On batspi.com the scraped line format is `<cores>LvN BP`, e.g. `<3>Lv2 3000`.
 
 ## Families (系統)
 
-A family is a creature-type tag on a card (e.g. "Reptile Beast", 爬獣). A card can have several. The Japanese family name is the identity. batspi separates the families of a card with `・`; a compound name that contains `・` is kept whole when `data/glossary/families.csv` marks it `no_split`. The English name comes from `families.csv`, curated by the owner. `data/glossary/family_legacy_en.csv` keeps the 41 English pairs of the legacy machine-translation fixes (e.g. `Rebirth = Reptile Beast`), which the full-data audit ([#96](https://github.com/AleFire99/BS_Database/issues/96)) links to Japanese names. See [ADR 0008](../adr/0008-normalization-and-translation.md).
+A family is a creature-type tag on a card (e.g. "Reptile Beast", 爬獣). A card can have several. The Japanese family name is the identity. batspi separates the families of a card with `・`; a compound name that contains `・` is kept whole when `data/glossary/families.csv` marks it `no_split`. The English name comes from `families.csv`, curated by the owner in [#96](https://github.com/AleFire99/BS_Database/issues/96) (292 families, each with a romaji code and an English name; rows taken from the fandom wiki carry `notes` = `fandom: <title>`). `data/glossary/family_legacy_en.csv` keeps the 41 English pairs of the legacy machine-translation fixes (e.g. `Rebirth = Reptile Beast`), linked to Japanese names by the review. The keywords (310 rows) and rarities (28 rows) were curated in the same task. How to curate: [CONTRIBUTING](../../CONTRIBUTING.md#curating-with-the-review-command). See [ADR 0008](../adr/0008-normalization-and-translation.md).
 
 ## Card IDs
 

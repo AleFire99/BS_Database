@@ -10,7 +10,7 @@ lists all violations as ``<file>:<line>: <rule>``.
 
 import csv
 import io
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
 from types import MappingProxyType
@@ -27,12 +27,14 @@ KINDS = (
 )
 CLOSED = frozenset({"colors", "symbols", "card_types", "rarities", "variants", "product_types"})
 LEGACY_FILE = "family_legacy_en"
+PREFIX_FILE = "product_code_prefixes"
 
 _BASE_COLUMNS = ("jp", "code", "en", "notes")
 _COLUMNS: dict[str, tuple[str, ...]] = {
     "rarities": (*_BASE_COLUMNS, "sort_order"),
     "families": (*_BASE_COLUMNS, "aliases_en", "no_split"),
     LEGACY_FILE: ("legacy_en", "preferred_en", "jp", "notes"),
+    PREFIX_FILE: ("prefix", "code", "notes"),
 }
 _EMPTY_JP_OK = frozenset({"variants", "product_types"})
 _ALIAS_SEPARATOR = "|"
@@ -90,11 +92,21 @@ class LegacyFamilyAlias:
 
 
 @dataclass(frozen=True, slots=True)
+class ProductPrefix:
+    """A product-code prefix (``BSC``) and the product type code it implies."""
+
+    prefix: str
+    code: str
+    notes: str
+
+
+@dataclass(frozen=True, slots=True)
 class Glossary:
     """All glossaries, indexed by kind and exact ``jp`` value."""
 
     entries: Mapping[str, tuple[Entry, ...]]
     legacy_family_aliases: tuple[LegacyFamilyAlias, ...]
+    product_prefixes: tuple[ProductPrefix, ...] = ()
     _index: Mapping[tuple[str, str], Entry] = field(init=False, repr=False, compare=False)
 
     def __post_init__(self) -> None:
@@ -109,9 +121,27 @@ class Glossary:
         """Return the entry of ``kind`` whose ``jp`` equals ``jp``, else ``None``."""
         return self._index.get((kind, jp))
 
+    def product_type_for_code(self, product_code: str | None) -> str | None:
+        """Type code of the longest prefix of ``product_code``, else ``None``."""
+        return prefix_type_code(self.product_prefixes, product_code)
+
     def unresolved_legacy(self) -> tuple[LegacyFamilyAlias, ...]:
         """Legacy pairs whose ``jp`` is still empty (to be filled in #96)."""
         return tuple(a for a in self.legacy_family_aliases if a.jp is None)
+
+
+def prefix_type_code(prefixes: Iterable[ProductPrefix], product_code: str | None) -> str | None:
+    """The type code of the longest ``startswith`` prefix of ``product_code``, else ``None``.
+
+    The one prefix rule: the normalizer and the review table both use it.
+    """
+    if not product_code:
+        return None
+    best: ProductPrefix | None = None
+    for p in prefixes:
+        if product_code.startswith(p.prefix) and (best is None or len(p.prefix) > len(best.prefix)):
+            best = p
+    return None if best is None else best.code
 
 
 Row = tuple[int, dict[str, str]]
@@ -182,11 +212,31 @@ def _parse_int(value: str) -> int | None:
         return None
 
 
+def _check_prefixes(raw: dict[str, list[Row]], errors: list[str]) -> None:
+    """Prefix file rules: non-empty unique sorted prefixes with an existing type code."""
+    name = f"{PREFIX_FILE}.csv"
+    type_codes = {r["code"] for _, r in raw.get("product_types", [])}
+    seen: set[str] = set()
+    previous = ""
+    for line, row in raw.get(PREFIX_FILE, []):
+        prefix = row["prefix"]
+        if not prefix:
+            errors.append(f"{name}:{line}: empty prefix")
+        elif prefix in seen:
+            errors.append(f"{name}:{line}: duplicate prefix {prefix!r}")
+        seen.add(prefix)
+        if "product_types" in raw and row["code"] not in type_codes:
+            errors.append(f"{name}:{line}: unknown product type {row['code']!r}")
+        if prefix < previous:
+            errors.append(f"{name}:{line}: rows not sorted by prefix")
+        previous = prefix
+
+
 def load_glossary(directory: Path) -> Glossary:
     """Load and validate every glossary under ``directory``."""
     errors: list[str] = []
     raw: dict[str, list[Row]] = {}
-    for kind in (*KINDS, LEGACY_FILE):
+    for kind in (*KINDS, LEGACY_FILE, PREFIX_FILE):
         rows = _read_rows(directory / f"{kind}.csv", _COLUMNS.get(kind, _BASE_COLUMNS), errors)
         if rows is not None:
             raw[kind] = rows
@@ -223,6 +273,7 @@ def load_glossary(directory: Path) -> Glossary:
         if row["jp"] and "families" in raw and row["jp"] not in family_jps:
             errors.append(f"{LEGACY_FILE}.csv:{line}: jp {row['jp']!r} not in families.csv")
 
+    _check_prefixes(raw, errors)
     if errors:
         raise GlossaryError(errors)
     return _build(raw)
@@ -252,4 +303,5 @@ def _build(raw: dict[str, list[Row]]) -> Glossary:
             else:
                 built.append(Entry(*base))
         entries[kind] = tuple(built)
-    return Glossary(entries, legacy)
+    prefixes = tuple(ProductPrefix(r["prefix"], r["code"], r["notes"]) for _, r in raw[PREFIX_FILE])
+    return Glossary(entries, legacy, prefixes)
