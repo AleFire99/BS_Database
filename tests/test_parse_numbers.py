@@ -54,6 +54,34 @@ CASES = [
     ("BSCO-001", "BSCO", None, "", None, None),
     ("BSH-001", "BSH", None, "", None, None),
     ("EXG2-001", "EXG", "EXG2", "", None, None),
+    # #108: schemes seen on the full scrape (one or two real numbers each)
+    ("PC01-001", "PC", "PC01", "", None, None),
+    ("PC02-002", "PC", "PC02", "", None, None),
+    ("PC01-X01", "PC", "PC01", "X", None, None),
+    ("PC01-RV001", "PC", "PC01", "RV", None, None),
+    ("PC01-CP01", "PC", "PC01", "CP", None, None),
+    ("PC02-CX01", "PC", "PC02", "CX", None, None),
+    ("CBX01-001", "CBX", "CBX01", "", None, None),
+    ("CBX01-X01", "CBX", "CBX01", "X", None, None),
+    ("CBX01-CX01", "CBX", "CBX01", "CX", None, None),
+    ("BSC35-A001", "BSC", "BSC35", "A", None, None),
+    ("BSC35-XA01", "BSC", "BSC35", "XA", None, None),
+    ("BSC35-XXA01", "BSC", "BSC35", "XXA", None, None),
+    ("BSC47-RVTX01", "BSC", "BSC47", "RVTX", None, None),
+    ("BSC45-XV01", "BSC", "BSC45", "XV", None, None),
+    ("BS64-XV01", "BS", "BS64", "XV", None, None),
+    ("BS68-NX01", "BS", "BS68", "NX", None, None),
+    ("BS73-T001", "BS", "BS73", "T", None, None),
+    ("SD69-T001", "SD", "SD69", "T", None, None),
+    ("BS38-RV X01", "BS", "BS38", "RV X", None, None),
+    ("PB17-RV X01", "PB", "PB17", "RV X", None, None),
+    ("SD41-RV X01", "SD", "SD41", "RV X", None, None),
+    ("BSC37-RV X01", "BSC", "BSC37", "RV X", None, None),
+    ("EXGB-01", "EXGB", None, "", None, None),
+    ("EXGM-01", "EXGM", None, "", None, None),
+    ("EXGN-01", "EXGN", None, "", None, None),
+    ("GX01", "GX", None, "", None, None),
+    ("GX12-01", "GX", "GX12", "", None, None),
 ]
 
 
@@ -77,14 +105,30 @@ def test_seq_kept_as_text() -> None:
     assert parse_number("BS01-001") == ParsedNumber("BS", "BS01", "", "001", None, None)
 
 
-@pytest.mark.parametrize("raw", ["", "PB17-RV X01", "BS01-", "ZZ01-001", "BS01-001(C)"])
+@pytest.mark.parametrize("raw", ["", "BS01-", "ZZ01-001", "BS01-001(C)", "BS59", "XX00"])
 def test_unknown_numbers(raw: str) -> None:
     assert parse_number(raw) is None
 
 
 @pytest.mark.parametrize(
     "raw",
-    ["BS1-001", "BS01-0", "BS01-01", "BS01-X1", "BS01-X001", "BS123-001", "P25-6", "PX1", "P01"],
+    [
+        "BS1-001",
+        "BS01-0",
+        "BS01-01",
+        "BS01-X1",
+        "BS01-X001",
+        "BS123-001",
+        "P25-6",
+        "PX1",
+        "P01",
+        "BSC35-A01",
+        "BS73-T01",
+        "BS38-RV X001",
+        "PC01-01",
+        "GX001",
+        "GX1",
+    ],
 )
 def test_wrong_digit_counts(raw: str) -> None:
     assert parse_number(raw) is None

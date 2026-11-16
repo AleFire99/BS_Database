@@ -41,15 +41,9 @@ def test_count_by_h3() -> None:
 
 def test_unknown_numbers_and_shapes() -> None:
     page = parse_promo_list(_html("list_promo"))
-    assert page.unknown_numbers == (
-        "PB17-RV X01",
-        "PB17-RV X02",
-        "PB17-RV X03",
-        *(f"PB39-RV X0{i}" for i in range(1, 6)),
-        "PB44-RV X01",
-    )
+    assert page.unknown_numbers == ()  # PB17-RV X01 and the like are known since #108
     by_number = {e.number: e for e in page.entries}
-    for number in ("P17-EXG01", "P17-EXG06", "CP14-X01R", "X003A", "26RBS02-CP01"):
+    for number in ("P17-EXG01", "P17-EXG06", "CP14-X01R", "X003A", "26RBS02-CP01", "PB17-RV X01"):
         assert by_number[number].parsed is not None, number
 
 

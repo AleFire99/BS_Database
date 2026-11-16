@@ -335,10 +335,7 @@ def test_discovery_notes_for_the_promo_list(tmp_path: Path) -> None:
     settings, clock = make_settings(tmp_path), FakeClock()
     site = FakeSite(clock)
     report = crawl(settings, site, clock, RunOptions(sets=("プロモーションカード",), limit=0))
-    (note,) = report.notes
-    assert note.set_title == "プロモーションカード"
-    assert len(note.unknown_numbers) == 9
-    assert "9 unknown numbers" in render(report)
+    assert report.notes == []  # every number of the list has a known scheme since #108
     assert state_of(settings, PROMO_URL).state is S.PARSED
     assert counts(settings)[S.DISCOVERED] > 1000  # promo cards discovered, none fetched
     assert PROMO_URL in site.urls()
