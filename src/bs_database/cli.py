@@ -269,13 +269,29 @@ def scrape(
     limit: Annotated[
         int | None, typer.Option("--limit", min=1, help="Take at most this many card pages.")
     ] = None,
+    retry_failed: Annotated[
+        bool,
+        typer.Option(
+            "--retry-failed",
+            help="Give new attempts to pages that failed with a parse error (after a parser fix).",
+        ),
+    ] = False,
+    offline: Annotated[
+        bool,
+        typer.Option(
+            "--offline",
+            help="Use the cache only: a page not in it is skipped, no request is ever made.",
+        ),
+    ] = False,
 ) -> None:
     """Scrape card pages from batspi.com into data/parsed, resuming where the last run stopped."""
     settings = _settings(ctx)
     age = parse_duration(max_age) if max_age is not None else None
     client = _build_http_client(settings)
-    fetcher = CachedFetcher(client, RawCache(settings.cache_dir), refresh=refresh, max_age=age)
-    options = RunOptions(sets=tuple(sets or ()), limit=limit)
+    fetcher = CachedFetcher(
+        client, RawCache(settings.cache_dir), refresh=refresh, max_age=age, offline=offline
+    )
+    options = RunOptions(sets=tuple(sets or ()), limit=limit, retry_failed=retry_failed)
     with StateStore(settings.state_db_path) as store:
         report = run_pipeline(
             settings, fetcher, store, requests_made=lambda: client.requests_made, options=options

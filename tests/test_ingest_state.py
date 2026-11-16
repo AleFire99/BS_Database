@@ -285,3 +285,23 @@ def test_failed_migration_closes_connection(
     with pytest.raises(SchemaTooNew):
         make_store(db)
     assert closed
+
+
+def test_reset_failed_touches_only_matching_rows(tmp_path: Path) -> None:
+    with make_store(tmp_path / "s.db") as store:
+        for url in ("p", "gone", "other"):
+            store.upsert_discovered(url, PageKind.CARD)
+        for _ in range(store.max_attempts):
+            store.mark_failed("p", "parse error: no card block")
+            if store.get("p").attempts < store.max_attempts:
+                store.retry("p")
+        store.mark_failed("gone", "skipped: status 404", permanent=True)
+        store.mark_failed("other", "transport error: timeout")
+        assert store.reset_failed(prefix="parse error:") == 1
+        assert store.get("p").attempts == 0 and store.get("p").state is S.FAILED
+        assert store.get("gone").attempts == store.max_attempts
+        assert store.get("other").attempts == 1
+        assert [r.url for r in store.iter_exhausted()] == ["gone"]
+        store.retry("p")
+        assert store.get("p").state is S.DISCOVERED
+        assert store.reset_failed(prefix="parse error:") == 0

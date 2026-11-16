@@ -14,7 +14,7 @@ from typing import Any
 import pytest
 from fakes import ROBOTS_URL, FakeClock, FakeSite, Killed, fixture_url, make_client, memoise_parsers
 
-from bs_database.ingest.cache import CachedFetcher, RawCache
+from bs_database.ingest.cache import OFFLINE_REASON, CachedFetcher, RawCache
 from bs_database.ingest.http import (
     TRANSPORT_ERROR_REASON,
     Blocked,
@@ -65,9 +65,10 @@ def crawl(
     options: RunOptions = ONLY_SET,
     *,
     refresh: bool = False,
+    offline: bool = False,
 ) -> RunReport:
     client = make_client(settings, site, clock)
-    fetcher = CachedFetcher(client, RawCache(settings.cache_dir), refresh=refresh)
+    fetcher = CachedFetcher(client, RawCache(settings.cache_dir), refresh=refresh, offline=offline)
     with StateStore(settings.state_db_path) as store:
         return run_pipeline(
             settings, fetcher, store, requests_made=lambda: client.requests_made, options=options
@@ -476,3 +477,47 @@ def test_without_a_filter_every_set_is_visited(tmp_path: Path) -> None:
     report = crawl(settings, site, clock, RunOptions(limit=0))
     assert isinstance(report.stop, BudgetExhausted)
     assert len(site.calls) == 4  # robots, index, then sets in index order
+
+
+def test_retry_failed_resets_only_parse_errors_and_offline_makes_no_request(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    site = FakeSite(clock, unmapped="fallback")
+    real = parse_card_page
+    bad, gone = CARD_URLS[7], CARD_URLS[9]
+    site.overrides[gone] = HttpResponse(404, {}, b"not found")
+
+    def broken(html: str, url: str) -> Any:
+        if url == bad:
+            raise ParseError("no card block")
+        return real(html, url)
+
+    monkeypatch.setattr(PARSE, broken)
+    for _ in range(3):  # three failures: exhausted
+        crawl(settings, site, clock)
+    assert {r.url for r in crawl(settings, site, clock).exhausted} == {bad, gone}
+    monkeypatch.setattr(PARSE, real)
+    # a plain run does not touch an exhausted page
+    assert crawl(settings, site, clock).cards_parsed == 0
+    offline_site = FakeSite(clock, unmapped="fallback")
+    report = crawl(
+        settings, offline_site, clock, RunOptions(sets=(SET_NAME,), retry_failed=True), offline=True
+    )
+    assert offline_site.calls == [] and report.requests_made == 0  # not even robots.txt
+    assert report.cards_parsed == 1
+    assert state_of(settings, bad).state is S.PARSED
+    record = state_of(settings, gone)
+    assert record.state is S.FAILED and record.attempts == 3  # the 404 stays exhausted
+    assert [r.url for r in report.exhausted] == [gone]
+
+
+def test_offline_miss_is_a_retryable_skip(tmp_path: Path) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    site = FakeSite(clock, unmapped="fallback")
+    report = crawl(settings, site, clock, offline=True)
+    assert site.calls == [] and report.requests_made == 0
+    record = state_of(settings, INDEX_URL)
+    assert record.state is S.FAILED and record.attempts == 1  # not exhausted at once
+    assert report.index_unobtainable and report.exit_code == 1
+    assert not _permanent(Skipped("u", OFFLINE_REASON))

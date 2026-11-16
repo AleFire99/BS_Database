@@ -257,6 +257,21 @@ class StateStore:
                 (current.failed_from.value, self._stamp(), url),
             )
 
+    def reset_failed(self, *, prefix: str) -> int:
+        """Give a fresh set of attempts to failed pages whose error starts with ``prefix``.
+
+        Only those rows are touched (``attempts`` back to 0, state stays ``failed``), so a
+        permanent failure (404, policy skip) stays exhausted. Returns the number of rows.
+        """
+        escaped = prefix.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        with self._tx() as conn:
+            cur = conn.execute(
+                "UPDATE pages SET attempts = 0, updated_at = ? "
+                "WHERE state = ? AND last_error LIKE ? ESCAPE '\\'",
+                (self._stamp(), IngestState.FAILED.value, escaped + "%"),
+            )
+            return cur.rowcount
+
     def iter_exhausted(self) -> list[PageRecord]:
         """Failed pages that used all attempts, for reporting."""
         rows = self._conn.execute(

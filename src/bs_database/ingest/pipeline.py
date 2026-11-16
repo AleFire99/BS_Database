@@ -11,7 +11,7 @@ import logging
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from bs_database.ingest.cache import CachedFetcher, CachedPage
+from bs_database.ingest.cache import OFFLINE_REASON, CachedFetcher, CachedPage
 from bs_database.ingest.http import TRANSPORT_ERROR_REASON, Skipped
 from bs_database.ingest.parsed_store import write_card_json
 from bs_database.ingest.policy import StopRun
@@ -41,6 +41,7 @@ PROMO_URL = "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E
 _S = IngestState
 _CARD_WORK = frozenset({_S.DISCOVERED, _S.FETCHED, _S.FAILED})
 _PERMANENT_STATUSES = frozenset({404, 410})
+PARSE_ERROR_PREFIX = "parse error:"
 
 
 @dataclass(frozen=True)
@@ -48,10 +49,13 @@ class RunOptions:
     """``sets``: case-insensitive substrings of the Japanese product name (empty = all).
 
     ``limit``: maximum card pages taken this run (cache hits count).
+    ``retry_failed``: first give a fresh set of attempts to the pages that failed with a
+    ``parse error:`` (the cache holds their HTML, so a parser fix can be applied with no request).
     """
 
     sets: tuple[str, ...] = ()
     limit: int | None = None
+    retry_failed: bool = False
 
 
 def _sha256(content: bytes) -> str:
@@ -61,6 +65,8 @@ def _sha256(content: bytes) -> str:
 def _permanent(skipped: Skipped) -> bool:
     """404 and policy skips cannot be fixed by retrying (policy 3.5: log and skip)."""
     if skipped.status is None:
+        if skipped.reason.startswith(OFFLINE_REASON):
+            return False
         return not skipped.reason.startswith(TRANSPORT_ERROR_REASON)
     return skipped.status in _PERMANENT_STATUSES
 
@@ -245,6 +251,9 @@ class _Run:
     # -- run ---------------------------------------------------------------------------
 
     def run(self) -> None:
+        if self.options.retry_failed:
+            n = self.store.reset_failed(prefix=PARSE_ERROR_PREFIX)
+            log.info("retry-failed: %d pages with a parse error get new attempts", n)
         products = self.index()
         self.sets(products)
         self.cards()
