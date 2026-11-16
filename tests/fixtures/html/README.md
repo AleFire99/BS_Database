@@ -21,6 +21,7 @@ Saved pages that stand in for the network in tests. The manifest [fixtures.json]
 | `card_spirit_header_timing.html` | `仮面ライダーマリカ ピーチエナジーアームズ` | #108: header `『…』【起動：フラッシュ】〔ターン1回〕` (timing first) |
 | `card_magic_printing_note_number.html` | `クリスタルクラック` | #108: 収録 rows without a bold label, the number is in the note `<C> (BS18-076)` |
 | `card_spirit_printing_unnumbered.html` | `魔刃将ヘル・ブレド` | #108: 収録 rows with no number on a two-number page (attached to every number, with a warning) |
+| `card_spirit_shared_block.html` | `巨人皇子アレクサンダー4世` | #108: one `<pre>` and an h3 without a number, two own numbers (`EX023`, `P027`) |
 | `set_bs01.html` | `第一弾` | Oldest set page |
 | `set_bs52.html` | `転醒編 第1章：輪廻転生` | Awakening era |
 | `set_sd54.html` | Collab starter `ガンダム ～OPERATION UC～` | Copy counts |

@@ -319,12 +319,19 @@ def parse_card_page(html: str, url: str) -> CardPage:
         name_jp, name_en, h3_number = (
             _split_heading(_h3_text(heading)) if heading is not None else ("", None, None)
         )
+        numbers: list[str]
         if h3_number is not None:
-            number = h3_number
-            if own and _FACE_RE.sub("", number) not in own:
-                log.warning("source conflict: field=number h3=%r cardno=%r in %s", number, own, url)
+            numbers = [h3_number]
+            if own and _FACE_RE.sub("", h3_number) not in own:
+                log.warning(
+                    "source conflict: field=number h3=%r cardno=%r in %s", h3_number, own, url
+                )
         elif len(own) == len(blocks):
-            number = own[index]
+            numbers = [own[index]]
+        elif len(blocks) == 1 and own:
+            # one block printed once for several numbers: each gets its own entry
+            numbers = list(own)
+            log.warning("one card block shared by the numbers %s in %s", own, url)
         else:
             raise ParseError(
                 f"{len(blocks)} card blocks without h3 numbers but {len(own)} card numbers in {url}"
@@ -334,7 +341,7 @@ def parse_card_page(html: str, url: str) -> CardPage:
             if title and name_jp not in (title, *titles):
                 log.warning(
                     "source conflict: field=name_jp number=%s h3=%r title=%r in %s",
-                    number,
+                    numbers[0],
                     name_jp,
                     title,
                     url,
@@ -342,11 +349,12 @@ def parse_card_page(html: str, url: str) -> CardPage:
         else:
             name_jp = title
         if not name_jp:
-            raise ParseError(f"no card name for {number} in {url}")
+            raise ParseError(f"no card name for {numbers[0]} in {url}")
         lines = _pre_lines(pre)
         gameplay = _parse_gameplay(lines, url)
-        text = _parse_text(lines, gameplay, number, url)
-        entries.append(CardEntry(number, name_jp, name_en, gameplay, text))
+        for number in numbers:
+            text = _parse_text(lines, gameplay, number, url)
+            entries.append(CardEntry(number, name_jp, name_en, gameplay, text))
     printings = parse_printings(soup, url, [e.number for e in entries])
     images = parse_images(soup, url, [e.number for e in entries])
     return CardPage(

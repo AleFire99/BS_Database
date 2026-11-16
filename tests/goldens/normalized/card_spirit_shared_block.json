@@ -1,0 +1,435 @@
+{
+  "schema_version": "1.1.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E5%B7%A8%E4%BA%BA%E7%9A%87%E5%AD%90%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%80%E3%83%BC4%E4%B8%96",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E5%B7%A8%E4%BA%BA%E7%9A%87%E5%AD%90%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%80%E3%83%BC4%E4%B8%96",
+    "title_jp": "巨人皇子アレクサンダー4世",
+    "entries": [
+      {
+        "number": "EX023",
+        "name_jp": "巨人皇子アレクサンダー4世",
+        "name_en": "The GiantPrince Alexander IV",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 5,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "青",
+              "code": "blue"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "青",
+              "symbol_code": "blue",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "闘神",
+              "code": "toushin",
+              "en": "Fighting Spirit",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "勇傑",
+              "code": "yuuketsu",
+              "en": "Soldier",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 4000
+            },
+            {
+              "level": 2,
+              "cores": 4,
+              "battle_points": 8000
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "強襲",
+                  "code": "kyoushuu",
+                  "parameter_jp": "1"
+                }
+              ],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv1・Lv2【強襲：1】『このスピリットのアタック時』",
+              "text_jp": "このスピリットは、ターン中に1回まで、自分のネクサス1つを疲労させることで回復できる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv2『このスピリットのアタック時』",
+              "text_jp": "コスト3以下の相手のスピリット1体を破壊する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "かんくろう",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "かの巨人大帝のご子息がついにそのお姿を現されました！\nその力は、まさにサラブレット！\n青の世界の希望の星となられることでしょう！",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      },
+      {
+        "number": "P027",
+        "name_jp": "巨人皇子アレクサンダー4世",
+        "name_en": "The GiantPrince Alexander IV",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 5,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "青",
+              "code": "blue"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "青",
+              "symbol_code": "blue",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "闘神",
+              "code": "toushin",
+              "en": "Fighting Spirit",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "勇傑",
+              "code": "yuuketsu",
+              "en": "Soldier",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 4000
+            },
+            {
+              "level": 2,
+              "cores": 4,
+              "battle_points": 8000
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "強襲",
+                  "code": "kyoushuu",
+                  "parameter_jp": "1"
+                }
+              ],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv1・Lv2【強襲：1】『このスピリットのアタック時』",
+              "text_jp": "このスピリットは、ターン中に1回まで、自分のネクサス1つを疲労させることで回復できる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv2『このスピリットのアタック時』",
+              "text_jp": "コスト3以下の相手のスピリット1体を破壊する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "かんくろう",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "かの巨人大帝のご子息がついにそのお姿を現されました！\nその力は、まさにサラブレット！\n青の世界の希望の星となられることでしょう！",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "EX023",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P027",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "EX023",
+        "product_name_jp": "DSゲーム『バトルスピリッツデジタルスターター』初回封入特典",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "3枚",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P027",
+        "product_name_jp": "DSゲーム『バトルスピリッツデジタルスターター』初回封入特典",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "3枚",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "EX023",
+        "product_name_jp": "はじめてのバトルセット 【VSハイランカー】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AE%E3%83%90%E3%83%88%E3%83%AB%E3%82%BB%E3%83%83%E3%83%88%20%E3%80%90VS%E3%83%8F%E3%82%A4%E3%83%A9%E3%83%B3%E3%82%AB%E3%83%BC%E3%80%91",
+        "product_code": "SD09",
+        "product_type_code": "starter",
+        "rarity_jp": "EX",
+        "rarity_code": "EX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2012-03-23",
+        "section": "収録"
+      },
+      {
+        "number": "P027",
+        "product_name_jp": "はじめてのバトルセット 【VSハイランカー】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AE%E3%83%90%E3%83%88%E3%83%AB%E3%82%BB%E3%83%83%E3%83%88%20%E3%80%90VS%E3%83%8F%E3%82%A4%E3%83%A9%E3%83%B3%E3%82%AB%E3%83%BC%E3%80%91",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": "EX",
+        "rarity_code": "EX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "EX023",
+        "product_name_jp": "Xレアパック 【キングマスターエディション】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?X%E3%83%AC%E3%82%A2%E3%83%91%E3%83%83%E3%82%AF%20%E3%80%90%E3%82%AD%E3%83%B3%E3%82%B0%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%A8%E3%83%87%E3%82%A3%E3%82%B7%E3%83%A7%E3%83%B3%E3%80%91",
+        "product_code": "BSC14",
+        "product_type_code": "booster",
+        "rarity_jp": "EX",
+        "rarity_code": "EX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2013-07-06",
+        "section": "収録"
+      },
+      {
+        "number": "P027",
+        "product_name_jp": "Xレアパック 【キングマスターエディション】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?X%E3%83%AC%E3%82%A2%E3%83%91%E3%83%83%E3%82%AF%20%E3%80%90%E3%82%AD%E3%83%B3%E3%82%B0%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%A8%E3%83%87%E3%82%A3%E3%82%B7%E3%83%A7%E3%83%B3%E3%80%91",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": "EX",
+        "rarity_code": "EX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "EX023",
+        "large_url": "https://batspi.com/card/ETC/EX023-2.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/EX023-2.jpg",
+        "caption": [
+          "Xレアパック 【キングマスターエディション】"
+        ]
+      },
+      {
+        "number": "EX023",
+        "large_url": "https://batspi.com/card/ETC/EX023.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/EX023.jpg",
+        "caption": [
+          "はじめてのバトルセット 【VSハイランカー】",
+          "プロモーションカード"
+        ]
+      },
+      {
+        "number": "P027",
+        "large_url": "https://batspi.com/card/ETC/P027.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/P027.jpg",
+        "caption": [
+          "プロモーションカード",
+          "DSゲーム『バトルスピリッツデジタルスターター』初回封入特典"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

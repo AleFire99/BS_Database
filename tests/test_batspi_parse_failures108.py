@@ -123,3 +123,18 @@ def test_targets_without_a_number_raise_unless_told_to_attach_to_all() -> None:
         "BS01-001(A)",
         "BS01-001(B)",
     ]
+
+
+def test_one_block_shared_by_two_numbers_gives_each_number_an_entry(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """巨人皇子アレクサンダー4世: one ``<pre>``, an h3 without a number, numbers EX023 and P027."""
+    with caplog.at_level(logging.WARNING, logger="bs_database.parsers.batspi.card"):
+        page = parse("card_spirit_shared_block")
+    assert [e.number for e in page.entries] == ["EX023", "P027"]
+    first, second = page.entries
+    assert first.name_jp == second.name_jp
+    assert first.gameplay == second.gameplay and first.text == second.text
+    assert page.differences == ()
+    assert {p.number for p in page.printings} <= {"EX023", "P027"}
+    assert "one card block shared by the numbers" in caplog.text
