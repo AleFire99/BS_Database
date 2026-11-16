@@ -2,7 +2,7 @@
 
 from dataclasses import replace
 
-from golden_support import parse_fixture, real_glossary
+from golden_support import parse_fixture, real_glossary, uncurated_glossary
 
 from bs_database.normalize.pipeline import normalize_page
 from bs_database.normalize.records import NormalizedPage
@@ -14,8 +14,9 @@ from bs_database.normalize.translation import (
 from bs_database.translate.types import TranslationResult
 
 
-def _page(name: str) -> NormalizedPage:
-    return normalize_page(parse_fixture(name), real_glossary())
+def _page(name: str, *, uncurated: bool = False) -> NormalizedPage:
+    glossary = uncurated_glossary() if uncurated else real_glossary()
+    return normalize_page(parse_fixture(name), glossary)
 
 
 def _machine(text: str) -> TranslationResult:
@@ -33,7 +34,7 @@ def test_requests_skip_glossary_and_batspi_names() -> None:
 
 
 def test_requests_are_sorted_unique_and_ordered() -> None:
-    page = _page("card_flip.html")
+    page = _page("card_flip.html", uncurated=True)
     requests = collect_requests(page)
     for part in (requests.families, requests.names, requests.products):
         assert list(part) == sorted(set(part))
@@ -48,7 +49,7 @@ def test_blank_texts_are_not_requested() -> None:
 
 
 def test_machine_result_fills_names_families_and_products() -> None:
-    page = _page("card_flip.html")
+    page = _page("card_flip.html", uncurated=True)
     requests = collect_requests(page)
     results = {t: _machine(f"<{t}>") for t in requests.ordered()}
     out = apply_translations(page, results)
