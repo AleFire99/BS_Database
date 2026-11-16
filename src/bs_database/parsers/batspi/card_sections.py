@@ -19,6 +19,7 @@ from bs_database.parsers.errors import ParseError
 
 log = logging.getLogger(__name__)
 
+_PLACEHOLDER = "NOTFOUND.jpg"  # the wiki's image for a missing scan
 SECTION_PRINTINGS = "収録"
 SECTION_BLOCK_ICON = "ブロックアイコン"
 
@@ -347,6 +348,12 @@ def parse_images(soup: BeautifulSoup, url: str, numbers: Sequence[str]) -> tuple
             if href is None:
                 raise ParseError(f"gallery image without a link in {url}")
             if not isinstance(caption, Tag):
+                if href.endswith(_PLACEHOLDER):  # an announced number with no scan yet
+                    alt = _attr(thumb, "alt") if isinstance(thumb, Tag) else None
+                    log.warning(
+                        "gallery placeholder skipped: %s field=image value=%r", url, alt or href
+                    )
+                    continue
                 raise ParseError(f"gallery image {href!r} without a caption in {url}")
             lines = _caption_lines(caption)
             if not lines[0]:

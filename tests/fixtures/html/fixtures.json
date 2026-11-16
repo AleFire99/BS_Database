@@ -31,6 +31,14 @@
     "card_type": "マジック",
     "trimmed": true
   },
+  "card_magic_image_placeholder.html": {
+    "url": "https://batspi.com/index.php?%E7%A6%81%E5%BF%8C%E3%81%AE%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A0",
+    "fetched": "2026-11-16",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "マジック",
+    "trimmed": true
+  },
   "card_magic_printing_note_number.html": {
     "url": "https://batspi.com/index.php?%E3%82%AF%E3%83%AA%E3%82%B9%E3%82%BF%E3%83%AB%E3%82%AF%E3%83%A9%E3%83%83%E3%82%AF",
     "fetched": "2026-11-16",

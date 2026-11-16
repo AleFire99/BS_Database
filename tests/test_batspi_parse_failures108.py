@@ -138,3 +138,14 @@ def test_one_block_shared_by_two_numbers_gives_each_number_an_entry(
     assert page.differences == ()
     assert {p.number for p in page.printings} <= {"EX023", "P027"}
     assert "one card block shared by the numbers" in caplog.text
+
+
+def test_gallery_placeholder_without_a_caption_is_skipped(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """禁忌のエクストリーム: ``<li><a href=".../NOTFOUND.jpg"><img alt="…">`` has no caption."""
+    with caplog.at_level(logging.WARNING, logger=SECTIONS_LOGGER):
+        page = parse("card_magic_image_placeholder")
+    assert page.entries[0].number == "EXG5-002"
+    assert page.images == ()  # the placeholder is the only gallery item of this page
+    assert "gallery placeholder skipped" in caplog.text

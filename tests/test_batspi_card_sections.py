@@ -253,3 +253,11 @@ def test_block_join_normalises_product_names() -> None:
     rows = '<p><a href="x">BS P1</a> &lt;C&gt;</p>'
     (got,) = run(page(rows, blocks), ["A-001"])
     assert (got.product_name_jp, got.product_code, got.block_icon) == ("BS P1", "BS01", "3")
+
+
+def test_image_without_a_caption_still_raises_unless_it_is_a_placeholder() -> None:
+    html = '<ul class="ppy-imglist"><li><a href="/card/x.jpg"><img src="/s.jpg"/></a></li></ul>'
+    with pytest.raises(ParseError, match="without a caption"):
+        parse_images(BeautifulSoup(html, "html.parser"), URL, ["A-001"])
+    placeholder = html.replace("/card/x.jpg", "/card/BS7/NOTFOUND.jpg")
+    assert parse_images(BeautifulSoup(placeholder, "html.parser"), URL, ["A-001"]) == ()
