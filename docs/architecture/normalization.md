@@ -64,16 +64,9 @@ The glossaries were curated in [#96](https://github.com/AleFire99/BS_Database/is
 
 ## Known gaps
 
-Result of the full scrape: 12,833 card pages normalized, 0 closed unmapped terms. Left open on purpose:
+After the full re-parse ([#108](https://github.com/AleFire99/BS_Database/issues/108), [#109](https://github.com/AleFire99/BS_Database/issues/109)) and its curation ([#112](https://github.com/AleFire99/BS_Database/issues/112)): 13,480 card pages normalized with **0 unmapped terms**, and `bsdb normalize --strict` exits 0 on the full data. The batspi typo `呪滅劇` is a keyword row of its own that points to *Spell Blight* (呪滅撃).
 
-| Term | Kind | Why |
-| --- | --- | --- |
-| `歌鳥･漂精` | family | Two families joined by `･` (not `・`); needs a split rule |
-| `Sバースト:自分のライフ減少後` | keyword | Not curated |
-| `《バースト封印》` | keyword | Not curated |
-| `呪滅劇` | keyword | Probably a batspi typo of `呪滅撃` |
-
-Every printing **with** a product code resolves to a product type. 4,943 printings in 646 products **without** a product code (campaign cards, shop battles, events, premium boxes) still have `product_type_code = null`; the prefix rule does not cover them, and a follow-up is needed.
+Every printing **with** a product code resolves to a product type. 5,677 printings in products **without** a product code (campaign cards, shop battles, events, premium boxes) still have `product_type_code = null`; the prefix rule does not cover them, and [#107](https://github.com/AleFire99/BS_Database/issues/107) covers them.
 
 ## Normalized document
 
