@@ -152,3 +152,9 @@ def test_symbol_line(line: str, expected: object) -> None:
 def test_symbol_line_errors(line: str) -> None:
     with pytest.raises(ParseError):
         parse_symbol_line(line)
+
+
+def test_families_split_on_the_half_width_middle_dot() -> None:
+    # 歌鳥･漂精 uses U+FF65 instead of U+30FB (#109)
+    assert parse_cost_line("4(2)/緑/歌鳥･漂精")[3] == ("歌鳥", "漂精")
+    assert parse_cost_line("4(2)/緑/歌鳥・漂精")[3] == ("歌鳥", "漂精")

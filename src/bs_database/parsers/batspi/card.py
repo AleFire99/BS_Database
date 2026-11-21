@@ -110,7 +110,8 @@ def parse_cost_line(line: str) -> tuple[int, Reduction, tuple[str, ...], tuple[s
         if color not in COLORS:
             raise ParseError(f"unknown colour {color!r} in cost line: {line!r}")
     family_text = (match.group(4) or "").strip().rstrip("/").strip()
-    families = tuple(family_text.split("・")) if family_text else ()
+    # Families are split on the middle dot, full-width or half-width (歌鳥･漂精, #109).
+    families = tuple(re.split("[・･]", family_text)) if family_text else ()
     return cost, reduction, colors, families
 
 
