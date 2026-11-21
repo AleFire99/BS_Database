@@ -10,16 +10,29 @@ import typer
 
 from bs_database import __version__
 from bs_database.db import build_db
+from bs_database.glossary import GlossaryError, load_glossary
 from bs_database.ingest.cache import CachedFetcher, RawCache
+from bs_database.ingest.fandom import FandomApi
 from bs_database.ingest.http import HttpClient
 from bs_database.ingest.pipeline import RunOptions, run_pipeline
+from bs_database.ingest.policy import StopRun
 from bs_database.ingest.report import render
 from bs_database.ingest.state import StateStore
 from bs_database.log import configure_logging
-from bs_database.normalize import normalize_tree
+from bs_database.normalize.pipeline import normalize_tree
+from bs_database.normalize.report import REPORT_MD, build_report, write_report
+from bs_database.review.fandom import FANDOM_JSON, NameSource, fetch_names, write_names
+from bs_database.review.render import REVIEW_MD, source_summary, write_review
+from bs_database.review.run import run_review
+from bs_database.review.source import ReviewError
 from bs_database.settings import Settings
+from bs_database.translate import make_translator
 
 app = typer.Typer(no_args_is_help=True, help="bsdb: Battle Spirits card database tooling.")
+
+
+glossary_app = typer.Typer(no_args_is_help=True, help="Glossary curation tools.")
+app.add_typer(glossary_app, name="glossary")
 
 
 def _version_callback(value: bool) -> None:
@@ -66,27 +79,156 @@ def _settings(ctx: typer.Context) -> Settings:
     return settings
 
 
-def _card_json_dir(settings: Settings) -> Path:
-    return settings.json_dir / "card_json"
-
-
 @app.command()
-def normalize(ctx: typer.Context) -> None:
-    """Normalize family names and types in the card JSON files, in place."""
+def normalize(
+    ctx: typer.Context,
+    strict: Annotated[
+        bool,
+        typer.Option("--strict", help="Exit 1 on any unmapped term (no glossary row)."),
+    ] = False,
+    max_chars: Annotated[
+        int | None,
+        typer.Option(
+            "--max-chars",
+            min=0,
+            help="Send at most this many characters to the translation engine (0 = cache only).",
+        ),
+    ] = None,
+) -> None:
+    """Normalize data/parsed into data/normalized: glossary codes and English names.
+
+    Card names, product names and families are machine-translated offline when the quickmt
+    model is in BSDB_MT_MODEL_DIR and the mt group is installed; otherwise nothing is translated.
+    Writes _report.json and _report.md next to the pages.
+    """
     settings = _settings(ctx)
-    written = normalize_tree(_card_json_dir(settings), settings.family_mapping_path)
-    typer.echo(f"Normalized {written} files")
+    if not settings.parsed_dir.is_dir():
+        typer.echo(f"error: parsed directory not found: {settings.parsed_dir}", err=True)
+        raise typer.Exit(1)
+    try:
+        glossary = load_glossary(settings.glossary_dir)
+    except GlossaryError as exc:
+        typer.echo(f"error: invalid glossary in {settings.glossary_dir}:\n{exc}", err=True)
+        raise typer.Exit(1) from exc
+    translator = make_translator(settings, max_chars=max_chars)
+    result = normalize_tree(settings.parsed_dir, settings.normalized_dir, glossary, translator)
+    report = build_report(result, translator.name, settings.parsed_dir)
+    write_report(settings.normalized_dir, report)
+    statuses = [r.status for r in result.translations.values()]
+    typer.echo(
+        f"Normalized {result.written} pages, {len(result.unmapped)} unmapped terms "
+        f"({result.closed} closed), {len(report['uncurated'])} uncurated terms"
+    )
+    typer.echo(
+        f"Translation ({translator.name}): {statuses.count('machine')} machine, "
+        f"{statuses.count('pending')} pending, {statuses.count('failed')} failed"
+    )
+    typer.echo(f"Report: {settings.normalized_dir / REPORT_MD}")
+    if result.failed:
+        typer.echo(f"{len(result.failed)} pages failed", err=True)
+        raise typer.Exit(1)
+    if strict and any(not t.closed for t in result.unmapped):
+        warnings = len(report["unmapped"]["warnings"])
+        typer.echo(f"strict: {warnings} unmapped terms without a glossary row", err=True)
+        raise typer.Exit(1)
+
+
+@glossary_app.command("review")
+def glossary_review(
+    ctx: typer.Context,
+    legacy_db: Annotated[
+        Path,
+        typer.Option("--legacy-db", help="The v0.1.0 battle_spirits.db snapshot (read-only)."),
+    ],
+    out: Annotated[
+        Path | None,
+        typer.Option("--out", help="Output directory (default: <data dir>/review)."),
+    ] = None,
+    fandom: Annotated[
+        Path | None,
+        typer.Option("--fandom", help="fandom_names.json from `bsdb glossary fandom` (optional)."),
+    ] = None,
+) -> None:
+    """Propose glossary rows from data/normalized and the legacy snapshot, for the owner.
+
+    Writes review.md (families, keywords, no_split candidates, product-code prefixes, untyped
+    products, slug conflicts, legacy pairs) and ready-to-copy families.csv, keywords.csv and
+    family_legacy_en.csv. Nothing under data/glossary is changed. Copy families.csv and
+    family_legacy_en.csv together, and re-sort families.csv and keywords.csv by code after
+    filling codes by hand (the loader requires it).
+    """
+    settings = _settings(ctx)
+    try:
+        load_glossary(settings.glossary_dir)
+    except GlossaryError as exc:
+        typer.echo(f"error: invalid glossary in {settings.glossary_dir}:\n{exc}", err=True)
+        raise typer.Exit(1) from exc
+    try:
+        review = run_review(settings.normalized_dir, settings.glossary_dir, legacy_db, fandom)
+    except ReviewError as exc:
+        typer.echo(f"error: {exc}", err=True)
+        raise typer.Exit(1) from exc
+    target = out or settings.data_dir / "review"
+    write_review(target, review)
+    typer.echo(
+        f"Review: {len(review.families)} families, {len(review.keywords)} keywords, "
+        f"{len(review.no_split)} no_split candidates, {len(review.prefixes)} prefixes, "
+        f"{len(review.conflicts)} slug conflicts"
+    )
+    if review.with_fandom:
+        typer.echo(f"Family names by source: {source_summary(review)}")
+    typer.echo(f"Written to {target / REVIEW_MD} and the CSV files next to it")
+
+
+def _build_fandom_api(settings: Settings) -> NameSource:
+    """The one place the real fandom client is built (tests replace it with a fake)."""
+    return FandomApi(settings)
+
+
+@glossary_app.command("fandom")
+def glossary_fandom(
+    ctx: typer.Context,
+    out: Annotated[
+        Path | None,
+        typer.Option("--out", help="Output directory (default: <data dir>/review)."),
+    ] = None,
+) -> None:
+    """Fetch family, keyword and rarity names from the fandom wiki api (ADR 0009).
+
+    Reads only api.php (about 20 requests, cached under the cache dir, 0 when cached) and writes
+    fandom_names.json for ``bsdb glossary review --fandom``. A 403 or challenge page stops the
+    run with exit 3. Nothing under data/glossary is changed.
+    """
+    settings = _settings(ctx)
+    api = _build_fandom_api(settings)
+    try:
+        data = fetch_names(api)
+    except StopRun as exc:
+        typer.echo(f"stopped: {exc}", err=True)
+        raise typer.Exit(3) from exc
+    target = (out or settings.data_dir / "review") / FANDOM_JSON
+    write_names(target, data)
+    typer.echo(
+        f"Fandom: {len(data.families)} families ({len(data.unmatched_families)} unmatched), "
+        f"{len(data.keywords)} keywords ({len(data.unmatched_keywords)} unmatched), "
+        f"{len(data.rarities)} rarities, {data.requests_made} requests"
+    )
+    typer.echo(f"Written to {target}")
 
 
 @app.command()
 def build(
     ctx: typer.Context,
+    input_dir: Annotated[
+        Path,
+        typer.Option("--input", help="Directory with the legacy normalized card JSON files."),
+    ],
     db: Annotated[Path | None, typer.Option("--db", help="Database path.")] = None,
 ) -> None:
-    """Build the SQLite database from the card JSON files (appends to an existing DB)."""
+    """Build the SQLite database from card JSON files (appends to an existing DB)."""
     settings = _settings(ctx)
     target = db or settings.db_path
-    build_db(_card_json_dir(settings), target)
+    build_db(input_dir, target)
     typer.echo(f"Built {target}")
 
 
@@ -127,13 +269,39 @@ def scrape(
     limit: Annotated[
         int | None, typer.Option("--limit", min=1, help="Take at most this many card pages.")
     ] = None,
+    retry_failed: Annotated[
+        bool,
+        typer.Option(
+            "--retry-failed",
+            help="Give new attempts to pages that failed with a parse error (after a parser fix).",
+        ),
+    ] = False,
+    offline: Annotated[
+        bool,
+        typer.Option(
+            "--offline",
+            help="Use the cache only: a page not in it is skipped, no request is ever made.",
+        ),
+    ] = False,
+    reparse: Annotated[
+        bool,
+        typer.Option(
+            "--reparse",
+            help="Parse every parsed card page again from the cache (after a schema change). "
+            "Combine with --offline to make no request.",
+        ),
+    ] = False,
 ) -> None:
     """Scrape card pages from batspi.com into data/parsed, resuming where the last run stopped."""
     settings = _settings(ctx)
     age = parse_duration(max_age) if max_age is not None else None
     client = _build_http_client(settings)
-    fetcher = CachedFetcher(client, RawCache(settings.cache_dir), refresh=refresh, max_age=age)
-    options = RunOptions(sets=tuple(sets or ()), limit=limit)
+    fetcher = CachedFetcher(
+        client, RawCache(settings.cache_dir), refresh=refresh, max_age=age, offline=offline
+    )
+    options = RunOptions(
+        sets=tuple(sets or ()), limit=limit, retry_failed=retry_failed, reparse=reparse
+    )
     with StateStore(settings.state_db_path) as store:
         report = run_pipeline(
             settings, fetcher, store, requests_made=lambda: client.requests_made, options=options

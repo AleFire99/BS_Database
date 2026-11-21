@@ -12,7 +12,8 @@ Each page is given as ``FILE|PAGE NAME|KIND|CARD TYPE`` (the card type may be em
         "card_brave.html|砲凰竜フェニック・キャノン|card|ブレイヴ"
 
 Raw downloads are kept in ``--raw-dir`` (outside the repo), so a page can be trimmed again
-with ``--offline`` and no request.
+with ``--offline`` and no request. ``--from-cache`` takes the pages from the local scrape cache
+(``BSDB_DATA_DIR``) instead: no request either, and no ``--raw-dir`` needed.
 """
 
 import argparse
@@ -25,6 +26,7 @@ from urllib.parse import quote
 
 from bs4 import BeautifulSoup, Comment
 
+from bs_database.ingest.cache import RawCache
 from bs_database.ingest.http import HttpClient, Skipped
 from bs_database.ingest.policy import BASE_URL as BASE
 from bs_database.ingest.policy import StopRun
@@ -87,21 +89,37 @@ def save_manifest(manifest: dict[str, Any]) -> None:
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0] if __doc__ else None)
     parser.add_argument("specs", nargs="+", help="FILE|PAGE NAME|KIND|CARD TYPE")
-    parser.add_argument("--raw-dir", type=Path, required=True, help="where raw pages are kept")
+    parser.add_argument("--raw-dir", type=Path, help="where raw pages are kept")
     parser.add_argument("--offline", action="store_true", help="re-trim from --raw-dir only")
+    parser.add_argument(
+        "--from-cache", action="store_true", help="read the pages from the scrape cache, no request"
+    )
     parser.add_argument("--max-bytes", type=int, default=300_000)
     parser.add_argument("--partial", action="store_true", help="allow partial trimming")
     args = parser.parse_args(argv[1:])
 
-    args.raw_dir.mkdir(parents=True, exist_ok=True)
-    client = None if args.offline else HttpClient(Settings(), backoff=())
+    if args.raw_dir is None and not args.from_cache:
+        parser.error("--raw-dir is required unless --from-cache is given")
+    cache = RawCache(Settings().cache_dir) if args.from_cache else None
+    if args.raw_dir is not None:
+        args.raw_dir.mkdir(parents=True, exist_ok=True)
+    client = None if args.offline or args.from_cache else HttpClient(Settings(), backoff=())
 
     manifest = load_manifest()
     try:
         for spec in args.specs:
             name, page, kind, card_type = spec.split("|")
             url = page_url(page)
-            raw_path = args.raw_dir / name
+            if cache is not None:
+                cached = cache.load(url, "batspi")
+                if cached is None:
+                    print(f"skip {page}: not in the cache", file=sys.stderr)
+                    continue
+                raw = cached.text
+                fetched = cached.fetched_at.date().isoformat()
+            else:
+                raw_path = args.raw_dir / name
+                fetched = date.today().isoformat()
             if client is not None:
                 result = client.fetch(url)
                 if isinstance(result, Skipped):
@@ -109,11 +127,12 @@ def main(argv: list[str]) -> int:
                     continue
                 print(f"GET {page} -> {result.status}")
                 raw_path.write_bytes(result.content)
-            raw = raw_path.read_bytes().decode("utf-8")
+            if cache is None:
+                raw = raw_path.read_bytes().decode("utf-8")
             trimmed = trim(raw)
             entry: dict[str, Any] = {
                 "url": url,
-                "fetched": date.today().isoformat(),
+                "fetched": fetched,
                 "source": "batspi",
                 "kind": kind,
             }

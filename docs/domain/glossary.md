@@ -55,7 +55,7 @@ On batspi.com the scraped line format is `<cores>LvN BP`, e.g. `<3>Lv2 3000`.
 
 ## Families (系統)
 
-A family is a creature-type tag on a card (e.g. "Reptile Beast", 爬獣). A card can have several. The scraper translates Japanese families with a machine translator, producing inconsistent names relative to the English wiki and official English terms. `data/family_mapping.txt` patches known mismatches manually (e.g. `Earth Dragon = Terra Dragon`, `Kidra = Machine Dragon`, `Rebirth = Reptile Beast`). Some are compound or prefixed (`Different X`, `New X`, `Next Generation of X`) and are split heuristically. The JP to EN family mapping must be made explicit and reviewed in E6 ([#11](https://github.com/AleFire99/BS_Database/issues/11)).
+A family is a creature-type tag on a card (e.g. "Reptile Beast", 爬獣). A card can have several. The Japanese family name is the identity. batspi separates the families of a card with `・`; a compound name that contains `・` is kept whole when `data/glossary/families.csv` marks it `no_split`. The English name comes from `families.csv`, curated by the owner in [#96](https://github.com/AleFire99/BS_Database/issues/96) (292 families; 313 after the re-parse curation in [#112](https://github.com/AleFire99/BS_Database/issues/112); each with a romaji code and an English name; rows taken from the fandom wiki carry `notes` = `fandom: <title>`). `data/glossary/family_legacy_en.csv` keeps the 41 English pairs of the legacy machine-translation fixes (e.g. `Rebirth = Reptile Beast`), linked to Japanese names by the review. The keywords (310 rows) and rarities (28 rows) were curated in the same task. How to curate: [CONTRIBUTING](../../CONTRIBUTING.md#curating-with-the-review-command). See [ADR 0008](../adr/0008-normalization-and-translation.md).
 
 ## Card IDs
 
@@ -95,10 +95,10 @@ Modelled text-first in [target-schema.md](../data-model/target-schema.md#effects
 | Term | JP | Description |
 | --- | --- | --- |
 | Effect | 効果 | One effect block of a card's `<pre>`: an optional level scope (`Lv1・Lv2`), an optional timing and the text. Stored in `card_effects`. Block segmentation across eras and in Brave and Ultimate cards is pending #9. |
-| Timing | 発揮タイミング | When an effect is used, written in `『…』` after the level scope, e.g. `『自分のアタックステップ開始時』`. Kept as text in `card_effects.timing_ja`; a block can have none (a Nexus `Lv2` constant effect). The batspi 発揮タイミング tags outside the `<pre>` are not modelled. |
+| Timing | 発揮タイミング | When an effect is used, written in `『…』` after the level scope, e.g. `『自分のアタックステップ開始時』`. Kept as text in `card_effects.timing_jp`; a block can have none (a Nexus `Lv2` constant effect). The batspi 発揮タイミング tags outside the `<pre>` are not modelled. |
 | Keyword | | Keyword ability written as `【…】`, e.g. `【ミラージュ：…】` or `【セット中】`. Modelled as the lookup `keywords` plus an optional parameter text. Only Mirage is seen in the fixtures; the full list is pending #9. |
 | Mirage | ミラージュ | Keyword seen on the Magic fixture: `【ミラージュ：コスト2(1)(このカードは手札からセットできる)】`. The page Q&A says a card marked Mirage is placed face up in the Burst area and keeps its effects while there. The alternate cost `コスト2(1)` is stored as text, not as numbers. Rules wording to verify in #9. |
-| Flavor text | フレーバーテキスト | Story text under `フレーバーテキスト：` in the `<pre>`; no game effect. Seen on the Spirit and Nexus fixtures, absent on the Magic one. Stored on the card (`flavor_text_ja`, `flavor_text_en`); whether it varies per printing is pending #9. |
+| Flavor text | フレーバーテキスト | Story text under `フレーバーテキスト：` in the `<pre>`; no game effect. Seen on the Spirit and Nexus fixtures, absent on the Magic one. Stored on the card (`flavor_text_jp`, `flavor_text_en`); whether it varies per printing is pending #9. |
 | Main / Flash | メイン / フラッシュ | Labels of Magic effects (`メイン：`, `フラッシュ：`). `メイン：` is seen in the Magic fixture; `フラッシュ：` only in related-card blocks, so its layout is pending #9. |
 
 ## Translation and provenance

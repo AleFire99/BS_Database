@@ -91,6 +91,9 @@ Failures are of two kinds:
 | `--refresh` | Fetch again every page this run visits (index, selected sets, pending cards). Use it with `--set` and `--limit`; alone it fetches the index and all sets again, and the request budget stops it half-way. Cards that are already `parsed` are never revisited |
 | `--max-age 30d` | Fetch again cached pages older than this (`<int><unit>`, units `s m h d w`) |
 | `--limit N` | Take at most N card pages this run (cache hits count) |
+| `--retry-failed` | First give new attempts to the pages that failed with a `parse error:` (a parser fix); 404s, policy skips and transport errors keep their state |
+| `--offline` | Serve the cache only: a page that is not in it is a retryable skip, and the HTTP client (robots.txt included) is never called, so `Requests made: 0` |
+| `--reparse` | First rewind every parsed card page to `fetched`, so the run parses it again from the cache (after a parsed-schema change such as 2.0.0 to 2.1.0, [ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md)). Use it without `--set`; combine with `--offline` for a rebuild with no request |
 
 | Exit code | Meaning |
 | --- | --- |
@@ -101,14 +104,16 @@ Failures are of two kinds:
 
 ## Parsed JSON
 
+A parsed tree written under another `schema_version` is rejected by `read_card_page`; rebuild it with `bsdb scrape --offline --reparse` (and `--retry-failed` for pages that failed to parse), with no request.
+
 `data/parsed/batspi/<sha256(url)>.json`, written atomically (temp file, fsync, rename) as UTF-8 with `ensure_ascii=False`:
 
 ```json
 {
-  "schema_version": "1.1.0",
+  "schema_version": "2.1.0",
   "url": "https://batspi.com/index.php?...",
   "provenance": {"source": "batspi", "fetched_at": "2026-11-15T12:00:00+00:00", "from_cache": true},
-  "page": {"title_ja": "...", "entries": ["..."], "printings": ["..."], "images": ["..."]}
+  "page": {"title_jp": "...", "entries": ["..."], "printings": ["..."], "images": ["..."]}
 }
 ```
 

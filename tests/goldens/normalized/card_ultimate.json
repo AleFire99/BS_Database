@@ -1,0 +1,810 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E3%82%A2%E3%83%AB%E3%83%86%E3%82%A3%E3%83%A1%E3%83%83%E3%83%88%E3%83%BB%E3%82%B8%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AA%E3%83%BC%E3%83%89",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E3%82%A2%E3%83%AB%E3%83%86%E3%82%A3%E3%83%A1%E3%83%83%E3%83%88%E3%83%BB%E3%82%B8%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AA%E3%83%BC%E3%83%89",
+    "title_jp": "アルティメット・ジークフリード",
+    "entries": [
+      {
+        "number": "SD19-X01",
+        "name_jp": "アルティメット・ジークフリード",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "アルティメット",
+          "card_type_code": "ultimate",
+          "deck_limit": null,
+          "cost": 6,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "極",
+              "symbol_code": "ultimate",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "新生",
+              "code": "shinsei",
+              "en": "Incarnate",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "古竜",
+              "code": "koryuu",
+              "en": "Ancient Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 3,
+              "cores": 1,
+              "battle_points": 10000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 4,
+              "cores": 3,
+              "battle_points": 14000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 5,
+              "cores": 5,
+              "battle_points": 20000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                3,
+                4,
+                5
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "Uトリガー",
+                  "code": "u_trigger",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『このアルティメットのアタック時』",
+              "header_jp": "【Uトリガー】Lv3・Lv4・Lv5『このアルティメットのアタック時』",
+              "text_jp": "Uトリガーがヒットしたとき、相手は可能ならブロックする。\nただし、アルティメットはブロックしなくてもよい。\n相手のスピリットにブロックされたら、相手のライフのコア1個を相手のリザーブに置く。\n（Uトリガー：相手のデッキの1枚目をトラッシュに置く。そのカードのコストが、このアルティメットより低ければヒットとする）",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                4,
+                5
+              ],
+              "label": "フラッシュ",
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "真・覚醒",
+                  "code": "shin_kakusei",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『このアルティメットのアタック時』",
+              "header_jp": "Lv4・Lv5：フラッシュ【真・覚醒】『このアルティメットのアタック時』",
+              "text_jp": "自分のスピリットのコア1個をこのアルティメットに置くことで、このアルティメットをBP+3000する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": "【召喚条件：自分の赤スピリット1体以上】",
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "安達洋介",
+              "note": null
+            },
+            {
+              "name": "SUNRISE D.I.D.",
+              "note": "最強銀河究極ゼロバトルスピリッツウエハース/〃～疾風の王者～/〃～宇宙の覇者～"
+            }
+          ],
+          "concepts": [
+            {
+              "name": "石垣純哉",
+              "note": null
+            }
+          ],
+          "flavor_jp": "金に輝くドラゴン！　あいつがアルティメットか！",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      },
+      {
+        "number": "SD67-CP01",
+        "name_jp": "アルティメット・ジークフリード",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "アルティメット",
+          "card_type_code": "ultimate",
+          "deck_limit": null,
+          "cost": 6,
+          "reduction": {
+            "plain": null,
+            "parts": [
+              {
+                "symbol_jp": "全",
+                "symbol_code": "any",
+                "count": 1,
+                "variant_jp": null,
+                "color_jp": null
+              },
+              {
+                "symbol_jp": "極",
+                "symbol_code": "ultimate",
+                "count": 3,
+                "variant_jp": null,
+                "color_jp": null
+              }
+            ]
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "極",
+              "symbol_code": "ultimate",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "極契約",
+              "code": "kyoku_keiyaku",
+              "en": "Extreme Contract",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "新生",
+              "code": "shinsei",
+              "en": "Incarnate",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "古竜",
+              "code": "koryuu",
+              "en": "Ancient Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 3,
+              "cores": 1,
+              "battle_points": 10000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 4,
+              "cores": 3,
+              "battle_points": 14000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": {
+            "count_min": 5,
+            "bp_bonus": 6000
+          },
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [],
+              "label": "フラッシュ",
+              "keywords": [
+                {
+                  "bracket": "《",
+                  "name_jp": "契約煌臨",
+                  "code": "keiyaku_kourin",
+                  "parameter_jp": "極契約＆C3以上"
+                }
+              ],
+              "timing_jp": "『自分のターン』",
+              "header_jp": "フラッシュ《契約煌臨：極契約＆C3以上》『自分のターン』",
+              "text_jp": "自分の[ソウルコア]をトラッシュに置くことで、対象の自分のスピリット/アルティメットに手札から重ねる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                3,
+                4
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "Uトリガー",
+                  "code": "u_trigger",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『このアルティメットのアタック時』",
+              "header_jp": "【Uトリガー】Lv3・Lv4『このアルティメットのアタック時』",
+              "text_jp": "Uトリガーがヒットしたとき、相手のスピリット/アルティメットは可能ならブロックする。\nブロックされたとき、相手のライフのコア2個をリザーブに置く。\n（Uトリガー：相手デッキの上から1枚をトラッシュに置く。そのカードのコストが、このアルティメットより低ければヒットとする）",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                3,
+                4
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "OC中",
+                  "code": "oc_chu",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『このアルティメットのアタック時』",
+              "header_jp": "【OC中】Lv3・Lv4『このアルティメットのアタック時』",
+              "text_jp": "〔ターンに1回：同名〕このアルティメットのUトリガーがヒットしたとき、自分のトラッシュのコア1個をこのアルティメットに置くことで、このアルティメットは回復する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": "【召喚条件：魂状態/煌臨元を含む自分の赤スピリット/アルティメット1体以上】",
+          "overclock_condition_jp": "OC条件：カウント5以上",
+          "illustrators": [
+            {
+              "name": "安達洋介",
+              "note": null
+            }
+          ],
+          "concepts": [
+            {
+              "name": "石垣純哉",
+              "note": null
+            }
+          ],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "アルティメット・ジークフリード",
+        "field": "reduction",
+        "values": [
+          [
+            "SD19-X01",
+            "Reduction(plain=3, parts=())"
+          ],
+          [
+            "SD67-CP01",
+            "Reduction(plain=None, parts=(SymbolCount(symbol='全', count=1, variant=None, color=None), SymbolCount(symbol='極', count=3, variant=None, color=None)))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "アルティメット・ジークフリード",
+        "field": "families",
+        "values": [
+          [
+            "SD19-X01",
+            "('新生', '古竜')"
+          ],
+          [
+            "SD67-CP01",
+            "('極契約', '新生', '古竜')"
+          ]
+        ]
+      },
+      {
+        "name_jp": "アルティメット・ジークフリード",
+        "field": "levels",
+        "values": [
+          [
+            "SD19-X01",
+            "(Level(level=3, cores=1, battle_points=10000, count_condition=None, note=None), Level(level=4, cores=3, battle_points=14000, count_condition=None, note=None), Level(level=5, cores=5, battle_points=20000, count_condition=None, note=None))"
+          ],
+          [
+            "SD67-CP01",
+            "(Level(level=3, cores=1, battle_points=10000, count_condition=None, note=None), Level(level=4, cores=3, battle_points=14000, count_condition=None, note=None))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "アルティメット・ジークフリード",
+        "field": "overclock",
+        "values": [
+          [
+            "SD19-X01",
+            "None"
+          ],
+          [
+            "SD67-CP01",
+            "Overclock(count_min=5, bp_bonus=6000)"
+          ]
+        ]
+      },
+      {
+        "name_jp": "アルティメット・ジークフリード",
+        "field": "effects",
+        "values": [
+          [
+            "SD19-X01",
+            "(Effect(position=1, form='header', levels=(3, 4, 5), label=None, keywords=(Keyword(bracket='【', name='Uトリガー', parameter=None),), timing='『このアルティメットのアタック時』', header='【Uトリガー】Lv3・Lv4・Lv5『このアルティメットのアタック時』', text='Uトリガーがヒットしたとき、相手は可能ならブロックする。\\nただし、アルティメットはブロックしなくてもよい。\\n相手のスピリットにブロックされたら、相手のライフのコア1個を相手のリザーブに置く。\\n（Uトリガー：相手のデッキの1枚目をトラッシュに置く。そのカードのコストが、このアルティメットより低ければヒットとする）'), Effect(position=2, form='header', levels=(4, 5), label='フラッシュ', keywords=(Keyword(bracket='【', name='真・覚醒', parameter=None),), timing='『このアルティメットのアタック時』', header='Lv4・Lv5：フラッシュ【真・覚醒】『このアルティメットのアタック時』', text='自分のスピリットのコア1個をこのアルティメットに置くことで、このアルティメットをBP+3000する。'))"
+          ],
+          [
+            "SD67-CP01",
+            "(Effect(position=1, form='header', levels=(), label='フラッシュ', keywords=(Keyword(bracket='《', name='契約煌臨', parameter='極契約＆C3以上'),), timing='『自分のターン』', header='フラッシュ《契約煌臨：極契約＆C3以上》『自分のターン』', text='自分の[ソウルコア]をトラッシュに置くことで、対象の自分のスピリット/アルティメットに手札から重ねる。'), Effect(position=2, form='header', levels=(3, 4), label=None, keywords=(Keyword(bracket='【', name='Uトリガー', parameter=None),), timing='『このアルティメットのアタック時』', header='【Uトリガー】Lv3・Lv4『このアルティメットのアタック時』', text='Uトリガーがヒットしたとき、相手のスピリット/アルティメットは可能ならブロックする。\\nブロックされたとき、相手のライフのコア2個をリザーブに置く。\\n（Uトリガー：相手デッキの上から1枚をトラッシュに置く。そのカードのコストが、このアルティメットより低ければヒットとする）'), Effect(position=3, form='header', levels=(3, 4), label=None, keywords=(Keyword(bracket='【', name='OC中', parameter=None),), timing='『このアルティメットのアタック時』', header='【OC中】Lv3・Lv4『このアルティメットのアタック時』', text='〔ターンに1回：同名〕このアルティメットのUトリガーがヒットしたとき、自分のトラッシュのコア1個をこのアルティメットに置くことで、このアルティメットは回復する。'))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "アルティメット・ジークフリード",
+        "field": "summon_condition",
+        "values": [
+          [
+            "SD19-X01",
+            "'【召喚条件：自分の赤スピリット1体以上】'"
+          ],
+          [
+            "SD67-CP01",
+            "'【召喚条件：魂状態/煌臨元を含む自分の赤スピリット/アルティメット1体以上】'"
+          ]
+        ]
+      },
+      {
+        "name_jp": "アルティメット・ジークフリード",
+        "field": "overclock_condition",
+        "values": [
+          [
+            "SD19-X01",
+            "None"
+          ],
+          [
+            "SD67-CP01",
+            "'OC条件：カウント5以上'"
+          ]
+        ]
+      },
+      {
+        "name_jp": "アルティメット・ジークフリード",
+        "field": "flavor",
+        "values": [
+          [
+            "SD19-X01",
+            "'金に輝くドラゴン！\\u3000あいつがアルティメットか！'"
+          ],
+          [
+            "SD67-CP01",
+            "None"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "バトスピMAX2013",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94MAX2013",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "入場者特典",
+        "note_jp": "【灼熱のゼロ】発売日箔押し入り・先行配布",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "アルティメットデッキ【灼熱のゼロ】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%A2%E3%83%AB%E3%83%86%E3%82%A3%E3%83%A1%E3%83%83%E3%83%88%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E7%81%BC%E7%86%B1%E3%81%AE%E3%82%BC%E3%83%AD%E3%80%91",
+        "product_code": "SD19",
+        "product_type_code": "starter",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2013-09-14",
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "はじめてのバトルセット【決めろ!アルティメットトリガー】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AE%E3%83%90%E3%83%88%E3%83%AB%E3%82%BB%E3%83%83%E3%83%88%E3%80%90%E6%B1%BA%E3%82%81%E3%82%8D%21%E3%82%A2%E3%83%AB%E3%83%86%E3%82%A3%E3%83%A1%E3%83%83%E3%83%88%E3%83%88%E3%83%AA%E3%82%AC%E3%83%BC%E3%80%91",
+        "product_code": "SD21",
+        "product_type_code": "starter",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2013-09-14",
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "バトスピ部 アルティメットトリガーチャレンジ",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "金色仕様・2013/11/28頃発送",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "バトルスピリッツスペシャルスターターセット",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%E3%82%B9%E3%83%9A%E3%82%B7%E3%83%A3%E3%83%AB%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%BF%E3%83%BC%E3%82%BB%E3%83%83%E3%83%88",
+        "product_code": null,
+        "product_type_code": "starter",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "新規イラスト左向き・銀蒸着仕様",
+        "block_icon": "1",
+        "release_date": "2013-10-08",
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "バトスピ部",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E9%83%A8",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "アルティメットトリガーキャンペーン",
+        "note_jp": "左向きゴールド仕様",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "最強銀河究極ゼロバトルスピリッツウエハース",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E6%9C%80%E5%BC%B7%E9%8A%80%E6%B2%B3%E7%A9%B6%E6%A5%B5%E3%82%BC%E3%83%AD%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%E3%82%A6%E3%82%A8%E3%83%8F%E3%83%BC%E3%82%B9",
+        "product_code": null,
+        "product_type_code": "food",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2013-10-29",
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "最強銀河究極ゼロバトルスピリッツウエハース～疾風の王者～",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E6%9C%80%E5%BC%B7%E9%8A%80%E6%B2%B3%E7%A9%B6%E6%A5%B5%E3%82%BC%E3%83%AD%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%E3%82%A6%E3%82%A8%E3%83%8F%E3%83%BC%E3%82%B9%EF%BD%9E%E7%96%BE%E9%A2%A8%E3%81%AE%E7%8E%8B%E8%80%85%EF%BD%9E",
+        "product_code": null,
+        "product_type_code": "food",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2014-01-07",
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "最強銀河究極ゼロバトルスピリッツウエハース～宇宙の覇者～",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E6%9C%80%E5%BC%B7%E9%8A%80%E6%B2%B3%E7%A9%B6%E6%A5%B5%E3%82%BC%E3%83%AD%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%E3%82%A6%E3%82%A8%E3%83%8F%E3%83%BC%E3%82%B9%EF%BD%9E%E5%AE%87%E5%AE%99%E3%81%AE%E8%A6%87%E8%80%85%EF%BD%9E",
+        "product_code": null,
+        "product_type_code": "food",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2014-08-20",
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "バトスピスタートデッキ",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%88%E3%83%87%E3%83%83%E3%82%AD",
+        "product_code": null,
+        "product_type_code": "starter",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": "銀蒸着仕様",
+        "block_icon": "1",
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "最強銀河 究極ゼロ ～バトルスピリッツ～究極プレミアムBOX",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E6%9C%80%E5%BC%B7%E9%8A%80%E6%B2%B3%20%E7%A9%B6%E6%A5%B5%E3%82%BC%E3%83%AD%20%EF%BD%9E%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%EF%BD%9E%E7%A9%B6%E6%A5%B5%E3%83%97%E3%83%AC%E3%83%9F%E3%82%A2%E3%83%A0BOX",
+        "product_code": null,
+        "product_type_code": "other",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2015-03-07",
+        "section": "収録"
+      },
+      {
+        "number": "SD19-X01",
+        "product_name_jp": "バトルスピリッツ ～MUSIC DECK THE BEST～",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%20%EF%BD%9EMUSIC%20DECK%20THE%20BEST%EF%BD%9E",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "[CD+DVD]数量限定盤特典",
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2014-03-12",
+        "section": "収録"
+      },
+      {
+        "number": "SD67-CP01",
+        "product_name_jp": "バトスピドリームデッキ【究極の新星】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E3%83%89%E3%83%AA%E3%83%BC%E3%83%A0%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E7%A9%B6%E6%A5%B5%E3%81%AE%E6%96%B0%E6%98%9F%E3%80%91",
+        "product_code": "SD67",
+        "product_type_code": "starter",
+        "rarity_jp": "CP",
+        "rarity_code": "CP",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "10",
+        "release_date": "2023-09-23",
+        "section": "収録"
+      },
+      {
+        "number": "SD67-CP01",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "10",
+        "release_date": null,
+        "section": "ブロックアイコン"
+      }
+    ],
+    "images": [
+      {
+        "number": "SD19-X01",
+        "large_url": "https://batspi.com/card/SD/SD19-X01-2.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD19-X01-2.jpg",
+        "caption": [
+          "アルティメットデッキ【灼熱のゼロ】"
+        ]
+      },
+      {
+        "number": "SD19-X01",
+        "large_url": "https://batspi.com/card/SD/SD19-X01-3.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD19-X01-3.jpg",
+        "caption": [
+          "はじめてのバトルセット【決めろ!アルティメットトリガー】",
+          "レイデッキ"
+        ]
+      },
+      {
+        "number": "SD19-X01",
+        "large_url": "https://batspi.com/card/SD/SD19-X01-4.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD19-X01-4.jpg",
+        "caption": []
+      },
+      {
+        "number": "SD19-X01",
+        "large_url": "https://batspi.com/card/SD/SD19-X01-6.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD19-X01-6.jpg",
+        "caption": []
+      },
+      {
+        "number": "SD19-X01",
+        "large_url": "https://batspi.com/card/SD/SD19-X01-7.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD19-X01-7.jpg",
+        "caption": []
+      },
+      {
+        "number": "SD19-X01",
+        "large_url": "https://batspi.com/card/SD/SD19-X01-8.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD19-X01-8.jpg",
+        "caption": []
+      },
+      {
+        "number": "SD19-X01",
+        "large_url": "https://batspi.com/card/SD/SD19-X01.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD19-X01.jpg",
+        "caption": [
+          "バトスピMAX2013入場者特典"
+        ]
+      },
+      {
+        "number": "SD19-X01",
+        "large_url": "https://batspi.com/card/SD/SD19-X01-5.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD19-X01-5.jpg",
+        "caption": [
+          "バトルスピリッツ ～MUSIC DECK THE BEST～[CD+DVD]数量限定盤特典"
+        ]
+      },
+      {
+        "number": "SD19-X01",
+        "large_url": "https://batspi.com/card/SD/SD19-X01-9.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD19-X01-9.jpg",
+        "caption": [
+          "最強銀河 究極ゼロ ～バトルスピリッツ～究極プレミアムBOX"
+        ]
+      },
+      {
+        "number": "SD67-CP01",
+        "large_url": "https://batspi.com/card/SD/SD67-CP01.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD67-CP01.jpg",
+        "caption": [
+          "バトスピドリームデッキ【究極の新星】"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

@@ -27,6 +27,7 @@ from bs_database.db import (
 )
 
 GOLDENS = Path(__file__).parent / "goldens"
+LEGACY_JSON = Path(__file__).parent / "fixtures" / "legacy" / "card_json"
 
 
 @pytest.fixture(scope="module")
@@ -38,7 +39,7 @@ def golden() -> dict[str, Any]:
 @pytest.fixture
 def built(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> sqlite3.Connection:
     with caplog.at_level(logging.WARNING, logger="bs_database.db"):
-        build_db(GOLDENS / "normalized", tmp_path / "out.db")
+        build_db(LEGACY_JSON, tmp_path / "out.db")
     con = sqlite3.connect(tmp_path / "out.db")
     return con
 
@@ -128,7 +129,7 @@ def test_get_colors_from_symbol() -> None:
 
 def test_build_db_does_not_mutate_input(tmp_path: Path) -> None:
     src = tmp_path / "in"
-    shutil.copytree(GOLDENS / "normalized", src)
+    shutil.copytree(LEGACY_JSON, src)
     build_db(src, tmp_path / "o.db")
     assert sorted(p.name for p in tmp_path.iterdir()) == ["in", "o.db"]
 

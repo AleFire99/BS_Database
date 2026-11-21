@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E7%A6%81%E5%BF%8C%E3%81%AE%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A0",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E7%A6%81%E5%BF%8C%E3%81%AE%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A0",
+    "title_jp": "禁忌のエクストリーム",
+    "entries": [
+      {
+        "number": "EXG5-002",
+        "name_jp": "禁忌のエクストリーム",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "マジック",
+          "card_type_code": "magic",
+          "deck_limit": null,
+          "cost": 0,
+          "reduction": {
+            "plain": 0,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "紫",
+              "code": "purple"
+            }
+          ],
+          "symbols": [],
+          "families": [],
+          "levels": [],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このカードは、自分のターンでは使用できず、効果発揮後ゲームから除外される。\nこのカードは、相手によって自分のデッキが0枚になったとき、次の効果をただちに使用できる。\n■自分のトラッシュと除外されたカードすべてをデッキに戻してシャッフルする。その後、このターンの間、相手のスピリット/アルティメット/ネクサスすべてのコストを+2する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [],
+          "concepts": [],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "EXG5-002",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      }
+    ],
+    "images": [],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

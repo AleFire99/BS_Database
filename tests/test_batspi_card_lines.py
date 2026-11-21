@@ -15,17 +15,24 @@ from bs_database.parsers.errors import ParseError
 @pytest.mark.parametrize(
     ("line", "expected"),
     [
-        ("スピリット", ("スピリット", None)),
-        ("スピリット ", ("スピリット", None)),
-        ("ネクサス(制限カード<1>)", ("ネクサス", 1)),
-        ("アルティメット", ("アルティメット", None)),
+        ("スピリット", ("スピリット", None, None, None)),
+        ("スピリット ", ("スピリット", None, None, None)),
+        ("ネクサス(制限カード<1>)", ("ネクサス", 1, None, None)),
+        ("アルティメット", ("アルティメット", None, None, None)),
+        ("契約スピリット", ("スピリット", None, "契約", None)),
+        ("契約ネクサス", ("ネクサス", None, "契約", None)),
+        ("契約アルティメット", ("アルティメット", None, "契約", None)),
+        ("トークンネクサス", ("ネクサス", None, "トークン", None)),
+        ("スピリット(闇)", ("スピリット", None, None, "闇")),
+        ("スピリット(禁止カード)", ("スピリット", None, None, "禁止カード")),
+        ("スピリット(光)(制限カード<1>)", ("スピリット", 1, None, "光")),
     ],
 )
-def test_type_line(line: str, expected: tuple[str, int | None]) -> None:
+def test_type_line(line: str, expected: tuple[str, int | None, str | None, str | None]) -> None:
     assert parse_type_line(line) == expected
 
 
-@pytest.mark.parametrize("line", ["コスト", "スピリットX", ""])
+@pytest.mark.parametrize("line", ["コスト", "スピリットX", "", "スピリット()", "契約マジックX"])
 def test_type_line_errors(line: str) -> None:
     with pytest.raises(ParseError):
         parse_type_line(line)
@@ -56,6 +63,12 @@ def sc(*pairs: tuple[str, int]) -> tuple[SymbolCount, ...]:
         ),
         ("1(1)/赤紫緑白黄青", (1, Reduction(1, ()), tuple("赤紫緑白黄青"), ())),
         ("0(0)/白/絶晶神", (0, Reduction(0, ()), ("白",), ("絶晶神",))),
+        # #108: colourless card, trailing blank, stray trailing slash
+        ("15(0)/(なし)", (15, Reduction(0, ()), (), ())),
+        ("4(2)/青 ", (4, Reduction(2, ()), ("青",), ())),
+        ("4(2)/白/", (4, Reduction(2, ()), ("白",), ())),
+        ("3(紫1極1)/紫 ", (3, Reduction(None, sc(("紫", 1), ("極", 1))), ("紫",), ())),
+        ("2(1)/白/眷属 ", (2, Reduction(1, ()), ("白",), ("眷属",))),
     ],
 )
 def test_cost_line(line: str, expected: object) -> None:
@@ -82,6 +95,25 @@ def test_cost_line_errors(line: str) -> None:
             ((Level(3, 1, 10000), Level(4, 3, 14000)), None, Overclock(5, 6000)),
         ),
         ("<0>Lv1 3000 <0>合体+3000", ((Level(1, 0, 3000),), 3000, None)),
+        ("<1>Lv1 5000 <0>合体 +5000", ((Level(1, 1, 5000),), 5000, None)),
+        (
+            "<1>Lv1 6000 <5>Lv2/真界放 10000",
+            ((Level(1, 1, 6000), Level(2, 5, 10000, None, "真界放")), None, None),
+        ),
+        (
+            "<1>Lv3 12000 <7> Lv6 30000",
+            ((Level(3, 1, 12000), Level(6, 7, 30000)), None, None),
+        ),
+        ("<1>Lv1 X0000", ((Level(1, 1, None, None, "X0000"),), None, None)),
+        (
+            "<0>Lv1 <C2>Lv2",
+            ((Level(1, 0, None), Level(2, None, None, "C2", None)), None, None),
+        ),
+        (
+            "<1>Lv1 7000 <2>条件:赤赤 Lv2 9000",
+            ((Level(1, 1, 7000), Level(2, 2, 9000, "条件:赤赤", None)), None, None),
+        ),
+        ("<1>Lv1　3000 <3>Lv2　5000", ((Level(1, 1, 3000), Level(2, 3, 5000)), None, None)),
     ],
 )
 def test_level_line(line: str, expected: object) -> None:
@@ -103,6 +135,13 @@ def test_level_line_errors(line: str) -> None:
         ("シンボル：極", sc(("極", 1))),
         ("シンボル：赤赤", sc(("赤", 2))),
         ("シンボル：赤2", sc(("赤", 2))),
+        ("シンボル：EX赤", (SymbolCount("赤", 1, "EX"),)),
+        ("シンボル：EX赤 赤", (SymbolCount("赤", 1, "EX"), SymbolCount("赤", 1))),
+        (
+            "シンボル：神(青)神(白)",
+            (SymbolCount("神", 1, None, "青"), SymbolCount("神", 1, None, "白")),
+        ),
+        ("シンボル：神(青)神(青)", (SymbolCount("神", 2, None, "青"),)),
     ],
 )
 def test_symbol_line(line: str, expected: object) -> None:
@@ -113,3 +152,9 @@ def test_symbol_line(line: str, expected: object) -> None:
 def test_symbol_line_errors(line: str) -> None:
     with pytest.raises(ParseError):
         parse_symbol_line(line)
+
+
+def test_families_split_on_the_half_width_middle_dot() -> None:
+    # 歌鳥･漂精 uses U+FF65 instead of U+30FB (#109)
+    assert parse_cost_line("4(2)/緑/歌鳥･漂精")[3] == ("歌鳥", "漂精")
+    assert parse_cost_line("4(2)/緑/歌鳥・漂精")[3] == ("歌鳥", "漂精")

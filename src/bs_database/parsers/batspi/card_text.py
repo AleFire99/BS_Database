@@ -9,25 +9,29 @@ import re
 from collections.abc import Collection, Sequence
 from dataclasses import dataclass, field
 
-from bs_database.parsers.card_models import CardText, Credit, Effect, Keyword
+from bs_database.parsers.card_models import CardText, Credit, Effect, Keyword, RoleCredit
 from bs_database.parsers.errors import ParseError
 
 log = logging.getLogger(__name__)
 
 _BRACKET = r"【[^】]*】|《[^》]*》"
 _HEADER_RE = re.compile(
-    rf"^(?P<pre>(?:{_BRACKET})*)(?P<lv>Lv\d+(?:[・･]Lv\d+)*)?：?"
-    rf"(?P<label>(?:メイン|フラッシュ))?：?(?P<post>(?:{_BRACKET})*)"
-    r"(?P<param>〔[^〕]*〕)?(?P<timing>『[^』]*』)?$"
+    rf"^(?P<pre>(?:{_BRACKET})*)(?P<lv>Lv\d+(?:[・･]Lv\d+)*)?\s*[：:]?\s*"
+    rf"(?P<label>(?:メイン|フラッシュ))?[：:]?(?P<post>(?:{_BRACKET})*)"
+    r"(?P<param>〔[^〕]*〕)?(?P<timing>『[^』]*』)?"
+    rf"(?P<post2>(?:{_BRACKET})*)(?P<param2>〔[^〕]*〕)?$"
 )
+_PARAM_SEP_RE = re.compile("[：:]")
 _BRACKET_RE = re.compile(rf"({_BRACKET})")
 _LEVEL_SCOPE_RE = re.compile(r"Lv(\d+)")
 _LEVEL_LIKE_RE = re.compile(r"^Lv\d+(?:[・･：『【《]|$)")
 _SYMBOL_PREFIX = "シンボル："
-_CONCEPT_PREFIX = "コンセプト："
-_ILLUSTRATOR_PREFIX = "イラスト："
 _FLAVOR_PREFIX = "フレーバーテキスト："
-_TRAILER_PREFIXES = (_SYMBOL_PREFIX, _CONCEPT_PREFIX, _ILLUSTRATOR_PREFIX, _FLAVOR_PREFIX)
+_ILLUSTRATOR = "イラスト"
+_CONCEPT = "コンセプト"
+_OTHER_ROLES = ("プロデュース", "ペイント", "書", "写真", "コラボレート")
+_CREDIT_RE = re.compile(rf"^(?P<role>{'|'.join((_ILLUSTRATOR, _CONCEPT, *_OTHER_ROLES))})[：:]")
+_TRAILER_RE = re.compile(rf"^(?:{_SYMBOL_PREFIX}|{_FLAVOR_PREFIX}|(?:{_CREDIT_RE.pattern[1:]}))")
 _PAIRS = {")": "(", "）": "（"}
 _SIDE_RE = re.compile(r"^(?:(?:右|左)?合体条件：|OC条件：|【召喚条件：.*】$)")
 
@@ -60,7 +64,12 @@ class _Block:
 def _keywords(text: str) -> tuple[Keyword, ...]:
     keywords: list[Keyword] = []
     for token in _BRACKET_RE.findall(text):
-        name, _, parameter = token[1:-1].partition("：")
+        # Name and parameter split on a full-width or ASCII colon; a 《…》 keyword nested
+        # in 【…】 keeps no inner brackets (【《バースト封印》：…】, #109).
+        parts = _PARAM_SEP_RE.split(token[1:-1], maxsplit=1)
+        name, parameter = parts[0], (parts[1] if len(parts) > 1 else None)
+        if token[0] == "【" and name.startswith("《") and name.endswith("》"):
+            name = name[1:-1]
         keywords.append(Keyword(token[0], name, parameter or None))
     return tuple(keywords)
 
@@ -119,7 +128,7 @@ def parse_body(
                 "keyword_line" if standalone else "header",
                 scope,
                 match.group("label"),
-                _keywords(match.group("pre") + match.group("post")),
+                _keywords(match.group("pre") + match.group("post") + match.group("post2")),
                 match.group("timing"),
                 line,
             )
@@ -137,7 +146,7 @@ def parse_body(
 def split_trailer(lines: Sequence[str]) -> tuple[Sequence[str], Sequence[str]]:
     """Split card lines into the effect body and the trailer (symbols, credits, flavour)."""
     for index, line in enumerate(lines):
-        if line.startswith(_TRAILER_PREFIXES):
+        if _TRAILER_RE.match(line):
             return lines[:index], lines[index:]
     return lines, ()
 
@@ -168,24 +177,35 @@ def _credit(text: str, kind: str, context: str) -> Credit:
 
 def parse_trailer(
     lines: Sequence[str], context: str = ""
-) -> tuple[tuple[Credit, ...], tuple[Credit, ...], str | None, str | None]:
-    """Return ``(illustrators, concepts, flavor, flavor_note)`` from the trailer lines.
+) -> tuple[tuple[Credit, ...], tuple[Credit, ...], str | None, str | None, tuple[RoleCredit, ...]]:
+    """Return ``(illustrators, concepts, flavor, flavor_note, other_credits)`` from the trailer.
 
-    The ``シンボル：`` line is read elsewhere (#70) and skipped. The flavour runs to the
-    end of the block with its source line breaks; any other non-blank line is an error.
+    The ``シンボル：`` line is read elsewhere (#70) and skipped. Credit labels take a full-width
+    or ASCII colon. An ``イラスト：`` with nothing after it gives no credit, with a warning. The
+    flavour runs to the end of the block with its source line breaks; any other non-blank line
+    is an error.
     """
     illustrators: list[Credit] = []
     concepts: list[Credit] = []
+    others: list[RoleCredit] = []
     flavor: str | None = None
     note: str | None = None
     for index, raw in enumerate(lines):
         line = raw.rstrip()
         if not line or line.startswith(_SYMBOL_PREFIX):
             continue
-        if line.startswith(_ILLUSTRATOR_PREFIX):
-            illustrators.append(_credit(line[len(_ILLUSTRATOR_PREFIX) :], "illustrator", context))
-        elif line.startswith(_CONCEPT_PREFIX):
-            concepts.append(_credit(line[len(_CONCEPT_PREFIX) :], "concept", context))
+        credit = _CREDIT_RE.match(line)
+        if credit is not None:
+            role, text = credit.group("role"), line[credit.end() :]
+            if role == _ILLUSTRATOR and not text.strip():
+                log.warning("empty illustrator ignored: %s field=illustrators", context)
+            elif role == _ILLUSTRATOR:
+                illustrators.append(_credit(text, "illustrator", context))
+            elif role == _CONCEPT:
+                concepts.append(_credit(text, "concept", context))
+            else:
+                found = _credit(text, role, context)
+                others.append(RoleCredit(role, found.name, found.note))
         elif line.startswith(_FLAVOR_PREFIX):
             head = line[len(_FLAVOR_PREFIX) :].strip()
             outer, inner = split_note(head)
@@ -195,12 +215,14 @@ def parse_trailer(
             break
         else:
             raise ParseError(f"unexpected trailer line {line!r} in {context}")
-    return tuple(illustrators), tuple(concepts), flavor, note
+    return tuple(illustrators), tuple(concepts), flavor, note, tuple(others)
 
 
 def parse_card_text(lines: Sequence[str], levels: Collection[int], context: str) -> CardText:
     """Parse the lines after the level line (or cost line for Magic) into a CardText."""
     body, trailer = split_trailer(lines)
     effects, fusion, summon, overclock = parse_body(body, levels, context)
-    illustrators, concepts, flavor, note = parse_trailer(trailer, context)
-    return CardText(effects, fusion, summon, overclock, illustrators, concepts, flavor, note)
+    illustrators, concepts, flavor, note, others = parse_trailer(trailer, context)
+    return CardText(
+        effects, fusion, summon, overclock, illustrators, concepts, flavor, note, others
+    )

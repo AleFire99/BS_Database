@@ -1,0 +1,309 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E3%82%B4%E3%83%A9%E3%83%89%E3%83%B3",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E3%82%B4%E3%83%A9%E3%83%89%E3%83%B3",
+    "title_jp": "ゴラドン",
+    "entries": [
+      {
+        "number": "BS01-001",
+        "name_jp": "ゴラドン",
+        "name_en": "Goradon",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 0,
+          "reduction": {
+            "plain": 0,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "爬獣",
+              "code": "reptile_beast",
+              "en": "Reptile Beast",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 1000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 3,
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "丸山浩",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "いけすかない竜人たち。乱暴極まる恐竜たち。\n間にはさまれ迷ったやつらは、\n両方の使いっ走りになることを選んじまった。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      },
+      {
+        "number": "BSC22-001",
+        "name_jp": "ゴラドン",
+        "name_en": "Goradon",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 0,
+          "reduction": {
+            "plain": 0,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "爬獣",
+              "code": "reptile_beast",
+              "en": "Reptile Beast",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 2000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 3,
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "丸山浩",
+              "note": null
+            }
+          ],
+          "concepts": [
+            {
+              "name": "丸山浩",
+              "note": null
+            }
+          ],
+          "flavor_jp": "いけすかない竜人たち。乱暴極まる恐竜たち。\n間にはさまれ迷ったやつらは、\n両方の使いっ走りになることを選んじまった。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "ゴラドン",
+        "field": "levels",
+        "values": [
+          [
+            "BS01-001",
+            "(Level(level=1, cores=1, battle_points=1000, count_condition=None, note=None), Level(level=2, cores=3, battle_points=3000, count_condition=None, note=None))"
+          ],
+          [
+            "BSC22-001",
+            "(Level(level=1, cores=1, battle_points=2000, count_condition=None, note=None), Level(level=2, cores=3, battle_points=5000, count_condition=None, note=None))"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "BS01-001",
+        "product_name_jp": "第一弾",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E7%AC%AC%E4%B8%80%E5%BC%BE",
+        "product_code": "BS01",
+        "product_type_code": "booster",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2008-09-13",
+        "section": "収録"
+      },
+      {
+        "number": "BS01-001",
+        "product_name_jp": "Xレアパック 【龍皇ジークフリード】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?X%E3%83%AC%E3%82%A2%E3%83%91%E3%83%83%E3%82%AF%20%E3%80%90%E9%BE%8D%E7%9A%87%E3%82%B8%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AA%E3%83%BC%E3%83%89%E3%80%91",
+        "product_code": "BSC01",
+        "product_type_code": "booster",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2010-03-18",
+        "section": "収録"
+      },
+      {
+        "number": "BS01-001",
+        "product_name_jp": "ケロケロスターター",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%B1%E3%83%AD%E3%82%B1%E3%83%AD%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%BF%E3%83%BC",
+        "product_code": null,
+        "product_type_code": "starter",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2008-08-26",
+        "section": "収録"
+      },
+      {
+        "number": "BSC22-001",
+        "product_name_jp": "リバイバルブースター【龍皇再誕】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%AA%E3%83%90%E3%82%A4%E3%83%90%E3%83%AB%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90%E9%BE%8D%E7%9A%87%E5%86%8D%E8%AA%95%E3%80%91",
+        "product_code": "BSC22",
+        "product_type_code": "booster",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "2",
+        "release_date": "2015-12-19",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS01-001",
+        "large_url": "https://batspi.com/card/BS0/BS01-001.jpg",
+        "small_url": "https://batspi.com/card/BS0/small/BS01-001.jpg",
+        "caption": [
+          "第一弾"
+        ]
+      },
+      {
+        "number": "BS01-001",
+        "large_url": "https://batspi.com/card/BS0/BS01-001-2.jpg",
+        "small_url": "https://batspi.com/card/BS0/small/BS01-001-2.jpg",
+        "caption": [
+          "Xレアパック 【龍皇ジークフリード】"
+        ]
+      },
+      {
+        "number": "BS01-001",
+        "large_url": "https://batspi.com/card/BS0/BS01-001-3.jpg",
+        "small_url": "https://batspi.com/card/BS0/small/BS01-001-3.jpg",
+        "caption": []
+      },
+      {
+        "number": "BSC22-001",
+        "large_url": "https://batspi.com/card/BSC/BSC22-001.jpg",
+        "small_url": "https://batspi.com/card/BSC/small/BSC22-001.jpg",
+        "caption": [
+          "リバイバルブースター【龍皇再誕】"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

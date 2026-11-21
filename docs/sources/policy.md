@@ -137,7 +137,7 @@ This is the project's position, not legal advice.
 
 | # | Requirement | Setting or behaviour |
 | --- | --- | --- |
-| R1 | One shared HTTP client used by every scraper, with no direct `requests.get` calls. Before #66 there were 7 such calls in 5 legacy modules ([`scrapers/`](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/)), now removed | `http` module |
+| R1 | One shared HTTP client used by every scraper (batspi traffic only), with no direct `requests.get` calls. Before #66 there were 7 such calls in 5 legacy modules ([`scrapers/`](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/)), now removed | `http` module |
 | R2 | robots.txt check per run, plus the deny list | §3.1 |
 | R3 | `request_delay` default `3.0`, minimum `1.0`; `max_requests` default `1000` | [settings.py](../../src/bs_database/settings.py) |
 | R4 | `user_agent` setting with the fixed format | §3.3 |

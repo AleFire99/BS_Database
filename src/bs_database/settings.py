@@ -12,13 +12,15 @@ _DEFAULT_DATA_DIR = Path("data")
 
 # field name -> path relative to data_dir, used when the field is not set explicitly
 _DERIVED_PATHS = {
-    "json_dir": "json",
     "images_dir": "images",
     "db_path": "battle_spirits.db",
-    "family_mapping_path": "family_mapping.txt",
+    "glossary_dir": "glossary",
     "cache_dir": "cache/html",
     "state_db_path": "state/ingest.db",
     "parsed_dir": "parsed",
+    "normalized_dir": "normalized",
+    "translation_cache_path": "cache/translations.sqlite",
+    "mt_model_dir": "models/quickmt-ja-en",
 }
 
 
@@ -34,13 +36,15 @@ class Settings(BaseSettings):
 
     data_dir: Path = _DEFAULT_DATA_DIR
     # The paths below default to locations under ``data_dir`` (see ``_derive_paths``).
-    json_dir: Path = Path()
     images_dir: Path = Path()
     db_path: Path = Path()
-    family_mapping_path: Path = Path()
+    glossary_dir: Path = Path()
     cache_dir: Path = Path()
     state_db_path: Path = Path()
     parsed_dir: Path = Path()
+    normalized_dir: Path = Path()
+    translation_cache_path: Path = Path()
+    mt_model_dir: Path = Path()  # the quickmt ja-en model files (git-ignored)
     batspi_url: str = "https://batspi.com/"
     user_agent: str = f"bs-database/{__version__} (+https://github.com/AleFire99/BS_Database)"
     request_delay: float = Field(default=3.0, ge=1.0)

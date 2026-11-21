@@ -407,7 +407,7 @@ def test_spirit_printing_values() -> None:
 def test_nexus_second_printing_and_note() -> None:
     first, second = printings_of("card_nexus", "BS72-069")
     assert (first.rarity, first.product_code, first.release_date) == ("C", "BS72", "2025-05-17")
-    assert (second.rarity, second.note_ja, second.product_code, second.release_date) == (
+    assert (second.rarity, second.note_jp, second.product_code, second.release_date) == (
         "C",
         "フルアート版",
         "BS74",
@@ -417,13 +417,13 @@ def test_nexus_second_printing_and_note() -> None:
 
 def test_block_only_rows() -> None:
     extra = printings_of("card_magic", "BS72-075")[-1]
-    assert (extra.product_name_ja, extra.rarity, extra.section) == (
+    assert (extra.product_name_jp, extra.rarity, extra.section) == (
         "バトルスキーイベント提供記念品",
         None,
         "ブロックアイコン",
     )
     promo = printings_of("card_ultimate", "SD67-CP01")[-1]
-    assert (promo.product_name_ja, promo.block_icon, promo.rarity) == (
+    assert (promo.product_name_jp, promo.block_icon, promo.rarity) == (
         "プロモーションカード",
         "10",
         None,
@@ -432,22 +432,22 @@ def test_block_only_rows() -> None:
 
 def test_ultimate_detail_and_unlinked_rows() -> None:
     rows = printings_of("card_ultimate", "SD19-X01")
-    max2013 = next(p for p in rows if p.product_name_ja == "バトスピMAX2013")
-    assert (max2013.detail_ja, max2013.rarity, max2013.note_ja) == (
+    max2013 = next(p for p in rows if p.product_name_jp == "バトスピMAX2013")
+    assert (max2013.detail_jp, max2013.rarity, max2013.note_jp) == (
         "入場者特典",
         "X",
         "【灼熱のゼロ】発売日箔押し入り・先行配布",
     )
-    club = next(p for p in rows if p.product_name_ja == "バトスピ部")
-    assert (club.detail_ja, club.rarity, club.note_ja) == (
+    club = next(p for p in rows if p.product_name_jp == "バトスピ部")
+    assert (club.detail_jp, club.rarity, club.note_jp) == (
         "アルティメットトリガーキャンペーン",
         "X",
         "左向きゴールド仕様",
     )
     unlinked = next(
-        p for p in rows if p.product_name_ja == "バトスピ部 アルティメットトリガーチャレンジ"
+        p for p in rows if p.product_name_jp == "バトスピ部 アルティメットトリガーチャレンジ"
     )
-    assert (unlinked.product_href, unlinked.rarity, unlinked.note_ja) == (
+    assert (unlinked.product_href, unlinked.rarity, unlinked.note_jp) == (
         None,
         None,
         "金色仕様・2013/11/28頃発送",
@@ -459,44 +459,44 @@ def test_second_distribution_does_not_inherit_the_first_date() -> None:
     rows = [
         p
         for p in printings_of("card_nexus_soukaishin", "BS44-X07")
-        if p.product_name_ja == "メガデッキ【太陽神の顕現】"
+        if p.product_name_jp == "メガデッキ【太陽神の顕現】"
     ]
     assert [(p.rarity, p.product_code, p.release_date) for p in rows] == [
         ("X", "SD68", "2024-03-30"),
         (None, None, None),
     ]
-    assert rows[1].note_ja == "SECRETデザイン"
+    assert rows[1].note_jp == "SECRETデザイン"
 
 
 def test_flip_faces_get_one_row_each() -> None:
     a = printings_of("card_flip", "BS52-TX01(A)")
     b = printings_of("card_flip", "BS52-TX01(B)")
-    assert [p.product_name_ja for p in a] == [p.product_name_ja for p in b]
+    assert [p.product_name_jp for p in a] == [p.product_name_jp for p in b]
     assert (a[0].rarity, a[0].product_code, a[0].block_icon, a[0].release_date) == (
         "転醒X",
         "BS52",
         "7",
         "2020-04-25",
     )
-    assert a[1].note_ja == "パラレルあり"
+    assert a[1].note_jp == "パラレルあり"
 
 
 def test_promo_labels_resolve_per_number() -> None:
     p001 = printings_of("card_promo", "P001")
     assert (p001[0].rarity, p001[0].block_icon, p001[0].release_date) == ("P", "7", None)
-    assert p001[1].product_name_ja == "「バトルスピリッツ専用バインダー」付属"
+    assert p001[1].product_name_jp == "「バトルスピリッツ専用バインダー」付属"
     assert p001[1].product_href is None
     (ex001,) = [p for p in printings_of("card_promo", "EX001") if p.section == "収録"]
     assert (ex001.rarity, ex001.product_code, ex001.release_date) == ("EX", "BSC01", "2010-03-18")
     p2019 = printings_of("card_promo", "P20-19")
-    assert [p.detail_ja for p in p2019] == [None, "2021年4月参加記念品", "2021年8月参加記念品"]
+    assert [p.detail_jp for p in p2019] == [None, "2021年4月参加記念品", "2021年8月参加記念品"]
 
 
 def test_magic_flash_unmatched_rarity_and_dates() -> None:
     rows = printings_of("card_magic_flash", "BS01-117")
-    assert (rows[0].product_name_ja, rows[0].rarity) == ("ケロケロスターター", "C")
+    assert (rows[0].product_name_jp, rows[0].rarity) == ("ケロケロスターター", "C")
     assert all(p.rarity == "C" for p in rows)
-    first = next(p for p in rows if p.product_name_ja == "第一弾")
+    first = next(p for p in rows if p.product_name_jp == "第一弾")
     assert (first.product_code, first.release_date) == ("BS01", "2008-09-13")
     revival = printings_of("card_magic_flash", "BSC22-117")
     assert any(p.product_code == "BSC22" and p.block_icon == "2" for p in revival)
@@ -570,5 +570,5 @@ def test_image_urls_are_read_not_built(stem: str) -> None:
 def test_page_round_trips_through_json(stem: str) -> None:
     page = parse(stem)
     data = json.loads(json.dumps(dataclasses.asdict(page), ensure_ascii=False))
-    assert data["schema_version"] == "1.1.0"
+    assert data["schema_version"] == "2.1.0"
     assert len(data["printings"]) == len(page.printings)

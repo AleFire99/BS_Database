@@ -39,7 +39,7 @@ def test_row_shapes() -> None:
         "バトスピ部 チャレンジ (金色仕様)</p>"
     )
     got = run(page(rows), ["A-001"])
-    assert [(p.product_name_ja, p.detail_ja, p.rarity, p.note_ja) for p in got] == [
+    assert [(p.product_name_jp, p.detail_jp, p.rarity, p.note_jp) for p in got] == [
         ("契約編", None, "R", "SECRETあり"),
         ("バトスピMAX", "入場者特典", "X", "【ゼロ】先行(配布)"),
         ("メガデッキ", "記念品", None, "SECRETデザイン"),
@@ -57,7 +57,7 @@ def test_list_shape_with_labels() -> None:
         '<li><strong>A-002</strong><br/><a href="x">P2</a> &lt;R&gt;</li></ul>'
     )
     got = run(page(rows), ["A-001", "A-002"])
-    assert [(p.number, p.product_name_ja) for p in got] == [("A-001", "P1"), ("A-002", "P2")]
+    assert [(p.number, p.product_name_jp) for p in got] == [("A-001", "P1"), ("A-002", "P2")]
 
 
 def test_nested_promo_list_shape() -> None:
@@ -66,7 +66,7 @@ def test_nested_promo_list_shape() -> None:
         '<a href="x">P</a> &lt;P&gt;<br/>付属品</li></ul></li></ul>'
     )
     got = run(page(rows), ["P1"])
-    assert [(p.product_name_ja, p.product_href) for p in got] == [
+    assert [(p.product_name_jp, p.product_href) for p in got] == [
         ("P", "https://batspi.com/x"),
         ("付属品", None),
     ]
@@ -87,16 +87,26 @@ def test_face_less_label_fans_out_and_exact_label_does_not() -> None:
         '<li><strong>F-01(A)</strong><br/><a href="x">Q</a> &lt;C&gt;</li></ul>'
     )
     got = run(page(rows), ["F-01(A)", "F-01(B)"])
-    assert [(p.number, p.product_name_ja) for p in got] == [
+    assert [(p.number, p.product_name_jp) for p in got] == [
         ("F-01(A)", "P"),
         ("F-01(B)", "P"),
         ("F-01(A)", "Q"),
     ]
 
 
-def test_missing_label_on_multi_number_page_raises() -> None:
-    with pytest.raises(ParseError, match="without a card number"):
-        run(page('<p><a href="x">P</a> &lt;C&gt;</p>'), ["A-001", "A-002"])
+def test_missing_label_on_multi_number_page_attaches_to_all_and_warns(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Decision 3 of #108: a row with no number is attached to every number of the page."""
+    with caplog.at_level(logging.WARNING, logger=LOGGER):
+        printings = run(page('<p><a href="x">P</a> &lt;C&gt;</p>'), ["A-001", "A-002"])
+    assert [(p.number, p.product_name_jp) for p in printings] == [("A-001", "P"), ("A-002", "P")]
+    assert "attached to all numbers" in caplog.text
+
+
+def test_row_with_a_number_in_its_text_goes_to_that_number() -> None:
+    printings = run(page('<p><a href="x">P</a> &lt;C&gt; (A-002)</p>'), ["A-001", "A-002"])
+    assert [p.number for p in printings] == ["A-002"]
 
 
 def test_block_icon_join_and_formats() -> None:
@@ -227,7 +237,7 @@ def test_one_unresolvable_row_still_only_warns(caplog: pytest.LogCaptureFixture)
     )
     with caplog.at_level(logging.WARNING, logger=LOGGER):
         got = run(page(rows), ["A-001"])
-    assert [p.product_name_ja for p in got] == ["Q"]
+    assert [p.product_name_jp for p in got] == ["Q"]
     assert "Z-999" in caplog.text
 
 
@@ -242,4 +252,12 @@ def test_block_join_normalises_product_names() -> None:
     blocks = f'[BS01]{ES}<a href="b">ＢＳ　Ｐ１</a>{ES}(A-001){ES}ブロックアイコン:&lt;3&gt;{ES}'
     rows = '<p><a href="x">BS P1</a> &lt;C&gt;</p>'
     (got,) = run(page(rows, blocks), ["A-001"])
-    assert (got.product_name_ja, got.product_code, got.block_icon) == ("BS P1", "BS01", "3")
+    assert (got.product_name_jp, got.product_code, got.block_icon) == ("BS P1", "BS01", "3")
+
+
+def test_image_without_a_caption_still_raises_unless_it_is_a_placeholder() -> None:
+    html = '<ul class="ppy-imglist"><li><a href="/card/x.jpg"><img src="/s.jpg"/></a></li></ul>'
+    with pytest.raises(ParseError, match="without a caption"):
+        parse_images(BeautifulSoup(html, "html.parser"), URL, ["A-001"])
+    placeholder = html.replace("/card/x.jpg", "/card/BS7/NOTFOUND.jpg")
+    assert parse_images(BeautifulSoup(placeholder, "html.parser"), URL, ["A-001"]) == ()

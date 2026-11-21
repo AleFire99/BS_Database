@@ -32,8 +32,8 @@ Naming, lookups and keys follow [ADR 0003](0003-naming-and-schema-versioning.md)
 
 ## Options considered
 
-1. **Per-column `_ja` / `_en` with per-row translation metadata.** Each translatable text has an `X_ja` and an `X_en` column. Each row with English text carries `en_source_id` and `en_status_id` pointing to two small lookups.
-   - Pros: plain SQL with no extra joins; foreign keys keep the metadata valid; readable queries; matches the `name_ja` / `name_en` columns already in [ADR 0003](0003-naming-and-schema-versioning.md) and [ADR 0004](0004-card-printing-identity.md).
+1. **Per-column `_jp` / `_en` with per-row translation metadata.** Each translatable text has an `X_jp` and an `X_en` column. Each row with English text carries `en_source_id` and `en_status_id` pointing to two small lookups.
+   - Pros: plain SQL with no extra joins; foreign keys keep the metadata valid; readable queries; matches the `name_jp` / `name_en` columns already in [ADR 0003](0003-naming-and-schema-versioning.md) and [ADR 0004](0004-card-printing-identity.md).
    - Cons: a third language needs new columns (a schema change); the source and status are per row, not per column, so one row cannot say that its name is official and its flavor text is machine translated.
 2. **A generic `translations(entity, row_id, field, lang, text, source)` table.**
    - Pros: any number of languages and fields without schema changes; metadata per field.
@@ -46,7 +46,7 @@ Naming, lookups and keys follow [ADR 0003](0003-naming-and-schema-versioning.md)
 
 Use **option 1** (owner choice). Details are in [target-schema.md](../data-model/target-schema.md#multilingual-text).
 
-- **Columns.** Every translatable text has `X_ja` (the source; NOT NULL where the source always has it) and `X_en` (NULL until translated). This applies to `cards` (name, flavor text), `card_effects` (timing, text), `families`, `products` and the Brave and Ultimate side tables.
+- **Columns.** Every translatable text has `X_jp` (the source; NOT NULL where the source always has it) and `X_en` (NULL until translated). This applies to `cards` (name, flavor text), `card_effects` (timing, text), `families`, `products` and the Brave and Ultimate side tables.
 - **Row metadata.** A row with English text carries `en_source_id` (to the lookup `translation_sources`: `official`, `fandom`, `manual`, `machine`) and `en_status_id` (to the lookup `translation_statuses`: `pending`, `machine`, `reviewed`, `failed`). Both lookups follow ADR 0003 (`code` plus English `name`).
 - **Failures.** A failed translation is stored as `X_en` NULL with the status `failed`. An error string is **never** stored as text.
 - **Effects are text-first.** `card_effects` holds one row per effect block of the `<pre>`, in printed order. The timing (`『自分のアタックステップ』`) is kept as text. `card_effect_levels` links a block to the `card_levels` it applies to, and `card_effect_keywords` links a block to a `keywords` lookup row with an optional parameter text (`コスト2(1)` for Mirage). Alternate costs and conditions are **not** structured in v1.

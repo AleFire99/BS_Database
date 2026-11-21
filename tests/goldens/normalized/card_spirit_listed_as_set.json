@@ -1,0 +1,234 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E6%8B%B3%E9%97%98%E5%B7%A8%E4%BA%BA%E3%82%B8%E3%83%A3%E3%82%B9%E3%83%86%E3%82%A3%E3%83%B3",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E6%8B%B3%E9%97%98%E5%B7%A8%E4%BA%BA%E3%82%B8%E3%83%A3%E3%82%B9%E3%83%86%E3%82%A3%E3%83%B3",
+    "title_jp": "拳闘巨人ジャスティン",
+    "entries": [
+      {
+        "number": "P022",
+        "name_jp": "拳闘巨人ジャスティン",
+        "name_en": "The GiantStriker Justin",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "青",
+              "code": "blue"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "青",
+              "symbol_code": "blue",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "闘神",
+              "code": "toushin",
+              "en": "Fighting Spirit",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 4,
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv1・Lv2『このスピリットのアタック時』",
+              "text_jp": "自分のフィールドにネクサスがある間、このスピリットをBP+2000する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                2
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "強襲",
+                  "code": "kyoushuu",
+                  "parameter_jp": "1"
+                }
+              ],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv2【強襲：1】『このスピリットのアタック時』",
+              "text_jp": "自分のネクサス1つを疲労させることで、ターン中に指定された回数まで、このスピリットは回復できる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "剛田チーズ",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "不屈の闘志を拳に宿らせた期待のルーキー！\n倒れても立ち上がる姿に、黄色い声援が送られています。\nわたくし、ジャスティンの人気に嫉妬してしまいそうです。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "P022",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P022",
+        "product_name_jp": "バトルスピリッツ 最強カード大全集2・付録",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": "magazine",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P022",
+        "product_name_jp": "バトルスピリッツブレイヴチョコスナック",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%E3%83%96%E3%83%AC%E3%82%A4%E3%83%B4%E3%83%81%E3%83%A7%E3%82%B3%E3%82%B9%E3%83%8A%E3%83%83%E3%82%AF",
+        "product_code": null,
+        "product_type_code": "food",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P022",
+        "product_name_jp": "ギャラクシー渡辺プレゼンツ バトスピ大好きスペシャルデッキ＆ドラマセット",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%AE%E3%83%A3%E3%83%A9%E3%82%AF%E3%82%B7%E3%83%BC%E6%B8%A1%E8%BE%BA%E3%83%97%E3%83%AC%E3%82%BC%E3%83%B3%E3%83%84%20%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E5%A4%A7%E5%A5%BD%E3%81%8D%E3%82%B9%E3%83%9A%E3%82%B7%E3%83%A3%E3%83%AB%E3%83%87%E3%83%83%E3%82%AD%EF%BC%86%E3%83%89%E3%83%A9%E3%83%9E%E3%82%BB%E3%83%83%E3%83%88",
+        "product_code": null,
+        "product_type_code": "other",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "P022",
+        "large_url": "https://batspi.com/card/ETC/P022.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/P022.jpg",
+        "caption": [
+          "プロモーションカード"
+        ]
+      },
+      {
+        "number": "P022",
+        "large_url": "https://batspi.com/card/ETC/P022-2.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/P022-2.jpg",
+        "caption": [
+          "イケメンデッキ2012（遠藤綾デッキ）"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

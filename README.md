@@ -43,10 +43,10 @@ Paths and URLs come from `BSDB_*` settings (see [Configuration](docs/configurati
 | --- | --- |
 | `bsdb [--log-level L] [--version]` | Global options; `--log-level` overrides `BSDB_LOG_LEVEL` |
 | `bsdb scrape [--set TEXT]... [--refresh] [--max-age 30d] [--limit N]` | Crawl batspi.com politely (cached, rate-limited, resumable) into `data/parsed/batspi/`; prints a run report. See [scraper](docs/architecture/scraper.md) |
-| `bsdb normalize` | Normalize family names and types in the card JSON, in place |
-| `bsdb build [--db PATH]` | Build the SQLite database from the card JSON (appends to an existing DB, skipping duplicates) |
+| `bsdb normalize` | Map `data/parsed` to `data/normalized` with the glossary codes; non-destructive. See [normalization](docs/architecture/normalization.md) |
+| `bsdb build --input PATH [--db PATH]` | Build the SQLite database from legacy card JSON (appends to an existing DB, skipping duplicates); rewritten in #12 |
 
-The target run is `scrape`, `normalize`, `build`. `scrape` writes parsed JSON per card page; until the loader reads it (#12), `normalize` and `build` still work on the existing card JSON. A crawl takes several runs (request budget per run): run `bsdb scrape` again to continue.
+The target run is `scrape`, `normalize`, `build`. `scrape` writes parsed JSON per card page; `normalize` turns it into coded records; until the loader reads those (#12), `build` still works on legacy card JSON passed with `--input`. A crawl takes several runs (request budget per run): run `bsdb scrape` again to continue.
 
 ## Documentation
 
@@ -57,6 +57,10 @@ The target run is `scrape`, `normalize`, `build`. `scrape` writes parsed JSON pe
 ## Related projects
 
 - [BSS_app](https://github.com/AleFire99/BSS_app): Battle Spirits Saga companion app.
+
+## Attribution
+
+Glossary names proposed from the [Battle Spirits fandom wiki](https://battle-spirits.fandom.com) (CC-BY-SA), see [docs/sources/fandom.md](docs/sources/fandom.md) and [ADR 0009](docs/adr/0009-fandom-api-glossary-names.md).
 
 ## License
 

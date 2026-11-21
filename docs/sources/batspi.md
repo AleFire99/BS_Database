@@ -258,12 +258,12 @@ The block is plain text, one logical line per `\n`. Observed grammar (live 2026-
 
 | Line | Format | Variants seen |
 | --- | --- | --- |
-| 1 Type | `<type>` | `スピリット`, `ネクサス`, `マジック`, `ブレイヴ`, `アルティメット`; with a restriction suffix `ネクサス(制限カード<1>)`, `スピリット(制限カード<1>)`; a trailing space occurs after the type on some cards (`BS31-XX02`) |
+| 1 Type | `<type>` | `スピリット`, `ネクサス`, `マジック`, `ブレイヴ`, `アルティメット`; with a restriction suffix `ネクサス(制限カード<1>)`, `スピリット(制限カード<1>)`; a trailing space occurs after the type on some cards (`BS31-XX02`); a class prefix `契約スピリット`, `契約ネクサス`, `契約アルティメット`, `トークンネクサス`; a mark in brackets `スピリット(光)`, `スピリット(闇)`, `スピリット(禁止カード)`, combined with the restriction `スピリット(光)(制限カード<1>)` (#108) |
 | 2 Cost | `<cost>(<reduction>)/<colour>[/<family>]` | see below |
 | 3 Levels | `<cores>Lv<n> <BP> …` | see below |
 | Effects | text lines | headings `Lv1・Lv2『timing』` (a card's own `<pre>` uses `・` U+30FB in every fixture; the half-width `･` U+FF65 appears only in the related-cards listing, so a parser that reads the listing must accept both), `Lv2`, keyword brackets `【…】`, `《…》`, `〔…〕`, markers `◆`, `■` |
-| Symbol | `シンボル：<symbol>` | `赤`, `白`, `神`, `極`, `なし` |
-| Credits | `コンセプト：<name>`, `イラスト：<name>` | `コンセプト：` appears only on some cards (Brave, Ultimate, some reprints); `イラスト：` can repeat with a product in brackets: `イラスト：SUNRISE D.I.D.(最強銀河究極ゼロバトルスピリッツウエハース/〃～疾風の王者～/〃～宇宙の覇者～)` |
+| Symbol | `シンボル：<symbol>` | `赤`, `白`, `神`, `極`, `なし`; `EX赤`, `EX白` and a coloured god symbol `神(青)神(白)` (#108) |
+| Credits | `コンセプト：<name>`, `イラスト：<name>`; also `プロデュース：`, `ペイント：`, `書：`, `写真：`, `コラボレート：` (#108); the colon may be ASCII (`イラスト:`), and `イラスト：` may be empty | `コンセプト：` appears only on some cards (Brave, Ultimate, some reprints); `イラスト：` can repeat with a product in brackets: `イラスト：SUNRISE D.I.D.(最強銀河究極ゼロバトルスピリッツウエハース/〃～疾風の王者～/〃～宇宙の覇者～)` |
 | Flavor | `フレーバーテキスト：` then lines | Absent on the Magic fixture, the 創界神 Nexus and the Ultimate in `SD67-CP01`; may end with an attribution `―星文学者リリア『八十八星夜話』鳳凰座―` |
 
 Cost line variants (live 2026-11-14 and fixtures):
@@ -287,6 +287,11 @@ Level line variants:
 | level plus fusion | `<1>Lv1 3000 <0>合体+3000` | Brave |
 | Ultimate levels | `<1>Lv3 10000 <3>Lv4 14000 <5>Lv5 20000` (up to `Lv6`) | Ultimate |
 | overclock | `<1>Lv3 10000 <3>Lv4 14000 OC<5+>+6000` | contract Ultimate |
+| blank after the cores | `<7> Lv6 30000`, `<3> Lv2 10000` | Ultimate, Spirit (#108) |
+| condition instead of cores | `<0>Lv1 <C2>Lv2`, `<2>条件:赤赤 Lv2 9000` | contract Nexus and Spirit (#108) |
+| remark after the level | `<4>Lv2/真界放 9000` | 真界放 Spirit (#108) |
+| battle point as text | `<1>Lv1 X0000` | Spirit (#108) |
+| fusion with a blank | `<0>合体 +5000` | Brave (#108) |
 | absent | no level line | Magic (the Magic fixture goes from the cost line to the effects) |
 
 ### Fields per card type

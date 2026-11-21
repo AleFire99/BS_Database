@@ -1,6 +1,6 @@
 # Documentation index
 
-This folder documents the current state of BS_Database (the `bs_database` package: Battle Spirits card ingestion layout, normalizer and SQLite builder) and the decisions that shape it. It is the baseline for the roadmap epics listed in the [top-level README](../README.md).
+This folder documents the current state of BS_Database (the `bs_database` package: Battle Spirits card ingestion layout, normalization and SQLite builder) and the decisions that shape it. It is the baseline for the roadmap epics listed in the [top-level README](../README.md).
 
 ## Contents
 
@@ -13,13 +13,15 @@ This folder documents the current state of BS_Database (the `bs_database` packag
 | [data-model/legacy-mapping.md](data-model/legacy-mapping.md) | Every legacy table, column, JSON key and artefact mapped to the target schema or dropped, plus the gap list |
 | [data-model/samples.md](data-model/samples.md) | Hand-modelled sample cards as SQL inserts against the DDL draft |
 | [sources/batspi.md](sources/batspi.md) | batspi.com source catalogue: robots rules, URL patterns, categories, card number schemes, `<pre>` format per card type, image URLs, candidate fixtures |
-| [sources/fandom.md](sources/fandom.md) | Fandom wiki dossier: Cloudflare access evidence, CC-BY-SA licence, verdict dropped for v1 |
+| [sources/fandom.md](sources/fandom.md) | Fandom wiki dossier: Cloudflare access evidence, CC-BY-SA licence, verdict dropped for v1, names-only API use (ADR 0009) and attribution |
 | [sources/official.md](sources/official.md) | Official Bandai site survey: URLs, reuse note, card markup, fields mapped to the inventory |
 | [sources/coverage-matrix.md](sources/coverage-matrix.md) | Field coverage matrix: every target-schema column against batspi, the official site and fandom with fixture-backed samples, the gap list and the conflict inputs for ADR 0007 |
 | [sources/policy.md](sources/policy.md) | Scraping and redistribution policy: robots, rate, User-Agent, cache, errors, attribution, requirements for #10 |
 | [domain/glossary.md](domain/glossary.md) | Battle Spirits domain glossary (EN/JP) |
 | [architecture/ingestion-state.md](architecture/ingestion-state.md) | Ingestion state machine, retry rules and the SQLite state store schema |
 | [architecture/scraper.md](architecture/scraper.md) | `bsdb scrape` pipeline: components, fetch/cache/parse/state sequence, run semantics, options and exit codes, parsed JSON layout, report |
+| [architecture/normalization.md](architecture/normalization.md) | `bsdb normalize`: parsed to normalized flow, rules, translation wiring, product-code prefix and product-name keyword rules, review command, known gaps, unmapped and uncurated terms, `--strict`, the report, normalized document shape |
+| [architecture/translation.md](architecture/translation.md) | Translator: engines (quickmt, null), SQLite cache, character budget, statuses, model setup, third-party models, wiring into `bsdb normalize` |
 | [configuration.md](configuration.md) | Settings and `BSDB_*` environment variables |
 | [adr/README.md](adr/README.md) | Architecture Decision Records index |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | How to contribute (workflow, commits, tooling) |
