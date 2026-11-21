@@ -172,7 +172,8 @@ Of the 1,099 same-name pairs:
 
 - 21 pairs are identical (15 pages): promo renumberings, e.g. 飛甲虫イットウカブト EX016 and P031.
 - 1,078 pairs differ substantively (871 pages).
-- 0 pairs differ only cosmetically (whitespace, NFKC, punctuation) or only in flavor or credits.
+- 0 pairs differ only cosmetically (whitespace, NFKC, punctuation) or only in flavor.
+- 1 pair, counted among the 1,078, differs only in credits: `BS53-TX01(A)` and `BS56-TX03(A)` (corrected in #120, see the note below the table).
 
 What differs (a pair can be in several classes):
 
@@ -189,14 +190,16 @@ What differs (a pair can be in several classes):
 | Cost | 211 |
 | Card type | 23 |
 
-Flavor differs in 542 pairs and credits in 394, never on their own. Most pairs differ in several classes at once: they are remakes or errata under a new number, not reprints. The later numbers are mostly reissue prefixes (BSC, CB, SD, P, 26RCB, PB, EX).
+Flavor differs in 542 pairs and credits in 394; flavor never differs on its own, credits do once (see above). Most pairs differ in several classes at once: they are remakes or errata under a new number, not reprints. The later numbers are mostly reissue prefixes (BSC, CB, SD, P, 26RCB, PB, EX).
 
 | Rule | Resulting `cards` |
 | --- | ---: |
 | One card per number | 14,715 |
-| (a) identical gameplay, text and flavor | 14,694 |
-| (a') the same, ignoring flavor and cosmetic differences | 14,694 |
+| (a) identical gameplay, text and flavor | 14,693 |
+| (a') the same, ignoring flavor and cosmetic differences | 14,693 |
 | (c) one card per page | 13,480 |
+
+Correction (#120): the survey first counted 14,694 for (a) and (a'). The loader gives 14,693 because the pair `BS53-TX01(A)` and `BS56-TX03(A)` differs only in credits, and credits are not in the grouping key, so the pair is one card. Measured on the full data: 14,715 numbers, 22 cards with two numbers.
 
 ### Decision
 

@@ -10,9 +10,9 @@ Settings are defined in `src/bs_database/settings.py` (`Settings`, built on pyda
 | --- | --- | --- |
 | `BSDB_DATA_DIR` | `data` | Base directory for all data files |
 | `BSDB_IMAGES_DIR` | `<data_dir>/images` | Downloaded card images |
-| `BSDB_DB_PATH` | `<data_dir>/battle_spirits.db` | SQLite database output |
+| `BSDB_DB_PATH` | `<data_dir>/battle_spirits.db` | SQLite database output (`bsdb build`, replaced atomically; `--out` overrides) |
 | `BSDB_GLOSSARY_DIR` | `<data_dir>/glossary` | Glossary CSVs (see [glossary](domain/glossary.md)) |
-| `BSDB_CACHE_DIR` | `<data_dir>/cache/html` | Raw HTML cache (`<source>/<sha256(url)>.html` plus `.json` sidecar) |
+| `BSDB_CACHE_DIR` | `<data_dir>/cache/html` | Raw HTML cache (`<source>/<sha256(url)>.html` plus `.json` sidecar); `bsdb build` reads it for `source_pages.content_sha256` |
 | `BSDB_STATE_DB_PATH` | `<data_dir>/state/ingest.db` | Ingestion state store (SQLite, see [ingestion-state](architecture/ingestion-state.md)) |
 | `BSDB_PARSED_DIR` | `<data_dir>/parsed` | Parsed card pages (`<source>/<sha256(url)>.json`) |
 | `BSDB_NORMALIZED_DIR` | `<data_dir>/normalized` | Normalized card pages (`<source>/<sha256(url)>.json`, see [normalization](architecture/normalization.md)) |

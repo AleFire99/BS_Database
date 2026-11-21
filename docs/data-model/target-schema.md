@@ -1,6 +1,6 @@
 # Target schema
 
-This is the design document for the new normalized schema. It is extended by [#30](https://github.com/AleFire99/BS_Database/issues/30) (gameplay attributes), [#31](https://github.com/AleFire99/BS_Database/issues/31) (effects, i18n, provenance, images) and [#32](https://github.com/AleFire99/BS_Database/issues/32). It is **not** the build source: the DDL is `src/bs_database/schema.sql` ([ADR 0011](../adr/0011-schema-sql-source-of-truth-without-migrations.md), [#119](https://github.com/AleFire99/BS_Database/issues/119)); this document is the design and the column reference. Naming follows [ADR 0003](../adr/0003-naming-and-schema-versioning.md). Items marked "pending #9" depend on the source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9)). The record shape that `bsdb normalize` emits for these tables is in [normalization.md](../architecture/normalization.md) ([#93](https://github.com/AleFire99/BS_Database/issues/93)).
+This is the design document for the new normalized schema. It is extended by [#30](https://github.com/AleFire99/BS_Database/issues/30) (gameplay attributes), [#31](https://github.com/AleFire99/BS_Database/issues/31) (effects, i18n, provenance, images) and [#32](https://github.com/AleFire99/BS_Database/issues/32). It is **not** the build source: the DDL is `src/bs_database/schema.sql` ([ADR 0011](../adr/0011-schema-sql-source-of-truth-without-migrations.md), [#119](https://github.com/AleFire99/BS_Database/issues/119)); this document is the design and the column reference. Naming follows [ADR 0003](../adr/0003-naming-and-schema-versioning.md). Items marked "pending #9" depend on the source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9)). The record shape that `bsdb normalize` emits for these tables is in [normalization.md](../architecture/normalization.md) ([#93](https://github.com/AleFire99/BS_Database/issues/93)); how `bsdb build` fills them, with its rules and the data that has no column yet, is in [build.md](../architecture/build.md) ([#120](https://github.com/AleFire99/BS_Database/issues/120)).
 
 ## Overview
 
@@ -1257,6 +1257,8 @@ Lookup (`code` plus English `name`).
 | `mime_type` | TEXT | | e.g. `image/jpeg`; NULL until downloaded. |
 
 Table constraint: `UNIQUE (printing_id, image_size_id, position)`. Storage, download and versioning of the files are decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). A row says where an image is and where it came from; it does not require the file to be in the artefact.
+
+`position` was added in #120: batspi shows several images of one number (the secret art, a full-art reprint), and the caption links them to a printing only loosely, so the build associates each image with a printing by a cascade ([build.md](../architecture/build.md#rules)) and numbers the images of one printing and size 1, 2, ... in page order. The schema version stays `0.1.0` until the first release (#121).
 
 ### Worked example (BS72-007)
 
