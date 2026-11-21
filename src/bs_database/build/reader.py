@@ -93,3 +93,12 @@ def check_documents(documents: list[Document]) -> list[Document]:
                 )
             owner[number] = doc.url
     return documents
+
+
+def printings_by_number(documents: list[Document]) -> dict[str, list[Json]]:
+    """Every printing row per card number, in (url, page order); independent of the input order."""
+    rows: dict[str, list[Json]] = {}
+    for doc in sorted(documents, key=lambda d: d.url):
+        for printing in doc.printings:
+            rows.setdefault(printing["number"], []).append(printing)
+    return rows

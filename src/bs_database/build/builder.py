@@ -2,15 +2,19 @@
 
 import os
 import sqlite3
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
 from bs_database import __version__
+from bs_database.build.cards import load_cards
 from bs_database.build.diagnostics import BuildError, BuildWarnings
+from bs_database.build.grouping import group_entries
 from bs_database.build.lookups import Lookups, insert_lookups
-from bs_database.glossary import Glossary
+from bs_database.build.reader import Document, printings_by_number, read_documents
+from bs_database.glossary import Glossary, load_glossary
+from bs_database.normalize.records import NORMALIZED_SCHEMA_VERSION
 from bs_database.schema import load_schema_sql
 
 # Inserts every data table inside the open transaction; later steps extend ``_load``.
@@ -58,13 +62,40 @@ def _remove(path: Path) -> None:
         Path(f"{path}{suffix}").unlink(missing_ok=True)
 
 
+def _load_data(
+    conn: sqlite3.Connection,
+    lookups: Lookups,
+    warnings: BuildWarnings,
+    documents: Sequence[Document],
+) -> None:
+    """Insert every data table; the order follows the foreign keys."""
+    groups = group_entries(list(documents))
+    printings = printings_by_number(list(documents))
+    load_cards(conn, lookups, warnings, groups, printings)
+
+
+def build_from_directories(
+    out: Path,
+    normalized_dir: Path,
+    glossary_dir: Path,
+    *,
+    cache_dir: Path | None = None,
+    built_at: str | None = None,
+) -> BuildResult:
+    """Read the glossary and the normalized documents, then :func:`build_database`."""
+    glossary = load_glossary(glossary_dir)
+    documents = read_documents(normalized_dir)
+    return build_database(out, glossary, documents, cache_dir=cache_dir, built_at=built_at)
+
+
 def build_database(
     out: Path,
     glossary: Glossary,
+    documents: Sequence[Document] = (),
     *,
+    cache_dir: Path | None = None,
     built_at: str | None = None,
     load: Loader | None = None,
-    source_snapshot: str | None = None,
 ) -> BuildResult:
     """Build a fresh database at ``out``.
 
@@ -87,7 +118,13 @@ def build_database(
         lookups = insert_lookups(conn, glossary)
         if load is not None:
             load(conn, lookups, warnings)
-        _insert_meta(conn, stamp, source_snapshot)
+        _load_data(conn, lookups, warnings, documents)
+        snapshot = (
+            f"batspi normalized {NORMALIZED_SCHEMA_VERSION}, {len(documents)} pages"
+            if documents
+            else None
+        )
+        _insert_meta(conn, stamp, snapshot)
         violations = conn.execute("PRAGMA foreign_key_check").fetchall()
         if violations:
             raise BuildError(f"foreign key violations: {violations[:5]}")
