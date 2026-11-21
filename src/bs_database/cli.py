@@ -248,6 +248,10 @@ def build(
             help="Fixed ISO 8601 build time, so two builds of the same data are byte-identical.",
         ),
     ] = None,
+    data_version: Annotated[
+        str,
+        typer.Option("--data-version", help="Release tag of the data (schema_meta), e.g. v0.5.0."),
+    ] = "dev",
 ) -> None:
     """Build the SQLite database from data/normalized and the glossary (replaces the file).
 
@@ -267,6 +271,7 @@ def build(
             settings.glossary_dir,
             cache_dir=settings.cache_dir,
             built_at=built_at,
+            data_version=data_version,
         )
     except GlossaryError as exc:
         typer.echo(f"error: invalid glossary in {settings.glossary_dir}:\n{exc}", err=True)

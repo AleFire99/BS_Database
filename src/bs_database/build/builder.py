@@ -35,6 +35,9 @@ class BuildResult:
     image_levels: dict[str, int]  # images decided by each level of the association cascade
 
 
+DEFAULT_DATA_VERSION = "dev"
+
+
 def schema_version_text(user_version: int) -> str:
     """``major * 10000 + minor * 100 + patch`` back to ``major.minor.patch`` (ADR 0003)."""
     return f"{user_version // 10000}.{user_version // 100 % 100}.{user_version % 100}"
@@ -52,13 +55,35 @@ def table_counts(conn: sqlite3.Connection) -> dict[str, int]:
     return {n: conn.execute(f"SELECT count(*) FROM {n}").fetchone()[0] for n in names}
 
 
-def _insert_meta(conn: sqlite3.Connection, built_at: str, source_snapshot: str | None) -> None:
-    """Minimal ``schema_meta`` row; the real data version belongs to #121."""
+def utc_timestamp(value: str | None = None) -> str:
+    """ISO 8601 UTC with a ``Z`` suffix (ADR 0003): ``value`` converted, or now."""
+    moment = datetime.fromisoformat(value) if value is not None else datetime.now(UTC)
+    if moment.tzinfo is None:
+        moment = moment.replace(tzinfo=UTC)
+    return moment.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def source_snapshot(documents: Sequence[Document]) -> str | None:
+    """``batspi <first>..<last fetched date>; <N> pages; normalized <schema>``, or ``None``."""
+    if not documents:
+        return None
+    dates = sorted(d.fetched_at[:10] for d in documents)
+    sources = "+".join(sorted({d.source for d in documents}))
+    return (
+        f"{sources} {dates[0]}..{dates[-1]}; {len(documents)} pages;"
+        f" normalized {NORMALIZED_SCHEMA_VERSION}"
+    )
+
+
+def _insert_meta(
+    conn: sqlite3.Connection, built_at: str, snapshot: str | None, data_version: str
+) -> None:
+    """The single ``schema_meta`` row (ADR 0003, #121)."""
     (user_version,) = conn.execute("PRAGMA user_version").fetchone()
     conn.execute(
         "INSERT INTO schema_meta (id, schema_version, data_version, built_at, source_snapshot,"
-        " generator) VALUES (1, ?, 'dev', ?, ?, ?)",
-        (schema_version_text(user_version), built_at, source_snapshot, f"bsdb {__version__}"),
+        " generator) VALUES (1, ?, ?, ?, ?, ?)",
+        (schema_version_text(user_version), data_version, built_at, snapshot, __version__),
     )
 
 
@@ -101,13 +126,21 @@ def build_from_directories(
     *,
     cache_dir: Path | None = None,
     built_at: str | None = None,
+    data_version: str = DEFAULT_DATA_VERSION,
 ) -> BuildResult:
     """Read the glossary and the normalized documents, then :func:`build_database`."""
     glossary = load_glossary(glossary_dir)
     documents = read_documents(normalized_dir)
     if not documents:
         raise BuildError(f"no normalized documents in {normalized_dir}; run `bsdb normalize` first")
-    return build_database(out, glossary, documents, cache_dir=cache_dir, built_at=built_at)
+    return build_database(
+        out,
+        glossary,
+        documents,
+        cache_dir=cache_dir,
+        built_at=built_at,
+        data_version=data_version,
+    )
 
 
 def build_database(
@@ -117,6 +150,7 @@ def build_database(
     *,
     cache_dir: Path | None = None,
     built_at: str | None = None,
+    data_version: str = DEFAULT_DATA_VERSION,
     load: Loader | None = None,
 ) -> BuildResult:
     """Build a fresh database at ``out``.
@@ -129,7 +163,7 @@ def build_database(
     out.parent.mkdir(parents=True, exist_ok=True)
     _remove(tmp)
     warnings = BuildWarnings()
-    stamp = built_at or datetime.now(UTC).isoformat(timespec="seconds")
+    stamp = utc_timestamp(built_at)
     conn = sqlite3.connect(tmp, isolation_level=None)
     try:
         conn.execute("PRAGMA journal_mode = OFF")
@@ -141,12 +175,7 @@ def build_database(
         if load is not None:
             load(conn, lookups, warnings)
         image_levels = _load_data(conn, lookups, warnings, documents, cache_dir)
-        snapshot = (
-            f"batspi normalized {NORMALIZED_SCHEMA_VERSION}, {len(documents)} pages"
-            if documents
-            else None
-        )
-        _insert_meta(conn, stamp, snapshot)
+        _insert_meta(conn, stamp, source_snapshot(documents), data_version)
         violations = conn.execute("PRAGMA foreign_key_check").fetchall()
         if violations:
             raise BuildError(f"foreign key violations: {violations[:5]}")
