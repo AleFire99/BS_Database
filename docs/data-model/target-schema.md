@@ -213,6 +213,7 @@ erDiagram
         integer id PK
         integer printing_id FK
         integer image_size_id FK
+        integer position
     }
     schema_meta {
         integer id PK
@@ -1220,6 +1221,7 @@ erDiagram
         integer id PK
         integer printing_id FK
         integer image_size_id FK
+        integer position
         text path
         text source_url
         text sha256
@@ -1246,6 +1248,7 @@ Lookup (`code` plus English `name`).
 | `id` | INTEGER | PRIMARY KEY | |
 | `printing_id` | INTEGER | NOT NULL, FOREIGN KEY to `printings.id` | |
 | `image_size_id` | INTEGER | NOT NULL, FOREIGN KEY to `image_sizes.id` | Size of the file. |
+| `position` | INTEGER | NOT NULL, DEFAULT 1, CHECK `position` >= 1 | Order of the images of one printing and size (1 = first). batspi shows several images per printing; the build numbers them in page order (#120). |
 | `path` | TEXT | | Path relative to the release artefact. NULL while images are not stored or redistributed ([ADR 0006](../adr/0006-scraping-and-redistribution-policy.md): URL only); the layout is decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). |
 | `source_url` | TEXT | NOT NULL | Where the file was downloaded from. |
 | `sha256` | TEXT | | Hash of the file; NULL until downloaded. |
@@ -1253,7 +1256,7 @@ Lookup (`code` plus English `name`).
 | `height` | INTEGER | CHECK `height` > 0 | Pixels; NULL until downloaded. Pending #9. |
 | `mime_type` | TEXT | | e.g. `image/jpeg`; NULL until downloaded. |
 
-Table constraint: `UNIQUE (printing_id, image_size_id)`. Storage, download and versioning of the files are decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). A row says where an image is and where it came from; it does not require the file to be in the artefact.
+Table constraint: `UNIQUE (printing_id, image_size_id, position)`. Storage, download and versioning of the files are decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). A row says where an image is and where it came from; it does not require the file to be in the artefact.
 
 ### Worked example (BS72-007)
 
