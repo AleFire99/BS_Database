@@ -1,6 +1,6 @@
 # 0004. Card vs printing identity, ID scheme and rarity
 
-- Status: Accepted; amendment Proposed (#63)
+- Status: Accepted (amended by #63, 2026-11-21)
 - Date: 2026-11-14
 
 ## Context
@@ -154,7 +154,7 @@ The images `BS72-007.jpg` and `BS72-007-2.jpg` are rows of `printing_images` (se
 
 ## Amendment 2026-11-21 (#63)
 
-- Status: Proposed
+- Status: Accepted (2026-11-21)
 - Issue: [#63](https://github.com/AleFire99/BS_Database/issues/63)
 
 The original decision above stays Accepted. This amendment only fixes the rule it left open: when do several numbers share one `cards` row. It changes no table or column.
