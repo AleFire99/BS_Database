@@ -44,7 +44,7 @@ For the rebuild of option 3:
 
 ## Decision
 
-Use **option 3 with rebuild A**. The parsed schema goes from **2.0.0 to 2.1.0**. Every new field has a default (`None`, or an empty tuple), so a 2.0.0 document is still a valid 2.1.0 document apart from `schema_version`.
+Use **option 3 with rebuild A**. The parsed schema goes from **2.0.0 to 2.1.0**. Every new field has a default (`None`, or an empty tuple), so the change is additive in the model. The reader stays strict: `parsed_store` accepts only 2.1.0, so a 2.0.0 tree is rebuilt from the cache with `bsdb scrape --offline --reparse` (0 requests). The normalized schema follows, from 1.1.0 to 1.2.0, and the review reader likewise accepts only the new version. A type mark is read as any parenthesised literal after the type; only `禁止カード`, `光` and `闇` occur today, and an unknown mark is stored as is instead of failing the page.
 
 ### New fields
 
@@ -82,10 +82,10 @@ These stay open until the owner confirms them; the data does not depend on them 
 
 - Positive:
   - Those cards become readable, with every printed fact kept.
-  - Additive: the existing goldens change only by the version string.
+  - Additive in the model: every new field has a default. The parsed and normalized goldens gain the new fields and the new versions (parsed 2.1.0, normalized 1.2.0).
   - The rebuild needs no network and gives a uniform tree.
 - Negative and follow-up work:
-  - Every consumer of the parsed documents must tolerate the new fields (they default, so none breaks).
+  - Readers are strict on the version: an old parsed (2.0.0) or normalized (1.1.0) tree must be rebuilt (`bsdb scrape --offline --reparse`, then `bsdb normalize`).
   - New terms (contract families, the marks, the credit roles) make `bsdb normalize --strict` fail until they are curated in the glossary. That curation is a follow-up.
   - The meaning of the marks stays an open question for the owner.
 
