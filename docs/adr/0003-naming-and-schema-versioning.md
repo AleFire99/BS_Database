@@ -91,7 +91,7 @@ If BSS_app tooling is ever shared, compatibility views can map the names without
 | `schema_version` | TEXT | Schema SemVer | `1.2.0` |
 | `data_version` | TEXT | Release tag of the data | `v0.3.0` |
 | `built_at` | TEXT | ISO-8601 UTC build time | `2026-11-14T10:00:00Z` |
-| `source_snapshot` | TEXT | Identifier of the raw source snapshot used | to be defined in #9/#12 |
+| `source_snapshot` | TEXT | Identifier of the raw source snapshot used | `batspi 2026-11-15..2026-11-21; 13480 pages; normalized 1.2.0` (format defined in #121, see [build.md](../architecture/build.md)) |
 | `generator` | TEXT | `bs_database` package version that built the file | `0.2.0` |
 
 - Schema SemVer rules:

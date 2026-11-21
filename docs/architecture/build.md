@@ -3,11 +3,12 @@
 The build ([#120](https://github.com/AleFire99/BS_Database/issues/120), epic [#12](https://github.com/AleFire99/BS_Database/issues/12), [ADR 0011](../adr/0011-schema-sql-source-of-truth-without-migrations.md)) turns the normalized card pages of `data/normalized/` into one SQLite file with the 34 tables of [schema.sql](../../src/bs_database/schema.sql) ([target-schema.md](../data-model/target-schema.md)). It uses only the standard library `sqlite3`; SQLAlchemy and the legacy loader were removed.
 
 ```bash
-uv run bsdb build [--out PATH] [--built-at ISO8601]
+uv run bsdb build [--out PATH] [--built-at ISO8601] [--data-version TAG]
 ```
 
 - `--out` is the database file (default `BSDB_DB_PATH`, `data/battle_spirits.db`). The build always writes a **fresh** file and replaces the old one; it never appends.
 - `--built-at` fixes `schema_meta.built_at`, so two builds of the same data are byte-identical.
+- `--data-version` sets `schema_meta.data_version`, the release tag of the data (default `dev`; a release passes `vX.Y.Z`).
 - It reads `BSDB_NORMALIZED_DIR`, `BSDB_GLOSSARY_DIR` and, for the page hashes, `BSDB_CACHE_DIR`. It makes no network request.
 - Exit code 0 on success (warnings do not change it), 1 when the build fails (no normalized pages, invalid glossary, a page of another schema major version, a number in two pages, a foreign key violation). The old output file is then untouched.
 
@@ -79,7 +80,7 @@ Ids are assigned in Python from sorted keys, never from the order of the input: 
 | Illustrator | No name: NULL. One name: that name. Several: the one whose note matches the product, variant, note or detail text of the printing; else the only one without a note; else all names joined with ` / `. |
 | Images | Each image goes to a printing of its number by a cascade: L0 the number has one printing; L1 the caption names one printing's product; L2 several printings of that product, the variant word of the caption (`シークレット`, `パラレル`, `フルアート`) picks one; L3 no product match, the variant word alone picks a unique printing; L4 first printing of the product (`normal` first); L5 first printing of the number (`normal` first). Several images of one printing and size get `position` 1, 2, ... in page order. |
 | Source pages | One row per document: `fetched_at` from the provenance, `parser_version` is the parsed schema version, `content_sha256` is the sha256 of the cached raw HTML (`RawCache`) or, when it is missing, of the normalized document (`source_page_without_raw_html`). Links to cards and products. |
-| `schema_meta` | A minimal row: schema version from `user_version`, `data_version` `dev`, generator `bsdb <version>`, `built_at`, and a snapshot text. The real values belong to [#121](https://github.com/AleFire99/BS_Database/issues/121). |
+| `schema_meta` | One row ([ADR 0003](../adr/0003-naming-and-schema-versioning.md), [#121](https://github.com/AleFire99/BS_Database/issues/121)): `schema_version` from `PRAGMA user_version` (`major*10000+minor*100+patch`; 0.1.0 until the first release); `data_version` from `--data-version`; `built_at` ISO 8601 UTC with `Z`; `source_snapshot` = `batspi <first>..<last fetched date>; <N> pages; normalized <schema>` from the documents' provenance; `generator` = the `bs_database` package version. |
 
 ## Data with no column (dropped)
 
