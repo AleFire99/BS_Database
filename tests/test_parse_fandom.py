@@ -115,3 +115,45 @@ def test_non_breaking_spaces_are_whitespace() -> None:
     parsed = parse_name("Armor (Keyword)", "'''Armor'''\xa0(装甲;\xa0''Soukou'') is")
     assert parsed is not None
     assert (parsed.jp, parsed.romaji) == ("装甲", "Soukou")
+
+
+SHAPES = pages("shapes")
+
+
+@pytest.mark.parametrize(
+    ("title", "jp", "en", "romaji"),
+    [
+        ("Amahara", "アマハラ", "Amahara", None),  # template, no romaji
+        ("Avatar", "化神", "Avatar", "Keshin"),  # template
+        ("Birthgem Deity", "誕晶神", "Birthgem Deity", "Tanjōshin"),  # template, bold-italic
+        ("Clown Deity", "道化神", "Clown Deity", "Dōke-shin"),
+        ("Egyt", "エジット", "Egyt", "Ejitto"),
+        ("Olym", "オリン", "Olym", "Orin"),
+        ("Superstar", "超星", "Superstar", "Chōsei"),
+        ("Tri-Heaven Deity", "三天神", "Tri-Heaven Deity", "Santenjin"),  # template after a file
+        ("Soul Drive", "ソウルドライブ", "Soul Drive", "Sōru Doraibu"),
+        (
+            "Light-Dark Soul Drive",
+            "ソウルドライブ・光闇",
+            "Light-Dark Soul Drive",
+            "Sōru Doraibu Kōan",
+        ),
+        ("Extreme", "極限", "Extreme", "Kyokugen"),  # italic parentheses, trailing space
+        ("Master", "マスター", "Master", "masutaa"),
+        ("Firing Squad", "游擊隊", "Firing Squad", "yuugekitai"),
+        ("Jade Emperor Dragon", "玉帝龍", "Jade Emperor Dragon", "gyokuteiryuu"),
+        ("Sengoku God", "戦国神", "Sengoku God", "sengokushin"),
+        ("DNA Digivolution", "ジョグレス進化", "DNA Digivolution", "Joguresu Shinka"),
+        ("Heavenly Demon King", "天魔王", "Heavenly Demon King", "Tenmaou"),  # full-width
+        ("Card Slash", "カードスラッシュ", "Card Slash", "Kādosurasshu"),
+    ],
+)
+def test_parse_name_template_italic_and_fullwidth(
+    title: str, jp: str, en: str, romaji: str | None
+) -> None:
+    assert name(SHAPES, title) == FandomName(jp=jp, en=en, romaji=romaji, title=title)
+
+
+@pytest.mark.parametrize("title", ["MS", "Family"])
+def test_parse_name_shapes_without_japanese_stay_unmatched(title: str) -> None:
+    assert name(SHAPES, title) is None
