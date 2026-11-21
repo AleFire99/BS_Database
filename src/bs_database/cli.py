@@ -2,14 +2,14 @@
 
 import logging
 import re
-from datetime import timedelta
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Annotated
 
 import typer
 
 from bs_database import __version__
-from bs_database.db import build_db
+from bs_database.build import BuildError, BuildResult, build_from_directories
 from bs_database.glossary import GlossaryError, load_glossary
 from bs_database.ingest.cache import CachedFetcher, RawCache
 from bs_database.ingest.fandom import FandomApi
@@ -216,20 +216,65 @@ def glossary_fandom(
     typer.echo(f"Written to {target}")
 
 
+def _render_build(result: BuildResult) -> str:
+    """The build summary: rows per table, image association levels and warnings."""
+    lines = [
+        f"Built {result.path}: {sum(result.table_counts.values())} rows in "
+        f"{len(result.table_counts)} tables"
+    ]
+    lines += [f"  {name}: {count}" for name, count in result.table_counts.items()]
+    if result.image_levels:
+        levels = ", ".join(f"{k} {v}" for k, v in result.image_levels.items())
+        lines.append(f"Image association levels: {levels}")
+    if result.warnings:
+        lines.append(f"Warnings ({sum(result.warnings.values())}):")
+        lines += [f"  {kind}: {count}" for kind, count in result.warnings.items()]
+    else:
+        lines.append("Warnings: none")
+    return "\n".join(lines)
+
+
 @app.command()
 def build(
     ctx: typer.Context,
-    input_dir: Annotated[
-        Path,
-        typer.Option("--input", help="Directory with the legacy normalized card JSON files."),
-    ],
-    db: Annotated[Path | None, typer.Option("--db", help="Database path.")] = None,
+    out: Annotated[
+        Path | None,
+        typer.Option("--out", help="Database file to write (default: BSDB_DB_PATH)."),
+    ] = None,
+    built_at: Annotated[
+        str | None,
+        typer.Option(
+            "--built-at",
+            help="Fixed ISO 8601 build time, so two builds of the same data are byte-identical.",
+        ),
+    ] = None,
 ) -> None:
-    """Build the SQLite database from card JSON files (appends to an existing DB)."""
+    """Build the SQLite database from data/normalized and the glossary (replaces the file).
+
+    Reads the normalized card pages and the glossary, writes a fresh database in one
+    transaction and replaces the output atomically; on any error the old file stays.
+    """
     settings = _settings(ctx)
-    target = db or settings.db_path
-    build_db(input_dir, target)
-    typer.echo(f"Built {target}")
+    if built_at is not None:
+        try:
+            datetime.fromisoformat(built_at)
+        except ValueError as exc:
+            raise typer.BadParameter(f"not an ISO 8601 time: {built_at!r}") from exc
+    try:
+        result = build_from_directories(
+            out or settings.db_path,
+            settings.normalized_dir,
+            settings.glossary_dir,
+            cache_dir=settings.cache_dir,
+            built_at=built_at,
+        )
+    except GlossaryError as exc:
+        typer.echo(f"error: invalid glossary in {settings.glossary_dir}:\n{exc}", err=True)
+        raise typer.Exit(1) from exc
+    except BuildError as exc:
+        typer.echo(f"error: {exc}", err=True)
+        raise typer.Exit(1) from exc
+    typer.echo(_render_build(result))
 
 
 _UNITS = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}

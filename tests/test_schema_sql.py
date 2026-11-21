@@ -155,3 +155,24 @@ def test_samples_load_against_schema(conn: sqlite3.Connection) -> None:
     for block in blocks:
         conn.executescript(block)
     assert conn.execute("PRAGMA foreign_key_check").fetchall() == []
+
+
+def test_printing_images_allow_several_positions(conn: sqlite3.Connection) -> None:
+    assert _columns(conn, "printing_images")["position"] == ("INTEGER", 1)
+    conn.executescript(
+        """
+        INSERT INTO card_types (id, code, name) VALUES (1, 'spirit', 'Spirit');
+        INSERT INTO cards (id, card_type_id, cost, name_jp) VALUES (1, 1, 1, 'x');
+        INSERT INTO card_numbers (id, number, card_id) VALUES (1, 'A-1', 1);
+        INSERT INTO product_types (id, code, name) VALUES (1, 'other', 'Other');
+        INSERT INTO products (id, name_jp, product_type_id) VALUES (1, 'p', 1);
+        INSERT INTO printings (id, card_number_id, product_id) VALUES (1, 1, 1);
+        INSERT INTO printing_images (printing_id, image_size_id, position, source_url)
+            VALUES (1, 2, 1, 'a'), (1, 2, 2, 'b');
+        """
+    )
+    with pytest.raises(sqlite3.IntegrityError):
+        conn.execute(
+            "INSERT INTO printing_images (printing_id, image_size_id, position, source_url)"
+            " VALUES (1, 2, 2, 'c')"
+        )

@@ -187,6 +187,7 @@ CREATE TABLE printing_images (
     id INTEGER NOT NULL,
     printing_id INTEGER NOT NULL,
     image_size_id INTEGER NOT NULL,
+    position INTEGER NOT NULL DEFAULT 1,
     path TEXT,
     source_url TEXT NOT NULL,
     sha256 TEXT,
@@ -194,9 +195,10 @@ CREATE TABLE printing_images (
     height INTEGER,
     mime_type TEXT,
     CONSTRAINT pk_printing_images_id PRIMARY KEY (id),
-    CONSTRAINT uq_printing_images_printing_id_image_size_id UNIQUE (printing_id, image_size_id),
+    CONSTRAINT uq_printing_images_printing_id_image_size_id_position UNIQUE (printing_id, image_size_id, position),
     CONSTRAINT fk_printing_images_printing_id FOREIGN KEY (printing_id) REFERENCES printings (id),
     CONSTRAINT fk_printing_images_image_size_id FOREIGN KEY (image_size_id) REFERENCES image_sizes (id),
+    CONSTRAINT ck_printing_images_position CHECK (position >= 1),
     CONSTRAINT ck_printing_images_width CHECK (width > 0),
     CONSTRAINT ck_printing_images_height CHECK (height > 0)
 );

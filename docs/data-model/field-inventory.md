@@ -8,7 +8,7 @@ Inventory of the card fields each source offers, per card type, compared with wh
 - **Status `absent`**: the source was checked in the fixtures and does not carry the field.
 - **Eras checked by #9**: the card fixtures now cover BS01 to BS72, every card type and a flip card ([fixtures README](../../tests/fixtures/html/README.md)). The `<pre>` format is stable across them: the cost line, level line and `シンボル：` line have the same shape from BS01 to BS72, only the content varies ([batspi.md §6](../sources/batspi.md#6-card-pages)). The glossary form `3(2 紫, 1 神)` was never seen; the real forms are `4(赤2神1)` and `5(赤2白2)`.
 - The field-by-field comparison with the target schema is in the [coverage matrix](../sources/coverage-matrix.md).
-- Line references are to [batspi_card.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py) (`parse` column) and [db.py](../../src/bs_database/db.py) (`stored` column).
+- Line references are to [batspi_card.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py) (`parse` column) and [db.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py) (`stored` column).
 
 ## 1. Sources overview
 
@@ -52,7 +52,7 @@ Lv1・Lv2『自分のアタックステップ開始時』
 | `card_type` | Spirit, Nexus, Magic, Brave, Ultimate | スピリット, ネクサス, マジック | `<pre>` line 1 | Yes, machine-translated ([:61](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L61)) then normalized in [normalize.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/normalize.py) (`normalize_type`) | `cards.type_id` -> `card_types.name` | confirmed: `ブレイヴ` in [card_brave.html](../../tests/fixtures/html/card_brave.html), `アルティメット` in [card_ultimate.html](../../tests/fixtures/html/card_ultimate.html), plus Spirit, Nexus and Magic. The type can carry a suffix, `ネクサス(制限カード<1>)` in [card_flip.html](../../tests/fixtures/html/card_flip.html) |
 | `cost` | Total cost in cores | 4 | `<pre>` line 2, number before `(` | Yes ([:62](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L62)) | `cards.cost` | confirmed |
 | `reduction` | Symbols that can pay part of the cost, per colour plus the god symbol 神 | `(赤2神1)` on Spirit; `(2)` on Nexus `3(2)`, Magic `4(2)` | `<pre>` line 2, text in parentheses | Partly: a plain number gives N copies of the translated colour; a coloured form such as `赤2神1` does not match the regex `(\d+)\s*(.+)` and yields an empty list ([:64-77](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L64)) | no (JSON only) | confirmed |
-| `colors` | Card colour(s) | 赤 | `<pre>` line 2, second `/` field | Yes, but stored under the name `symbol` ([:63](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L63)) | `cards.symbol` as free text; `card_colors` only for single colours the map knows ([db.py:98-110](../../src/bs_database/db.py#L98)) | confirmed |
+| `colors` | Card colour(s) | 赤 | `<pre>` line 2, second `/` field | Yes, but stored under the name `symbol` ([:63](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L63)) | `cards.symbol` as free text; `card_colors` only for single colours the map knows ([db.py:98-110](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L98)) | confirmed |
 | `symbols` | Colour symbol icons printed on the card (may differ from colour) | `シンボル：赤` | `<pre>` line `シンボル：` (Spirit and Nexus fixtures; absent in the Magic fixture) | no, the line is never read | no | confirmed (Spirit, Nexus) |
 | `families` | Family tags (系統), possibly several joined with `・` | 眷属・武迅 | `<pre>` line 2, third `/` field | Yes, translated then split on `/` ([:79](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L79)); names cleaned in [normalize.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/normalize.py) | `families`, `card_families` | confirmed |
 | `effect_blocks` | Effect text, each with level scope, timing and text | `Lv1・Lv2『自分のアタックステップ開始時』` followed by the text; Nexus `Lv2` with no timing | `<pre>` lines after the level line | no | no | confirmed (Spirit, Nexus) |
@@ -152,13 +152,13 @@ Feeds [#29](https://github.com/AleFire99/BS_Database/issues/29) to [#32](https:/
 
 ### Parsed but dropped by the loader
 
-- `reduction`: computed ([:64-77](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L64)) and written to the card JSON, never stored ([db.py:122-150](../../src/bs_database/db.py#L122)).
+- `reduction`: computed ([:64-77](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L64)) and written to the card JSON, never stored ([db.py:122-150](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L122)).
 - Fandom set-table columns (`Name`, `Rarity`, `Card_ID`): written to the set JSON, never read by the card loader.
 
 ### Parsed lossily
 
 - `name_jp`: translated, original discarded.
-- `colors`: stored in a field called `symbol`; multicolour cards get no `card_colors` rows, and White is missing from the lookup, while Black is mapped but has no `colors` row ([db.py:98-105](../../src/bs_database/db.py#L98)).
+- `colors`: stored in a field called `symbol`; multicolour cards get no `card_colors` rows, and White is missing from the lookup, while Black is mapped but has no `colors` row ([db.py:98-105](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L98)).
 - `reduction` with colours and 神 (`赤2神1`): produces an empty list.
 - Nexus level lines: no rows, because the regex expects a BP.
 

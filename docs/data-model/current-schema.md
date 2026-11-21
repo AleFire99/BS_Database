@@ -1,8 +1,8 @@
 # Current database schema
 
-> **Legacy schema.** This page documents the legacy `battle_spirits.db` schema. It is superseded by the [target schema](target-schema.md) ([ADR 0002](../adr/0002-storage-technology.md), [ADR 0003](../adr/0003-naming-and-schema-versioning.md), [ADR 0004](../adr/0004-card-printing-identity.md), [ADR 0005](../adr/0005-text-first-effects-and-translations.md)) and is kept only as a reference for the migration in [#12](https://github.com/AleFire99/BS_Database/issues/12). Where each legacy table, column and JSON key ends up is in [legacy-mapping.md](legacy-mapping.md).
+> **Legacy schema, not produced any more.** This page documents the legacy `battle_spirits.db` schema. It is superseded by the [target schema](target-schema.md) ([ADR 0002](../adr/0002-storage-technology.md), [ADR 0003](../adr/0003-naming-and-schema-versioning.md), [ADR 0004](../adr/0004-card-printing-identity.md), [ADR 0005](../adr/0005-text-first-effects-and-translations.md)) and is kept only as a reference for the migration in [#12](https://github.com/AleFire99/BS_Database/issues/12). Where each legacy table, column and JSON key ends up is in [legacy-mapping.md](legacy-mapping.md).
 
-Schema of `battle_spirits.db`, matching the SQLAlchemy models in `src/bs_database/db.py`. SQLite, created via `Base.metadata.create_all`.
+Schema of the legacy `battle_spirits.db`, as the SQLAlchemy models of the removed `db.py` created it (`Base.metadata.create_all`; the loader and SQLAlchemy were removed in #120, see tag `v0.1.0`). The current database is built by `bsdb build` from [schema.sql](../../src/bs_database/schema.sql); see [build.md](../architecture/build.md).
 
 ## Entity-relationship diagram
 

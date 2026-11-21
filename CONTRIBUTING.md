@@ -223,6 +223,10 @@ Family and keyword codes are lowercase ASCII slugs, unique and sorted. Use the r
 
 Strict mode (`bsdb normalize --strict`) is checked in CI by `tests/test_normalize_strict.py`, with no translation model.
 
+## Building the database
+
+`uv run bsdb build [--out PATH] [--built-at ISO8601]` writes a fresh SQLite file from `data/normalized/` and the glossary (no network; the raw-HTML cache is only read for page hashes). It prints the rows per table and the warnings; see [build](docs/architecture/build.md) for the rules and the warning kinds. After a change to the build, regenerate the count golden with `uv run python tests/tools/regen_build_goldens.py` and review the diff. A schema change is an edit of `src/bs_database/schema.sql` ([ADR 0011](docs/adr/0011-schema-sql-source-of-truth-without-migrations.md)) together with `docs/data-model/target-schema.md`; `tests/test_schema_sql.py` checks that they agree.
+
 ## Releases
 
 SemVer, and a schema-breaking change bumps the major version. Cut `release/X.Y.Z` from `dev`, generate the CHANGELOG with `uvx git-cliff --tag vX.Y.Z`, pass Gate D, merge into `main`, tag it, publish a GitHub Release (the built database is attached as an asset), then back-merge into `dev`. The release's scope is its milestone: open issues in it are finished or moved before Gate D, and the release closes the milestone.

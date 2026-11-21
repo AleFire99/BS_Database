@@ -1,14 +1,16 @@
 # Legacy to target mapping
 
+> **Legacy.** The legacy loader (`db.py`) was removed in [#120](https://github.com/AleFire99/BS_Database/issues/120); links to it below point to history (tag `v0.1.0`). The new loader is described in [build.md](../architecture/build.md).
+
 Maps every item of the legacy pipeline to the [target schema](target-schema.md), or marks it as dropped with a reason. It is the checklist for the legacy-data migration in [#12](https://github.com/AleFire99/BS_Database/issues/12) and, together with the gap list at the end, the input for the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). The short summary in the [Legacy mapping](target-schema.md#legacy-mapping) subsection of the target schema is consistent with this page; this page is the complete version.
 
-Sources checked: [db.py](../../src/bs_database/db.py), [batspi_card.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py), [fandom_sets.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/fandom_sets.py), [fandom_images.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/fandom_images.py), [normalize.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/normalize.py), [current-schema.md](current-schema.md) (the legacy schema) and [field-inventory.md](field-inventory.md). Items that depend on the source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9)) are marked "pending #9".
+Sources checked: db.py (removed in #120, tag `v0.1.0`), [batspi_card.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py), [fandom_sets.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/fandom_sets.py), [fandom_images.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/fandom_images.py), [normalize.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/normalize.py), [current-schema.md](current-schema.md) (the legacy schema) and [field-inventory.md](field-inventory.md). Items that depend on the source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9)) are marked "pending #9".
 
 Reading the tables: **Target** is `table.column` of [target-schema.md](target-schema.md); "dropped" means the item has no target column. Where the legacy value is wrong or lossy, the target is filled from the Japanese source text, not converted from the legacy value.
 
 ## 1. Legacy database tables
 
-### cards ([db.py:60-74](../../src/bs_database/db.py#L60))
+### cards ([db.py:60-74](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L60))
 
 | Legacy column | Target | Note |
 | --- | --- | --- |
@@ -20,42 +22,42 @@ Reading the tables: **Target** is `table.column` of [target-schema.md](target-sc
 | `cards.image` | `printing_images.path` | A path string built by the scraper, not a file reference. See [section 5](#5-other-legacy-artefacts). |
 | `cards.type_id` | `cards.card_type_id` | FK to `card_types`, same shape. |
 
-### card_types ([db.py:38-41](../../src/bs_database/db.py#L38))
+### card_types ([db.py:38-41](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L38))
 
 | Legacy column | Target | Note |
 | --- | --- | --- |
 | `card_types.id` | dropped | Surrogate key; the seed rows get new ids. |
 | `card_types.name` (unique, `Spirit`, `Nexus`, `Magic`, `Brave`, `Ultimate`) | `card_types.code` and `card_types.name` | `code` is the lower-case form (`spirit`, ...); `name` keeps the English display name. Same five rows. |
 
-### colors ([db.py:44-49](../../src/bs_database/db.py#L44))
+### colors ([db.py:44-49](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L44))
 
 | Legacy column | Target | Note |
 | --- | --- | --- |
 | `colors.id` | dropped | Surrogate key. |
-| `colors.name` (unique; Red, Purple, Green, Yellow, Blue) | `colors.code` and `colors.name` | Lower-case `code`. White is added (missing in the legacy table, which has no White row; the code map has `black` instead, [db.py:98-105](../../src/bs_database/db.py#L98)). The legacy `black` map entry is dropped: it has no `colors` row and is not a game colour in the target. |
+| `colors.name` (unique; Red, Purple, Green, Yellow, Blue) | `colors.code` and `colors.name` | Lower-case `code`. White is added (missing in the legacy table, which has no White row; the code map has `black` instead, [db.py:98-105](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L98)). The legacy `black` map entry is dropped: it has no `colors` row and is not a game colour in the target. |
 
-### families ([db.py:52-57](../../src/bs_database/db.py#L52))
+### families ([db.py:52-57](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L52))
 
 | Legacy column | Target | Note |
 | --- | --- | --- |
 | `families.id` | dropped | Surrogate key. |
 | `families.name` (unique, machine-translated English, 517 rows) | `family_aliases.alias` with `lang` = `en` | The legacy name is a machine translation, so it becomes an alias with `translation_source_id` = `machine`. It points at the family whose Japanese name is found on the cards that use it. `families.name_jp` (the identity) and `families.name_en` (preferred) have no legacy source (gap); `name_en` can be filled from the `family_mapping.txt` right-hand side. |
 
-### card_colors ([db.py:23-28](../../src/bs_database/db.py#L23))
+### card_colors ([db.py:23-28](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L23))
 
 | Legacy column | Target | Note |
 | --- | --- | --- |
 | `card_colors.card_id` | `card_colors.card_id` | Re-derived, not copied: 1137 legacy cards have no row, multicolour cards have none and White is missing. Rebuilt from the Japanese colour segment by the loader. |
 | `card_colors.color_id` | `card_colors.color_id` | As above. |
 
-### card_families ([db.py:30-35](../../src/bs_database/db.py#L30))
+### card_families ([db.py:30-35](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L30))
 
 | Legacy column | Target | Note |
 | --- | --- | --- |
 | `card_families.card_id` | `card_families.card_id` | Same shape; rebuilt from the Japanese family segment because the legacy names are machine translations and may be split or merged wrongly. |
 | `card_families.family_id` | `card_families.family_id` | As above. |
 
-### core_requirements ([db.py:77-85](../../src/bs_database/db.py#L77))
+### core_requirements ([db.py:77-85](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L77))
 
 | Legacy column | Target | Note |
 | --- | --- | --- |
@@ -67,7 +69,7 @@ Reading the tables: **Target** is `table.column` of [target-schema.md](target-sc
 
 ## 2. Card JSON keys ([batspi_card.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py))
 
-The card JSON is built at [batspi_card.py:132-142](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L132) and loaded by [db.py:113-154](../../src/bs_database/db.py#L113). "Loaded" says what the legacy loader did with the key.
+The card JSON is built at [batspi_card.py:132-142](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L132) and loaded by [db.py:113-154](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L113). "Loaded" says what the legacy loader did with the key.
 
 | JSON key | Legacy loader | Target | Known parser bug and note |
 | --- | --- | --- | --- |
@@ -75,7 +77,7 @@ The card JSON is built at [batspi_card.py:132-142](https://github.com/AleFire99/
 | `card_id` | `cards.card_id` | `card_numbers.number` | Passed in by the caller, not read from the page ([:104](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L104)). The set prefix is also the source of `products.code`. |
 | `type` | `cards.type_id` via `card_types` | `cards.card_type_id` | Machine-translated line 1 ([:61](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L61)), normalized by `normalize_type` ([normalize.py:105-107](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/normalize.py#L105)). The target maps the Japanese word (`スピリット`) to a code. |
 | `cost` | `cards.cost` | `cards.cost` | Number before `(` ([:62](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L62)). |
-| `reduction` | **not loaded** | `card_reductions` (`symbol_id`, `count`) | Two bugs. (1) The mixed form `赤2神1` does not match `(\d+)\s*(.+)` and yields an empty list ([:72-77](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L72)), so the god symbol 神 is lost. (2) A plain number is expanded with the translated **colour** string ([:70](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L70)). It is never loaded ([db.py:122-150](../../src/bs_database/db.py#L122)), so there is nothing to migrate: reductions are re-read from the Japanese text. |
+| `reduction` | **not loaded** | `card_reductions` (`symbol_id`, `count`) | Two bugs. (1) The mixed form `赤2神1` does not match `(\d+)\s*(.+)` and yields an empty list ([:72-77](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L72)), so the god symbol 神 is lost. (2) A plain number is expanded with the translated **colour** string ([:70](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L70)). It is never loaded ([db.py:122-150](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L122)), so there is nothing to migrate: reductions are re-read from the Japanese text. |
 | `symbol` | `cards.symbol`, then `card_colors` via `get_colors_from_symbol` | `card_colors` rows | The key is **misnamed**: it holds the colour (segment 2 of the cost line, [:63](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L63)), not the printed symbols. The printed symbols (`シンボル：`) are never read: `card_symbols` has no legacy source (gap). |
 | `family` | `families`, `card_families` | `card_families`, `families`, `family_aliases` | Translated, split on `/` ([:79](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L79)), then cleaned by [normalize.py:57-102](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/normalize.py#L57). See [section 4](#4-family-mapping-datafamily_mappingtxt). |
 | `core_requirements[].level` | `core_requirements.level` | `card_levels.level` | Regex `<(\d+)>Lv(\d+)\s+(\d+)` ([:83](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_card.py#L83)). |
@@ -87,7 +89,7 @@ Not emitted by the legacy JSON at all (see the [gap list](#6-gap-list)): effects
 
 ## 3. Fandom set JSON keys ([fandom_sets.py](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/fandom_sets.py))
 
-`parse_table` builds one dict per table row, keyed by the table's header cells ([fandom_sets.py:43-51](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/fandom_sets.py#L43)), so the keys are whatever the wiki table headers are. The set JSON is **never read by the loader** ([db.py:157-164](../../src/bs_database/db.py#L157) only walks card JSON), and `fandom_sets` is not wired to the CLI. The real wiki columns are unverified (Cloudflare blocked the fixtures, which are synthetic; see [field-inventory.md](field-inventory.md#1-sources-overview)), so this mapping is **pending #9**.
+`parse_table` builds one dict per table row, keyed by the table's header cells ([fandom_sets.py:43-51](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/fandom_sets.py#L43)), so the keys are whatever the wiki table headers are. The set JSON is **never read by the loader** ([db.py:157-164](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L157) only walks card JSON), and `fandom_sets` is not wired to the CLI. The real wiki columns are unverified (Cloudflare blocked the fixtures, which are synthetic; see [field-inventory.md](field-inventory.md#1-sources-overview)), so this mapping is **pending #9**.
 
 | JSON key | Target | Note |
 | --- | --- | --- |
@@ -118,7 +120,7 @@ The 41 pairs were copied verbatim into [data/glossary/family_legacy_en.csv](../.
 | `data/extracted_urls.txt` | dropped | An intermediate list of set-page links ([cli.py:117](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/cli.py#L117)); the target keeps URLs in `source_pages.url` instead. |
 | Card-number regex `BS\d{2}-\d{3}` ([batspi_links.py:22](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_links.py#L22)) | `card_numbers.number` | Promo and other number formats are not matched; pending #9. |
 | SQLite DB without constraints, foreign keys unenforced | `PRAGMA foreign_keys = ON`, constraints | See [schema.sql](../../src/bs_database/schema.sql) ([ADR 0011](../adr/0011-schema-sql-source-of-truth-without-migrations.md)). |
-| `get_or_create` / skip-existing loader ([db.py:88-95](../../src/bs_database/db.py#L88), [:115-118](../../src/bs_database/db.py#L115)) | dropped | Replaced by the #12 loader that builds the whole database from clean input. |
+| `get_or_create` / skip-existing loader ([db.py:88-95](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L88), [:115-118](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/db.py#L115)) | dropped | Replaced by the #12 loader that builds the whole database from clean input. |
 
 ## 6. Gap list
 
