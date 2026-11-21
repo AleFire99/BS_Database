@@ -24,6 +24,7 @@ MINIMAL: dict[str, str] = {
         "legacy_en,preferred_en,jp,notes\nRebirth,Reptile Beast,爬獣,\nSky,Fang,,\n"
     ),
     "product_code_prefixes": "prefix,code,notes\nBS,booster,\nBSC,starter,\n",
+    "product_name_keywords": "keyword,code,notes\nパック,booster,\nブースターパック,starter,\n",
 }
 
 
@@ -232,3 +233,49 @@ def test_prefix_unsorted(tmp_path: Path) -> None:
 def test_prefix_bad_header(tmp_path: Path) -> None:
     errs = errors_of(tmp_path, product_code_prefixes="code,prefix,notes\n")
     assert any("product_code_prefixes.csv:1: header" in e for e in errs)
+
+
+KH = "keyword,code,notes"
+
+
+def test_keyword_longest_match_wins(tmp_path: Path) -> None:
+    g = load_glossary(make(tmp_path))
+    assert g.product_type_for_name("ABCパック") == "booster"
+    assert g.product_type_for_name("ブースターパック") == "starter"
+    assert g.product_type_for_name("ABC") is None
+    assert g.product_type_for_name(None) is None
+    assert g.product_type_for_name("") is None
+
+
+def test_keyword_matches_after_nfkc(tmp_path: Path) -> None:
+    g = load_glossary(make(tmp_path, product_name_keywords=f"{KH}\nMAX,booster,\n"))
+    assert g.product_type_for_name("ＭＡＸ大会") == "booster"
+    assert g.product_type_for_name("max") is None
+
+
+def test_keyword_file_may_be_empty(tmp_path: Path) -> None:
+    g = load_glossary(make(tmp_path, product_name_keywords=f"{KH}\n"))
+    assert g.product_keywords == ()
+
+
+def test_keyword_unknown_type(tmp_path: Path) -> None:
+    errs = errors_of(tmp_path, product_name_keywords=f"{KH}\nパック,nope,\n")
+    assert "product_name_keywords.csv:2: unknown product type 'nope'" in errs
+
+
+def test_keyword_duplicate_and_empty(tmp_path: Path) -> None:
+    errs = errors_of(
+        tmp_path, product_name_keywords=f"{KH}\n,booster,\nパック,booster,\nパック,booster,\n"
+    )
+    assert "product_name_keywords.csv:2: empty keyword" in errs
+    assert "product_name_keywords.csv:4: duplicate keyword 'パック'" in errs
+
+
+def test_keyword_unsorted(tmp_path: Path) -> None:
+    errs = errors_of(tmp_path, product_name_keywords=f"{KH}\nパック,booster,\nBOX,booster,\n")
+    assert "product_name_keywords.csv:3: rows not sorted by keyword" in errs
+
+
+def test_keyword_bad_header(tmp_path: Path) -> None:
+    errs = errors_of(tmp_path, product_name_keywords="code,keyword,notes\n")
+    assert any("product_name_keywords.csv:1: header" in e for e in errs)

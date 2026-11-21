@@ -10,6 +10,7 @@ lists all violations as ``<file>:<line>: <rule>``.
 
 import csv
 import io
+import unicodedata
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -28,6 +29,7 @@ KINDS = (
 CLOSED = frozenset({"colors", "symbols", "card_types", "rarities", "variants", "product_types"})
 LEGACY_FILE = "family_legacy_en"
 PREFIX_FILE = "product_code_prefixes"
+KEYWORD_FILE = "product_name_keywords"
 
 _BASE_COLUMNS = ("jp", "code", "en", "notes")
 _COLUMNS: dict[str, tuple[str, ...]] = {
@@ -35,6 +37,7 @@ _COLUMNS: dict[str, tuple[str, ...]] = {
     "families": (*_BASE_COLUMNS, "aliases_en", "no_split"),
     LEGACY_FILE: ("legacy_en", "preferred_en", "jp", "notes"),
     PREFIX_FILE: ("prefix", "code", "notes"),
+    KEYWORD_FILE: ("keyword", "code", "notes"),
 }
 _EMPTY_JP_OK = frozenset({"variants", "product_types"})
 _ALIAS_SEPARATOR = "|"
@@ -101,12 +104,22 @@ class ProductPrefix:
 
 
 @dataclass(frozen=True, slots=True)
+class ProductKeyword:
+    """A product-name keyword (``ブースター``) and the product type code it implies."""
+
+    keyword: str
+    code: str
+    notes: str
+
+
+@dataclass(frozen=True, slots=True)
 class Glossary:
     """All glossaries, indexed by kind and exact ``jp`` value."""
 
     entries: Mapping[str, tuple[Entry, ...]]
     legacy_family_aliases: tuple[LegacyFamilyAlias, ...]
     product_prefixes: tuple[ProductPrefix, ...] = ()
+    product_keywords: tuple[ProductKeyword, ...] = ()
     _index: Mapping[tuple[str, str], Entry] = field(init=False, repr=False, compare=False)
 
     def __post_init__(self) -> None:
@@ -125,6 +138,10 @@ class Glossary:
         """Type code of the longest prefix of ``product_code``, else ``None``."""
         return prefix_type_code(self.product_prefixes, product_code)
 
+    def product_type_for_name(self, product_name: str | None) -> str | None:
+        """Type code of the longest product-name keyword in ``product_name``, else ``None``."""
+        return keyword_type_code(self.product_keywords, product_name)
+
     def unresolved_legacy(self) -> tuple[LegacyFamilyAlias, ...]:
         """Legacy pairs whose ``jp`` is still empty (to be filled in #96)."""
         return tuple(a for a in self.legacy_family_aliases if a.jp is None)
@@ -142,6 +159,23 @@ def prefix_type_code(prefixes: Iterable[ProductPrefix], product_code: str | None
         if product_code.startswith(p.prefix) and (best is None or len(p.prefix) > len(best.prefix)):
             best = p
     return None if best is None else best.code
+
+
+def keyword_type_code(keywords: Iterable[ProductKeyword], product_name: str | None) -> str | None:
+    """The type code of the longest keyword contained in ``product_name``, else ``None``.
+
+    Both sides are NFKC-normalised first, so full-width and half-width forms match. On a
+    length tie the first row of the file wins.
+    """
+    if not product_name:
+        return None
+    name = unicodedata.normalize("NFKC", product_name)
+    best: tuple[int, str] | None = None
+    for k in keywords:
+        word = unicodedata.normalize("NFKC", k.keyword)
+        if word in name and (best is None or len(word) > best[0]):
+            best = (len(word), k.code)
+    return None if best is None else best[1]
 
 
 Row = tuple[int, dict[str, str]]
@@ -232,11 +266,31 @@ def _check_prefixes(raw: dict[str, list[Row]], errors: list[str]) -> None:
         previous = prefix
 
 
+def _check_keywords(raw: dict[str, list[Row]], errors: list[str]) -> None:
+    """Keyword file rules: non-empty unique sorted keywords with an existing type code."""
+    name = f"{KEYWORD_FILE}.csv"
+    type_codes = {r["code"] for _, r in raw.get("product_types", [])}
+    seen: set[str] = set()
+    previous = ""
+    for line, row in raw.get(KEYWORD_FILE, []):
+        keyword = row["keyword"]
+        if not keyword:
+            errors.append(f"{name}:{line}: empty keyword")
+        elif keyword in seen:
+            errors.append(f"{name}:{line}: duplicate keyword {keyword!r}")
+        seen.add(keyword)
+        if "product_types" in raw and row["code"] not in type_codes:
+            errors.append(f"{name}:{line}: unknown product type {row['code']!r}")
+        if keyword < previous:
+            errors.append(f"{name}:{line}: rows not sorted by keyword")
+        previous = keyword
+
+
 def load_glossary(directory: Path) -> Glossary:
     """Load and validate every glossary under ``directory``."""
     errors: list[str] = []
     raw: dict[str, list[Row]] = {}
-    for kind in (*KINDS, LEGACY_FILE, PREFIX_FILE):
+    for kind in (*KINDS, LEGACY_FILE, PREFIX_FILE, KEYWORD_FILE):
         rows = _read_rows(directory / f"{kind}.csv", _COLUMNS.get(kind, _BASE_COLUMNS), errors)
         if rows is not None:
             raw[kind] = rows
@@ -274,6 +328,7 @@ def load_glossary(directory: Path) -> Glossary:
             errors.append(f"{LEGACY_FILE}.csv:{line}: jp {row['jp']!r} not in families.csv")
 
     _check_prefixes(raw, errors)
+    _check_keywords(raw, errors)
     if errors:
         raise GlossaryError(errors)
     return _build(raw)
@@ -304,4 +359,7 @@ def _build(raw: dict[str, list[Row]]) -> Glossary:
                 built.append(Entry(*base))
         entries[kind] = tuple(built)
     prefixes = tuple(ProductPrefix(r["prefix"], r["code"], r["notes"]) for _, r in raw[PREFIX_FILE])
-    return Glossary(entries, legacy, prefixes)
+    keywords = tuple(
+        ProductKeyword(r["keyword"], r["code"], r["notes"]) for _, r in raw[KEYWORD_FILE]
+    )
+    return Glossary(entries, legacy, prefixes, keywords)
