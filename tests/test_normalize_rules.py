@@ -2,7 +2,14 @@
 
 import pytest
 
-from bs_database.glossary import Entry, FamilyEntry, Glossary, ProductPrefix, RarityEntry
+from bs_database.glossary import (
+    Entry,
+    FamilyEntry,
+    Glossary,
+    ProductKeyword,
+    ProductPrefix,
+    RarityEntry,
+)
 from bs_database.normalize import rules
 from bs_database.normalize.records import CodedTerm, UnmappedCollector, UnmappedTerm
 from bs_database.parsers.card_models import Keyword, SymbolCount
@@ -34,6 +41,11 @@ def make_glossary() -> Glossary:
             ProductPrefix("BS", "booster", ""),
             ProductPrefix("BSC", "starter", ""),
             ProductPrefix("SD", "starter", ""),
+        ),
+        (
+            ProductKeyword("パック", "booster", ""),
+            ProductKeyword("ブースターパック", "starter", ""),
+            ProductKeyword("MAX", "promo", ""),
         ),
     )
 
@@ -107,6 +119,24 @@ def test_product_type_marker(name: str, code: str | None) -> None:
     ],
 )
 def test_product_type_prefix_rule(name: str, product_code: str | None, code: str | None) -> None:
+    assert rules.product_type_code(G, name, product_code) == code
+
+
+@pytest.mark.parametrize(
+    ("name", "product_code", "code"),
+    [
+        ("ABCパック", None, "booster"),
+        ("ABCブースターパック", None, "starter"),
+        ("ABCパック", "XX01", "booster"),
+        ("ABCパック", "SD01", "starter"),
+        ("ABCコラボパック", None, "collab"),
+        ("ＭＡＸ杯", None, "promo"),
+        ("ABC", None, None),
+    ],
+)
+def test_product_type_name_keyword_rule(
+    name: str, product_code: str | None, code: str | None
+) -> None:
     assert rules.product_type_code(G, name, product_code) == code
 
 

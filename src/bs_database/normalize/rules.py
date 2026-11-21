@@ -82,15 +82,19 @@ def variant_code(glossary: Glossary, note: str | None) -> tuple[str | None, str]
 def product_type_code(
     glossary: Glossary, product_name: str, product_code: str | None = None
 ) -> str | None:
-    """Product type: a title marker in the name wins, else the longest ``product_code`` prefix.
+    """Product type: a title marker, else the longest code prefix, else the longest name keyword.
 
     A collab starter such as ``SD54`` stays ``collab`` because its title carries the marker
-    (ADR 0008, D6). No marker and no matching prefix gives ``None``.
+    (ADR 0008, D6). The name keywords (D10) only apply when the product code gives nothing.
+    No rule matching gives ``None``.
     """
     for entry in glossary.entries["product_types"]:
         if entry.jp and entry.jp in product_name:
             return entry.code
-    return glossary.product_type_for_code(product_code)
+    by_code = glossary.product_type_for_code(product_code)
+    if by_code is not None:
+        return by_code
+    return glossary.product_type_for_name(product_name)
 
 
 def merge_family_tokens(glossary: Glossary, tokens: tuple[str, ...]) -> tuple[str, ...]:
