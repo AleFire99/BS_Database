@@ -161,6 +161,17 @@ def render_markdown(review: Review) -> str:
         right=3,
     )
     lines += _section("Product code prefixes", len(review.prefixes), prefix_table)
+    untyped_table = _table(
+        ["Product name", "Printings", "Products"],
+        [[r.name, r.printings, r.products] for r in review.untyped],
+        right=1,
+    )
+    lines += _section(
+        "Untyped products",
+        len(review.untyped),
+        untyped_table,
+        "Product names whose printings no type rule resolves (marker, code prefix, name keyword).",
+    )
     conflict_table = _table(
         ["Slug", "Families"], [[c.slug, ", ".join(c.jps)] for c in review.conflicts]
     )

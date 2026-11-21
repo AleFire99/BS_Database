@@ -28,7 +28,8 @@ class Corpus:
     English of a family, when the normalize run produced one. ``pairs`` counts the cards
     on which two families are adjacent. ``products`` is keyed by product code
     (``NO_PRODUCT_CODE`` for printings without one). ``rarity_printings`` counts printings per
-    batspi ``rarity_jp``.
+    batspi ``rarity_jp``. ``untyped`` maps a product name to ``(printings, products)`` for
+    the printings no type rule resolved (``products`` counts distinct product codes).
     """
 
     card_families: Mapping[str, frozenset[str]]
@@ -38,6 +39,7 @@ class Corpus:
     pairs: Mapping[tuple[str, str], int]
     products: Mapping[str, ProductStat]
     rarity_printings: Mapping[str, int] = field(default_factory=dict)
+    untyped: Mapping[str, tuple[int, int]] = field(default_factory=dict)
 
 
 def product_prefix(product_code: str) -> str:
@@ -63,6 +65,8 @@ class _Builder:
         self.product_unresolved: dict[str, set[str]] = {}
         self.product_types: dict[str, set[str]] = {}
         self.rarities: dict[str, int] = {}
+        self.untyped_printings: dict[str, int] = {}
+        self.untyped_codes: dict[str, set[str]] = {}
 
     def add_entry(self, entry: dict[str, Any]) -> None:
         number: str = entry["number"]
@@ -88,6 +92,9 @@ class _Builder:
         type_code = printing["product_type_code"]
         self.product_types.setdefault(code, set()).add(type_code or "-")
         if type_code is None:
+            name = printing["product_name_jp"]
+            self.untyped_printings[name] = self.untyped_printings.get(name, 0) + 1
+            self.untyped_codes.setdefault(name, set()).add(code)
             self.product_unresolved.setdefault(code, set()).add(number)
 
     def build(self) -> Corpus:
@@ -109,6 +116,10 @@ class _Builder:
             {pair: len(n) for pair, n in self.pairs.items()},
             products,
             dict(self.rarities),
+            {
+                name: (count, len(self.untyped_codes[name]))
+                for name, count in self.untyped_printings.items()
+            },
         )
 
 

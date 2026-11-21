@@ -123,6 +123,15 @@ class PrefixRow:
 
 
 @dataclass(frozen=True, slots=True)
+class UntypedRow:
+    """A product name whose printings no type rule resolves."""
+
+    name: str
+    printings: int
+    products: int
+
+
+@dataclass(frozen=True, slots=True)
 class LegacyRow:
     """A ``family_legacy_en`` row after the fill; ``status`` says what happened to ``jp``."""
 
@@ -157,6 +166,7 @@ class Review:
     no_legacy: tuple[str, ...]
     rarities: tuple[RarityRow, ...] = ()
     with_fandom: bool = False
+    untyped: tuple[UntypedRow, ...] = ()
 
     @property
     def family_sources(self) -> tuple[tuple[str, int], ...]:
@@ -388,6 +398,11 @@ def _prefix_rows(corpus: Corpus, prefixes: Sequence[ProductPrefix]) -> list[Pref
     return rows
 
 
+def _untyped_rows(corpus: Corpus) -> list[UntypedRow]:
+    rows = [UntypedRow(name or "(empty)", n, p) for name, (n, p) in corpus.untyped.items()]
+    return sorted(rows, key=lambda r: (-r.printings, r.name))
+
+
 def _legacy_rows(
     link: LinkResult, legacy_rows: Sequence[Row]
 ) -> tuple[list[LegacyRow], list[tuple[str, ...]]]:
@@ -446,4 +461,5 @@ def build_review(
         link.no_legacy,
         tuple(_rarity_rows(corpus, fandom)) if fandom else (),
         fandom is not None,
+        tuple(_untyped_rows(corpus)),
     )
