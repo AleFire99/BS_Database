@@ -117,7 +117,7 @@ The 41 pairs were copied verbatim into [data/glossary/family_legacy_en.csv](../.
 | Set prefix of the card number (`BS72`) | `products.code` | The only place a set exists in the legacy data (no `sets` table). Names, dates and type of the product have no legacy source (gap). |
 | `data/extracted_urls.txt` | dropped | An intermediate list of set-page links ([cli.py:117](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/cli.py#L117)); the target keeps URLs in `source_pages.url` instead. |
 | Card-number regex `BS\d{2}-\d{3}` ([batspi_links.py:22](https://github.com/AleFire99/BS_Database/blob/f90747b/src/bs_database/scrapers/batspi_links.py#L22)) | `card_numbers.number` | Promo and other number formats are not matched; pending #9. |
-| SQLite DB without constraints, foreign keys unenforced | `PRAGMA foreign_keys = ON`, constraints | See the DDL draft in [target-schema.md](target-schema.md). |
+| SQLite DB without constraints, foreign keys unenforced | `PRAGMA foreign_keys = ON`, constraints | See [schema.sql](../../src/bs_database/schema.sql) ([ADR 0011](../adr/0011-schema-sql-source-of-truth-without-migrations.md)). |
 | `get_or_create` / skip-existing loader ([db.py:88-95](../../src/bs_database/db.py#L88), [:115-118](../../src/bs_database/db.py#L115)) | dropped | Replaced by the #12 loader that builds the whole database from clean input. |
 
 ## 6. Gap list
