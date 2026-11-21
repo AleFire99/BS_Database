@@ -570,5 +570,5 @@ def test_image_urls_are_read_not_built(stem: str) -> None:
 def test_page_round_trips_through_json(stem: str) -> None:
     page = parse(stem)
     data = json.loads(json.dumps(dataclasses.asdict(page), ensure_ascii=False))
-    assert data["schema_version"] == "2.0.0"
+    assert data["schema_version"] == "2.1.0"
     assert len(data["printings"]) == len(page.printings)

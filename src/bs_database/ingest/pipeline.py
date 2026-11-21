@@ -51,11 +51,14 @@ class RunOptions:
     ``limit``: maximum card pages taken this run (cache hits count).
     ``retry_failed``: first give a fresh set of attempts to the pages that failed with a
     ``parse error:`` (the cache holds their HTML, so a parser fix can be applied with no request).
+    ``reparse``: first rewind every parsed card page to ``fetched``, so the run parses it again
+    from the cache (after a parsed-schema change); use it without ``sets`` to cover every page.
     """
 
     sets: tuple[str, ...] = ()
     limit: int | None = None
     retry_failed: bool = False
+    reparse: bool = False
 
 
 def _sha256(content: bytes) -> str:
@@ -282,6 +285,9 @@ class _Run:
         if self.options.retry_failed:
             n = self.store.reset_failed(prefix=PARSE_ERROR_PREFIX)
             log.info("retry-failed: %d pages with a parse error get new attempts", n)
+        if self.options.reparse:
+            n = self.store.reset_cards_to_fetched()
+            log.info("reparse: %d card pages go back to fetched", n)
         products = self.index()
         self.sets(products)
         self.cards()

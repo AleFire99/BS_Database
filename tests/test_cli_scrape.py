@@ -160,3 +160,13 @@ def test_offline_and_retry_failed_flags(site: FakeSite) -> None:
     assert code == 0, out
     assert len(site.calls) == calls
     assert "Requests made: 0" in out
+
+
+def test_reparse_flag_parses_again_from_the_cache(site: FakeSite) -> None:
+    scrape("--set", SET_NAME, "--limit", "2")
+    calls = len(site.calls)
+    code, out = scrape("--offline", "--reparse")
+    assert code == 0, out
+    assert len(site.calls) == calls
+    assert "Requests made: 0" in out
+    assert "Cards parsed this run: 2" in out

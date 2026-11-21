@@ -283,6 +283,14 @@ def scrape(
             help="Use the cache only: a page not in it is skipped, no request is ever made.",
         ),
     ] = False,
+    reparse: Annotated[
+        bool,
+        typer.Option(
+            "--reparse",
+            help="Parse every parsed card page again from the cache (after a schema change). "
+            "Combine with --offline to make no request.",
+        ),
+    ] = False,
 ) -> None:
     """Scrape card pages from batspi.com into data/parsed, resuming where the last run stopped."""
     settings = _settings(ctx)
@@ -291,7 +299,9 @@ def scrape(
     fetcher = CachedFetcher(
         client, RawCache(settings.cache_dir), refresh=refresh, max_age=age, offline=offline
     )
-    options = RunOptions(sets=tuple(sets or ()), limit=limit, retry_failed=retry_failed)
+    options = RunOptions(
+        sets=tuple(sets or ()), limit=limit, retry_failed=retry_failed, reparse=reparse
+    )
     with StateStore(settings.state_db_path) as store:
         report = run_pipeline(
             settings, fetcher, store, requests_made=lambda: client.requests_made, options=options

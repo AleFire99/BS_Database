@@ -272,6 +272,23 @@ class StateStore:
             )
             return cur.rowcount
 
+    def reset_cards_to_fetched(self) -> int:
+        """Rewind every card page that was parsed (or went further) to ``fetched``.
+
+        For a re-parse of the cached HTML after a parser or schema change (``--reparse``): the
+        next run parses those pages again with no request. Failed and not yet fetched pages are
+        untouched. Returns the number of rows.
+        """
+        rewound = (S.PARSED, S.NORMALIZED, S.TRANSLATED, S.LOADED)
+        marks = ", ".join("?" for _ in rewound)
+        with self._tx() as conn:
+            cur = conn.execute(
+                "UPDATE pages SET state = ?, failed_from = NULL, attempts = 0, "
+                f"last_error = NULL, updated_at = ? WHERE kind = ? AND state IN ({marks})",
+                (S.FETCHED.value, self._stamp(), PageKind.CARD.value, *(r.value for r in rewound)),
+            )
+            return cur.rowcount
+
     def iter_exhausted(self) -> list[PageRecord]:
         """Failed pages that used all attempts, for reporting."""
         rows = self._conn.execute(

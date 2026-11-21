@@ -287,6 +287,25 @@ def test_failed_migration_closes_connection(
     assert closed
 
 
+def test_reset_cards_to_fetched_rewinds_only_card_rows_past_parsing(tmp_path: Path) -> None:
+    with make_store(tmp_path / "s.db") as store:
+        store.upsert_discovered("set", PageKind.SET)
+        for url in ("new", "fetched", "parsed", "bad"):
+            store.upsert_discovered(url, PageKind.CARD)
+        for url in ("fetched", "parsed", "bad"):
+            store.advance(url, S.FETCHED)
+        store.advance("parsed", S.PARSED)
+        store.mark_failed("bad", "parse error: x")
+        for state in (S.FETCHED, S.PARSED):
+            store.advance("set", state)
+        assert store.reset_cards_to_fetched() == 1
+        assert store.get("parsed").state is S.FETCHED
+        assert store.get("new").state is S.DISCOVERED
+        assert store.get("bad").state is S.FAILED
+        assert store.get("set").state is S.PARSED
+        assert store.reset_cards_to_fetched() == 0
+
+
 def test_reset_failed_touches_only_matching_rows(tmp_path: Path) -> None:
     with make_store(tmp_path / "s.db") as store:
         for url in ("p", "gone", "other"):

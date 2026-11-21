@@ -7,7 +7,7 @@ codes is the loader's job (#12).
 
 from dataclasses import dataclass
 
-SCHEMA_VERSION = "2.0.0"
+SCHEMA_VERSION = "2.1.0"
 
 
 @dataclass(frozen=True, slots=True)

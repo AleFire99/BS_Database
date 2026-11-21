@@ -91,7 +91,7 @@ def test_tree_writes_same_stem_and_is_idempotent(tmp_path: Path) -> None:
         target = out / "batspi" / src.name
         document = json.loads(target.read_text(encoding="utf-8"))
         assert document["schema_version"] == "1.1.0"
-        assert document["parsed_schema_version"] == "2.0.0"
+        assert document["parsed_schema_version"] == "2.1.0"
         assert document["provenance"]["source"] == "batspi"
     snapshot = _hash_tree(out)
     normalize_tree(parsed, out, real_glossary(), NullTranslator())

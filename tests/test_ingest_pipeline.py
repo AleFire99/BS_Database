@@ -509,6 +509,25 @@ def test_retry_failed_resets_only_parse_errors_and_offline_makes_no_request(
     assert [r.url for r in report.exhausted] == [gone]
 
 
+def test_reparse_rewinds_parsed_cards_and_parses_them_again_from_the_cache(
+    tmp_path: Path,
+) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    first = crawl(settings, FakeSite(clock, unmapped="fallback"), clock)
+    assert first.cards_parsed > 0
+    documents = sorted(settings.parsed_dir.rglob("*.json"))
+    for path in documents:
+        path.write_text("{}", encoding="utf-8")  # an old document
+    plain = crawl(settings, FakeSite(clock, unmapped="fallback"), clock)
+    assert plain.cards_parsed == 0  # a plain run does not parse parsed pages again
+    offline_site = FakeSite(clock, unmapped="fallback")
+    report = crawl(settings, offline_site, clock, RunOptions(reparse=True), offline=True)
+    assert offline_site.calls == [] and report.requests_made == 0
+    assert report.cards_parsed == first.cards_parsed
+    assert all(path.read_text(encoding="utf-8") != "{}" for path in documents)
+    assert state_of(settings, CARD_URLS[7]).state is S.PARSED
+
+
 def test_offline_miss_is_a_retryable_skip(tmp_path: Path) -> None:
     settings, clock = make_settings(tmp_path), FakeClock()
     site = FakeSite(clock, unmapped="fallback")
