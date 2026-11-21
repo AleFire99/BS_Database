@@ -187,7 +187,7 @@ CREATE TABLE printing_images (
     id INTEGER NOT NULL,
     printing_id INTEGER NOT NULL,
     image_size_id INTEGER NOT NULL,
-    path TEXT NOT NULL,
+    path TEXT,
     source_url TEXT NOT NULL,
     sha256 TEXT,
     width INTEGER,

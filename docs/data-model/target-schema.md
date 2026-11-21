@@ -1246,7 +1246,7 @@ Lookup (`code` plus English `name`).
 | `id` | INTEGER | PRIMARY KEY | |
 | `printing_id` | INTEGER | NOT NULL, FOREIGN KEY to `printings.id` | |
 | `image_size_id` | INTEGER | NOT NULL, FOREIGN KEY to `image_sizes.id` | Size of the file. |
-| `path` | TEXT | NOT NULL | Path relative to the release artefact. The layout is decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). |
+| `path` | TEXT | | Path relative to the release artefact. NULL while images are not stored or redistributed ([ADR 0006](../adr/0006-scraping-and-redistribution-policy.md): URL only); the layout is decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). |
 | `source_url` | TEXT | NOT NULL | Where the file was downloaded from. |
 | `sha256` | TEXT | | Hash of the file; NULL until downloaded. |
 | `width` | INTEGER | CHECK `width` > 0 | Pixels; NULL until downloaded (not read from the page). Pending #9. |
