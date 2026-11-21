@@ -135,6 +135,13 @@ def test_level_line_errors(line: str) -> None:
         ("シンボル：極", sc(("極", 1))),
         ("シンボル：赤赤", sc(("赤", 2))),
         ("シンボル：赤2", sc(("赤", 2))),
+        ("シンボル：EX赤", (SymbolCount("赤", 1, "EX"),)),
+        ("シンボル：EX赤 赤", (SymbolCount("赤", 1, "EX"), SymbolCount("赤", 1))),
+        (
+            "シンボル：神(青)神(白)",
+            (SymbolCount("神", 1, None, "青"), SymbolCount("神", 1, None, "白")),
+        ),
+        ("シンボル：神(青)神(青)", (SymbolCount("神", 2, None, "青"),)),
     ],
 )
 def test_symbol_line(line: str, expected: object) -> None:

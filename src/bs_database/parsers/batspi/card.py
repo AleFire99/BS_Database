@@ -50,8 +50,10 @@ _LEVEL_TOKEN_RE = re.compile(
 )
 _FUSION_TOKEN_RE = re.compile(r"<\d+>\s*合体\s*\+(\d+)")
 _OVERCLOCK_TOKEN_RE = re.compile(r"OC<(\d+)\+>\s*\+(\d+)")
-_PART_RE = re.compile(rf"([{REDUCTION_GLYPHS}])(\d*)")
-_SYMBOL_RE = re.compile(rf"([{SYMBOL_GLYPHS}])(\d*)")
+_PART_RE = re.compile(rf"(?P<glyph>[{REDUCTION_GLYPHS}])(?P<count>\d*)")
+_SYMBOL_RE = re.compile(
+    rf"(?P<variant>EX)?(?P<glyph>[{SYMBOL_GLYPHS}])(?:\((?P<color>[{COLORS}])\))?(?P<count>\d*)"
+)
 SYMBOL_PREFIX = "シンボル："
 
 
@@ -70,15 +72,19 @@ def parse_type_line(line: str) -> tuple[str, int | None, str | None, str | None]
 
 def _parts(text: str, pattern: re.Pattern[str], what: str) -> tuple[SymbolCount, ...]:
     """Split ``赤2神1`` into counted glyphs, adding up repeated glyphs in order."""
-    counts: dict[str, int] = {}
+    counts: dict[tuple[str, str | None, str | None], int] = {}
     pos = 0
     while pos < len(text):
         match = pattern.match(text, pos)
         if match is None:
             raise ParseError(f"unknown {what} syntax: {text!r}")
-        counts[match.group(1)] = counts.get(match.group(1), 0) + int(match.group(2) or 1)
+        found = match.groupdict()
+        key = (found["glyph"], found.get("variant"), found.get("color"))
+        counts[key] = counts.get(key, 0) + int(found["count"] or 1)
         pos = match.end()
-    return tuple(SymbolCount(symbol, count) for symbol, count in counts.items())
+    return tuple(
+        SymbolCount(g, count, variant, color) for (g, variant, color), count in counts.items()
+    )
 
 
 def parse_cost_line(line: str) -> tuple[int, Reduction, tuple[str, ...], tuple[str, ...]]:

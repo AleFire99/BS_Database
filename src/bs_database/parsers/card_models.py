@@ -12,10 +12,16 @@ SCHEMA_VERSION = "2.0.0"
 
 @dataclass(frozen=True, slots=True)
 class SymbolCount:
-    """A colour/symbol glyph with a count, e.g. ``赤`` x 2."""
+    """A colour/symbol glyph with a count, e.g. ``赤`` x 2.
+
+    ``variant`` is a prefix printed before the glyph (``EX`` in ``EX赤``) and ``color`` the
+    colour in brackets after a god symbol (``青`` in ``神(青)``); both as printed, None if absent.
+    """
 
     symbol: str
     count: int
+    variant: str | None = None
+    color: str | None = None
 
 
 @dataclass(frozen=True, slots=True)

@@ -344,7 +344,7 @@
           ],
           [
             "SD67-CP01",
-            "Reduction(plain=None, parts=(SymbolCount(symbol='全', count=1), SymbolCount(symbol='極', count=3)))"
+            "Reduction(plain=None, parts=(SymbolCount(symbol='全', count=1, variant=None, color=None), SymbolCount(symbol='極', count=3, variant=None, color=None)))"
           ]
         ]
       },

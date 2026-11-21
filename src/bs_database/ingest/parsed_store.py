@@ -69,7 +69,7 @@ def read_card_json(path: Path) -> dict[str, Any]:
 
 
 def _symbol(d: dict[str, Any]) -> SymbolCount:
-    return SymbolCount(d["symbol"], d["count"])
+    return SymbolCount(d["symbol"], d["count"], d["variant"], d["color"])
 
 
 def _overclock(d: dict[str, Any] | None) -> Overclock | None:

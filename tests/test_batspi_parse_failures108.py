@@ -171,3 +171,10 @@ def test_level_with_a_blank_after_the_core_count() -> None:
         (2, 3, 10000),
         (3, 5, 13000),
     ]
+
+
+def test_ex_symbol() -> None:
+    """ガードベント prints ``シンボル：EX白``."""
+    entries = parse("card_magic_symbol_ex").entries
+    symbols = [s for e in entries for s in e.gameplay.symbols]
+    assert [(s.symbol, s.count, s.variant, s.color) for s in symbols] == [("白", 1, "EX", None)]

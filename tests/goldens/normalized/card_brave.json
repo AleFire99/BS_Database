@@ -286,7 +286,7 @@
           ],
           [
             "BS38-RV022",
-            "(SymbolCount(symbol='赤', count=1),)"
+            "(SymbolCount(symbol='赤', count=1, variant=None, color=None),)"
           ]
         ]
       },

@@ -1,0 +1,295 @@
+{
+  "schema_version": "1.1.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E3%82%AC%E3%83%BC%E3%83%89%E3%83%99%E3%83%B3%E3%83%88",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E3%82%AC%E3%83%BC%E3%83%89%E3%83%99%E3%83%B3%E3%83%88",
+    "title_jp": "ガードベント",
+    "entries": [
+      {
+        "number": "CB10-079",
+        "name_jp": "ガードベント",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "マジック",
+          "card_type_code": "magic",
+          "deck_limit": null,
+          "cost": 5,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "白",
+              "code": "white"
+            }
+          ],
+          "symbols": [],
+          "families": [],
+          "levels": [],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このカードの軽減シンボルは赤としても扱う。\nトラッシュにあるこのカードは、一切の効果を受けない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [],
+              "label": "フラッシュ",
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "フラッシュ：",
+              "text_jp": "このバトルの間、自分のスピリット1体は相手の効果を受けない。\nさらに、自分のトラッシュに系統：「仮面」と「戦騎」を持つスピリットカードが2枚以上あるとき、このターンの間、自分のライフは1しか減らない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "K2商会",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      },
+      {
+        "number": "26RCB01-065",
+        "name_jp": "ガードベント",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "マジック",
+          "card_type_code": "magic",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "白",
+              "code": "white"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "白",
+              "symbol_code": "white",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "RYUKI",
+              "code": "ryuki",
+              "en": "RYUKI",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [],
+              "label": "フラッシュ",
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "フラッシュ：",
+              "text_jp": "自分のスピリット/ネクサスすべてが系統：「RYUKI」を持つなら、相手のスピリット1体を指定する。このターン中、自分のライフはそれのアタックでは減らない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "若菜光流",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "ガードベント",
+        "field": "cost",
+        "values": [
+          [
+            "CB10-079",
+            "5"
+          ],
+          [
+            "26RCB01-065",
+            "4"
+          ]
+        ]
+      },
+      {
+        "name_jp": "ガードベント",
+        "field": "reduction",
+        "values": [
+          [
+            "CB10-079",
+            "Reduction(plain=3, parts=())"
+          ],
+          [
+            "26RCB01-065",
+            "Reduction(plain=2, parts=())"
+          ]
+        ]
+      },
+      {
+        "name_jp": "ガードベント",
+        "field": "symbols",
+        "values": [
+          [
+            "CB10-079",
+            "()"
+          ],
+          [
+            "26RCB01-065",
+            "(SymbolCount(symbol='白', count=1, variant='EX', color=None),)"
+          ]
+        ]
+      },
+      {
+        "name_jp": "ガードベント",
+        "field": "families",
+        "values": [
+          [
+            "CB10-079",
+            "()"
+          ],
+          [
+            "26RCB01-065",
+            "('RYUKI',)"
+          ]
+        ]
+      },
+      {
+        "name_jp": "ガードベント",
+        "field": "effects",
+        "values": [
+          [
+            "CB10-079",
+            "(Effect(position=1, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='このカードの軽減シンボルは赤としても扱う。\\nトラッシュにあるこのカードは、一切の効果を受けない。'), Effect(position=2, form='header', levels=(), label='フラッシュ', keywords=(), timing=None, header='フラッシュ：', text='このバトルの間、自分のスピリット1体は相手の効果を受けない。\\nさらに、自分のトラッシュに系統：「仮面」と「戦騎」を持つスピリットカードが2枚以上あるとき、このターンの間、自分のライフは1しか減らない。'))"
+          ],
+          [
+            "26RCB01-065",
+            "(Effect(position=1, form='header', levels=(), label='フラッシュ', keywords=(), timing=None, header='フラッシュ：', text='自分のスピリット/ネクサスすべてが系統：「RYUKI」を持つなら、相手のスピリット1体を指定する。このターン中、自分のライフはそれのアタックでは減らない。'),)"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "CB10-079",
+        "product_name_jp": "コラボブースター【仮面ライダー ～開戦！ライダーウォーズ～】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%B3%E3%83%A9%E3%83%9C%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90%E4%BB%AE%E9%9D%A2%E3%83%A9%E3%82%A4%E3%83%80%E3%83%BC%20%EF%BD%9E%E9%96%8B%E6%88%A6%EF%BC%81%E3%83%A9%E3%82%A4%E3%83%80%E3%83%BC%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%BA%EF%BD%9E%E3%80%91",
+        "product_code": "CB10",
+        "product_type_code": "collab",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "6",
+        "release_date": "2019-12-21",
+        "section": "収録"
+      },
+      {
+        "number": "26RCB01-065",
+        "product_name_jp": "コラボブースター【仮面ライダー 運命の戦線】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%B3%E3%83%A9%E3%83%9C%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90%E4%BB%AE%E9%9D%A2%E3%83%A9%E3%82%A4%E3%83%80%E3%83%BC%20%E9%81%8B%E5%91%BD%E3%81%AE%E6%88%A6%E7%B7%9A%E3%80%91",
+        "product_code": "26RCB01",
+        "product_type_code": "collab",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "A",
+        "release_date": "2026-06-20",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "26RCB01-065",
+        "large_url": "https://batspi.com/card/26R/26RCB01-065.jpg",
+        "small_url": "https://batspi.com/card/26R/small/26RCB01-065.jpg",
+        "caption": [
+          "コラボブースター【仮面ライダー 運命の戦線】"
+        ]
+      },
+      {
+        "number": "CB10-079",
+        "large_url": "https://batspi.com/card/CB1/CB10-079.jpg",
+        "small_url": "https://batspi.com/card/CB1/small/CB10-079.jpg",
+        "caption": [
+          "コラボブースター【仮面ライダー ～開戦！ライダーウォーズ～】"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}
