@@ -189,6 +189,6 @@ def _families(
     conn.executemany(
         "INSERT INTO family_aliases (family_id, alias, lang, translation_source_id)"
         " VALUES (?, ?, 'en', ?)",
-        [(family_id, alias, sources[SOURCE_MACHINE]) for family_id, alias in aliases],
+        [(family_id, alias, sources[SOURCE_MANUAL]) for family_id, alias in aliases],
     )
     return ids
