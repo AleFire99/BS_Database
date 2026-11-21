@@ -1,6 +1,6 @@
 # 0005. Text-first effects and translation storage
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-14
 
 ## Context

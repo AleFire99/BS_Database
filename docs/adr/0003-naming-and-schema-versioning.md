@@ -1,6 +1,6 @@
 # 0003. Naming conventions, BSS_app alignment and schema versioning
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-14
 
 ## Context
