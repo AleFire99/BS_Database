@@ -105,6 +105,8 @@ def build_from_directories(
     """Read the glossary and the normalized documents, then :func:`build_database`."""
     glossary = load_glossary(glossary_dir)
     documents = read_documents(normalized_dir)
+    if not documents:
+        raise BuildError(f"no normalized documents in {normalized_dir}; run `bsdb normalize` first")
     return build_database(out, glossary, documents, cache_dir=cache_dir, built_at=built_at)
 
 
