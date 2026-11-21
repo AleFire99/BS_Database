@@ -25,6 +25,8 @@ Saved pages that stand in for the network in tests. The manifest [fixtures.json]
 | `card_magic_image_placeholder.html` | `禁忌のエクストリーム` | #108: gallery `<li>` linking `NOTFOUND.jpg` with no caption |
 | `card_spirit_listed_as_set.html` | `拳闘巨人ジャスティン` | #108: a single card page that the index lists as a set |
 | `list_year_event_gifts.html` | `バトルスキーイベント提供記念品` | #108: list split by year (h3 title, h4 years, no h2); **partial** (first sections only) |
+| `card_spirit_mark_light_limit.html` | `サンピラー・ドラゴン` | #108: type line `スピリット(光)(制限カード<1>)` |
+| `card_nexus_token.html` | `菌床` | #108: type line `トークンネクサス` |
 | `set_bs01.html` | `第一弾` | Oldest set page |
 | `set_bs52.html` | `転醒編 第1章：輪廻転生` | Awakening era |
 | `set_sd54.html` | Collab starter `ガンダム ～OPERATION UC～` | Copy counts |

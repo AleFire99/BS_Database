@@ -90,6 +90,8 @@ def _gameplay(d: dict[str, Any]) -> Gameplay:
         levels=tuple(Level(x["level"], x["cores"], x["battle_points"]) for x in d["levels"]),
         fusion_bp_bonus=d["fusion_bp_bonus"],
         overclock=_overclock(d["overclock"]),
+        card_class=d["card_class"],
+        type_mark=d["type_mark"],
     )
 
 

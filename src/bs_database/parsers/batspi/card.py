@@ -35,7 +35,12 @@ COLORS = "赤紫緑白黄青"
 SYMBOL_GLYPHS = COLORS + "神極"
 REDUCTION_GLYPHS = SYMBOL_GLYPHS + "全"
 
-TYPE_LINE_RE = re.compile(rf"^({'|'.join(CARD_TYPES)})\s*(?:\(制限カード<(\d+)>\))?\s*$")
+CARD_CLASSES = ("契約", "トークン")
+_LIMIT_MARK = "制限カード"
+TYPE_LINE_RE = re.compile(
+    rf"^(?:({'|'.join(CARD_CLASSES)}))?({'|'.join(CARD_TYPES)})\s*"
+    rf"(?:\((?!{_LIMIT_MARK})([^()<>]+)\))?\s*(?:\({_LIMIT_MARK}<(\d+)>\))?\s*$"
+)
 COST_LINE_RE = re.compile(r"^(\d+)\(([^()]*)\)/([^/]*)(?:/(.*))?$")
 NO_COLOR_TOKEN = "(なし)"  # the colour slot of a colourless card, e.g. ``15(0)/(なし)``
 LEVEL_LINE_RE = re.compile(r"^<\d+>Lv\d")
@@ -47,13 +52,17 @@ _SYMBOL_RE = re.compile(rf"([{SYMBOL_GLYPHS}])(\d*)")
 SYMBOL_PREFIX = "シンボル："
 
 
-def parse_type_line(line: str) -> tuple[str, int | None]:
-    """Return ``(card_type, deck_limit)`` from the first line of a card block."""
+def parse_type_line(line: str) -> tuple[str, int | None, str | None, str | None]:
+    """Return ``(card_type, deck_limit, card_class, type_mark)`` from a card block's first line.
+
+    ``契約スピリット`` gives the class ``契約``; ``スピリット(光)`` and ``スピリット(禁止カード)``
+    give the mark as printed. The card type stays one of the five base types.
+    """
     match = TYPE_LINE_RE.match(line)
     if match is None:
         raise ParseError(f"unknown type line: {line!r}")
-    limit = match.group(2)
-    return match.group(1), int(limit) if limit is not None else None
+    limit = match.group(4)
+    return match.group(2), int(limit) if limit is not None else None, match.group(1), match.group(3)
 
 
 def _parts(text: str, pattern: re.Pattern[str], what: str) -> tuple[SymbolCount, ...]:
@@ -229,7 +238,7 @@ def _pre_lines(pre: Tag) -> list[str]:
 def _parse_gameplay(lines: list[str], url: str) -> Gameplay:
     if len(lines) < 2:
         raise ParseError(f"card block without a cost line in {url}")
-    card_type, deck_limit = parse_type_line(lines[0])
+    card_type, deck_limit, card_class, type_mark = parse_type_line(lines[0])
     cost, reduction, colors, families = parse_cost_line(lines[1])
     levels: tuple[Level, ...] = ()
     fusion: int | None = None
@@ -251,6 +260,8 @@ def _parse_gameplay(lines: list[str], url: str) -> Gameplay:
         levels=levels,
         fusion_bp_bonus=fusion,
         overclock=overclock,
+        card_class=card_class,
+        type_mark=type_mark,
     )
 
 

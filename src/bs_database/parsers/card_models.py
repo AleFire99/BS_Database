@@ -57,6 +57,8 @@ class Gameplay:
     levels: tuple[Level, ...]
     fusion_bp_bonus: int | None
     overclock: Overclock | None
+    card_class: str | None = None
+    type_mark: str | None = None
 
 
 @dataclass(frozen=True, slots=True)

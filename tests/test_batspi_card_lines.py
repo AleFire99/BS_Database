@@ -15,17 +15,24 @@ from bs_database.parsers.errors import ParseError
 @pytest.mark.parametrize(
     ("line", "expected"),
     [
-        ("スピリット", ("スピリット", None)),
-        ("スピリット ", ("スピリット", None)),
-        ("ネクサス(制限カード<1>)", ("ネクサス", 1)),
-        ("アルティメット", ("アルティメット", None)),
+        ("スピリット", ("スピリット", None, None, None)),
+        ("スピリット ", ("スピリット", None, None, None)),
+        ("ネクサス(制限カード<1>)", ("ネクサス", 1, None, None)),
+        ("アルティメット", ("アルティメット", None, None, None)),
+        ("契約スピリット", ("スピリット", None, "契約", None)),
+        ("契約ネクサス", ("ネクサス", None, "契約", None)),
+        ("契約アルティメット", ("アルティメット", None, "契約", None)),
+        ("トークンネクサス", ("ネクサス", None, "トークン", None)),
+        ("スピリット(闇)", ("スピリット", None, None, "闇")),
+        ("スピリット(禁止カード)", ("スピリット", None, None, "禁止カード")),
+        ("スピリット(光)(制限カード<1>)", ("スピリット", 1, None, "光")),
     ],
 )
-def test_type_line(line: str, expected: tuple[str, int | None]) -> None:
+def test_type_line(line: str, expected: tuple[str, int | None, str | None, str | None]) -> None:
     assert parse_type_line(line) == expected
 
 
-@pytest.mark.parametrize("line", ["コスト", "スピリットX", ""])
+@pytest.mark.parametrize("line", ["コスト", "スピリットX", "", "スピリット()", "契約マジックX"])
 def test_type_line_errors(line: str) -> None:
     with pytest.raises(ParseError):
         parse_type_line(line)

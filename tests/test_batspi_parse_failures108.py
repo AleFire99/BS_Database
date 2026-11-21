@@ -149,3 +149,15 @@ def test_gallery_placeholder_without_a_caption_is_skipped(
     assert page.entries[0].number == "EXG5-002"
     assert page.images == ()  # the placeholder is the only gallery item of this page
     assert "gallery placeholder skipped" in caplog.text
+
+
+def test_type_mark_with_a_deck_limit() -> None:
+    """サンピラー・ドラゴン prints ``スピリット(光)(制限カード<1>)``."""
+    gameplay = parse("card_spirit_mark_light_limit").entries[0].gameplay
+    assert (gameplay.card_type, gameplay.type_mark, gameplay.deck_limit) == ("スピリット", "光", 1)
+
+
+def test_token_class_on_the_type_line() -> None:
+    """菌床 prints ``トークンネクサス``."""
+    gameplay = parse("card_nexus_token").entries[0].gameplay
+    assert (gameplay.card_type, gameplay.card_class) == ("ネクサス", "トークン")
