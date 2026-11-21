@@ -216,6 +216,28 @@ def test_product_prefixes_group_count_and_show_mapping() -> None:
     assert by["(other)"].products == 1
 
 
+def test_untyped_products_sorted_by_printings_then_name() -> None:
+    printings = [
+        printing("n-1", "BS01", "第1弾", "booster"),
+        printing("n-1", "X1", "謎A"),
+        printing("n-2", "X1", "謎A"),
+        printing("n-3", "X2", "謎A"),
+        printing("n-1", "X3", "謎B"),
+        printing("n-2", None, "謎C"),
+        printing("n-3", None, ""),
+    ]
+    review = make_review([page([], printings)], {})
+    assert [(u.name, u.printings, u.products) for u in review.untyped] == [
+        ("謎A", 3, 2),
+        ("(empty)", 1, 1),
+        ("謎B", 1, 1),
+        ("謎C", 1, 1),
+    ]
+    text = render_markdown(review)
+    assert "## Untyped products (4)" in text
+    assert "| 謎A | 3 | 2 |" in text
+
+
 def test_product_prefix_helper() -> None:
     assert product_prefix("BSC22") == "BSC"
     assert product_prefix(NO_PRODUCT_CODE) == "(none)"
@@ -262,7 +284,13 @@ def test_markdown_escapes_and_orders_families_by_cards() -> None:
 
 def test_empty_review_renders_all_sections() -> None:
     text = render_markdown(make_review([page([])], {}))
-    for title in ("Families", "Keywords", "no_split candidates", "Product code prefixes"):
+    for title in (
+        "Families",
+        "Keywords",
+        "no_split candidates",
+        "Product code prefixes",
+        "Untyped products",
+    ):
         assert f"## {title} (0)" in text
 
 
