@@ -75,11 +75,11 @@ def test_uncurated_families_are_listed_apart_and_sorted() -> None:
     )
 
 
-def test_product_type_marker_and_no_marker() -> None:
+def test_product_type_marker_and_name_keyword() -> None:
     result = normalize_page(parse_fixture("card_promo.html"), real_glossary())
     by_name = {p.product_name_jp: p.product_type_code for p in result.printings}
     assert by_name["プロモーションカード"] == "promo"
-    assert by_name["バトスピショップバトル"] is None
+    assert by_name["バトスピショップバトル"] == "promo"  # name keyword, no marker or code
 
 
 def test_tree_writes_same_stem_and_is_idempotent(tmp_path: Path) -> None:

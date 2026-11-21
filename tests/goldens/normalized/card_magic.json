@@ -156,7 +156,7 @@
         "product_en_status": "pending",
         "product_href": null,
         "product_code": null,
-        "product_type_code": null,
+        "product_type_code": "promo",
         "rarity_jp": null,
         "rarity_code": null,
         "variant_jp": null,
