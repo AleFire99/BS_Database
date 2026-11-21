@@ -1,6 +1,6 @@
 # 0011. schema.sql as the source of truth, without migrations
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-21
 
 ## Context
