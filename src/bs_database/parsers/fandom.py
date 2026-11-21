@@ -12,13 +12,17 @@ from dataclasses import dataclass
 # ``en`` never spans another bold marker (``'''NZ''', short for '''Neo Zeon''' (…)`` gives
 # ``Neo Zeon``), and an italic opening right after the bold (``'''X '''''(…)''``) is allowed.
 _BOLD_PAREN = re.compile(
-    r"'''(?P<en>(?:(?!''')[^\n])+?)'''[^\S\n]*(?:'')?[^\S\n]*[(（](?P<body>[^)）\n]*)[)）]"
+    r"'''(?P<en>(?:(?!''')[^\n])+?)'''[^\S\n]*(?:'')?[^\S\n]*[(（](?P<body>(?:[^()（）\n]|[(（][^()（）\n]*[)）])*)[)）]"
 )
 # ``{{Nihongo|'''English'''|日本語|Romaji}}``: the template name is not checked, only the shape.
 _TEMPLATE = re.compile(
-    r"\{\{[^|{}\n]+\|[^\S\n]*'''(?P<en>(?:(?!''')[^\n])+?)'''[^\S\n]*\|"
+    r"\{\{[^|{}\n]+\|[^\S\n]*(?P<en>'''[^|{}\n]*?''')[^\S\n]*\|"
     r"(?P<jp>[^|}\n]*)(?:\|(?P<romaji>[^|}\n]*))?[^}\n]*\}\}"
 )
+_BOLD = re.compile(r"'''((?:(?!''')[^\n])+?)'''")
+_HTML_RUBY = re.compile(r"<ruby>(.*?)<rt>.*?</rt>(?:<rp>.*?</rp>)*</ruby>", re.IGNORECASE)
+_INNER_PAREN = re.compile(r"[(（][^)）]*[)）]?")
+_DISAMBIGUATOR = re.compile(r"\s*\([^)]*\)\s*$")
 _QUOTES = re.compile(r"'{2,}")
 _RUBY = re.compile(r"\{\{\s*ruby\s*\|\s*([^|}]*?)\s*(?:\|[^}]*)?\}\}", re.IGNORECASE)
 _SEPARATOR = re.compile(r"[;；,，]")
@@ -52,14 +56,28 @@ def _has_japanese(text: str) -> bool:
 
 def _split_paren(body: str) -> tuple[str, str | None] | None:
     """``(jp, romaji)`` from the text inside the parentheses, or ``None`` without Japanese."""
-    body = _QUOTES.sub("", _RUBY.sub(r"\1", body))
+    body = _QUOTES.sub("", _RUBY.sub(r"\1", _HTML_RUBY.sub(r"\1", body)))
     parts = _SEPARATOR.split(body, maxsplit=2)
     first, rest = parts[0], (parts[1] if len(parts) > 1 else "")
-    jp = " ".join(first.split())
+    jp = " ".join(_INNER_PAREN.sub("", first).split())
     if not jp or not _has_japanese(jp):
         return None
     romaji = " ".join(rest.split()) or None
     return jp, romaji
+
+
+def _template_en(arg: str, title: str) -> str:
+    """English name from the bold part(s) of a template argument.
+
+    Several bold parts (``'''TP''' (Trans-Phase) '''Armor'''``) are joined when the page title
+    says the same, otherwise the title without its disambiguator is used.
+    """
+    bolds = [" ".join(b.split()) for b in _BOLD.findall(arg)]
+    if len(bolds) <= 1:
+        return bolds[0] if bolds else ""
+    joined = " ".join(bolds)
+    plain = _DISAMBIGUATOR.sub("", title)
+    return joined if jp_key(joined) == jp_key(plain) else plain
 
 
 def parse_name(title: str, wikitext: str) -> FandomName | None:
@@ -68,7 +86,7 @@ def parse_name(title: str, wikitext: str) -> FandomName | None:
     template = _TEMPLATE.search(wikitext)
     if template is not None and (paren is None or template.start() < paren.start()):
         split = _split_paren(f"{template['jp']};{template['romaji'] or ''}")
-        en = " ".join(template["en"].split())
+        en = _template_en(template["en"], title)
     elif paren is not None:
         split = _split_paren(paren["body"])
         en = " ".join(paren["en"].split())

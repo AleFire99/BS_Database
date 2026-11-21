@@ -154,6 +154,19 @@ def test_parse_name_template_italic_and_fullwidth(
     assert name(SHAPES, title) == FandomName(jp=jp, en=en, romaji=romaji, title=title)
 
 
-@pytest.mark.parametrize("title", ["MS", "Family"])
+@pytest.mark.parametrize(
+    ("title", "jp", "en", "romaji"),
+    [
+        ("TP Armor", "TP装甲", "TP Armor", "Transufeizu Soukou"),  # ruby in a template, two bolds
+        ("Sol Awaken", "ソル覚醒", "Sol Awaken", "Soru-kakusei"),  # nested parentheses
+    ],
+)
+def test_parse_name_ruby_and_nested_parentheses(
+    title: str, jp: str, en: str, romaji: str | None
+) -> None:
+    assert name(SHAPES, title) == FandomName(jp=jp, en=en, romaji=romaji, title=title)
+
+
+@pytest.mark.parametrize("title", ["MS", "Family", "GAIM"])
 def test_parse_name_shapes_without_japanese_stay_unmatched(title: str) -> None:
     assert name(SHAPES, title) is None

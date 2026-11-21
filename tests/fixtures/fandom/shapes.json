@@ -114,6 +114,20 @@
      }
     ]
    },
+   "101609": {
+    "ns": 0,
+    "pageid": 101609,
+    "title": "GAIM",
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "[[File:26RCB01-X02.png|thumb|200px]]\n'''GAIM''' (''{{ruby|GAIM|ガイム}}'') is a family debuted in [[26RCB01]], the first Kamen Rider collaboration sets in Standard, introducing the '''Kamen Rider Gaim''' series to the Standard side of the game. Cards in the family are primarily [[Red]], instead of the Yellow-centric multi-color scheme for the Gaim series on the Eternal side.  "
+       }
+      }
+     }
+    ]
+   },
    "39201": {
     "ns": 0,
     "pageid": 39201,
@@ -268,6 +282,20 @@
      }
     ]
    },
+   "86500": {
+    "ns": 0,
+    "pageid": 86500,
+    "title": "Sol Awaken",
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "[[File:P23-07.png|thumb|320x320px]]\n'''Sol Awaken''' (ソル覚醒 (ソルかくせい), ''Soru-kakusei'') is an upgraded version of [[Awaken]] introduced with the promo card, [[The UltimateDragonEmperor Sieg-Sol-Fried XV]]. Currently, Sieg-Sol-Fried XV is the only card with the keyword. The effect is worded as follows:  "
+       }
+      }
+     }
+    ]
+   },
    "32773": {
     "ns": 0,
     "pageid": 32773,
@@ -277,6 +305,20 @@
       "slots": {
        "main": {
         "*": "[[File:BS33-X02.jpg|thumb|300x300px]]\n{{Nihongo|'''Soul Drive'''|ソウルドライブ|Sōru Doraibu}} is an ability that debuted in [[BS33]] together the Sengoku Six Generals. Soul Drives can activate powerful effects, in exchange for removing a player's [[File:Soul Core.png|20px]] (Soul Core) from the game. Rather than being restricted to a particular color, it is restricted to Ultimates. Different Soul Drive "
+       }
+      }
+     }
+    ]
+   },
+   "71509": {
+    "ns": 0,
+    "pageid": 71509,
+    "title": "TP Armor",
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "[[File:CB13-036.png|thumb|321x321px]]\n{{Nihongo|'''TP''' (Trans-Phase) '''Armor'''|<ruby>TP<rt>トランスフェイズ</rt></ruby>装甲|Transufeizu Soukou}} is a keyword introduced in [[CB13]]. A special variant of [[Armor]], the effect is worded as follows:"
        }
       }
      }
