@@ -12,6 +12,7 @@ from bs_database.build.cards import load_cards
 from bs_database.build.diagnostics import BuildError, BuildWarnings
 from bs_database.build.grouping import group_entries
 from bs_database.build.lookups import Lookups, insert_lookups
+from bs_database.build.products import load_products_and_printings
 from bs_database.build.reader import Document, printings_by_number, read_documents
 from bs_database.glossary import Glossary, load_glossary
 from bs_database.normalize.records import NORMALIZED_SCHEMA_VERSION
@@ -71,7 +72,16 @@ def _load_data(
     """Insert every data table; the order follows the foreign keys."""
     groups = group_entries(list(documents))
     printings = printings_by_number(list(documents))
-    load_cards(conn, lookups, warnings, groups, printings)
+    cards = load_cards(conn, lookups, warnings, groups, printings)
+    illustrators = {
+        m.number: m.entry["text"]["illustrators"]
+        for g in groups
+        for m in g.members
+        if m.entry["text"]
+    }
+    load_products_and_printings(
+        conn, lookups, warnings, list(documents), cards.number_ids, illustrators
+    )
 
 
 def build_from_directories(
