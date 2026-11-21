@@ -127,6 +127,8 @@ CREATE TABLE cards (
     en_source_id INTEGER,
     en_status_id INTEGER NOT NULL DEFAULT 1,
     block_icon TEXT,
+    card_class_jp TEXT,
+    type_mark_jp TEXT,
     CONSTRAINT pk_cards_id PRIMARY KEY (id),
     CONSTRAINT fk_cards_card_type_id FOREIGN KEY (card_type_id) REFERENCES card_types (id),
     CONSTRAINT fk_cards_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
@@ -214,6 +216,8 @@ CREATE TABLE card_symbols (
     card_id INTEGER NOT NULL,
     symbol_id INTEGER NOT NULL,
     count INTEGER NOT NULL,
+    variant_jp TEXT,
+    color_jp TEXT,
     CONSTRAINT pk_card_symbols_card_id_symbol_id PRIMARY KEY (card_id, symbol_id),
     CONSTRAINT fk_card_symbols_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
     CONSTRAINT fk_card_symbols_symbol_id FOREIGN KEY (symbol_id) REFERENCES symbols (id),
@@ -236,14 +240,28 @@ CREATE TABLE card_levels (
     id INTEGER NOT NULL,
     card_id INTEGER NOT NULL,
     level INTEGER NOT NULL,
-    cores INTEGER NOT NULL,
+    cores INTEGER,
     battle_points INTEGER,
+    count_condition_jp TEXT,
+    note_jp TEXT,
     CONSTRAINT pk_card_levels_id PRIMARY KEY (id),
     CONSTRAINT uq_card_levels_card_id_level UNIQUE (card_id, level),
     CONSTRAINT fk_card_levels_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
     CONSTRAINT ck_card_levels_level CHECK (level >= 1),
     CONSTRAINT ck_card_levels_cores CHECK (cores >= 0),
     CONSTRAINT ck_card_levels_battle_points CHECK (battle_points >= 0)
+);
+
+CREATE TABLE card_credits (
+    id INTEGER NOT NULL,
+    card_id INTEGER NOT NULL,
+    position INTEGER NOT NULL,
+    role_jp TEXT NOT NULL,
+    name TEXT NOT NULL,
+    note TEXT,
+    CONSTRAINT pk_card_credits_id PRIMARY KEY (id),
+    CONSTRAINT uq_card_credits_card_id_position UNIQUE (card_id, position),
+    CONSTRAINT fk_card_credits_card_id FOREIGN KEY (card_id) REFERENCES cards (id) ON DELETE CASCADE
 );
 
 CREATE TABLE families (
