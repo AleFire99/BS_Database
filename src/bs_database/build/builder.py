@@ -10,6 +10,7 @@ from pathlib import Path
 from bs_database import __version__
 from bs_database.build.cards import load_cards
 from bs_database.build.diagnostics import BuildError, BuildWarnings
+from bs_database.build.effects import load_effects
 from bs_database.build.grouping import group_entries
 from bs_database.build.lookups import Lookups, insert_lookups
 from bs_database.build.products import load_products_and_printings
@@ -73,6 +74,7 @@ def _load_data(
     groups = group_entries(list(documents))
     printings = printings_by_number(list(documents))
     cards = load_cards(conn, lookups, warnings, groups, printings)
+    load_effects(conn, lookups, warnings, groups, cards)
     illustrators = {
         m.number: m.entry["text"]["illustrators"]
         for g in groups
