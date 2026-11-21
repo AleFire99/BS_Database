@@ -13,3 +13,4 @@ One ADR per decision, using the [template](0000-template.md). Numbers are sequen
 | [0007](0007-source-of-truth.md) | Source of truth per field and conflict resolution | Accepted | 2026-11-14 |
 | [0008](0008-normalization-and-translation.md) | Normalization and translation design | Proposed | 2026-11-15 |
 | [0009](0009-fandom-api-glossary-names.md) | Fandom api as a glossary name source | Accepted | 2026-11-16 |
+| [0010](0010-parsed-schema-type-marks-levels-symbols-credits.md) | Parsed schema additions for type marks, levels, symbols and credits | Accepted | 2026-11-16 |

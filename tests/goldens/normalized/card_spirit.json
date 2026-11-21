@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.1.0",
-  "parsed_schema_version": "2.0.0",
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
   "url": "https://batspi.com/index.php?%E5%85%89%E7%88%AA%E3%81%AE%E6%AD%A6%E8%8A%B8%E8%80%85%E3%83%98%E3%83%AB%E3%83%8F%E3%82%A6%E3%83%B3%E3%83%89",
   "provenance": {
     "source": "batspi",
@@ -28,12 +28,16 @@
               {
                 "symbol_jp": "赤",
                 "symbol_code": "red",
-                "count": 2
+                "count": 2,
+                "variant_jp": null,
+                "color_jp": null
               },
               {
                 "symbol_jp": "神",
                 "symbol_code": "god",
-                "count": 1
+                "count": 1,
+                "variant_jp": null,
+                "color_jp": null
               }
             ]
           },
@@ -47,7 +51,9 @@
             {
               "symbol_jp": "赤",
               "symbol_code": "red",
-              "count": 1
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
             }
           ],
           "families": [
@@ -70,16 +76,22 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 3,
-              "battle_points": 7000
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
-          "overclock": null
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
         },
         "text": {
           "effects": [
@@ -129,7 +141,8 @@
           "flavor_note_jp": null,
           "flavor_en": null,
           "en_source": null,
-          "en_status": "pending"
+          "en_status": "pending",
+          "other_credits": []
         }
       }
     ],

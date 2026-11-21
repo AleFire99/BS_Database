@@ -69,6 +69,8 @@ def _gameplay(g: Gameplay, number: str, glossary: Glossary, u: UnmappedCollector
         levels=g.levels,
         fusion_bp_bonus=g.fusion_bp_bonus,
         overclock=g.overclock,
+        card_class_jp=g.card_class,
+        type_mark_jp=g.type_mark,
     )
 
 
@@ -101,6 +103,7 @@ def _text(t: CardText, number: str, glossary: Glossary, u: UnmappedCollector) ->
         flavor_en=None,
         en_source=None,
         en_status=STATUS_PENDING,
+        other_credits=t.other_credits,
     )
 
 

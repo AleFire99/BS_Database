@@ -40,7 +40,7 @@ def sample() -> CardPage:
 
 
 def test_schema_version() -> None:
-    assert SCHEMA_VERSION == "2.0.0"
+    assert SCHEMA_VERSION == "2.1.0"
 
 
 def test_frozen() -> None:
@@ -51,9 +51,15 @@ def test_frozen() -> None:
 
 def test_json_round_trip() -> None:
     data = json.loads(json.dumps(dataclasses.asdict(sample()), ensure_ascii=False))
-    assert data["schema_version"] == "2.0.0"
+    assert data["schema_version"] == "2.1.0"
     assert data["entries"][0]["gameplay"]["levels"] == [
-        {"level": 1, "cores": 1, "battle_points": 3000}
+        {
+            "level": 1,
+            "cores": 1,
+            "battle_points": 3000,
+            "count_condition": None,
+            "note": None,
+        }
     ]
 
 

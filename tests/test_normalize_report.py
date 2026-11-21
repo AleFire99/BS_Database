@@ -7,6 +7,7 @@ from typing import Any
 from fakes import FakeEngine
 from golden_support import (
     card_fixture_names,
+    parse_fixture,
     real_glossary,
     uncurated_glossary,
     write_parsed_fixture,
@@ -42,13 +43,23 @@ def _fixture_run(
     return result, build_report(result, translator.name, parsed)
 
 
+def _fixture_families() -> set[str]:
+    """Every family printed on a card fixture: all of them are uncurated in ``uncurated=True``."""
+    return {
+        family
+        for name in card_fixture_names()
+        for entry in parse_fixture(name).entries
+        for family in entry.gameplay.families
+    }
+
+
 def test_fixture_report_has_uncurated_families_and_nothing_unmapped(tmp_path: Path) -> None:
     result, report = _fixture_run(tmp_path, uncurated=True)
     assert report["engine"] == "null"
     assert report["pages"] == {"written": result.written, "failed": []}
     assert report["unmapped"] == {"closed": [], "warnings": []}
     uncurated = report["uncurated"]
-    assert len(uncurated) == 16
+    assert len(uncurated) == len(_fixture_families())
     assert {t["kind"] for t in uncurated} == {"families"}
     assert uncurated == sorted(uncurated, key=lambda t: (t["kind"], t["jp"]))
     for term in uncurated:
@@ -114,7 +125,8 @@ def test_markdown_lists_sections_and_empty_state(tmp_path: Path) -> None:
     text = render_markdown(report)
     assert text.startswith("# Normalize report\n")
     assert "## Unmapped, closed (errors) (0)\n\nNone." in text
-    assert "## Uncurated (glossary row without a code) (16)" in text
+    heading = f"## Uncurated (glossary row without a code) ({len(_fixture_families())})"
+    assert heading in text
     assert "| names | " in text
     assert "## Failed pages" not in text
 

@@ -257,6 +257,38 @@ class StateStore:
                 (current.failed_from.value, self._stamp(), url),
             )
 
+    def reset_failed(self, *, prefix: str) -> int:
+        """Give a fresh set of attempts to failed pages whose error starts with ``prefix``.
+
+        Only those rows are touched (``attempts`` back to 0, state stays ``failed``), so a
+        permanent failure (404, policy skip) stays exhausted. Returns the number of rows.
+        """
+        escaped = prefix.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        with self._tx() as conn:
+            cur = conn.execute(
+                "UPDATE pages SET attempts = 0, updated_at = ? "
+                "WHERE state = ? AND last_error LIKE ? ESCAPE '\\'",
+                (self._stamp(), IngestState.FAILED.value, escaped + "%"),
+            )
+            return cur.rowcount
+
+    def reset_cards_to_fetched(self) -> int:
+        """Rewind every card page that was parsed (or went further) to ``fetched``.
+
+        For a re-parse of the cached HTML after a parser or schema change (``--reparse``): the
+        next run parses those pages again with no request. Failed and not yet fetched pages are
+        untouched. Returns the number of rows.
+        """
+        rewound = (S.PARSED, S.NORMALIZED, S.TRANSLATED, S.LOADED)
+        marks = ", ".join("?" for _ in rewound)
+        with self._tx() as conn:
+            cur = conn.execute(
+                "UPDATE pages SET state = ?, failed_from = NULL, attempts = 0, "
+                f"last_error = NULL, updated_at = ? WHERE kind = ? AND state IN ({marks})",
+                (S.FETCHED.value, self._stamp(), PageKind.CARD.value, *(r.value for r in rewound)),
+            )
+            return cur.rowcount
+
     def iter_exhausted(self) -> list[PageRecord]:
         """Failed pages that used all attempts, for reporting."""
         rows = self._conn.execute(

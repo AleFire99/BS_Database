@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E8%8F%8C%E5%BA%8A",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E8%8F%8C%E5%BA%8A",
+    "title_jp": "菌床",
+    "entries": [
+      {
+        "number": "BS73-T001",
+        "name_jp": "菌床",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "ネクサス",
+          "card_type_code": "nexus",
+          "deck_limit": null,
+          "cost": 0,
+          "reduction": {
+            "plain": 0,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "緑",
+              "code": "green"
+            }
+          ],
+          "symbols": [],
+          "families": [
+            {
+              "jp": "菌樹",
+              "code": "kin_ju",
+              "en": "Fungal Tree",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 0,
+              "battle_points": null,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": "トークン",
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このカードはデッキに入れられない。\nこのカード/ネクサスのLvコストは、出すときを含め、相手の効果で変更されない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "Lv1",
+              "text_jp": "系統：「菌樹」を持つ自分のスピリットが相手の効果で消滅/破壊されたとき、このネクサスを破壊することで、自分のトラッシュの[ソウルコア]以外のコア1個をその対象に置く。\nこの効果でコアを置いた対象を疲労状態でフィールドに残す。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "筒井海砂",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "BS73-T001",
+        "product_name_jp": "契約編：環 第2章：天地転世",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%92%B0%20%E7%AC%AC2%E7%AB%A0%EF%BC%9A%E5%A4%A9%E5%9C%B0%E8%BB%A2%E4%B8%96",
+        "product_code": "BS73",
+        "product_type_code": "booster",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "12",
+        "release_date": "2025-08-30",
+        "section": "収録"
+      },
+      {
+        "number": "BS73-T001",
+        "product_name_jp": "リミテッドパック2026 契約編：環 Vol.1",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%AA%E3%83%9F%E3%83%86%E3%83%83%E3%83%89%E3%83%91%E3%83%83%E3%82%AF2026%20%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%92%B0%20Vol.1",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "12",
+        "release_date": null,
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS73-T001",
+        "large_url": "https://batspi.com/card/BS7/BS73-T001.jpg",
+        "small_url": "https://batspi.com/card/BS7/small/BS73-T001.jpg",
+        "caption": [
+          "契約編：環 第2章：天地転世"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

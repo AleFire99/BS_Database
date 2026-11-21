@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.1.0",
-  "parsed_schema_version": "2.0.0",
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
   "url": "https://batspi.com/index.php?%E7%A0%B2%E5%87%B0%E7%AB%9C%E3%83%95%E3%82%A7%E3%83%8B%E3%83%83%E3%82%AF%E3%83%BB%E3%82%AD%E3%83%A3%E3%83%8E%E3%83%B3",
   "provenance": {
     "source": "batspi",
@@ -28,12 +28,16 @@
               {
                 "symbol_jp": "赤",
                 "symbol_code": "red",
-                "count": 2
+                "count": 2,
+                "variant_jp": null,
+                "color_jp": null
               },
               {
                 "symbol_jp": "白",
                 "symbol_code": "white",
-                "count": 2
+                "count": 2,
+                "variant_jp": null,
+                "color_jp": null
               }
             ]
           },
@@ -64,11 +68,15 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": 3000,
-          "overclock": null
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
         },
         "text": {
           "effects": [
@@ -135,7 +143,8 @@
           "flavor_note_jp": null,
           "flavor_en": null,
           "en_source": null,
-          "en_status": "pending"
+          "en_status": "pending",
+          "other_credits": []
         }
       },
       {
@@ -155,12 +164,16 @@
               {
                 "symbol_jp": "赤",
                 "symbol_code": "red",
-                "count": 2
+                "count": 2,
+                "variant_jp": null,
+                "color_jp": null
               },
               {
                 "symbol_jp": "白",
                 "symbol_code": "white",
-                "count": 2
+                "count": 2,
+                "variant_jp": null,
+                "color_jp": null
               }
             ]
           },
@@ -174,7 +187,9 @@
             {
               "symbol_jp": "赤",
               "symbol_code": "red",
-              "count": 1
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
             }
           ],
           "families": [
@@ -204,11 +219,15 @@
             {
               "level": 1,
               "cores": 0,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": 3000,
-          "overclock": null
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
         },
         "text": {
           "effects": [
@@ -267,7 +286,8 @@
           "flavor_note_jp": null,
           "flavor_en": null,
           "en_source": null,
-          "en_status": "pending"
+          "en_status": "pending",
+          "other_credits": []
         }
       }
     ],
@@ -282,7 +302,7 @@
           ],
           [
             "BS38-RV022",
-            "(SymbolCount(symbol='赤', count=1),)"
+            "(SymbolCount(symbol='赤', count=1, variant=None, color=None),)"
           ]
         ]
       },
@@ -306,11 +326,11 @@
         "values": [
           [
             "BS10-062",
-            "(Level(level=1, cores=1, battle_points=3000),)"
+            "(Level(level=1, cores=1, battle_points=3000, count_condition=None, note=None),)"
           ],
           [
             "BS38-RV022",
-            "(Level(level=1, cores=0, battle_points=3000),)"
+            "(Level(level=1, cores=0, battle_points=3000, count_condition=None, note=None),)"
           ]
         ]
       },

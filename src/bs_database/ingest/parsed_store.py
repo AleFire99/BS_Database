@@ -28,6 +28,7 @@ from bs_database.parsers.card_models import (
     Overclock,
     Printing,
     Reduction,
+    RoleCredit,
     SymbolCount,
     ValueDifference,
 )
@@ -69,7 +70,7 @@ def read_card_json(path: Path) -> dict[str, Any]:
 
 
 def _symbol(d: dict[str, Any]) -> SymbolCount:
-    return SymbolCount(d["symbol"], d["count"])
+    return SymbolCount(d["symbol"], d["count"], d["variant"], d["color"])
 
 
 def _overclock(d: dict[str, Any] | None) -> Overclock | None:
@@ -87,9 +88,20 @@ def _gameplay(d: dict[str, Any]) -> Gameplay:
         colors=tuple(d["colors"]),
         symbols=tuple(_symbol(s) for s in d["symbols"]),
         families=tuple(d["families"]),
-        levels=tuple(Level(x["level"], x["cores"], x["battle_points"]) for x in d["levels"]),
+        levels=tuple(
+            Level(
+                x["level"],
+                x["cores"],
+                x["battle_points"],
+                x["count_condition"],
+                x["note"],
+            )
+            for x in d["levels"]
+        ),
         fusion_bp_bonus=d["fusion_bp_bonus"],
         overclock=_overclock(d["overclock"]),
+        card_class=d["card_class"],
+        type_mark=d["type_mark"],
     )
 
 
@@ -122,6 +134,9 @@ def _text(d: dict[str, Any] | None) -> CardText | None:
         concepts=tuple(_credit(c) for c in d["concepts"]),
         flavor=d["flavor"],
         flavor_note=d["flavor_note"],
+        other_credits=tuple(
+            RoleCredit(c["role"], c["name"], c["note"]) for c in d["other_credits"]
+        ),
     )
 
 

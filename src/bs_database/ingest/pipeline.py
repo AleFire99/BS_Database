@@ -11,7 +11,7 @@ import logging
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from bs_database.ingest.cache import CachedFetcher, CachedPage
+from bs_database.ingest.cache import OFFLINE_REASON, CachedFetcher, CachedPage
 from bs_database.ingest.http import TRANSPORT_ERROR_REASON, Skipped
 from bs_database.ingest.parsed_store import write_card_json
 from bs_database.ingest.policy import StopRun
@@ -25,7 +25,7 @@ from bs_database.ingest.state import (
 )
 from bs_database.parsers.batspi.card import parse_card_page
 from bs_database.parsers.batspi.index import parse_index
-from bs_database.parsers.batspi.promo_list import parse_promo_list
+from bs_database.parsers.batspi.promo_list import parse_promo_list, parse_year_list
 from bs_database.parsers.batspi.set_page import parse_set_page
 from bs_database.parsers.errors import NoCardList, ParseError
 from bs_database.parsers.models import IndexProduct, ListEntry, MissingEntry
@@ -41,6 +41,7 @@ PROMO_URL = "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E
 _S = IngestState
 _CARD_WORK = frozenset({_S.DISCOVERED, _S.FETCHED, _S.FAILED})
 _PERMANENT_STATUSES = frozenset({404, 410})
+PARSE_ERROR_PREFIX = "parse error:"
 
 
 @dataclass(frozen=True)
@@ -48,10 +49,16 @@ class RunOptions:
     """``sets``: case-insensitive substrings of the Japanese product name (empty = all).
 
     ``limit``: maximum card pages taken this run (cache hits count).
+    ``retry_failed``: first give a fresh set of attempts to the pages that failed with a
+    ``parse error:`` (the cache holds their HTML, so a parser fix can be applied with no request).
+    ``reparse``: first rewind every parsed card page to ``fetched``, so the run parses it again
+    from the cache (after a parsed-schema change); use it without ``sets`` to cover every page.
     """
 
     sets: tuple[str, ...] = ()
     limit: int | None = None
+    retry_failed: bool = False
+    reparse: bool = False
 
 
 def _sha256(content: bytes) -> str:
@@ -61,6 +68,8 @@ def _sha256(content: bytes) -> str:
 def _permanent(skipped: Skipped) -> bool:
     """404 and policy skips cannot be fixed by retrying (policy 3.5: log and skip)."""
     if skipped.status is None:
+        if skipped.reason.startswith(OFFLINE_REASON):
+            return False
         return not skipped.reason.startswith(TRANSPORT_ERROR_REASON)
     return skipped.status in _PERMANENT_STATUSES
 
@@ -186,11 +195,14 @@ class _Run:
         except NoCardList:
             self.report.sets_without_cards.append(name)
         except ParseError as exc:
-            if done:
-                self.report.warnings.append(f"set revisit failed: {name}: parse error: {exc}")
-            else:
-                self.fail(product_url, f"parse error: {exc}")
-            return
+            alternative = self.not_a_set(product_url, name, page)
+            if alternative is None:
+                if done:
+                    self.report.warnings.append(f"set revisit failed: {name}: parse error: {exc}")
+                else:
+                    self.fail(product_url, f"parse error: {exc}")
+                return
+            entries, missing, unknown = alternative
         for entry in entries:
             self.store.upsert_discovered(entry.url, PageKind.CARD)
             self.visited_cards.add(entry.url)
@@ -201,6 +213,31 @@ class _Run:
             self.report.notes.append(DiscoveryNote(name, unknown, len(missing)))
         if not done:
             self.store.advance(product_url, _S.PARSED)
+
+    def not_a_set(
+        self, url: str, name: str, page: CachedPage
+    ) -> tuple[tuple[ListEntry, ...], tuple[MissingEntry, ...], tuple[str, ...]] | None:
+        """What a product page that is not a set is, if the index lists it as one (#108).
+
+        Some products are a single card page (the page is parsed as a card, from the same
+        cached HTML) or a list split by year (its entries are discovered like a set's).
+        ``None`` when it is neither.
+        """
+        try:
+            card = parse_card_page(page.text, url)
+        except ParseError:
+            pass
+        else:
+            log.info("%s: a single card page listed as a set, parsed as a card", name)
+            write_card_json(self.settings.parsed_dir, card, page)
+            self.report.cards_parsed += 1
+            return (), (), ()
+        try:
+            listing = parse_year_list(page.text)
+        except ParseError:
+            return None
+        log.info("%s: a year-sectioned list listed as a set", name)
+        return listing.entries, listing.missing, listing.unknown_numbers
 
     def sets(self, products: tuple[IndexProduct, ...] | None) -> None:
         if products is None:
@@ -245,6 +282,12 @@ class _Run:
     # -- run ---------------------------------------------------------------------------
 
     def run(self) -> None:
+        if self.options.retry_failed:
+            n = self.store.reset_failed(prefix=PARSE_ERROR_PREFIX)
+            log.info("retry-failed: %d pages with a parse error get new attempts", n)
+        if self.options.reparse:
+            n = self.store.reset_cards_to_fetched()
+            log.info("reparse: %d card pages go back to fetched", n)
         products = self.index()
         self.sets(products)
         self.cards()

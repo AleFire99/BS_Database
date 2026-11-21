@@ -8,9 +8,16 @@ data. Japanese values are kept next to the codes they map to (``*_jp`` / ``*_cod
 from dataclasses import dataclass
 
 from bs_database.glossary import CLOSED
-from bs_database.parsers.card_models import CardImage, Credit, Level, Overclock, ValueDifference
+from bs_database.parsers.card_models import (
+    CardImage,
+    Credit,
+    Level,
+    Overclock,
+    RoleCredit,
+    ValueDifference,
+)
 
-NORMALIZED_SCHEMA_VERSION = "1.1.0"
+NORMALIZED_SCHEMA_VERSION = "1.2.0"
 
 SOURCE_BATSPI = "batspi"
 SOURCE_MANUAL = "manual"
@@ -74,11 +81,17 @@ class CodedTerm:
 
 @dataclass(frozen=True, slots=True)
 class SymbolCountRecord:
-    """A symbol glyph with its code and count."""
+    """A symbol glyph with its code and count.
+
+    ``variant_jp`` (``EX``) and ``color_jp`` (the colour of a god symbol) are the literals of
+    the page; they get no code until the glossary covers them (#108, ADR 0010).
+    """
 
     symbol_jp: str
     symbol_code: str | None
     count: int
+    variant_jp: str | None = None
+    color_jp: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -115,6 +128,8 @@ class GameplayRecord:
     levels: tuple[Level, ...]
     fusion_bp_bonus: int | None
     overclock: Overclock | None
+    card_class_jp: str | None = None
+    type_mark_jp: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -159,6 +174,7 @@ class CardTextRecord:
     flavor_en: str | None
     en_source: str | None
     en_status: str
+    other_credits: tuple[RoleCredit, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)

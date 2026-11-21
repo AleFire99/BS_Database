@@ -1,0 +1,373 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E6%96%B0%E4%B8%96%E4%BB%A3%E6%9C%80%E5%8F%AF%E6%84%9B%E5%B0%86%E5%AD%AB%E5%B8%82%20%E9%BB%92%E6%9B%9C%E3%81%AE%E5%BE%92",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E6%96%B0%E4%B8%96%E4%BB%A3%E6%9C%80%E5%8F%AF%E6%84%9B%E5%B0%86%E5%AD%AB%E5%B8%82%20%E9%BB%92%E6%9B%9C%E3%81%AE%E5%BE%92",
+    "title_jp": "新世代最可愛将孫市 黒曜の徒",
+    "entries": [
+      {
+        "number": "BSC39-CP02",
+        "name_jp": "新世代最可愛将孫市 黒曜の徒",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "黄",
+              "code": "yellow"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "黄",
+              "symbol_code": "yellow",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "起幻",
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "来是",
+              "code": "raize",
+              "en": "Proximate",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "詩姫",
+              "code": "shiki",
+              "en": "Diva",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 2,
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 3,
+              "cores": 6,
+              "battle_points": 15000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "自分の黄の効果でデッキから、オープンされたか、トラッシュに置かれたこのカードは手札に加えられる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "keyword_line",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "ミラージュ",
+                  "code": "mirage",
+                  "parameter_jp": "コスト3(1)(このカードは手札からセットできる)"
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "【ミラージュ：コスト3(1)(このカードは手札からセットできる)】",
+              "text_jp": "【ミラージュ：コスト3(1)(このカードは手札からセットできる)】",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "セット中",
+                  "code": "setto_chu",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『このミラージュのセット時』",
+              "header_jp": "【セット中】『このミラージュのセット時』",
+              "text_jp": "自分のカウント+1できる。\nその後、自分はデッキから1枚ドローできる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 4,
+              "form": "keyword_line",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "セット中",
+                  "code": "setto_chu",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "【セット中】",
+              "text_jp": "【セット中】",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 5,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "自分が系統：「詩姫」を持つカードを召喚/配置するとき、その軽減シンボル1つを満たす。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "朝倉ブルー",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": [
+            {
+              "role": "プロデュース",
+              "name": "杉田智和",
+              "note": null
+            }
+          ]
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "BSC39-CP02",
+        "product_name_jp": "ディーバブースター【詩姫の戦歌】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%87%E3%82%A3%E3%83%BC%E3%83%90%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90%E8%A9%A9%E5%A7%AB%E3%81%AE%E6%88%A6%E6%AD%8C%E3%80%91",
+        "product_code": "BSC39",
+        "product_type_code": "booster",
+        "rarity_jp": "CP",
+        "rarity_code": "CP",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "8",
+        "release_date": "2022-02-26",
+        "section": "収録"
+      },
+      {
+        "number": "BSC39-CP02",
+        "product_name_jp": "バトルスピリッツ ディーバ総選挙BOX 2024",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%20%E3%83%87%E3%82%A3%E3%83%BC%E3%83%90%E7%B7%8F%E9%81%B8%E6%8C%99BOX%202024",
+        "product_code": "PB38",
+        "product_type_code": "other",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "8",
+        "release_date": "2025-02-19",
+        "section": "収録"
+      },
+      {
+        "number": "BSC39-CP02",
+        "product_name_jp": "バトルスピリッツ ディーバ総選挙BOX 2025",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%20%E3%83%87%E3%82%A3%E3%83%BC%E3%83%90%E7%B7%8F%E9%81%B8%E6%8C%99BOX%202025",
+        "product_code": "PB45",
+        "product_type_code": "other",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "12",
+        "release_date": "2026-01-16",
+        "section": "収録"
+      },
+      {
+        "number": "BSC39-CP02",
+        "product_name_jp": "ディーバブースター【メモリアルレコード】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%87%E3%82%A3%E3%83%BC%E3%83%90%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90%E3%83%A1%E3%83%A2%E3%83%AA%E3%82%A2%E3%83%AB%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E3%80%91",
+        "product_code": "BSC51",
+        "product_type_code": "booster",
+        "rarity_jp": "CP",
+        "rarity_code": "CP",
+        "variant_jp": "SECRETあり",
+        "variant_code": "secret",
+        "detail_jp": null,
+        "note_jp": "SECRETあり",
+        "block_icon": "12",
+        "release_date": "2026-01-31",
+        "section": "収録"
+      },
+      {
+        "number": "BSC39-CP02",
+        "product_name_jp": "キャンペーンカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "BSC39-CP02",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "8",
+        "release_date": null,
+        "section": "ブロックアイコン"
+      }
+    ],
+    "images": [
+      {
+        "number": "BSC39-CP02",
+        "large_url": "https://batspi.com/card/BSC/BSC39-CP02.jpg",
+        "small_url": "https://batspi.com/card/BSC/small/BSC39-CP02.jpg",
+        "caption": [
+          "ディーバブースター【詩姫の戦歌】",
+          "プロモーションカード"
+        ]
+      },
+      {
+        "number": "BSC39-CP02",
+        "large_url": "https://batspi.com/card/BSC/BSC39-CP02-4.jpg",
+        "small_url": "https://batspi.com/card/BSC/small/BSC39-CP02-4.jpg",
+        "caption": [
+          "ディーバブースター【メモリアルレコード】"
+        ]
+      },
+      {
+        "number": "BSC39-CP02",
+        "large_url": "https://batspi.com/card/BSC/BSC39-CP02-5.jpg",
+        "small_url": "https://batspi.com/card/BSC/small/BSC39-CP02-5.jpg",
+        "caption": [
+          "ディーバブースター【メモリアルレコード】",
+          "シークレット"
+        ]
+      },
+      {
+        "number": "BSC39-CP02",
+        "large_url": "https://batspi.com/card/BSC/BSC39-CP02-2.jpg",
+        "small_url": "https://batspi.com/card/BSC/small/BSC39-CP02-2.jpg",
+        "caption": [
+          "バトルスピリッツ ディーバ総選挙BOX 2024"
+        ]
+      },
+      {
+        "number": "BSC39-CP02",
+        "large_url": "https://batspi.com/card/BSC/BSC39-CP02-3.jpg",
+        "small_url": "https://batspi.com/card/BSC/small/BSC39-CP02-3.jpg",
+        "caption": [
+          "バトルスピリッツ ディーバ総選挙BOX 2025"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

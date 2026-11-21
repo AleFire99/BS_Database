@@ -16,6 +16,7 @@ from bs_database.ingest.atomic import atomic_write
 from bs_database.ingest.http import Fetched, Fetcher, Skipped
 
 CACHED_STATUS = 200
+OFFLINE_REASON = "offline: not in the cache"  # prefix of the Skipped reason
 
 
 @dataclass(frozen=True)
@@ -114,7 +115,9 @@ class CachedFetcher:
     Lookup order: the network-free local gate (off-site, deny list) on every call; a valid,
     fresh entry is returned with no network at all (not even robots.txt); on a miss ``fetch``
     applies the full gate. Only status-200 pages are stored; ``Skipped`` and ``StopRun`` pass
-    through untouched and write nothing.
+    through untouched and write nothing. With ``offline`` the client is never called: a miss
+    is a ``Skipped`` (not permanent, see ``pipeline._permanent``) and ``refresh``/``max_age``
+    are ignored.
     """
 
     def __init__(
@@ -124,12 +127,14 @@ class CachedFetcher:
         *,
         refresh: bool = False,
         max_age: timedelta | None = None,
+        offline: bool = False,
         now: Callable[[], datetime] = _utcnow,
     ) -> None:
         self._fetcher = fetcher
         self._cache = cache
         self._refresh = refresh
         self._max_age = max_age
+        self._offline = offline
         self._now = now
 
     def _fresh(self, page: CachedPage) -> bool:
@@ -143,6 +148,9 @@ class CachedFetcher:
     def get(self, url: str, source: str = "batspi") -> CachedPage | Skipped:
         if (skipped := self._fetcher.local_gate(url)) is not None:
             return skipped
+        if self._offline:  # the cache only: any entry is good, a miss never reaches the client
+            page = self._cache.load(url, source)
+            return page if page is not None else Skipped(url, OFFLINE_REASON)
         page = None if self._refresh else self._cache.load(url, source)
         if page is not None and self._fresh(page):
             return page

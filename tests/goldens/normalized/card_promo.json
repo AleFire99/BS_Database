@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.1.0",
-  "parsed_schema_version": "2.0.0",
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
   "url": "https://batspi.com/index.php?%E7%84%94%E7%AB%9C%E7%BF%BC%E4%BA%BA%E3%83%9E%E3%83%BB%E3%83%89%E3%83%BC",
   "provenance": {
     "source": "batspi",
@@ -36,7 +36,9 @@
             {
               "symbol_jp": "赤",
               "symbol_code": "red",
-              "count": 1
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
             }
           ],
           "families": [
@@ -59,21 +61,29 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 2,
-              "battle_points": 4000
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 3,
               "cores": 5,
-              "battle_points": 7000
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
-          "overclock": null
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
         },
         "text": {
           "effects": [],
@@ -91,7 +101,8 @@
           "flavor_note_jp": null,
           "flavor_en": null,
           "en_source": null,
-          "en_status": "pending"
+          "en_status": "pending",
+          "other_credits": []
         }
       },
       {
@@ -119,7 +130,9 @@
             {
               "symbol_jp": "赤",
               "symbol_code": "red",
-              "count": 1
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
             }
           ],
           "families": [
@@ -142,21 +155,29 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 2,
-              "battle_points": 4000
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 3,
               "cores": 5,
-              "battle_points": 7000
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
-          "overclock": null
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
         },
         "text": {
           "effects": [],
@@ -174,7 +195,8 @@
           "flavor_note_jp": null,
           "flavor_en": null,
           "en_source": null,
-          "en_status": "pending"
+          "en_status": "pending",
+          "other_credits": []
         }
       },
       {
@@ -202,7 +224,9 @@
             {
               "symbol_jp": "赤",
               "symbol_code": "red",
-              "count": 1
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
             }
           ],
           "families": [
@@ -232,21 +256,29 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 2,
-              "battle_points": 4000
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 3,
               "cores": 5,
-              "battle_points": 7000
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
-          "overclock": null
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
         },
         "text": {
           "effects": [
@@ -311,7 +343,8 @@
           "flavor_note_jp": null,
           "flavor_en": null,
           "en_source": null,
-          "en_status": "pending"
+          "en_status": "pending",
+          "other_credits": []
         }
       }
     ],

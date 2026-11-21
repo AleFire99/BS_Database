@@ -79,16 +79,17 @@ Every printing **with** a product code resolves to a product type. 4,943 printin
 
 ```text
 {
-  schema_version: "1.1.0",
+  schema_version: "1.2.0",
   parsed_schema_version, url, provenance,        # provenance copied from the parsed file
   page: {
     url, title_jp, differences, images,           # as parsed
     entries: [ {number, name_jp, name_en, en_source, en_status,
-                gameplay: {card_type_jp, card_type_code, colors[{jp, code}],
-                           symbols[{symbol_jp, symbol_code, count}], reduction,
+                gameplay: {card_type_jp, card_type_code, card_class_jp, type_mark_jp,
+                           colors[{jp, code}],
+                           symbols[{symbol_jp, symbol_code, count, variant_jp, color_jp}], reduction,
                            families[{jp, code, en, en_source, en_status}], ...},
                 text: {effects[{keywords[{bracket, name_jp, code, parameter_jp}],
-                                text_jp, text_en, ...}], flavor_jp, flavor_en, ...}} ],
+                                text_jp, text_en, ...}], flavor_jp, flavor_en, other_credits[{role, name, note}], ...}} ],
     printings: [ {number, product_name_jp, product_name_en, product_type_code,
                   rarity_jp, rarity_code, variant_jp, variant_code, ...} ],
     unmapped: [ {kind, jp, number} ],             # no glossary row; deduplicated and sorted
@@ -98,6 +99,8 @@ Every printing **with** a product code resolves to a product type. 4,943 printin
 ```
 
 `unmapped` and `uncurated` are part of the page, so the result stays pure. A loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)) that reads schema 1.1.0 must read or ignore `uncurated`.
+
+Schema 1.2.0 ([#108](https://github.com/AleFire99/BS_Database/issues/108), [ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md)) is additive: `card_class_jp`, `type_mark_jp`, `variant_jp`, `color_jp`, `other_credits` and the `count_condition`/`note` of a level are carried through as the literals of the page, with no glossary mapping yet (curating contract classes, marks and credit roles is a follow-up). A parsed tree in schema 2.0.0 must first be rebuilt with `bsdb scrape --offline --reparse`.
 
 ## CLI
 

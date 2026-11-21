@@ -1,0 +1,190 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E5%A4%A9%E4%BD%BF%20%E5%A4%A9%E6%B5%B7%E6%98%A5%E9%A6%99",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E5%A4%A9%E4%BD%BF%20%E5%A4%A9%E6%B5%B7%E6%98%A5%E9%A6%99",
+    "title_jp": "アイドル天使 天海春香",
+    "entries": [
+      {
+        "number": "P084",
+        "name_jp": "アイドル天使 天海春香",
+        "name_en": "The IdolAngelia Haruka Amami",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 3,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "黄",
+              "code": "yellow"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "黄",
+              "symbol_code": "yellow",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "天霊",
+              "code": "tenrei",
+              "en": "Divine Spirit",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 2000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 2,
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 3,
+              "cores": 3,
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2,
+                3
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『自分のアタックステップ』",
+              "header_jp": "Lv1・Lv2・Lv3『自分のアタックステップ』",
+              "text_jp": "このスピリット以外の自分のスピリットすべてをBP+2000する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                3
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットの破壊時』",
+              "header_jp": "Lv3『このスピリットの破壊時』",
+              "text_jp": "このスピリットは手札に戻る。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [],
+          "concepts": [],
+          "flavor_jp": "私の歌で、聴いているみんなを笑顔にしたいんですっ！",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": [
+            {
+              "role": "コラボレート",
+              "name": "アイドルマスター",
+              "note": null
+            }
+          ]
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "P084",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P084",
+        "product_name_jp": "バトスピMAX2012",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94MAX2012",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "来場者プレゼント",
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "P084",
+        "large_url": "https://batspi.com/card/ETC/P084.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/P084.jpg",
+        "caption": [
+          "プロモーションカード"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

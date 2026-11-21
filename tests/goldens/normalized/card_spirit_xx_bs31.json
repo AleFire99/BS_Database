@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.1.0",
-  "parsed_schema_version": "2.0.0",
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
   "url": "https://batspi.com/index.php?%E5%85%AD%E7%B5%B6%E7%A5%9E%20%E9%89%84%E5%A3%81%E3%81%AE%E3%82%AF%E3%83%AD%E3%83%A0%E3%83%BB%E3%83%AA%E3%82%BC%E3%83%AB%E3%83%95%E3%82%A1%E3%83%BC",
   "provenance": {
     "source": "batspi",
@@ -36,7 +36,9 @@
             {
               "symbol_jp": "白",
               "symbol_code": "white",
-              "count": 1
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
             }
           ],
           "families": [
@@ -52,16 +54,22 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 5000
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 3,
-              "battle_points": 10000
+              "battle_points": 10000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
-          "overclock": null
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
         },
         "text": {
           "effects": [
@@ -131,7 +139,8 @@
           "flavor_note_jp": null,
           "flavor_en": null,
           "en_source": null,
-          "en_status": "pending"
+          "en_status": "pending",
+          "other_credits": []
         }
       }
     ],

@@ -48,7 +48,11 @@ def map_symbols(
     """Symbol glyphs with counts to records carrying the symbol code."""
     return tuple(
         SymbolCountRecord(
-            s.symbol, closed_code(glossary, "symbols", s.symbol, number, unmapped), s.count
+            s.symbol,
+            closed_code(glossary, "symbols", s.symbol, number, unmapped),
+            s.count,
+            s.variant,
+            s.color,
         )
         for s in symbols
     )

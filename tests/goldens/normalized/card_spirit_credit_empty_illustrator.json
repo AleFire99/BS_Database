@@ -1,0 +1,202 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E3%83%93%E3%82%AF%E3%83%88%E3%83%AA%E3%83%BC%E3%83%BB%E3%83%96%E3%83%AC%E3%82%A4%E3%83%89%E3%83%A9",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E3%83%93%E3%82%AF%E3%83%88%E3%83%AA%E3%83%BC%E3%83%BB%E3%83%96%E3%83%AC%E3%82%A4%E3%83%89%E3%83%A9",
+    "title_jp": "ビクトリー・ブレイドラ",
+    "entries": [
+      {
+        "number": "P22-14",
+        "name_jp": "ビクトリー・ブレイドラ",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 2,
+          "reduction": {
+            "plain": 1,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "刃契約",
+              "code": "jin_keiyaku",
+              "en": "Blade Contract",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "緋炎",
+              "code": "hi_en",
+              "en": "Scarlet Flame",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "翼竜",
+              "code": "yokuryu",
+              "en": "Winged Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 2,
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": {
+            "count_min": 3,
+            "bp_bonus": 4000
+          },
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [],
+              "label": "フラッシュ",
+              "keywords": [
+                {
+                  "bracket": "《",
+                  "name_jp": "契約煌臨",
+                  "code": "keiyaku_kourin",
+                  "parameter_jp": "刃契約"
+                }
+              ],
+              "timing_jp": "『お互いのアタックステップ』",
+              "header_jp": "フラッシュ《契約煌臨：刃契約》『お互いのアタックステップ』",
+              "text_jp": "自分の[ソウルコア]をトラッシュに置くことで、対象の自分のスピリットに手札から重ねる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットの煌臨時』",
+              "header_jp": "Lv1・Lv2『このスピリットの煌臨時』",
+              "text_jp": "自分のトラッシュにある、コスト3以下の赤1色のスピリットカード2枚を手札に戻す。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "OC中",
+                  "code": "oc_chu",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "【OC中】Lv1・Lv2『このスピリットのアタック時』",
+              "text_jp": "自分はデッキから1枚ドローする。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": "OC条件：カウント3以上",
+          "illustrators": [],
+          "concepts": [],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "P22-14",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "9",
+        "release_date": null,
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "P22-14",
+        "large_url": "https://batspi.com/card/ETC/P22-14.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/P22-14.jpg",
+        "caption": [
+          "プロモーションカード"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

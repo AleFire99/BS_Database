@@ -35,42 +35,65 @@ COLORS = "赤紫緑白黄青"
 SYMBOL_GLYPHS = COLORS + "神極"
 REDUCTION_GLYPHS = SYMBOL_GLYPHS + "全"
 
-TYPE_LINE_RE = re.compile(rf"^({'|'.join(CARD_TYPES)})\s*(?:\(制限カード<(\d+)>\))?\s*$")
-COST_LINE_RE = re.compile(r"^(\d+)\(([^()]*)\)/([^/]+)(?:/(.+))?$")
-LEVEL_LINE_RE = re.compile(r"^<\d+>Lv\d")
-_LEVEL_TOKEN_RE = re.compile(r"^<(\d+)>Lv(\d+)$")
-_FUSION_TOKEN_RE = re.compile(r"^<\d+>合体\+(\d+)$")
-_OVERCLOCK_TOKEN_RE = re.compile(r"^OC<(\d+)\+>\+(\d+)$")
-_PART_RE = re.compile(rf"([{REDUCTION_GLYPHS}])(\d*)")
-_SYMBOL_RE = re.compile(rf"([{SYMBOL_GLYPHS}])(\d*)")
+CARD_CLASSES = ("契約", "トークン")
+_LIMIT_MARK = "制限カード"
+TYPE_LINE_RE = re.compile(
+    rf"^(?:({'|'.join(CARD_CLASSES)}))?({'|'.join(CARD_TYPES)})\s*"
+    rf"(?:\((?!{_LIMIT_MARK})([^()<>]+)\))?\s*(?:\({_LIMIT_MARK}<(\d+)>\))?\s*$"
+)
+COST_LINE_RE = re.compile(r"^(\d+)\(([^()]*)\)/([^/]*)(?:/(.*))?$")
+NO_COLOR_TOKEN = "(なし)"  # the colour slot of a colourless card, e.g. ``15(0)/(なし)``
+_LEVEL_HEAD = r"<(?P<cores>[^<>]+)>\s*(?:(?P<cond>条件[:：]\S+)\s*)?Lv(?P<level>\d+)"
+LEVEL_LINE_RE = re.compile(rf"^{_LEVEL_HEAD}")
+_LEVEL_TOKEN_RE = re.compile(
+    rf"{_LEVEL_HEAD}(?:/(?P<note>[^\s<]+))?(?:\s+(?P<points>\d+|X\d+)(?=\s|$))?"
+)
+_FUSION_TOKEN_RE = re.compile(r"<\d+>\s*合体\s*\+(\d+)")
+_OVERCLOCK_TOKEN_RE = re.compile(r"OC<(\d+)\+>\s*\+(\d+)")
+_PART_RE = re.compile(rf"(?P<glyph>[{REDUCTION_GLYPHS}])(?P<count>\d*)")
+_SYMBOL_RE = re.compile(
+    rf"(?P<variant>EX)?(?P<glyph>[{SYMBOL_GLYPHS}])(?:\((?P<color>[{COLORS}])\))?(?P<count>\d*)"
+)
 SYMBOL_PREFIX = "シンボル："
 
 
-def parse_type_line(line: str) -> tuple[str, int | None]:
-    """Return ``(card_type, deck_limit)`` from the first line of a card block."""
+def parse_type_line(line: str) -> tuple[str, int | None, str | None, str | None]:
+    """Return ``(card_type, deck_limit, card_class, type_mark)`` from a card block's first line.
+
+    ``契約スピリット`` gives the class ``契約``; ``スピリット(光)`` and ``スピリット(禁止カード)``
+    give the mark as printed. The card type stays one of the five base types.
+    """
     match = TYPE_LINE_RE.match(line)
     if match is None:
         raise ParseError(f"unknown type line: {line!r}")
-    limit = match.group(2)
-    return match.group(1), int(limit) if limit is not None else None
+    limit = match.group(4)
+    return match.group(2), int(limit) if limit is not None else None, match.group(1), match.group(3)
 
 
 def _parts(text: str, pattern: re.Pattern[str], what: str) -> tuple[SymbolCount, ...]:
     """Split ``赤2神1`` into counted glyphs, adding up repeated glyphs in order."""
-    counts: dict[str, int] = {}
+    counts: dict[tuple[str, str | None, str | None], int] = {}
     pos = 0
     while pos < len(text):
         match = pattern.match(text, pos)
         if match is None:
             raise ParseError(f"unknown {what} syntax: {text!r}")
-        counts[match.group(1)] = counts.get(match.group(1), 0) + int(match.group(2) or 1)
+        found = match.groupdict()
+        key = (found["glyph"], found.get("variant"), found.get("color"))
+        counts[key] = counts.get(key, 0) + int(found["count"] or 1)
         pos = match.end()
-    return tuple(SymbolCount(symbol, count) for symbol, count in counts.items())
+    return tuple(
+        SymbolCount(g, count, variant, color) for (g, variant, color), count in counts.items()
+    )
 
 
 def parse_cost_line(line: str) -> tuple[int, Reduction, tuple[str, ...], tuple[str, ...]]:
-    """Return ``(cost, reduction, colors, families)`` from ``N(reduction)/colours[/families]``."""
-    match = COST_LINE_RE.match(line)
+    """Return ``(cost, reduction, colors, families)`` from ``N(reduction)/colours[/families]``.
+
+    Tolerates what the pages print: trailing blanks, a trailing ``/`` (``4(2)/白/``), and
+    ``(なし)`` or nothing for a colourless card.
+    """
+    match = COST_LINE_RE.match(line.strip())
     if match is None:
         raise ParseError(f"unknown cost line: {line!r}")
     cost = int(match.group(1))
@@ -81,11 +104,12 @@ def parse_cost_line(line: str) -> tuple[int, Reduction, tuple[str, ...], tuple[s
         reduction = Reduction(plain=int(inner), parts=())
     else:
         reduction = Reduction(plain=None, parts=_parts(inner, _PART_RE, "reduction"))
-    colors = tuple(match.group(3))
+    color_text = match.group(3).strip()
+    colors = () if color_text in ("", NO_COLOR_TOKEN) else tuple(color_text)
     for color in colors:
         if color not in COLORS:
             raise ParseError(f"unknown colour {color!r} in cost line: {line!r}")
-    family_text = match.group(4)
+    family_text = (match.group(4) or "").strip().rstrip("/").strip()
     families = tuple(family_text.split("・")) if family_text else ()
     return cost, reduction, colors, families
 
@@ -93,27 +117,38 @@ def parse_cost_line(line: str) -> tuple[int, Reduction, tuple[str, ...], tuple[s
 def parse_level_line(
     line: str,
 ) -> tuple[tuple[Level, ...], int | None, Overclock | None]:
-    """Return ``(levels, fusion_bp_bonus, overclock)`` from a level line."""
-    tokens = line.split()
+    """Return ``(levels, fusion_bp_bonus, overclock)`` from a level line.
+
+    Tolerates a blank after ``<n>``, a core slot that is not a number (``<C2>Lv2``, kept in
+    ``count_condition``), a remark after the level (``Lv2/真界放``) and a battle point
+    printed as text (``X0000``, kept in ``note``).
+    """
     levels: list[Level] = []
     fusion: int | None = None
     overclock: Overclock | None = None
-    index = 0
-    while index < len(tokens):
-        token = tokens[index]
-        index += 1
-        if match := _LEVEL_TOKEN_RE.match(token):
-            points: int | None = None
-            if index < len(tokens) and tokens[index].isdigit():
-                points = int(tokens[index])
-                index += 1
-            levels.append(Level(int(match.group(2)), int(match.group(1)), points))
-        elif match := _FUSION_TOKEN_RE.match(token):
+    pos = 0
+    while pos < len(line):
+        if line[pos].isspace():
+            pos += 1
+        elif match := _LEVEL_TOKEN_RE.match(line, pos):
+            cores_text = match.group("cores")
+            cores = int(cores_text) if cores_text.isdigit() else None
+            condition = match.group("cond") or (None if cores is not None else cores_text)
+            points_text = match.group("points")
+            points = int(points_text) if points_text and points_text.isdigit() else None
+            notes = [n for n in (match.group("note"), points_text if points is None else None) if n]
+            levels.append(
+                Level(int(match.group("level")), cores, points, condition, "/".join(notes) or None)
+            )
+            pos = match.end()
+        elif match := _FUSION_TOKEN_RE.match(line, pos):
             fusion = int(match.group(1))
-        elif match := _OVERCLOCK_TOKEN_RE.match(token):
+            pos = match.end()
+        elif match := _OVERCLOCK_TOKEN_RE.match(line, pos):
             overclock = Overclock(int(match.group(1)), int(match.group(2)))
+            pos = match.end()
         else:
-            raise ParseError(f"unknown level token {token!r} in: {line!r}")
+            raise ParseError(f"unknown level token {line[pos:].split()[0]!r} in: {line!r}")
     return tuple(levels), fusion, overclock
 
 
@@ -223,7 +258,7 @@ def _pre_lines(pre: Tag) -> list[str]:
 def _parse_gameplay(lines: list[str], url: str) -> Gameplay:
     if len(lines) < 2:
         raise ParseError(f"card block without a cost line in {url}")
-    card_type, deck_limit = parse_type_line(lines[0])
+    card_type, deck_limit, card_class, type_mark = parse_type_line(lines[0])
     cost, reduction, colors, families = parse_cost_line(lines[1])
     levels: tuple[Level, ...] = ()
     fusion: int | None = None
@@ -245,6 +280,8 @@ def _parse_gameplay(lines: list[str], url: str) -> Gameplay:
         levels=levels,
         fusion_bp_bonus=fusion,
         overclock=overclock,
+        card_class=card_class,
+        type_mark=type_mark,
     )
 
 
@@ -313,12 +350,19 @@ def parse_card_page(html: str, url: str) -> CardPage:
         name_jp, name_en, h3_number = (
             _split_heading(_h3_text(heading)) if heading is not None else ("", None, None)
         )
+        numbers: list[str]
         if h3_number is not None:
-            number = h3_number
-            if own and _FACE_RE.sub("", number) not in own:
-                log.warning("source conflict: field=number h3=%r cardno=%r in %s", number, own, url)
+            numbers = [h3_number]
+            if own and _FACE_RE.sub("", h3_number) not in own:
+                log.warning(
+                    "source conflict: field=number h3=%r cardno=%r in %s", h3_number, own, url
+                )
         elif len(own) == len(blocks):
-            number = own[index]
+            numbers = [own[index]]
+        elif len(blocks) == 1 and own:
+            # one block printed once for several numbers: each gets its own entry
+            numbers = list(own)
+            log.warning("one card block shared by the numbers %s in %s", own, url)
         else:
             raise ParseError(
                 f"{len(blocks)} card blocks without h3 numbers but {len(own)} card numbers in {url}"
@@ -328,7 +372,7 @@ def parse_card_page(html: str, url: str) -> CardPage:
             if title and name_jp not in (title, *titles):
                 log.warning(
                     "source conflict: field=name_jp number=%s h3=%r title=%r in %s",
-                    number,
+                    numbers[0],
                     name_jp,
                     title,
                     url,
@@ -336,11 +380,12 @@ def parse_card_page(html: str, url: str) -> CardPage:
         else:
             name_jp = title
         if not name_jp:
-            raise ParseError(f"no card name for {number} in {url}")
+            raise ParseError(f"no card name for {numbers[0]} in {url}")
         lines = _pre_lines(pre)
         gameplay = _parse_gameplay(lines, url)
-        text = _parse_text(lines, gameplay, number, url)
-        entries.append(CardEntry(number, name_jp, name_en, gameplay, text))
+        for number in numbers:
+            text = _parse_text(lines, gameplay, number, url)
+            entries.append(CardEntry(number, name_jp, name_en, gameplay, text))
     printings = parse_printings(soup, url, [e.number for e in entries])
     images = parse_images(soup, url, [e.number for e in entries])
     return CardPage(

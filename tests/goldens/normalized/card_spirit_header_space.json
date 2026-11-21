@@ -1,0 +1,502 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E3%82%B3%E3%82%B8%E3%83%AD%E3%83%B3%E3%83%89%E3%83%BB%E3%82%B4%E3%83%AC%E3%83%A0",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E3%82%B3%E3%82%B8%E3%83%AD%E3%83%B3%E3%83%89%E3%83%BB%E3%82%B4%E3%83%AC%E3%83%A0",
+    "title_jp": "コジロンド・ゴレム",
+    "entries": [
+      {
+        "number": "BS15-053",
+        "name_jp": "コジロンド・ゴレム",
+        "name_en": "Kojirond-Golem",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 6,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "青",
+              "code": "blue"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "青",
+              "symbol_code": "blue",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "覇皇",
+              "code": "haou",
+              "en": "Supreme Hero",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "造兵",
+              "code": "zouhei",
+              "en": "Artificial Soldier",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 2,
+              "battle_points": 6000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 3,
+              "cores": 4,
+              "battle_points": 9000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "keyword_line",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "バースト",
+                  "code": "basuto",
+                  "parameter_jp": "相手のスピリットのアタック後"
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "【バースト：相手のスピリットのアタック後】",
+              "text_jp": "【バースト：相手のスピリットのアタック後】",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "自分のフィールドに【粉砕】/【大粉砕】を持つスピリットが1体以上いるとき、このスピリットカードを召喚する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                1,
+                2,
+                3
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "粉砕",
+                  "code": "funsai",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv1・Lv2・Lv3 【粉砕】『このスピリットのアタック時』",
+              "text_jp": "相手のデッキを上から、このスピリットのLvと同じ枚数破棄する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 4,
+              "form": "header",
+              "levels": [
+                2,
+                3
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "Lv2・Lv3",
+              "text_jp": "自分のスピリットの【粉砕】でコスト4以上のカードを破棄したとき、相手のスピリット1体を疲労させる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "Hayaken",
+              "note": null
+            }
+          ],
+          "concepts": [
+            {
+              "name": "寺島慎也",
+              "note": null
+            }
+          ],
+          "flavor_jp": "ムサシードには海楯の剣士との決闘の約束があるらしい。\nそれを終えたら、虚神戦に援軍に来てくれると約束してくれた。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      },
+      {
+        "number": "BS50-RV008",
+        "name_jp": "コジロンド・ゴレム",
+        "name_en": "Kojirond-Golem",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 6,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "青",
+              "code": "blue"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "青",
+              "symbol_code": "blue",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "天渡",
+              "code": "amato",
+              "en": "Celeste",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "造兵",
+              "code": "zouhei",
+              "en": "Artificial Soldier",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 2,
+              "battle_points": 6000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 3,
+              "cores": 4,
+              "battle_points": 9000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "keyword_line",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "バースト",
+                  "code": "basuto",
+                  "parameter_jp": "相手のスピリット/アルティメットのアタック後"
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "【バースト：相手のスピリット/アルティメットのアタック後】",
+              "text_jp": "【バースト：相手のスピリット/アルティメットのアタック後】",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このカードをコストを支払わずに召喚する。\nその後、相手のデッキを上から3枚破棄する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                1,
+                2,
+                3
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "粉砕",
+                  "code": "funsai",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "Lv1・Lv2・Lv3 【粉砕】『このスピリットのアタック時』",
+              "text_jp": "相手のデッキを上から、このスピリットのLvと同じ枚数破棄する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 4,
+              "form": "header",
+              "levels": [
+                2,
+                3
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "Lv2・Lv3",
+              "text_jp": "「相手へのデッキ破棄効果」でコスト4以上のカードが破棄されたとき、相手のスピリット/アルティメット1体を重疲労させる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "ハヤケン・サレナ",
+              "note": null
+            }
+          ],
+          "concepts": [
+            {
+              "name": "寺島慎也",
+              "note": null
+            }
+          ],
+          "flavor_jp": "勝利の後、加勢の理由を問われたヘファイストスは、ただ笑うだけで、\n彼が誓いを立てた女神の名は口にしなかった。　―『創世書記』新3章35―",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "コジロンド・ゴレム",
+        "field": "families",
+        "values": [
+          [
+            "BS15-053",
+            "('覇皇', '造兵')"
+          ],
+          [
+            "BS50-RV008",
+            "('天渡', '造兵')"
+          ]
+        ]
+      },
+      {
+        "name_jp": "コジロンド・ゴレム",
+        "field": "effects",
+        "values": [
+          [
+            "BS15-053",
+            "(Effect(position=1, form='keyword_line', levels=(), label=None, keywords=(Keyword(bracket='【', name='バースト', parameter='相手のスピリットのアタック後'),), timing=None, header='【バースト：相手のスピリットのアタック後】', text='【バースト：相手のスピリットのアタック後】'), Effect(position=2, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='自分のフィールドに【粉砕】/【大粉砕】を持つスピリットが1体以上いるとき、このスピリットカードを召喚する。'), Effect(position=3, form='header', levels=(1, 2, 3), label=None, keywords=(Keyword(bracket='【', name='粉砕', parameter=None),), timing='『このスピリットのアタック時』', header='Lv1・Lv2・Lv3 【粉砕】『このスピリットのアタック時』', text='相手のデッキを上から、このスピリットのLvと同じ枚数破棄する。'), Effect(position=4, form='header', levels=(2, 3), label=None, keywords=(), timing=None, header='Lv2・Lv3', text='自分のスピリットの【粉砕】でコスト4以上のカードを破棄したとき、相手のスピリット1体を疲労させる。'))"
+          ],
+          [
+            "BS50-RV008",
+            "(Effect(position=1, form='keyword_line', levels=(), label=None, keywords=(Keyword(bracket='【', name='バースト', parameter='相手のスピリット/アルティメットのアタック後'),), timing=None, header='【バースト：相手のスピリット/アルティメットのアタック後】', text='【バースト：相手のスピリット/アルティメットのアタック後】'), Effect(position=2, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='このカードをコストを支払わずに召喚する。\\nその後、相手のデッキを上から3枚破棄する。'), Effect(position=3, form='header', levels=(1, 2, 3), label=None, keywords=(Keyword(bracket='【', name='粉砕', parameter=None),), timing='『このスピリットのアタック時』', header='Lv1・Lv2・Lv3 【粉砕】『このスピリットのアタック時』', text='相手のデッキを上から、このスピリットのLvと同じ枚数破棄する。'), Effect(position=4, form='header', levels=(2, 3), label=None, keywords=(), timing=None, header='Lv2・Lv3', text='「相手へのデッキ破棄効果」でコスト4以上のカードが破棄されたとき、相手のスピリット/アルティメット1体を重疲労させる。'))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "コジロンド・ゴレム",
+        "field": "flavor",
+        "values": [
+          [
+            "BS15-053",
+            "'ムサシードには海楯の剣士との決闘の約束があるらしい。\\nそれを終えたら、虚神戦に援軍に来てくれると約束してくれた。'"
+          ],
+          [
+            "BS50-RV008",
+            "'勝利の後、加勢の理由を問われたヘファイストスは、ただ笑うだけで、\\n彼が誓いを立てた女神の名は口にしなかった。\\u3000―『創世書記』新3章35―'"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "BS15-053",
+        "product_name_jp": "覇王編 第2弾：黄金の大地",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E8%A6%87%E7%8E%8B%E7%B7%A8%20%E7%AC%AC2%E5%BC%BE%EF%BC%9A%E9%BB%84%E9%87%91%E3%81%AE%E5%A4%A7%E5%9C%B0",
+        "product_code": "BS15",
+        "product_type_code": "booster",
+        "rarity_jp": "M",
+        "rarity_code": "M",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2011-12-16",
+        "section": "収録"
+      },
+      {
+        "number": "BS50-RV008",
+        "product_name_jp": "超煌臨編 第3章：全知全能",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E8%B6%85%E7%85%8C%E8%87%A8%E7%B7%A8%20%E7%AC%AC3%E7%AB%A0%EF%BC%9A%E5%85%A8%E7%9F%A5%E5%85%A8%E8%83%BD",
+        "product_code": "BS50",
+        "product_type_code": "booster",
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "6",
+        "release_date": "2019-10-26",
+        "section": "収録"
+      },
+      {
+        "number": "BS50-RV008",
+        "product_name_jp": "テーマブースター【AGE OF AVENGERS】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%86%E3%83%BC%E3%83%9E%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90AGE%20OF%20AVENGERS%E3%80%91",
+        "product_code": "BSC44",
+        "product_type_code": "booster",
+        "rarity_jp": "R",
+        "rarity_code": "R",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "11",
+        "release_date": "2024-08-31",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS15-053",
+        "large_url": "https://batspi.com/card/BS1/BS15-053.jpg",
+        "small_url": "https://batspi.com/card/BS1/small/BS15-053.jpg",
+        "caption": [
+          "覇王編 第2弾：黄金の大地"
+        ]
+      },
+      {
+        "number": "BS50-RV008",
+        "large_url": "https://batspi.com/card/BS5/BS50-RV008.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS50-RV008.jpg",
+        "caption": [
+          "超煌臨編 第3章：全知全能"
+        ]
+      },
+      {
+        "number": "BS50-RV008",
+        "large_url": "https://batspi.com/card/BS5/BS50-RV008-2.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS50-RV008-2.jpg",
+        "caption": [
+          "テーマブースター【AGE OF AVENGERS】"
+        ]
+      },
+      {
+        "number": "BS50-RV008",
+        "large_url": "https://batspi.com/card/BS5/BS50-RV008-3.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS50-RV008-3.jpg",
+        "caption": [
+          "テーマブースター【AGE OF AVENGERS】",
+          "シークレット"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}
