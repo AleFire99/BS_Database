@@ -127,6 +127,14 @@
     "card_type": "スピリット",
     "trimmed": true
   },
+  "card_spirit_level_blank.html": {
+    "url": "https://batspi.com/index.php?%E5%85%AD%E7%B5%B6%E7%A5%9E%20%E6%AC%B2%E6%9C%9B%E3%81%AE%E3%83%87%E3%82%B9%E3%83%BB%E3%82%AC%E3%83%AB%E3%83%BB%E3%83%B4%E3%82%A1%E3%83%89%E3%82%B9",
+    "fetched": "2026-11-16",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "スピリット",
+    "trimmed": true
+  },
   "card_spirit_listed_as_set.html": {
     "url": "https://batspi.com/index.php?%E6%8B%B3%E9%97%98%E5%B7%A8%E4%BA%BA%E3%82%B8%E3%83%A3%E3%82%B9%E3%83%86%E3%82%A3%E3%83%B3",
     "fetched": "2026-11-15",

@@ -70,12 +70,16 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 3,
-              "battle_points": 7000
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,

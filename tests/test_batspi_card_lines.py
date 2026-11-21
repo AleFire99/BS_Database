@@ -95,6 +95,25 @@ def test_cost_line_errors(line: str) -> None:
             ((Level(3, 1, 10000), Level(4, 3, 14000)), None, Overclock(5, 6000)),
         ),
         ("<0>Lv1 3000 <0>合体+3000", ((Level(1, 0, 3000),), 3000, None)),
+        ("<1>Lv1 5000 <0>合体 +5000", ((Level(1, 1, 5000),), 5000, None)),
+        (
+            "<1>Lv1 6000 <5>Lv2/真界放 10000",
+            ((Level(1, 1, 6000), Level(2, 5, 10000, None, "真界放")), None, None),
+        ),
+        (
+            "<1>Lv3 12000 <7> Lv6 30000",
+            ((Level(3, 1, 12000), Level(6, 7, 30000)), None, None),
+        ),
+        ("<1>Lv1 X0000", ((Level(1, 1, None, None, "X0000"),), None, None)),
+        (
+            "<0>Lv1 <C2>Lv2",
+            ((Level(1, 0, None), Level(2, None, None, "C2", None)), None, None),
+        ),
+        (
+            "<1>Lv1 7000 <2>条件:赤赤 Lv2 9000",
+            ((Level(1, 1, 7000), Level(2, 2, 9000, "条件:赤赤", None)), None, None),
+        ),
+        ("<1>Lv1　3000 <3>Lv2　5000", ((Level(1, 1, 3000), Level(2, 3, 5000)), None, None)),
     ],
 )
 def test_level_line(line: str, expected: object) -> None:

@@ -87,7 +87,16 @@ def _gameplay(d: dict[str, Any]) -> Gameplay:
         colors=tuple(d["colors"]),
         symbols=tuple(_symbol(s) for s in d["symbols"]),
         families=tuple(d["families"]),
-        levels=tuple(Level(x["level"], x["cores"], x["battle_points"]) for x in d["levels"]),
+        levels=tuple(
+            Level(
+                x["level"],
+                x["cores"],
+                x["battle_points"],
+                x["count_condition"],
+                x["note"],
+            )
+            for x in d["levels"]
+        ),
         fusion_bp_bonus=d["fusion_bp_bonus"],
         overclock=_overclock(d["overclock"]),
         card_class=d["card_class"],

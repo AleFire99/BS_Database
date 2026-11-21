@@ -161,3 +161,13 @@ def test_token_class_on_the_type_line() -> None:
     """菌床 prints ``トークンネクサス``."""
     gameplay = parse("card_nexus_token").entries[0].gameplay
     assert (gameplay.card_type, gameplay.card_class) == ("ネクサス", "トークン")
+
+
+def test_level_with_a_blank_after_the_core_count() -> None:
+    """六絶神 欲望のデス・ガル・ヴァドス prints ``<3> Lv2 10000``."""
+    levels = parse("card_spirit_level_blank").entries[0].gameplay.levels
+    assert [(x.level, x.cores, x.battle_points) for x in levels] == [
+        (1, 1, 5000),
+        (2, 3, 10000),
+        (3, 5, 13000),
+    ]

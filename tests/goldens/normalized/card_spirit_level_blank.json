@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.1.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E5%85%AD%E7%B5%B6%E7%A5%9E%20%E6%AC%B2%E6%9C%9B%E3%81%AE%E3%83%87%E3%82%B9%E3%83%BB%E3%82%AC%E3%83%AB%E3%83%BB%E3%83%B4%E3%82%A1%E3%83%89%E3%82%B9",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E5%85%AD%E7%B5%B6%E7%A5%9E%20%E6%AC%B2%E6%9C%9B%E3%81%AE%E3%83%87%E3%82%B9%E3%83%BB%E3%82%AC%E3%83%AB%E3%83%BB%E3%83%B4%E3%82%A1%E3%83%89%E3%82%B9",
+    "title_jp": "六絶神 欲望のデス・ガル・ヴァドス",
+    "entries": [
+      {
+        "number": "BS31-XX01",
+        "name_jp": "六絶神 欲望のデス・ガル・ヴァドス",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 5,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "紫",
+              "code": "purple"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "紫",
+              "symbol_code": "purple",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "絶晶神",
+              "code": "zesshoushin",
+              "en": "Crystalline Deity",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 3,
+              "battle_points": 10000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 3,
+              "cores": 5,
+              "battle_points": 13000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2,
+                3
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットの召喚時』",
+              "header_jp": "Lv1・Lv2・Lv3『このスピリットの召喚時』",
+              "text_jp": "自分のトラッシュに紫のカードが5枚以上あるとき、自分はデッキから5枚ドローする。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                3
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットの破壊時』",
+              "header_jp": "Lv3『このスピリットの破壊時』",
+              "text_jp": "自分の手札が20枚以上のとき、相手のスピリット/アルティメットのコアすべてを相手のトラッシュに置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "タカヤマトシアキ",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "欲するならば、ただ手を伸ばせばよい。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "BS31-XX01",
+        "product_name_jp": "烈火伝 第1章",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E7%83%88%E7%81%AB%E4%BC%9D%20%E7%AC%AC1%E7%AB%A0",
+        "product_code": "BS31",
+        "product_type_code": "booster",
+        "rarity_jp": "XX",
+        "rarity_code": "XX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "2",
+        "release_date": "2015-04-25",
+        "section": "収録"
+      },
+      {
+        "number": "BS31-XX01",
+        "product_name_jp": "バトスピ戦国チャンピオンシップ",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E6%88%A6%E5%9B%BD%E3%83%81%E3%83%A3%E3%83%B3%E3%83%94%E3%82%AA%E3%83%B3%E3%82%B7%E3%83%83%E3%83%97",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": "XX",
+        "rarity_code": "XX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "優勝記念品",
+        "note_jp": "特別仕様",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS31-XX01",
+        "large_url": "https://batspi.com/card/BS3/BS31-XX01.jpg",
+        "small_url": "https://batspi.com/card/BS3/small/BS31-XX01.jpg",
+        "caption": [
+          "烈火伝 第1章"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

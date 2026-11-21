@@ -59,17 +59,23 @@
             {
               "level": 3,
               "cores": 1,
-              "battle_points": 10000
+              "battle_points": 10000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 4,
               "cores": 3,
-              "battle_points": 14000
+              "battle_points": 14000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 5,
               "cores": 5,
-              "battle_points": 20000
+              "battle_points": 20000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
@@ -217,12 +223,16 @@
             {
               "level": 3,
               "cores": 1,
-              "battle_points": 10000
+              "battle_points": 10000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 4,
               "cores": 3,
-              "battle_points": 14000
+              "battle_points": 14000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
@@ -358,11 +368,11 @@
         "values": [
           [
             "SD19-X01",
-            "(Level(level=3, cores=1, battle_points=10000), Level(level=4, cores=3, battle_points=14000), Level(level=5, cores=5, battle_points=20000))"
+            "(Level(level=3, cores=1, battle_points=10000, count_condition=None, note=None), Level(level=4, cores=3, battle_points=14000, count_condition=None, note=None), Level(level=5, cores=5, battle_points=20000, count_condition=None, note=None))"
           ],
           [
             "SD67-CP01",
-            "(Level(level=3, cores=1, battle_points=10000), Level(level=4, cores=3, battle_points=14000))"
+            "(Level(level=3, cores=1, battle_points=10000, count_condition=None, note=None), Level(level=4, cores=3, battle_points=14000, count_condition=None, note=None))"
           ]
         ]
       },

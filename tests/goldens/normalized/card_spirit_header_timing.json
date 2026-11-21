@@ -59,17 +59,23 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 5000
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 3,
-              "battle_points": 8000
+              "battle_points": 8000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 3,
               "cores": 6,
-              "battle_points": 15000
+              "battle_points": 15000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
@@ -189,12 +195,16 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 4000
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 2,
-              "battle_points": 5000
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
@@ -291,11 +301,11 @@
         "values": [
           [
             "CB09-017",
-            "(Level(level=1, cores=1, battle_points=5000), Level(level=2, cores=3, battle_points=8000), Level(level=3, cores=6, battle_points=15000))"
+            "(Level(level=1, cores=1, battle_points=5000, count_condition=None, note=None), Level(level=2, cores=3, battle_points=8000, count_condition=None, note=None), Level(level=3, cores=6, battle_points=15000, count_condition=None, note=None))"
           ],
           [
             "26RCB01-007",
-            "(Level(level=1, cores=1, battle_points=4000), Level(level=2, cores=2, battle_points=5000))"
+            "(Level(level=1, cores=1, battle_points=4000, count_condition=None, note=None), Level(level=2, cores=2, battle_points=5000, count_condition=None, note=None))"
           ]
         ]
       },

@@ -59,17 +59,23 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 4000
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 2,
-              "battle_points": 6000
+              "battle_points": 6000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 3,
               "cores": 4,
-              "battle_points": 9000
+              "battle_points": 9000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
@@ -221,17 +227,23 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 4000
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 2,
-              "battle_points": 6000
+              "battle_points": 6000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 3,
               "cores": 4,
-              "battle_points": 9000
+              "battle_points": 9000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,

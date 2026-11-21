@@ -64,7 +64,9 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": 3000,
@@ -204,7 +206,9 @@
             {
               "level": 1,
               "cores": 0,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": 3000,
@@ -306,11 +310,11 @@
         "values": [
           [
             "BS10-062",
-            "(Level(level=1, cores=1, battle_points=3000),)"
+            "(Level(level=1, cores=1, battle_points=3000, count_condition=None, note=None),)"
           ],
           [
             "BS38-RV022",
-            "(Level(level=1, cores=0, battle_points=3000),)"
+            "(Level(level=1, cores=0, battle_points=3000, count_condition=None, note=None),)"
           ]
         ]
       },

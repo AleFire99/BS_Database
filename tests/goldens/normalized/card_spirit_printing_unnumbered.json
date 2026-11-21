@@ -52,12 +52,16 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 4,
-              "battle_points": 7000
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
@@ -147,12 +151,16 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 3,
-              "battle_points": 7000
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
@@ -245,11 +253,11 @@
         "values": [
           [
             "P004",
-            "(Level(level=1, cores=1, battle_points=3000), Level(level=2, cores=4, battle_points=7000))"
+            "(Level(level=1, cores=1, battle_points=3000, count_condition=None, note=None), Level(level=2, cores=4, battle_points=7000, count_condition=None, note=None))"
           ],
           [
             "P20-07",
-            "(Level(level=1, cores=1, battle_points=3000), Level(level=2, cores=3, battle_points=7000))"
+            "(Level(level=1, cores=1, battle_points=3000, count_condition=None, note=None), Level(level=2, cores=3, battle_points=7000, count_condition=None, note=None))"
           ]
         ]
       },

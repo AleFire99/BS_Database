@@ -43,10 +43,13 @@ TYPE_LINE_RE = re.compile(
 )
 COST_LINE_RE = re.compile(r"^(\d+)\(([^()]*)\)/([^/]*)(?:/(.*))?$")
 NO_COLOR_TOKEN = "(なし)"  # the colour slot of a colourless card, e.g. ``15(0)/(なし)``
-LEVEL_LINE_RE = re.compile(r"^<\d+>Lv\d")
-_LEVEL_TOKEN_RE = re.compile(r"^<(\d+)>Lv(\d+)$")
-_FUSION_TOKEN_RE = re.compile(r"^<\d+>合体\+(\d+)$")
-_OVERCLOCK_TOKEN_RE = re.compile(r"^OC<(\d+)\+>\+(\d+)$")
+_LEVEL_HEAD = r"<(?P<cores>[^<>]+)>\s*(?:(?P<cond>条件[:：]\S+)\s*)?Lv(?P<level>\d+)"
+LEVEL_LINE_RE = re.compile(rf"^{_LEVEL_HEAD}")
+_LEVEL_TOKEN_RE = re.compile(
+    rf"{_LEVEL_HEAD}(?:/(?P<note>[^\s<]+))?(?:\s+(?P<points>\d+|X\d+)(?=\s|$))?"
+)
+_FUSION_TOKEN_RE = re.compile(r"<\d+>\s*合体\s*\+(\d+)")
+_OVERCLOCK_TOKEN_RE = re.compile(r"OC<(\d+)\+>\s*\+(\d+)")
 _PART_RE = re.compile(rf"([{REDUCTION_GLYPHS}])(\d*)")
 _SYMBOL_RE = re.compile(rf"([{SYMBOL_GLYPHS}])(\d*)")
 SYMBOL_PREFIX = "シンボル："
@@ -108,27 +111,38 @@ def parse_cost_line(line: str) -> tuple[int, Reduction, tuple[str, ...], tuple[s
 def parse_level_line(
     line: str,
 ) -> tuple[tuple[Level, ...], int | None, Overclock | None]:
-    """Return ``(levels, fusion_bp_bonus, overclock)`` from a level line."""
-    tokens = line.split()
+    """Return ``(levels, fusion_bp_bonus, overclock)`` from a level line.
+
+    Tolerates a blank after ``<n>``, a core slot that is not a number (``<C2>Lv2``, kept in
+    ``count_condition``), a remark after the level (``Lv2/真界放``) and a battle point
+    printed as text (``X0000``, kept in ``note``).
+    """
     levels: list[Level] = []
     fusion: int | None = None
     overclock: Overclock | None = None
-    index = 0
-    while index < len(tokens):
-        token = tokens[index]
-        index += 1
-        if match := _LEVEL_TOKEN_RE.match(token):
-            points: int | None = None
-            if index < len(tokens) and tokens[index].isdigit():
-                points = int(tokens[index])
-                index += 1
-            levels.append(Level(int(match.group(2)), int(match.group(1)), points))
-        elif match := _FUSION_TOKEN_RE.match(token):
+    pos = 0
+    while pos < len(line):
+        if line[pos].isspace():
+            pos += 1
+        elif match := _LEVEL_TOKEN_RE.match(line, pos):
+            cores_text = match.group("cores")
+            cores = int(cores_text) if cores_text.isdigit() else None
+            condition = match.group("cond") or (None if cores is not None else cores_text)
+            points_text = match.group("points")
+            points = int(points_text) if points_text and points_text.isdigit() else None
+            notes = [n for n in (match.group("note"), points_text if points is None else None) if n]
+            levels.append(
+                Level(int(match.group("level")), cores, points, condition, "/".join(notes) or None)
+            )
+            pos = match.end()
+        elif match := _FUSION_TOKEN_RE.match(line, pos):
             fusion = int(match.group(1))
-        elif match := _OVERCLOCK_TOKEN_RE.match(token):
+            pos = match.end()
+        elif match := _OVERCLOCK_TOKEN_RE.match(line, pos):
             overclock = Overclock(int(match.group(1)), int(match.group(2)))
+            pos = match.end()
         else:
-            raise ParseError(f"unknown level token {token!r} in: {line!r}")
+            raise ParseError(f"unknown level token {line[pos:].split()[0]!r} in: {line!r}")
     return tuple(levels), fusion, overclock
 
 

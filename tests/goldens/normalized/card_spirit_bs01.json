@@ -52,12 +52,16 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 1000
+              "battle_points": 1000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 3,
-              "battle_points": 3000
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
@@ -123,12 +127,16 @@
             {
               "level": 1,
               "cores": 1,
-              "battle_points": 2000
+              "battle_points": 2000,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 3,
-              "battle_points": 5000
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,
@@ -166,11 +174,11 @@
         "values": [
           [
             "BS01-001",
-            "(Level(level=1, cores=1, battle_points=1000), Level(level=2, cores=3, battle_points=3000))"
+            "(Level(level=1, cores=1, battle_points=1000, count_condition=None, note=None), Level(level=2, cores=3, battle_points=3000, count_condition=None, note=None))"
           ],
           [
             "BSC22-001",
-            "(Level(level=1, cores=1, battle_points=2000), Level(level=2, cores=3, battle_points=5000))"
+            "(Level(level=1, cores=1, battle_points=2000, count_condition=None, note=None), Level(level=2, cores=3, battle_points=5000, count_condition=None, note=None))"
           ]
         ]
       }

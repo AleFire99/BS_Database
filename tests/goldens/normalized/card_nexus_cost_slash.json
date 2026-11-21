@@ -44,12 +44,16 @@
             {
               "level": 1,
               "cores": 0,
-              "battle_points": null
+              "battle_points": null,
+              "count_condition": null,
+              "note": null
             },
             {
               "level": 2,
               "cores": 2,
-              "battle_points": null
+              "battle_points": null,
+              "count_condition": null,
+              "note": null
             }
           ],
           "fusion_bp_bonus": null,

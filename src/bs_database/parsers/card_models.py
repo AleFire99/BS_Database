@@ -28,11 +28,18 @@ class Reduction:
 
 @dataclass(frozen=True, slots=True)
 class Level:
-    """One level row: level number, cores needed, battle points (None if absent)."""
+    """One level row: level number, cores needed, battle points (None if absent).
+
+    ``cores`` is None when the page prints a condition instead of a count (``<C2>Lv2``,
+    kept in ``count_condition``). ``note`` is a remark printed with the level (``真界放``) or a
+    battle point that is not a number (``X0000``).
+    """
 
     level: int
-    cores: int
+    cores: int | None
     battle_points: int | None
+    count_condition: str | None = None
+    note: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
