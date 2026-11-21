@@ -1225,6 +1225,18 @@ The page links `BS72-007.jpg` and `BS72-007-2.jpg`, each as a small `<img>` and 
 
 Q&A (ADR 0003), the batspi effect-category tags (カード効果 and 発揮タイミング tags outside the `<pre>`, a possible future source) and structured effects.
 
+## Parsed fields without a column yet
+
+The parsed schema 2.1.0 ([ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md), [#108](https://github.com/AleFire99/BS_Database/issues/108)) carries facts that no table above stores. The loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)) decides where they go; until then they stay literal Japanese in the normalized documents.
+
+| Parsed field | Printed as | Open question |
+| --- | --- | --- |
+| `card_class` | `契約`, `トークン` before the type | A column on `cards`, or a lookup like `card_types` |
+| `type_mark` | `(禁止カード)`, `(光)`, `(闇)` after the type | What `光` and `闇` mean (assumed a rule mark, not a colour) |
+| `Level.count_condition`, `note` | `<C2>Lv2`, `Lv2/真界放`, `X0000` | `card_levels.cores` would need to be nullable |
+| `SymbolCount.variant`, `color` | `EX白`, `神(青)` | A variant of `symbols`, or a colour column on `card_symbols` |
+| `other_credits` | `プロデュース：`, `ペイント：`, `書：`, `写真：`, `コラボレート：` | A role on the credit tables |
+
 ## BSS_app deviations
 
 Summary of where this model departs from the sister project [BSS_app](https://github.com/AleFire99/BSS_app). The full name mapping, with every BSS_app table, is in [ADR 0003](../adr/0003-naming-and-schema-versioning.md#bss_app--bs_database).
