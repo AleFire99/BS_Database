@@ -218,3 +218,17 @@ def test_empty_illustrator_gives_a_warning_and_no_credit(
         page = parse("card_spirit_credit_empty_illustrator")
     assert "empty illustrator ignored" in caplog.text
     assert page.entries
+
+
+@pytest.mark.parametrize(
+    ("stem", "card_type"),
+    [("card_spirit_contract", "スピリット"), ("card_ultimate_contract", "アルティメット")],
+)
+def test_contract_class_on_the_type_line(stem: str, card_type: str) -> None:
+    """紅蓮の雷皇龍ジークヴルム prints ``契約スピリット``, 極相棒ゼッター ``契約アルティメット``."""
+    gameplay = parse(stem).entries[0].gameplay
+    assert (gameplay.card_type, gameplay.card_class, gameplay.type_mark) == (
+        card_type,
+        "契約",
+        None,
+    )

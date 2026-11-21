@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E6%A5%B5%E7%9B%B8%E6%A3%92%E3%82%BC%E3%83%83%E3%82%BF%E3%83%BC",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E6%A5%B5%E7%9B%B8%E6%A3%92%E3%82%BC%E3%83%83%E3%82%BF%E3%83%BC",
+    "title_jp": "極相棒ゼッター",
+    "entries": [
+      {
+        "number": "BS65-CX04",
+        "name_jp": "極相棒ゼッター",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "アルティメット",
+          "card_type_code": "ultimate",
+          "deck_limit": null,
+          "cost": 2,
+          "reduction": {
+            "plain": null,
+            "parts": [
+              {
+                "symbol_jp": "極",
+                "symbol_code": "ultimate",
+                "count": 2,
+                "variant_jp": null,
+                "color_jp": null
+              }
+            ]
+          },
+          "colors": [
+            {
+              "jp": "緑",
+              "code": "green"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "極",
+              "symbol_code": "ultimate",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "極契約",
+              "code": "kyoku_keiyaku",
+              "en": "Extreme Contract",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "真聖",
+              "code": "horizu",
+              "en": "Holies",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 3,
+              "cores": 1,
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 4,
+              "cores": 3,
+              "battle_points": 8000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": {
+            "count_min": 2,
+            "bp_bonus": 5000
+          },
+          "card_class_jp": "契約",
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "魂状態のこのカードには《契約煌臨》できる。\nこのとき、煌臨するカードに、自分のフィールド/リザーブのコアを好きなだけ置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "【契約煌臨元】/【アルティメット】Lv3・Lv4\nターンに1回、自分のUトリガーがヒットしたとき、自分のアルティメット1体を回復でき、自分のトラッシュの[ソウルコア]をリザーブに置ける。\n【契約煌臨元】/【アルティメット】Lv3・Lv4『このアルティメットのアタック時』\n相手は、バースト効果を発揮できない。\nさらに、自分のカウント+2し、ボイドからコア1個を自分のアルティメットに置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": "【召喚条件：自分のスピリット0体＆自分のトラッシュのスピリットカード0枚】",
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "高坂巧",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "当方は、邪神軍との戦闘を継続中。至急援軍を請う。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "BS65-CX04",
+        "product_name_jp": "契約編：界 第2章：極争",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%95%8C%20%E7%AC%AC2%E7%AB%A0%EF%BC%9A%E6%A5%B5%E4%BA%89",
+        "product_code": "BS65",
+        "product_type_code": "booster",
+        "rarity_jp": "契約X",
+        "rarity_code": "CX",
+        "variant_jp": "SECRETあり",
+        "variant_code": "secret",
+        "detail_jp": null,
+        "note_jp": "SECRETあり",
+        "block_icon": "10",
+        "release_date": "2023-08-26",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS65-CX04",
+        "large_url": "https://batspi.com/card/BS6/BS65-CX04.jpg",
+        "small_url": "https://batspi.com/card/BS6/small/BS65-CX04.jpg",
+        "caption": [
+          "契約編：界 第2章：極争"
+        ]
+      },
+      {
+        "number": "BS65-CX04",
+        "large_url": "https://batspi.com/card/BS6/BS65-CX04-2.jpg",
+        "small_url": "https://batspi.com/card/BS6/small/BS65-CX04-2.jpg",
+        "caption": [
+          "契約編：界 第2章：極争",
+          "シークレット"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

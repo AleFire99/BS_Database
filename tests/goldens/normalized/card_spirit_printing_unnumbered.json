@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "parsed_schema_version": "2.1.0",
   "url": "https://batspi.com/index.php?%E9%AD%94%E5%88%83%E5%B0%86%E3%83%98%E3%83%AB%E3%83%BB%E3%83%96%E3%83%AC%E3%83%89",
   "provenance": {
@@ -36,7 +36,9 @@
             {
               "symbol_jp": "紫",
               "symbol_code": "purple",
-              "count": 1
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
             }
           ],
           "families": [
@@ -65,7 +67,9 @@
             }
           ],
           "fusion_bp_bonus": null,
-          "overclock": null
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
         },
         "text": {
           "effects": [
@@ -100,7 +104,8 @@
           "flavor_note_jp": null,
           "flavor_en": null,
           "en_source": null,
-          "en_status": "pending"
+          "en_status": "pending",
+          "other_credits": []
         }
       },
       {
@@ -128,7 +133,9 @@
             {
               "symbol_jp": "紫",
               "symbol_code": "purple",
-              "count": 1
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
             }
           ],
           "families": [
@@ -164,7 +171,9 @@
             }
           ],
           "fusion_bp_bonus": null,
-          "overclock": null
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
         },
         "text": {
           "effects": [
@@ -214,7 +223,8 @@
           "flavor_note_jp": null,
           "flavor_en": null,
           "en_source": null,
-          "en_status": "pending"
+          "en_status": "pending",
+          "other_credits": []
         }
       }
     ],

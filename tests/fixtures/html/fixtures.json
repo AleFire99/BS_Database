@@ -127,6 +127,14 @@
     "card_type": "スピリット",
     "trimmed": true
   },
+  "card_spirit_contract.html": {
+    "url": "https://batspi.com/index.php?%E7%B4%85%E8%93%AE%E3%81%AE%E9%9B%B7%E7%9A%87%E9%BE%8D%E3%82%B8%E3%83%BC%E3%82%AF%E3%83%B4%E3%83%AB%E3%83%A0",
+    "fetched": "2026-11-16",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "スピリット",
+    "trimmed": true
+  },
   "card_spirit_credit_ascii_colon.html": {
     "url": "https://batspi.com/index.php?%E3%82%B0%E3%83%AC%E3%83%A0%E3%83%AA%E3%83%BC",
     "fetched": "2026-11-16",
@@ -234,6 +242,14 @@
   "card_ultimate.html": {
     "url": "https://batspi.com/index.php?%E3%82%A2%E3%83%AB%E3%83%86%E3%82%A3%E3%83%A1%E3%83%83%E3%83%88%E3%83%BB%E3%82%B8%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AA%E3%83%BC%E3%83%89",
     "fetched": "2026-11-14",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "アルティメット",
+    "trimmed": true
+  },
+  "card_ultimate_contract.html": {
+    "url": "https://batspi.com/index.php?%E6%A5%B5%E7%9B%B8%E6%A3%92%E3%82%BC%E3%83%83%E3%82%BF%E3%83%BC",
+    "fetched": "2026-11-16",
     "source": "batspi",
     "kind": "card",
     "card_type": "アルティメット",

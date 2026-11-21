@@ -64,7 +64,7 @@ def test_review_rejects_other_schema_version(data_dir: Path, tmp_path: Path) -> 
     page = next((data_dir / "normalized").glob("*/*.json"))
     page.write_text(
         page.read_text(encoding="utf-8").replace(
-            '"schema_version": "1.1.0"', '"schema_version": "0.9.0"'
+            '"schema_version": "1.2.0"', '"schema_version": "0.9.0"'
         ),
         encoding="utf-8",
     )
