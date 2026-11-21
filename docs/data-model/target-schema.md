@@ -346,13 +346,33 @@ The gameplay identity: one row per distinct card. Gameplay columns (type, cost) 
 | `id` | INTEGER | PRIMARY KEY | Surrogate key. |
 | `name_jp` | TEXT | NOT NULL | Japanese card name (batspi page title). |
 | `name_en` | TEXT | | English name; NULL until translated. Source and status in `en_source_id` and `en_status_id` below; see [Multilingual text](#multilingual-text). |
-| `flavor_text_jp` | TEXT | | Flavor text as printed (`フレーバーテキスト：` in the `<pre>`). NULL when the card has none (the Magic fixture has none). On the card, not the printing; whether it varies per printing is pending #9. |
+| `flavor_text_jp` | TEXT | | Flavor text as printed (`フレーバーテキスト：` in the `<pre>`). NULL when the card has none (the Magic fixture has none). On the card, not the printing. Flavor is part of the card identity key, so it never varies inside a card ([ADR 0004 amendment](../adr/0004-card-printing-identity.md#amendment-2026-11-21-63), #63). |
 | `flavor_text_en` | TEXT | | English flavor text; NULL until translated. |
 | `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Where the English texts of this row come from; NULL while there is no English text. |
 | `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of this row; defaults to `pending`. |
 | `block_icon` | TEXT | | Block icon (`12`, `A`, ...). Placed on the card by default; per card or per number is pending #9. |
 
-Whether numbers with the same name but different numbers are one card is pending #9. The planned rule: link them only if text and stats are identical.
+Several numbers share one card only when gameplay, text and flavor are identical ([ADR 0004 amendment](../adr/0004-card-printing-identity.md#amendment-2026-11-21-63), proposed, #63). The loader ([#120](https://github.com/AleFire99/BS_Database/issues/120)) groups number entries by a hash of the canonical JSON of:
+
+- `name_jp`
+- card type, class, mark, deck limit
+- cost, reduction, colors, symbols, families
+- levels: cores, BP, condition, note
+- fusion bonus, overclock
+- effects: position, levels, header, text
+- the conditions
+- flavor and flavor note
+
+English names, credits and images are not in the key: they are printing data. So `cards.name_jp` is **not unique**; `card_numbers.number` is the stable lookup. Links between flip faces ([#125](https://github.com/AleFire99/BS_Database/issues/125)) and between remakes of the same card ([#126](https://github.com/AleFire99/BS_Database/issues/126)) are out of scope.
+
+Worked example, ゴラドン (`BS01-001`, `BSC22-001`): only the BP differs, so there are two cards.
+
+| cards.id | name_jp | card_numbers.number |
+| --- | --- | --- |
+| 1 | ゴラドン | BS01-001 |
+| 2 | ゴラドン | BSC22-001 |
+
+Row ids are illustrative. 焔竜翼人マ・ドー gives two cards: `P001` and `EX001` are equal and share one card, `P20-19` adds the family 起幻 and an effect.
 
 ### card_numbers
 
@@ -422,7 +442,7 @@ Lookup, following the lookup convention of ADR 0003: `code` plus one English `na
 
 ## Gameplay attributes
 
-Added by [#30](https://github.com/AleFire99/BS_Database/issues/30). Gameplay attributes are identical across printings of a card (a reprint keeps its number and text; only rarity and art change, see ADR 0004), so they hang off `cards`, never off `card_numbers` or `printings`. Effects, keywords and alternate costs such as `【ミラージュ：コスト2(1)】` belong to [#31](https://github.com/AleFire99/BS_Database/issues/31) and are modelled in [Effects and keywords](#effects-and-keywords), not here.
+Added by [#30](https://github.com/AleFire99/BS_Database/issues/30). Gameplay attributes are identical across printings of a card (a reprint keeps its number and text; only rarity and art change, see ADR 0004; numbers with different values are separate cards, see the [amendment](../adr/0004-card-printing-identity.md#amendment-2026-11-21-63)), so they hang off `cards`, never off `card_numbers` or `printings`. Effects, keywords and alternate costs such as `【ミラージュ：コスト2(1)】` belong to [#31](https://github.com/AleFire99/BS_Database/issues/31) and are modelled in [Effects and keywords](#effects-and-keywords), not here.
 
 Lookup tables (`card_types`, `colors`, `symbols`, `rarities`, `variants`, `product_types`) carry a stable `code` and one English `name`. They have **no Japanese name column**: the Japanese source text is translated to a `code` by the normalization stage ([#11](https://github.com/AleFire99/BS_Database/issues/11), [ADR 0008](../adr/0008-normalization-and-translation.md)), see [JP source to code](#jp-source-to-code). Data entities (`cards`, `families`, `products`) keep `name_jp` so a bad machine translation can be redone.
 

@@ -1,6 +1,6 @@
 # 0004. Card vs printing identity, ID scheme and rarity
 
-- Status: Accepted
+- Status: Accepted (amended by #63, 2026-11-21)
 - Date: 2026-11-14
 
 ## Context
@@ -14,7 +14,7 @@ The batspi.com card pages show that a number is not a printing. Evidence from th
 - **Variants within one slot.** [card_spirit.html](../../tests/fixtures/html/card_spirit.html) (BS72-007) is `<R> (SECRETあり)`. The page table says "2枚" and links `BS72-007.jpg` and `BS72-007-2.jpg`.
 - **Block icon.** Every `収録` entry carries `ブロックアイコン:<12>`, and the card section lists `ブロックアイコン/12`. It is an era or legality attribute.
 - **Product categories.** The heading is `収録/掲載/配布` (included / published in a magazine / distributed), and each product has a release date (for example `2025年05月17日`).
-- **Legacy.** Only `BSnn-nnn` numbers exist, one row per number. The same name appears under different numbers: in the legacy database (v0.1.0), Scorpio `BS02-031` is cost 4 with Lv1–3 (1000/3000/6000 BP) and `BS33-056` is cost 5 with Lv1–2 (4000/7000 BP). Same name does not imply same card, so these are two `cards` rows. Whether a card can ever be reprinted under a new number with identical stats and text is **pending [#9](https://github.com/AleFire99/BS_Database/issues/9)**.
+- **Legacy.** Only `BSnn-nnn` numbers exist, one row per number. The same name appears under different numbers: in the legacy database (v0.1.0), Scorpio `BS02-031` is cost 4 with Lv1–3 (1000/3000/6000 BP) and `BS33-056` is cost 5 with Lv1–2 (4000/7000 BP). Same name does not imply same card, so these are two `cards` rows. Whether a card can be reprinted under a new number with identical stats and text is settled by the proposed [amendment of 2026-11-21](#amendment-2026-11-21-63) (#63).
 
 This ADR **supersedes the Gate A wording** "printing number UNIQUE on printings" (used in [ADR 0003](0003-naming-and-schema-versioning.md)): the evidence above shows one number on several printings. Owner decision on [#29](https://github.com/AleFire99/BS_Database/issues/29), Gate B, 2026-11-14.
 
@@ -22,7 +22,7 @@ This ADR **supersedes the Gate A wording** "printing number UNIQUE on printings"
 
 - A number must identify one card, and the database should enforce it.
 - Reprints, promos and variants of the same number must be representable without duplicating the card.
-- A card that exists under several numbers (pending #9) must be reachable directly.
+- A card that exists under several numbers (rule: [amendment](#amendment-2026-11-21-63)) must be reachable directly.
 - Naming and keys follow [ADR 0003](0003-naming-and-schema-versioning.md) (surrogate `id`, natural keys as UNIQUE).
 - Lookups instead of enum text, so new rarities, variants and product types need no schema change.
 - Cheap joins: the database is built in batch and read-mostly.
@@ -44,7 +44,7 @@ This ADR **supersedes the Gate A wording** "printing number UNIQUE on printings"
 Use **option B** (owner choice, Gate B). Detailed columns are in [target-schema.md](../data-model/target-schema.md#identity).
 
 - **`cards`**: the gameplay identity, one row per distinct card (name, text, stats) with a surrogate `id`. `block_icon` sits here by default (pending #9 if it turns out to vary per number).
-- **`card_numbers`**: `id`, `number` (UNIQUE, e.g. `BS72-069`), `card_id`. A number belongs to exactly one card. A card can have several numbers. Different numbers are linked to one card only if text and stats are identical; otherwise they are separate cards (errata or remake). The final rule is **pending #9**.
+- **`card_numbers`**: `id`, `number` (UNIQUE, e.g. `BS72-069`), `card_id`. A number belongs to exactly one card. A card can have several numbers. Different numbers are linked to one card only if text and stats are identical; otherwise they are separate cards (errata or remake). The exact rule is in the proposed [amendment](#amendment-2026-11-21-63) (#63).
 - **`products`**: anything a card is released in. `code` is UNIQUE where not null (e.g. `BS72`) and null for distributions without a code; plus `name_jp`, `name_en`, `product_type_id`, `release_date`, and a nullable `series` text for the chapter grouping (契約編：環). A booster set *is* a product; there is no separate `sets` table.
 - **`product_types`**: lookup with `code` and an English `name` (no Japanese name column; booster, starter or deck, promo distribution, magazine, collab, other). Exact list pending #9.
 - **`printings`**: one physical printing: `card_number_id`, `product_id`, `variant_id` (NOT NULL, default `normal`), `rarity_id` (nullable: distribution entries show no rarity, pending #9), `illustrator` text. Images are not a column: they live in `printing_images` (one row per printing and size, [#31](https://github.com/AleFire99/BS_Database/issues/31), [ADR 0005](0005-text-first-effects-and-translations.md)). `UNIQUE(card_number_id, product_id, variant_id)`.
@@ -145,12 +145,90 @@ The images `BS72-007.jpg` and `BS72-007-2.jpg` are rows of `printing_images` (se
 ## Consequences
 
 - Every printing-to-card query needs one more join (`printings` to `card_numbers` to `cards`). This is cheap in a read-mostly, batch-built database.
-- The database guarantees that a number maps to exactly one card. Linking several numbers to one card is a data decision made in the build (pending #9), not a schema change.
+- The database guarantees that a number maps to exactly one card. Linking several numbers to one card is a data decision made in the build (rule: [amendment](#amendment-2026-11-21-63)), not a schema change.
 - `variant_id` is NOT NULL (default `normal`) so the composite UNIQUE works in SQLite.
 - `card_numbers` is near 1:1 with `cards`, so most cards carry one extra row.
 - ADR 0003's natural-key example now reads `card_numbers.number` instead of `printings.number` (edited while ADR 0003 is Proposed).
-- Open items for #9: card identity across different numbers, the rarity scale, the variant list, the promo number format, and whether `block_icon` is per card or per number.
+- Open items for #9: the rarity scale, the variant list, the promo number format, and whether `block_icon` is per card or per number.
 - DDL is written in [#12](https://github.com/AleFire99/BS_Database/issues/12), gameplay attributes in [#30](https://github.com/AleFire99/BS_Database/issues/30), effects, i18n, provenance and image details (`printing_images`) in [#31](https://github.com/AleFire99/BS_Database/issues/31).
+
+## Amendment 2026-11-21 (#63)
+
+- Status: Accepted (2026-11-21)
+- Issue: [#63](https://github.com/AleFire99/BS_Database/issues/63)
+
+The original decision above stays Accepted. This amendment only fixes the rule it left open: when do several numbers share one `cards` row. It changes no table or column.
+
+### Survey
+
+Measured on 2026-11-21 on `data/normalized`, schema 1.2.0, 13,480 pages (14,715 entries). 1,140 pages have more than one entry:
+
+| Kind | Pages | Entry pairs | Note |
+| --- | ---: | ---: | --- |
+| Flip faces (a different name per entry, numbers ending `(A)` and `(B)`) | 254 | 354 | Already separate cards; not the #63 case |
+| Same name, several numbers | 886 | 1,099 | The #63 case |
+
+Of the 1,099 same-name pairs:
+
+- 21 pairs are identical (15 pages): promo renumberings, e.g. 飛甲虫イットウカブト EX016 and P031.
+- 1,078 pairs differ substantively (871 pages).
+- 0 pairs differ only cosmetically (whitespace, NFKC, punctuation) or only in flavor or credits.
+
+What differs (a pair can be in several classes):
+
+| Class | Pairs |
+| --- | ---: |
+| Effect wording | 528 |
+| Effects added or removed | 446 |
+| Families | 438 |
+| Reduction | 385 |
+| BP | 368 |
+| Levels | 284 |
+| Symbols | 249 |
+| Colors | 243 |
+| Cost | 211 |
+| Card type | 23 |
+
+Flavor differs in 542 pairs and credits in 394, never on their own. Most pairs differ in several classes at once: they are remakes or errata under a new number, not reprints. The later numbers are mostly reissue prefixes (BSC, CB, SD, P, 26RCB, PB, EX).
+
+| Rule | Resulting `cards` |
+| --- | ---: |
+| One card per number | 14,715 |
+| (a) identical gameplay, text and flavor | 14,694 |
+| (a') the same, ignoring flavor and cosmetic differences | 14,694 |
+| (c) one card per page | 13,480 |
+
+### Decision
+
+Numbers share one `cards` row **only when gameplay, text and flavor are identical** (option a; owner approved at Gate B of #63). Otherwise each number group is its own card.
+
+- The grouping key is a hash of the canonical JSON of:
+  - `name_jp`
+  - card type, class, mark, deck limit
+  - cost, reduction, colors, symbols, families
+  - levels: cores, BP, condition, note
+  - fusion bonus, overclock
+  - effects: position, levels, header, text
+  - the conditions
+  - flavor and flavor note
+- English names, credits and images are **not** in the key: they are printing data.
+- Flavor is in the key, so it never varies inside a card and stays on `cards`.
+- Credits stay at printing level (`printings.illustrator`).
+
+Options rejected:
+
+- (a') changes nothing today, so the simpler stricter key is kept.
+- (b), overrides per printing, would make `cards` no longer the source of the rules text.
+- (c) would discard the printed values of 1,078 pairs, e.g. the older BP.
+
+### Consequences
+
+- `cards.name_jp` is **not unique**. `card_numbers.number` (UNIQUE) is the stable lookup; `card_numbers` to `cards` stays many-to-one.
+- An exact-text key splits a card whenever batspi later fixes a typo. This is accepted.
+- A key bug could merge distinct cards, so the loader ([#120](https://github.com/AleFire99/BS_Database/issues/120)) should assert that merged entries share a name.
+- The survey depends on the local data and can drift on a re-scrape; the date and schema are quoted.
+- Fixtures: ゴラドン (BS01-001, BSC22-001) gives 2 cards, only the BP differs. 焔竜翼人マ・ドー gives 2 cards: P001 and EX001 are equal (one card, 2 numbers), P20-19 adds the family 起幻 and an effect. ダブルドロー (BS01-117, BSC22-117) gives 2 cards, the BSC22 effect adds a clause. #120 should test these three.
+- Out of scope: links between flip faces ([#125](https://github.com/AleFire99/BS_Database/issues/125)) and between remakes of the same card ([#126](https://github.com/AleFire99/BS_Database/issues/126), `card_relations`); parser, normalizer and loader code.
 
 ## Links
 
