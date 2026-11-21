@@ -6,7 +6,9 @@ AFO,afo,All For One,fandom: All For One
 アピール,appeal,Appeal,fandom: Appeal
 Uエナジー,arutimetto_enaji,Ultimate Energy,fandom: Ultimate Energy
 極装甲,aurora_armor,Aurora Armor,fandom: Aurora Armor
+バディ,badi,Buddy,fandom: Buddy
 バースト,basuto,Burst,fandom: Burst
+バースト封印,basuto_fuuin,Burst Seal,fandom: Burst
 バースト転召,basuto_tenshou,Burst Transsummon,
 抜刀,batto,Unsheathe,fandom: Unsheathe
 暴風,boufuu,Windstorm,fandom: Windstorm
@@ -58,6 +60,7 @@ PS装甲,feizushifutosoko_lit_phase_shift_armor,PS Armor,fandom: PS Armor
 フルールパート,fleur_part,Fleur Part,fandom: Fleur Part
 Fチェンジ,formu_chanji,Form Change,fandom: Form Change
 封印,fuin,Seal,fandom: Seal
+復活,fukkatsu,Revive,fandom: Revive
 ファンネル,funnel,Funnel,fandom: Funnel
 粉砕,funsai,Crush,fandom: Crush
 フレンド,furendo,Friend,fandom: Friend
@@ -111,6 +114,7 @@ G.A.T.フィールド,g_a_t_field,G.A.T. Field,fandom: G.A.T. Field
 呪撃,jugeki,Curse,fandom: Curse
 呪界放,jukaiho,Curse Unleash,fandom: Curse Unleash
 呪滅撃,jumetsu_geki,Spell Blight,fandom: Spell Blight
+呪滅劇,jumetsu_geki_alt,Spell Blight,batspi spelling of 呪滅撃 (#109)
 重装甲,jusoko,Heavy Armor,fandom: Heavy Armor
 呪歌,juuka,Spellsong,fandom: Spellsong
 影武者,kagemusha,Kagamusha,fandom: Kagemusha
@@ -124,6 +128,7 @@ C装甲,kaunto_soukou,Count Armor,fandom: Count Armor
 契約界放,keiyaku_kaiho,Contract Unleash,fandom: Contract Unleash
 契約覚醒,keiyaku_kakusei,Contract Awaken,fandom: Contract Awaken
 契約煌臨,keiyaku_kourin,Contract Advent,fandom: Contract Advent
+契約煌臨元,keiyaku_kourin_moto,Contract Advent Source,
 契約装填,keiyaku_rirodo,Contract Reload,fandom: Contract Reload
 顕現,kengen,Manifest,fandom: Manifest
 起導,kidou,Catalyze,fandom: Catalyze
@@ -155,6 +160,7 @@ C装甲,kaunto_soukou,Count Armor,fandom: Count Armor
 煌臨中＆合体中,kourin_chu_gattai_chu,During Advent & During Brave,
 煌空蝉,koutsusemi,Twinkle Body Substitution,fandom: Twinkle Body Substitution
 クロックアップ,kurokku_appu,Clock Up,fandom: Clock Up
+C・Cブレイク,kurono_kaunto_bureiku,Chrono-Count Break,fandom: Chrono-Count Break
 キャストオフ,kyasuto_ofu,Cast Off,fandom: Cast Off
 強化,kyoka,Charge,fandom: Charge
 祈願歌,kyoka_uta,Charge Song,fandom: Charge Song
@@ -228,11 +234,14 @@ Sバースト,s_basuto,Soul Burst,fandom: Soul Burst
 神砲撃,shin_hogeki,Grand Bombardment,fandom: Grand Bombardment
 真・呪撃,shin_jugeki,True-Curse,fandom: True-Curse
 真・影武者,shin_kagemusha,True-Kagemusha,fandom: True-Kagemusha
+真界放,shin_kaihou,True Unleash,
 真・覚醒,shin_kakusei,True-Awaken,fandom: True-Awaken
 真・起導,shin_kidou,True Catalyze,fandom: True Catalyze
 神・強襲,shin_kiyou_shiyuu,Grand Assault,fandom: Grand Assault
 神煌臨,shin_kourin,Grand Advent,
 真・無限焔,shin_mugen_homura,True Infinite Flame,fandom: True Infinite Flame
+真・連刃,shin_renjin,True-Consecutive Blade,fandom: True-Consecutive Blade
+真・神託,shin_shintaku,True-Core Charge,
 真・走破,shin_soha,True-Drive,fandom: True-Drive
 真創聖,shin_sosei,True Genesis,fandom: True Genesis
 神撃,shingeki,God Strike,fandom: God Strike
@@ -270,6 +279,7 @@ Sバースト,s_basuto,Soul Burst,fandom: Soul Burst
 スピリットソウル,supiritto_souru,Spirit Soul,fandom: Spirit Soul
 スターアピール,suta_apiru,Star Appeal,fandom: Star Appeal
 タイプ,taipu,Type,fandom: Type
+魂状態,tamashii_joutai,Soul State,fandom: Soul State
 魂界放,tamashii_kaihou,Soul Unleash,
 チーム,team,Team,fandom: Team
 天聖命,ten_seimei,Heaven Holy Life,fandom: Heaven Holy Life
