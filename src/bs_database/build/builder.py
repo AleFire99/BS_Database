@@ -12,10 +12,12 @@ from bs_database.build.cards import load_cards
 from bs_database.build.diagnostics import BuildError, BuildWarnings
 from bs_database.build.effects import load_effects
 from bs_database.build.grouping import group_entries
+from bs_database.build.images import load_images, load_source_pages
 from bs_database.build.lookups import Lookups, insert_lookups
 from bs_database.build.products import load_products_and_printings
 from bs_database.build.reader import Document, printings_by_number, read_documents
 from bs_database.glossary import Glossary, load_glossary
+from bs_database.ingest.cache import RawCache
 from bs_database.normalize.records import NORMALIZED_SCHEMA_VERSION
 from bs_database.schema import load_schema_sql
 
@@ -30,6 +32,7 @@ class BuildResult:
     path: Path
     table_counts: dict[str, int]
     warnings: dict[str, int]
+    image_levels: dict[str, int]  # images decided by each level of the association cascade
 
 
 def schema_version_text(user_version: int) -> str:
@@ -69,8 +72,9 @@ def _load_data(
     lookups: Lookups,
     warnings: BuildWarnings,
     documents: Sequence[Document],
-) -> None:
-    """Insert every data table; the order follows the foreign keys."""
+    cache_dir: Path | None,
+) -> dict[str, int]:
+    """Insert every data table (the order follows the foreign keys); return the image levels."""
     groups = group_entries(list(documents))
     printings = printings_by_number(list(documents))
     cards = load_cards(conn, lookups, warnings, groups, printings)
@@ -81,9 +85,13 @@ def _load_data(
         for m in g.members
         if m.entry["text"]
     }
-    load_products_and_printings(
+    index = load_products_and_printings(
         conn, lookups, warnings, list(documents), cards.number_ids, illustrators
     )
+    image_levels = load_images(conn, lookups, warnings, documents, index)
+    cache = RawCache(cache_dir) if cache_dir is not None else None
+    load_source_pages(conn, lookups, warnings, documents, cards, index, cache)
+    return dict(sorted(image_levels.items()))
 
 
 def build_from_directories(
@@ -130,7 +138,7 @@ def build_database(
         lookups = insert_lookups(conn, glossary)
         if load is not None:
             load(conn, lookups, warnings)
-        _load_data(conn, lookups, warnings, documents)
+        image_levels = _load_data(conn, lookups, warnings, documents, cache_dir)
         snapshot = (
             f"batspi normalized {NORMALIZED_SCHEMA_VERSION}, {len(documents)} pages"
             if documents
@@ -150,4 +158,4 @@ def build_database(
         conn.close()
         _remove(tmp)
         raise
-    return BuildResult(out, counts, warnings.counts())
+    return BuildResult(out, counts, warnings.counts(), image_levels)
