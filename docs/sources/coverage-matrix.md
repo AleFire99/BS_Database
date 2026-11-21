@@ -1,6 +1,6 @@
 # Field coverage matrix
 
-For every column of the [target schema](../data-model/target-schema.md) (the [DDL draft](../data-model/target-schema.md#ddl-draft) is the authoritative column list), this matrix records what each source offers, with a sample value and the fixture it was read from. It is evidence for the source-of-truth decision ([#56](https://github.com/AleFire99/BS_Database/issues/56), ADR 0007) and the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). It makes no modelling decision and proposes no schema change. Terms are defined in the [glossary](../domain/glossary.md). Task: [#55](https://github.com/AleFire99/BS_Database/issues/55).
+For every column of the [target schema](../data-model/target-schema.md) (the [DDL](../../src/bs_database/schema.sql) is the authoritative column list), this matrix records what each source offers, with a sample value and the fixture it was read from. It is evidence for the source-of-truth decision ([#56](https://github.com/AleFire99/BS_Database/issues/56), ADR 0007) and the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). It makes no modelling decision and proposes no schema change. Terms are defined in the [glossary](../domain/glossary.md). Task: [#55](https://github.com/AleFire99/BS_Database/issues/55).
 
 ## How to read this document
 

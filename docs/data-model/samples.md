@@ -1,6 +1,6 @@
 # Sample cards
 
-Hand-modelled samples that show how real cards land in the [target schema](target-schema.md). Every `sql` block runs, in order, against the [DDL draft](target-schema.md#ddl-draft) in an in-memory SQLite database with `PRAGMA foreign_keys = ON`. The blocks are cumulative: later blocks reference rows inserted by earlier ones.
+Hand-modelled samples that show how real cards land in the [target schema](target-schema.md). Every `sql` block runs, in order, against [`schema.sql`](../../src/bs_database/schema.sql) in an in-memory SQLite database with `PRAGMA foreign_keys = ON`. The blocks are cumulative: later blocks reference rows inserted by earlier ones.
 
 The ids are explicit and match the worked examples of [ADR 0004](../adr/0004-card-printing-identity.md) and of [target-schema.md](target-schema.md#worked-examples-effects): Nexus BS72-069 is card 1, Magic BS72-075 is card 2, Spirit BS72-007 is card 3. The Brave and Ultimate samples continue with cards 4 and 5.
 
@@ -18,16 +18,9 @@ Items that depend on the source analysis are **pending #9**. Values that are pla
 
 ## Lookup seed
 
-Only the rows the samples need. A real build seeds the full lists, which are pending #9. `pending` and `normal` are inserted with id 1 because the DDL defaults `en_status_id` and `variant_id` to 1.
+Only the rows the samples need on top of the static seeds of `schema.sql` (translation statuses and sources, `normal` variant with id 1, the `batspi` source, image sizes). A real build fills the other lists from `data/glossary`.
 
 ```sql
-INSERT INTO translation_statuses (id, code, name) VALUES
-    (1, 'pending', 'Pending'),
-    (2, 'machine', 'Machine translated');
-
-INSERT INTO translation_sources (id, code, name) VALUES
-    (1, 'machine', 'Machine translation');
-
 INSERT INTO card_types (id, code, name) VALUES
     (1, 'spirit', 'Spirit'),
     (2, 'nexus', 'Nexus'),
@@ -49,7 +42,6 @@ INSERT INTO rarities (id, code, name, sort_order) VALUES
     (2, 'R', 'Rare', 2);
 
 INSERT INTO variants (id, code, name) VALUES
-    (1, 'normal', 'Normal'),
     (2, 'secret', 'Secret'),
     (3, 'full_art', 'Full art'),
     (4, 'promo_art', 'Promo art');
@@ -67,13 +59,6 @@ INSERT INTO effect_kinds (id, code, name) VALUES
 
 INSERT INTO keywords (id, code, name) VALUES
     (1, 'mirage', 'Mirage');
-
-INSERT INTO image_sizes (id, code, name) VALUES
-    (1, 'small', 'Small'),
-    (2, 'large', 'Large');
-
-INSERT INTO sources (id, code, name, base_url) VALUES
-    (1, 'batspi', 'batspi.com', 'https://batspi.com/');
 ```
 
 ## Spirit BS72-007

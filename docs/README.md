@@ -9,9 +9,9 @@ This folder documents the current state of BS_Database (the `bs_database` packag
 | [architecture/overview.md](architecture/overview.md) | Package layout, CLI flow, components, known issues and tech debt |
 | [data-model/current-schema.md](data-model/current-schema.md) | **Legacy** SQLite schema, SQLAlchemy models, row counts, gaps (superseded by the target schema, kept for the #12 migration) |
 | [data-model/field-inventory.md](data-model/field-inventory.md) | Card fields per type and source: what exists, what is parsed, what is stored |
-| [data-model/target-schema.md](data-model/target-schema.md) | Target schema design: identity, gameplay, effects, text, provenance, images, complete ER and DDL draft |
+| [data-model/target-schema.md](data-model/target-schema.md) | Target schema design: identity, gameplay, effects, text, provenance, images, complete ER and a pointer to `src/bs_database/schema.sql` |
 | [data-model/legacy-mapping.md](data-model/legacy-mapping.md) | Every legacy table, column, JSON key and artefact mapped to the target schema or dropped, plus the gap list |
-| [data-model/samples.md](data-model/samples.md) | Hand-modelled sample cards as SQL inserts against the DDL draft |
+| [data-model/samples.md](data-model/samples.md) | Hand-modelled sample cards as SQL inserts against `schema.sql` |
 | [sources/batspi.md](sources/batspi.md) | batspi.com source catalogue: robots rules, URL patterns, categories, card number schemes, `<pre>` format per card type, image URLs, candidate fixtures |
 | [sources/fandom.md](sources/fandom.md) | Fandom wiki dossier: Cloudflare access evidence, CC-BY-SA licence, verdict dropped for v1, names-only API use (ADR 0009) and attribution |
 | [sources/official.md](sources/official.md) | Official Bandai site survey: URLs, reuse note, card markup, fields mapped to the inventory |
