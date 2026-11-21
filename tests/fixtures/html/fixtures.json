@@ -7,6 +7,22 @@
     "card_type": "ブレイヴ",
     "trimmed": true
   },
+  "card_brave_credit_concept_ascii.html": {
+    "url": "https://batspi.com/index.php?%E8%A3%81%E3%81%8D%E3%81%AE%E7%A5%9E%E5%89%A3%E3%83%AA%E3%83%BB%E3%82%B8%E3%82%A7%E3%83%8D%E3%82%B7%E3%82%B9",
+    "fetched": "2026-11-16",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "ブレイヴ",
+    "trimmed": true
+  },
+  "card_brave_credit_paint.html": {
+    "url": "https://batspi.com/index.php?%E7%A2%87%E3%82%B7%E3%83%B3%E3%82%B8%20-%E3%82%B7%E3%83%B3%E3%82%AF%E3%83%AD%E7%8E%87%E2%88%9E-",
+    "fetched": "2026-11-16",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "ブレイヴ",
+    "trimmed": true
+  },
   "card_flip.html": {
     "url": "https://batspi.com/index.php?%E8%B5%A4%E3%81%AE%E4%B8%96%E7%95%8C%EF%BC%8F%E8%B5%A4%E3%81%8D%E7%A5%9E%E9%BE%8D%E7%9A%87",
     "fetched": "2026-11-14",
@@ -106,6 +122,38 @@
   "card_spirit_bs01.html": {
     "url": "https://batspi.com/index.php?%E3%82%B4%E3%83%A9%E3%83%89%E3%83%B3",
     "fetched": "2026-11-14",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "スピリット",
+    "trimmed": true
+  },
+  "card_spirit_credit_ascii_colon.html": {
+    "url": "https://batspi.com/index.php?%E3%82%B0%E3%83%AC%E3%83%A0%E3%83%AA%E3%83%BC",
+    "fetched": "2026-11-16",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "スピリット",
+    "trimmed": true
+  },
+  "card_spirit_credit_collab.html": {
+    "url": "https://batspi.com/index.php?%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E5%A4%A9%E4%BD%BF%20%E5%A4%A9%E6%B5%B7%E6%98%A5%E9%A6%99",
+    "fetched": "2026-11-15",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "スピリット",
+    "trimmed": true
+  },
+  "card_spirit_credit_empty_illustrator.html": {
+    "url": "https://batspi.com/index.php?%E3%83%93%E3%82%AF%E3%83%88%E3%83%AA%E3%83%BC%E3%83%BB%E3%83%96%E3%83%AC%E3%82%A4%E3%83%89%E3%83%A9",
+    "fetched": "2026-11-16",
+    "source": "batspi",
+    "kind": "card",
+    "card_type": "スピリット",
+    "trimmed": true
+  },
+  "card_spirit_credit_producer.html": {
+    "url": "https://batspi.com/index.php?%E6%96%B0%E4%B8%96%E4%BB%A3%E6%9C%80%E5%8F%AF%E6%84%9B%E5%B0%86%E5%AD%AB%E5%B8%82%20%E9%BB%92%E6%9B%9C%E3%81%AE%E5%BE%92",
+    "fetched": "2026-11-16",
     "source": "batspi",
     "kind": "card",
     "card_type": "スピリット",

@@ -1,0 +1,460 @@
+{
+  "schema_version": "1.1.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E8%A3%81%E3%81%8D%E3%81%AE%E7%A5%9E%E5%89%A3%E3%83%AA%E3%83%BB%E3%82%B8%E3%82%A7%E3%83%8D%E3%82%B7%E3%82%B9",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E8%A3%81%E3%81%8D%E3%81%AE%E7%A5%9E%E5%89%A3%E3%83%AA%E3%83%BB%E3%82%B8%E3%82%A7%E3%83%8D%E3%82%B7%E3%82%B9",
+    "title_jp": "裁きの神剣リ・ジェネシス",
+    "entries": [
+      {
+        "number": "X13-12",
+        "name_jp": "裁きの神剣リ・ジェネシス",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "ブレイヴ",
+          "card_type_code": "brave",
+          "deck_limit": null,
+          "cost": 6,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 2
+            }
+          ],
+          "families": [
+            {
+              "jp": "剣刃",
+              "code": "tsurugi",
+              "en": "Exalted Sword",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 6000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": 10000,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このブレイヴカードは、自分の手札にあるスピリットカード1枚を破棄しなければ召喚できない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [
+            "合体条件：コスト8以上"
+          ],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "青井岳人",
+              "note": null
+            },
+            {
+              "name": "SUNRISE D.I.D.",
+              "note": null
+            }
+          ],
+          "concepts": [
+            {
+              "name": "やまだたかひろ",
+              "note": null
+            }
+          ],
+          "flavor_jp": "新たに誕生した神剣が世界へ下す判決は、破滅と創造。\n今の世界は終わりを迎え、次なる世界が始まりを告げる。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      },
+      {
+        "number": "BS51-CP01",
+        "name_jp": "裁きの神剣リ・ジェネシス",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "ブレイヴ",
+          "card_type_code": "brave",
+          "deck_limit": null,
+          "cost": 6,
+          "reduction": {
+            "plain": null,
+            "parts": [
+              {
+                "symbol_jp": "神",
+                "symbol_code": "god",
+                "count": 3
+              }
+            ]
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1
+            },
+            {
+              "symbol_jp": "神",
+              "symbol_code": "god",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "剣刃",
+              "code": "tsurugi",
+              "en": "Exalted Sword",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "天渡",
+              "code": "amato",
+              "en": "Celeste",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 6000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": 10000,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このカードは自分の手札にあるスピリットカード1枚をゲームから除外しなければ召喚できない。\nフラッシュ【アクセル】コスト3(神2)(この効果は手札から使用できる)\n相手の創界神ネクサス1つのコア3個をボイドに置く。\nこの効果発揮後、このカードはオープンして手元に置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [
+            "合体条件：コスト8以上"
+          ],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "青井岳人",
+              "note": null
+            }
+          ],
+          "concepts": [
+            {
+              "name": "やまだたかひろ",
+              "note": null
+            }
+          ],
+          "flavor_jp": "「アレックス、これを持っていけ。世界を支えていた柱だ。\n少しの間なら、俺が世界を支えてみせる」",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "裁きの神剣リ・ジェネシス",
+        "field": "reduction",
+        "values": [
+          [
+            "X13-12",
+            "Reduction(plain=3, parts=())"
+          ],
+          [
+            "BS51-CP01",
+            "Reduction(plain=None, parts=(SymbolCount(symbol='神', count=3, variant=None, color=None),))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "裁きの神剣リ・ジェネシス",
+        "field": "symbols",
+        "values": [
+          [
+            "X13-12",
+            "(SymbolCount(symbol='赤', count=2, variant=None, color=None),)"
+          ],
+          [
+            "BS51-CP01",
+            "(SymbolCount(symbol='赤', count=1, variant=None, color=None), SymbolCount(symbol='神', count=1, variant=None, color=None))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "裁きの神剣リ・ジェネシス",
+        "field": "families",
+        "values": [
+          [
+            "X13-12",
+            "('剣刃',)"
+          ],
+          [
+            "BS51-CP01",
+            "('剣刃', '天渡')"
+          ]
+        ]
+      },
+      {
+        "name_jp": "裁きの神剣リ・ジェネシス",
+        "field": "effects",
+        "values": [
+          [
+            "X13-12",
+            "(Effect(position=1, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='このブレイヴカードは、自分の手札にあるスピリットカード1枚を破棄しなければ召喚できない。'),)"
+          ],
+          [
+            "BS51-CP01",
+            "(Effect(position=1, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='このカードは自分の手札にあるスピリットカード1枚をゲームから除外しなければ召喚できない。\\nフラッシュ【アクセル】コスト3(神2)(この効果は手札から使用できる)\\n相手の創界神ネクサス1つのコア3個をボイドに置く。\\nこの効果発揮後、このカードはオープンして手元に置く。'),)"
+          ]
+        ]
+      },
+      {
+        "name_jp": "裁きの神剣リ・ジェネシス",
+        "field": "flavor",
+        "values": [
+          [
+            "X13-12",
+            "'新たに誕生した神剣が世界へ下す判決は、破滅と創造。\\n今の世界は終わりを迎え、次なる世界が始まりを告げる。'"
+          ],
+          [
+            "BS51-CP01",
+            "'「アレックス、これを持っていけ。世界を支えていた柱だ。\\n少しの間なら、俺が世界を支えてみせる」'"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "X13-12",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "6",
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "X13-12",
+        "product_name_jp": "キャンペーンカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%AD%E3%83%A3%E3%83%B3%E3%83%9A%E3%83%BC%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "XレアブレイヴGETキャンペーン",
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "X13-12",
+        "product_name_jp": "剣刃編 第5弾：剣刃神話",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E5%89%A3%E5%88%83%E7%B7%A8%20%E7%AC%AC5%E5%BC%BE%EF%BC%9A%E5%89%A3%E5%88%83%E7%A5%9E%E8%A9%B1",
+        "product_code": "BS23",
+        "product_type_code": "booster",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "自販機ブースター",
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2013-08-09",
+        "section": "収録"
+      },
+      {
+        "number": "X13-12",
+        "product_name_jp": "バトルスピリッツ ソードアイズDVD-BOX",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84%20%E3%82%BD%E3%83%BC%E3%83%89%E3%82%A2%E3%82%A4%E3%82%BADVD-BOX",
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "特典カード",
+        "note_jp": null,
+        "block_icon": "1",
+        "release_date": "2014-02-17",
+        "section": "収録"
+      },
+      {
+        "number": "BS51-CP01",
+        "product_name_jp": "超煌臨編 第4章：神攻勢力",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E8%B6%85%E7%85%8C%E8%87%A8%E7%B7%A8%20%E7%AC%AC4%E7%AB%A0%EF%BC%9A%E7%A5%9E%E6%94%BB%E5%8B%A2%E5%8A%9B",
+        "product_code": "BS51",
+        "product_type_code": "booster",
+        "rarity_jp": "CP",
+        "rarity_code": "CP",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "6",
+        "release_date": "2020-01-25",
+        "section": "収録"
+      },
+      {
+        "number": "BS51-CP01",
+        "product_name_jp": "キャンペーンカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      },
+      {
+        "number": "BS51-CP01",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "6",
+        "release_date": null,
+        "section": "ブロックアイコン"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS51-CP01",
+        "large_url": "https://batspi.com/card/BS5/BS51-CP01.jpg",
+        "small_url": "https://batspi.com/card/BS5/small/BS51-CP01.jpg",
+        "caption": [
+          "超煌臨編 第4章：神攻勢力",
+          "プロモーションカード"
+        ]
+      },
+      {
+        "number": "X13-12",
+        "large_url": "https://batspi.com/card/ETC/X13-12.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/X13-12.jpg",
+        "caption": [
+          "プロモーションカード",
+          "XレアブレイヴGETキャンペーン"
+        ]
+      },
+      {
+        "number": "X13-12",
+        "large_url": "https://batspi.com/card/ETC/X13-12-2.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/X13-12-2.jpg",
+        "caption": [
+          "剣刃編 第5弾：剣刃神話",
+          "自販機ブースター"
+        ]
+      },
+      {
+        "number": "X13-12",
+        "large_url": "https://batspi.com/card/ETC/X13-12-3.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/X13-12-3.jpg",
+        "caption": []
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

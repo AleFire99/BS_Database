@@ -28,6 +28,7 @@ from bs_database.parsers.card_models import (
     Overclock,
     Printing,
     Reduction,
+    RoleCredit,
     SymbolCount,
     ValueDifference,
 )
@@ -133,6 +134,9 @@ def _text(d: dict[str, Any] | None) -> CardText | None:
         concepts=tuple(_credit(c) for c in d["concepts"]),
         flavor=d["flavor"],
         flavor_note=d["flavor_note"],
+        other_credits=tuple(
+            RoleCredit(c["role"], c["name"], c["note"]) for c in d["other_credits"]
+        ),
     )
 
 

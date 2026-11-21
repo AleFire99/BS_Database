@@ -111,6 +111,15 @@ class Credit:
 
 
 @dataclass(frozen=True, slots=True)
+class RoleCredit:
+    """A credit other than illustrator and concept: the printed role, the name and its note."""
+
+    role: str
+    name: str
+    note: str | None
+
+
+@dataclass(frozen=True, slots=True)
 class CardText:
     """Effects, side conditions, credits and flavour text of one card number."""
 
@@ -122,6 +131,7 @@ class CardText:
     concepts: tuple[Credit, ...]
     flavor: str | None
     flavor_note: str | None
+    other_credits: tuple[RoleCredit, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)

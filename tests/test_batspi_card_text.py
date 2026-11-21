@@ -251,16 +251,50 @@ def test_trailer_credits_and_flavor() -> None:
         "二行目",
         "",
     ]
-    illustrators, concepts, flavor, note = parse_trailer(lines)
+    illustrators, concepts, flavor, note, others = parse_trailer(lines)
     assert [(c.name, c.note) for c in illustrators] == [("a", None), ("b", "note")]
     assert [c.name for c in concepts] == ["石垣純哉"]
-    assert (flavor, note) == ("一行目\n二行目", "メモ")
+    assert (flavor, note, others) == ("一行目\n二行目", "メモ", ())
 
 
 def test_trailer_flavor_note_without_parentheses_and_empty() -> None:
-    assert parse_trailer(["フレーバーテキスト：そのまま", "x"])[2:] == ("x", "そのまま")
-    assert parse_trailer(["フレーバーテキスト：", ""])[2:] == (None, None)
-    assert parse_trailer([])[2:] == (None, None)
+    assert parse_trailer(["フレーバーテキスト：そのまま", "x"])[2:4] == ("x", "そのまま")
+    assert parse_trailer(["フレーバーテキスト：", ""])[2:4] == (None, None)
+    assert parse_trailer([])[2:4] == (None, None)
+
+
+def test_trailer_other_credits_and_ascii_colons() -> None:
+    lines = [
+        "イラスト:SUNRIZE",
+        "コンセプト:やまだたかひろ",
+        "プロデュース：杉田智和",
+        "ペイント：a(b)",
+        "書：c",
+        "写真：d",
+        "コラボレート：アイドルマスター",
+    ]
+    illustrators, concepts, _, _, others = parse_trailer(lines)
+    assert [c.name for c in illustrators] == ["SUNRIZE"]
+    assert [c.name for c in concepts] == ["やまだたかひろ"]
+    assert [(c.role, c.name, c.note) for c in others] == [
+        ("プロデュース", "杉田智和", None),
+        ("ペイント", "a", "b"),
+        ("書", "c", None),
+        ("写真", "d", None),
+        ("コラボレート", "アイドルマスター", None),
+    ]
+
+
+def test_trailer_empty_illustrator_is_ignored_with_a_warning(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    result = parse_trailer(["イラスト：", "イラスト：x"], "BS00-001")
+    assert [c.name for c in result[0]] == ["x"]
+    assert "empty illustrator ignored" in caplog.text
+
+
+def test_split_trailer_at_other_credits() -> None:
+    assert split_trailer(["効果", "書：x"]) == (["効果"], ["書：x"])
 
 
 def test_trailer_errors() -> None:

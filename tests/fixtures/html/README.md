@@ -29,6 +29,12 @@ Saved pages that stand in for the network in tests. The manifest [fixtures.json]
 | `card_nexus_token.html` | `菌床` | #108: type line `トークンネクサス` |
 | `card_spirit_level_blank.html` | `六絶神 欲望のデス・ガル・ヴァドス` | #108: level line `<3> Lv2` with a blank after `<n>` |
 | `card_magic_symbol_ex.html` | `ガードベント` | #108: symbol line `シンボル：EX白` |
+| `card_spirit_credit_ascii_colon.html` | `グレムリー` | #108: credit label with an ASCII colon, `イラスト:SUNRIZE D.I.D.(…)` |
+| `card_spirit_credit_producer.html` | `新世代最可愛将孫市 黒曜の徒` | #108: credit `プロデュース：杉田智和` |
+| `card_brave_credit_paint.html` | `碇シンジ -シンクロ率∞-` | #108: credit `ペイント：…` |
+| `card_spirit_credit_collab.html` | `アイドル天使 天海春香` | #108: credit `コラボレート：アイドルマスター` |
+| `card_spirit_credit_empty_illustrator.html` | `ビクトリー・ブレイドラ` | #108: empty `イラスト：` (warning, no credit) |
+| `card_brave_credit_concept_ascii.html` | `裁きの神剣リ・ジェネシス` | #108: `コンセプト:` with an ASCII colon |
 | `set_bs01.html` | `第一弾` | Oldest set page |
 | `set_bs52.html` | `転醒編 第1章：輪廻転生` | Awakening era |
 | `set_sd54.html` | Collab starter `ガンダム ～OPERATION UC～` | Copy counts |

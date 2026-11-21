@@ -1,0 +1,225 @@
+{
+  "schema_version": "1.1.0",
+  "parsed_schema_version": "2.0.0",
+  "url": "https://batspi.com/index.php?%E7%A2%87%E3%82%B7%E3%83%B3%E3%82%B8%20-%E3%82%B7%E3%83%B3%E3%82%AF%E3%83%AD%E7%8E%87%E2%88%9E-",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E7%A2%87%E3%82%B7%E3%83%B3%E3%82%B8%20-%E3%82%B7%E3%83%B3%E3%82%AF%E3%83%AD%E7%8E%87%E2%88%9E-",
+    "title_jp": "碇シンジ -シンクロ率∞-",
+    "entries": [
+      {
+        "number": "CB23-X05",
+        "name_jp": "碇シンジ -シンクロ率∞-",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "ブレイヴ",
+          "card_type_code": "brave",
+          "deck_limit": null,
+          "cost": 5,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "紫",
+              "code": "purple"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "紫",
+              "symbol_code": "purple",
+              "count": 1
+            }
+          ],
+          "families": [
+            {
+              "jp": "パイロット",
+              "code": "pilot",
+              "en": "Pilot",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 0,
+              "battle_points": 1000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": 6000,
+          "overclock": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このブレイヴはスピリット状態のとき、アタック/ブロックできない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                1
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このブレイヴの召喚時』",
+              "header_jp": "Lv1『このブレイヴの召喚時』",
+              "text_jp": "自分はデッキから2枚ドローできる。\nその後、相手の創界神ネクサスのコア6個をボイドに置ける。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "keyword_line",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "合体中",
+                  "code": "gattai_chu",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "【合体中】",
+              "text_jp": "【合体中】",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 4,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このスピリットは[ソウルコア]が置かれているものとして扱う。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 5,
+              "form": "header",
+              "levels": [],
+              "label": "フラッシュ",
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "合体中",
+                  "code": "gattai_chu",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『このスピリットのアタック時』",
+              "header_jp": "【合体中】フラッシュ『このスピリットのアタック時』",
+              "text_jp": "ターンに1回、自分の手札にある「エヴァンゲリオン」1枚をゲームから除外することで、フィールド以外で効果発揮中の相手のマジックの効果1つを無効にする。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [
+            "合体条件：コスト5以上"
+          ],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "のこ",
+              "note": null
+            },
+            {
+              "name": "神真斗々矢",
+              "note": "パラレル版"
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "シンクロ率0% しかし、本当のシンクロ率は0ではなく、それに最も近い数値。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending"
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "CB23-X05",
+        "product_name_jp": "コラボブースター【エヴァンゲリオン ～シン実の贖罪～】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%B3%E3%83%A9%E3%83%9C%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90%E3%82%A8%E3%83%B4%E3%82%A1%E3%83%B3%E3%82%B2%E3%83%AA%E3%82%AA%E3%83%B3%20%EF%BD%9E%E3%82%B7%E3%83%B3%E5%AE%9F%E3%81%AE%E8%B4%96%E7%BD%AA%EF%BD%9E%E3%80%91",
+        "product_code": "CB23",
+        "product_type_code": "collab",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "9",
+        "release_date": "2022-07-30",
+        "section": "収録"
+      },
+      {
+        "number": "CB23-X05",
+        "product_name_jp": "コラボブースター【エヴァンゲリオン ～シン実の贖罪～】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%82%B3%E3%83%A9%E3%83%9C%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%80%90%E3%82%A8%E3%83%B4%E3%82%A1%E3%83%B3%E3%82%B2%E3%83%AA%E3%82%AA%E3%83%B3%20%EF%BD%9E%E3%82%B7%E3%83%B3%E5%AE%9F%E3%81%AE%E8%B4%96%E7%BD%AA%EF%BD%9E%E3%80%91",
+        "product_code": null,
+        "product_type_code": "collab",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "BOX購入特典パック",
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "CB23-X05",
+        "large_url": "https://batspi.com/card/CB2/CB23-X05.jpg",
+        "small_url": "https://batspi.com/card/CB2/small/CB23-X05.jpg",
+        "caption": [
+          "コラボブースター【エヴァンゲリオン ～シン実の贖罪～】"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

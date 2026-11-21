@@ -178,3 +178,43 @@ def test_ex_symbol() -> None:
     entries = parse("card_magic_symbol_ex").entries
     symbols = [s for e in entries for s in e.gameplay.symbols]
     assert [(s.symbol, s.count, s.variant, s.color) for s in symbols] == [("白", 1, "EX", None)]
+
+
+def credits(page: CardPage, number: str | None = None) -> list[tuple[str, str, str | None]]:
+    out: list[tuple[str, str, str | None]] = []
+    for entry in page.entries:
+        if entry.text is not None and number in (None, entry.number):
+            out += [(c.role, c.name, c.note) for c in entry.text.other_credits]
+    return out
+
+
+def test_credits_with_an_ascii_colon() -> None:
+    """グレムリー prints ``イラスト:SUNRIZE D.I.D.(…)``; 裁きの神剣 prints ``コンセプト:…``."""
+    page = parse("card_spirit_credit_ascii_colon")
+    names = [c.name for e in page.entries if e.text for c in e.text.illustrators]
+    assert "SUNRIZE D.I.D." in names
+    brave = parse("card_brave_credit_concept_ascii")
+    concepts = [c.name for e in brave.entries if e.text for c in e.text.concepts]
+    assert "やまだたかひろ" in concepts
+
+
+@pytest.mark.parametrize(
+    ("stem", "role", "name"),
+    [
+        ("card_spirit_credit_producer", "プロデュース", "杉田智和"),
+        ("card_brave_credit_paint", "ペイント", "株式会社スタジオヴィガ"),
+        ("card_spirit_credit_collab", "コラボレート", "アイドルマスター"),
+    ],
+)
+def test_other_credits(stem: str, role: str, name: str) -> None:
+    assert (role, name, None) in credits(parse(stem))
+
+
+def test_empty_illustrator_gives_a_warning_and_no_credit(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """ビクトリー・ブレイドラ prints ``イラスト：`` with no name."""
+    with caplog.at_level(logging.WARNING, logger="bs_database.parsers.batspi.card_text"):
+        page = parse("card_spirit_credit_empty_illustrator")
+    assert "empty illustrator ignored" in caplog.text
+    assert page.entries
