@@ -21,6 +21,7 @@ _HEADER_RE = re.compile(
     r"(?P<param>〔[^〕]*〕)?(?P<timing>『[^』]*』)?"
     rf"(?P<post2>(?:{_BRACKET})*)(?P<param2>〔[^〕]*〕)?$"
 )
+_PARAM_SEP_RE = re.compile("[：:]")
 _BRACKET_RE = re.compile(rf"({_BRACKET})")
 _LEVEL_SCOPE_RE = re.compile(r"Lv(\d+)")
 _LEVEL_LIKE_RE = re.compile(r"^Lv\d+(?:[・･：『【《]|$)")
@@ -63,7 +64,12 @@ class _Block:
 def _keywords(text: str) -> tuple[Keyword, ...]:
     keywords: list[Keyword] = []
     for token in _BRACKET_RE.findall(text):
-        name, _, parameter = token[1:-1].partition("：")
+        # Name and parameter split on a full-width or ASCII colon; a 《…》 keyword nested
+        # in 【…】 keeps no inner brackets (【《バースト封印》：…】, #109).
+        parts = _PARAM_SEP_RE.split(token[1:-1], maxsplit=1)
+        name, parameter = parts[0], (parts[1] if len(parts) > 1 else None)
+        if token[0] == "【" and name.startswith("《") and name.endswith("》"):
+            name = name[1:-1]
         keywords.append(Keyword(token[0], name, parameter or None))
     return tuple(keywords)
 

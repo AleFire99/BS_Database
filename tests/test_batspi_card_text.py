@@ -312,3 +312,22 @@ def test_parse_card_text() -> None:
     assert [e.text for e in text.effects] == ["効果"]
     assert text.flavor == "f"
     assert text.illustrators[0].name == "a"
+
+
+@pytest.mark.parametrize(
+    ("line", "keyword"),
+    [
+        # ASCII colon between name and parameter (#109)
+        ("【Sバースト:自分のライフ減少後】", Keyword("【", "Sバースト", "自分のライフ減少後")),
+        # 《…》 keyword nested in 【…】 keeps no inner brackets (#109)
+        (
+            "【《バースト封印》：自分のライフ減少後】",
+            Keyword("【", "バースト封印", "自分のライフ減少後"),
+        ),
+        # full-width colon unchanged
+        ("【バースト：自分のライフ減少後】", Keyword("【", "バースト", "自分のライフ減少後")),
+    ],
+)
+def test_keyword_separator_and_nested_brackets(line: str, keyword: Keyword) -> None:
+    effects, *_ = parse_body([line, "テキスト"])
+    assert effects[0].keywords == (keyword,)
