@@ -106,8 +106,3 @@ def normalized_documents(work_dir: Path) -> dict[str, str]:
 def golden_path(name: str) -> Path:
     """Golden file of a fixture, e.g. ``card_spirit.html`` -> ``card_spirit.json``."""
     return NORMALIZED_GOLDENS / f"{Path(name).stem}.json"
-
-
-def golden_documents() -> list[Path]:
-    """Paths of the normalized golden documents, sorted."""
-    return sorted(NORMALIZED_GOLDENS.glob("*.json"))

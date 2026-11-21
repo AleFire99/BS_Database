@@ -45,3 +45,17 @@ def query(path: Path, sql: str, *args: object) -> list[tuple[Any, ...]]:
     """Run a read-only query on a built database."""
     with sqlite3.connect(path) as conn:
         return conn.execute(sql, args).fetchall()
+
+
+BUILD_GOLDEN = Path(__file__).parent / "goldens" / "build_counts.json"
+BUILD_REGEN_COMMAND = "uv run python tests/tools/regen_build_goldens.py"
+
+
+def build_summary(out: Path) -> dict[str, dict[str, int]]:
+    """What the build golden records: rows per table, warning counts and image cascade levels."""
+    result = build(out, golden_documents())
+    return {
+        "tables": result.table_counts,
+        "warnings": result.warnings,
+        "image_levels": result.image_levels,
+    }
