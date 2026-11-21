@@ -1,6 +1,6 @@
 # 0010. Parsed schema additions for type marks, levels, symbols and credits
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-16
 
 ## Context
