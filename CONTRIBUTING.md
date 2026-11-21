@@ -195,20 +195,20 @@ Add dependencies with `uv add <pkg>` (or `uv add --dev <pkg>` for dev tools) and
 
 Glossaries are CSV files in `data/glossary/` (see [ADR 0008](docs/adr/0008-normalization-and-translation.md)).
 
-1. Pick the file: `colors`, `symbols`, `card_types`, `rarities`, `variants`, `product_types`, `product_code_prefixes`, `keywords` or `families`.
+1. Pick the file: `colors`, `symbols`, `card_types`, `rarities`, `variants`, `product_types`, `product_code_prefixes`, `product_name_keywords`, `keywords` or `families`.
 2. Add one row. `jp` must be exactly what the parser emits. Do not pad with spaces.
 3. Keep rows sorted by `code` (families: by `code`, then `jp`). Do not duplicate a `jp` or a `code`.
 4. Fill `en` for closed kinds. Mark a guessed English name in `notes` as `provisional`. A name taken from the fandom wiki carries `notes` = `fandom: <title>`.
 5. Legacy English family names go in `family_legacy_en.csv`. Fill `jp` with a name that exists in `families.csv`.
 6. Run `uv run pytest tests/test_glossary.py tests/test_glossary_seed.py`. The loader lists every violation as `<file>:<line>: <rule>`.
 
-Family and keyword codes are lowercase ASCII slugs, unique and sorted. Use the romaji of the Japanese name when it is known (`kijuu`, `gattai_chu`). Otherwise use a slug of the English name (`a_laws`, `aeon_arcana`). Existing codes are never renamed. `product_code_prefixes.csv` (`prefix,code,notes`) maps a product-code prefix to a `product_types` code: prefixes are unique and sorted, and the code must exist in `product_types.csv`. The longest matching prefix wins ([normalization](docs/architecture/normalization.md#rules)).
+Family and keyword codes are lowercase ASCII slugs, unique and sorted. Use the romaji of the Japanese name when it is known (`kijuu`, `gattai_chu`). Otherwise use a slug of the English name (`a_laws`, `aeon_arcana`). Existing codes are never renamed. `product_code_prefixes.csv` (`prefix,code,notes`) maps a product-code prefix to a `product_types` code: prefixes are unique and sorted, and the code must exist in `product_types.csv`. The longest matching prefix wins ([normalization](docs/architecture/normalization.md#rules)). `product_name_keywords.csv` (`keyword,code,notes`) types products that have no product code (or no matching prefix) by a substring of the Japanese product name: keywords are unique and sorted, the code must exist in `product_types.csv`, matching is NFKC and the **longest** keyword wins. Check a new keyword against the real product names first (`bsdb glossary review` lists the untyped ones in *Untyped products*), and add a longer keyword when a short one mistypes a product.
 
 ### Curating with the review command
 
 1. Run `bsdb scrape` and `bsdb normalize`, so `data/normalized/` is current.
 2. Run `uv run bsdb glossary review --legacy-db <path to the v0.1.0 battle_spirits.db> [--out DIR]`. The output is `data/review/review.md`, `families.csv`, `keywords.csv` and `family_legacy_en.csv`. Nothing in `data/glossary/` changes.
-3. Read `review.md` (families, keywords, `no_split` candidates, product-code prefixes, slug conflicts, legacy pairs). Agree the names with the owner.
+3. Read `review.md` (families, keywords, `no_split` candidates, product-code prefixes, untyped products, slug conflicts, legacy pairs). Agree the names with the owner.
 4. Copy `families.csv` and `family_legacy_en.csv` together into `data/glossary/`. Fill missing codes and English names by hand, then re-sort `families.csv` and `keywords.csv` by `code` (the loader requires it).
 5. Run the tests above and `bsdb normalize --strict`, then regenerate the goldens with `uv run python tests/tools/regen_normalized_goldens.py`.
 
