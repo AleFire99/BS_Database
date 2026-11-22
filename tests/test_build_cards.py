@@ -203,3 +203,27 @@ def test_unmapped_card_type_is_an_error(tmp_path: Path) -> None:
     data["page"]["entries"][0]["gameplay"]["card_type_code"] = None
     with pytest.raises(BuildError, match="card type"):
         build(tmp_path / "x.db", [as_document(data)])
+
+
+def test_dropped_card_fields_are_loaded(golden_db: Path) -> None:
+    def card(number: str) -> tuple[object, ...]:
+        return query(
+            golden_db,
+            "SELECT c.deck_limit, c.reduction_plain, c.overclock_count_min,"
+            " c.overclock_bp_bonus, c.overclock_condition_jp, c.flavor_note_jp"
+            " FROM cards c JOIN card_numbers n ON n.card_id = c.id WHERE n.number = ?",
+            number,
+        )[0]
+
+    assert card("SD10-009") == (1, 3, None, None, None, None)
+    assert card("P22-14") == (None, 1, 3, 4000, "OC条件：カウント3以上", None)
+    assert card("SD67-CP01") == (None, None, 5, 6000, "OC条件：カウント5以上", None)
+    assert card("BS01-117")[5] == "バトルスピリッツ メモリアルカードダスセット Hero Ver."
+    assert card("BS01-001") == (None, 0, None, None, None, None)  # plain 0 is kept, not NULL
+
+
+def test_overclock_columns_are_both_set_or_both_null(golden_db: Path) -> None:
+    assert not query(
+        golden_db,
+        "SELECT 1 FROM cards WHERE (overclock_count_min IS NULL) <> (overclock_bp_bonus IS NULL)",
+    )

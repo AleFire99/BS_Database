@@ -303,6 +303,12 @@ erDiagram
         text name_jp
         text name_en
         text block_icon
+        integer deck_limit
+        integer reduction_plain
+        integer overclock_count_min
+        integer overclock_bp_bonus
+        text overclock_condition_jp
+        text flavor_note_jp
     }
     card_numbers {
         integer id PK
@@ -316,6 +322,8 @@ erDiagram
         integer variant_id FK
         integer rarity_id FK
         text illustrator
+        text detail_jp
+        text note_jp
     }
     products {
         integer id PK
@@ -360,6 +368,12 @@ The gameplay identity: one row per distinct card. Gameplay columns (type, cost) 
 | `block_icon` | TEXT | | Block icon (`12`, `A`, ...). Placed on the card by default; per card or per number is pending #9. |
 | `card_class_jp` | TEXT | | Class printed before the type (`契約`, `トークン`), literal Japanese ([ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md)). NULL when absent. |
 | `type_mark_jp` | TEXT | | Mark printed after the type (`(禁止カード)`, `(光)`, `(闇)`), literal Japanese (ADR 0010). NULL when absent. |
+| `deck_limit` | INTEGER | CHECK `>= 1` | Maximum copies in a deck when the card states one (`1`, `20`). NULL when absent. |
+| `reduction_plain` | INTEGER | CHECK `>= 0` | Plain (colourless) cost reduction; NULL when the card has none. The coloured parts are in `card_reductions`. |
+| `overclock_count_min` | INTEGER | CHECK `>= 1` | Overclock: minimum count. Set together with `overclock_bp_bonus` (table CHECK `ck_cards_overclock_pair`). Not ultimate-only. |
+| `overclock_bp_bonus` | INTEGER | CHECK `>= 0` | Overclock: BP bonus. NULL when the card has no overclock. |
+| `overclock_condition_jp` | TEXT | | Overclock condition text, literal Japanese. NULL when absent. |
+| `flavor_note_jp` | TEXT | | Note printed with the flavor text. NULL when absent. |
 
 Several numbers share one card only when gameplay, text and flavor are identical ([ADR 0004 amendment](../adr/0004-card-printing-identity.md#amendment-2026-11-21-63), proposed, #63). The loader ([#120](https://github.com/AleFire99/BS_Database/issues/120)) groups number entries by a hash of the canonical JSON of:
 
@@ -403,6 +417,8 @@ One physical printing of a number in a product.
 | `variant_id` | INTEGER | NOT NULL, FOREIGN KEY to `variants.id` | Defaults to the `normal` variant; NOT NULL because SQLite treats NULLs as distinct in UNIQUE. |
 | `rarity_id` | INTEGER | FOREIGN KEY to `rarities.id` | Nullable: distribution entries on batspi show no rarity (pending #9). |
 | `illustrator` | TEXT | | Plain text for now; normalised later if needed. |
+| `detail_jp` | TEXT | | Detail text of the printing row on the page, literal Japanese. NULL when absent. Merged duplicate rows keep their distinct values joined with a newline. |
+| `note_jp` | TEXT | | Note of the printing row, literal Japanese. NULL when absent; merged like `detail_jp`. |
 
 Table constraint: `UNIQUE (card_number_id, product_id, variant_id)`. Images are not a column of `printings`: they are rows of [printing_images](#printing_images).
 

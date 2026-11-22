@@ -129,11 +129,22 @@ CREATE TABLE cards (
     block_icon TEXT,
     card_class_jp TEXT,
     type_mark_jp TEXT,
+    deck_limit INTEGER,
+    reduction_plain INTEGER,
+    overclock_count_min INTEGER,
+    overclock_bp_bonus INTEGER,
+    overclock_condition_jp TEXT,
+    flavor_note_jp TEXT,
     CONSTRAINT pk_cards_id PRIMARY KEY (id),
     CONSTRAINT fk_cards_card_type_id FOREIGN KEY (card_type_id) REFERENCES card_types (id),
     CONSTRAINT fk_cards_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
     CONSTRAINT fk_cards_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id),
-    CONSTRAINT ck_cards_cost CHECK (cost >= 0)
+    CONSTRAINT ck_cards_cost CHECK (cost >= 0),
+    CONSTRAINT ck_cards_deck_limit CHECK (deck_limit >= 1),
+    CONSTRAINT ck_cards_reduction_plain CHECK (reduction_plain >= 0),
+    CONSTRAINT ck_cards_overclock_count_min CHECK (overclock_count_min >= 1),
+    CONSTRAINT ck_cards_overclock_bp_bonus CHECK (overclock_bp_bonus >= 0),
+    CONSTRAINT ck_cards_overclock_pair CHECK ((overclock_count_min IS NULL) = (overclock_bp_bonus IS NULL))
 );
 CREATE INDEX ix_cards_card_type_id ON cards (card_type_id);
 
@@ -172,6 +183,8 @@ CREATE TABLE printings (
     variant_id INTEGER NOT NULL DEFAULT 1,
     rarity_id INTEGER,
     illustrator TEXT,
+    detail_jp TEXT,
+    note_jp TEXT,
     CONSTRAINT pk_printings_id PRIMARY KEY (id),
     CONSTRAINT uq_printings_card_number_id_product_id_variant_id UNIQUE (card_number_id, product_id, variant_id),
     CONSTRAINT fk_printings_card_number_id FOREIGN KEY (card_number_id) REFERENCES card_numbers (id),
