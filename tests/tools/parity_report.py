@@ -20,7 +20,7 @@ import re
 import sqlite3
 import sys
 import unicodedata
-from collections import defaultdict
+from collections import Counter, defaultdict
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -145,6 +145,7 @@ class FamilyResolver:
     by_alias: dict[str, int]
     by_jp: dict[str, int]
     legacy: dict[str, tuple[str, str | None]]  # legacy_en lower -> (preferred_en, jp)
+    names: dict[int, str] = field(default_factory=dict)  # family id -> display name
 
     def resolve(self, name: str) -> int | None:
         key = name.strip().lower()
@@ -175,8 +176,10 @@ def load_legacy_aliases(glossary_dir: Path | None) -> dict[str, tuple[str, str |
 def build_resolver(new: sqlite3.Connection, glossary_dir: Path | None) -> FamilyResolver:
     by_en: dict[str, int] = {}
     by_jp: dict[str, int] = {}
+    names: dict[int, str] = {}
     for fid, jp, en in new.execute("SELECT id, name_jp, name_en FROM families ORDER BY id"):
         by_jp[jp] = fid
+        names[fid] = en or jp
         if en:
             by_en.setdefault(en.strip().lower(), fid)
     by_alias = {
@@ -185,7 +188,7 @@ def build_resolver(new: sqlite3.Connection, glossary_dir: Path | None) -> Family
             "SELECT family_id, alias FROM family_aliases WHERE lang = 'en' ORDER BY id"
         )
     }
-    return FamilyResolver(by_en, by_alias, by_jp, load_legacy_aliases(glossary_dir))
+    return FamilyResolver(by_en, by_alias, by_jp, load_legacy_aliases(glossary_dir), names)
 
 
 def load_legacy(conn: sqlite3.Connection) -> dict[str, LegacyCard]:
@@ -288,7 +291,7 @@ def classify_legacy_only(
     for key in sorted(legacy_only):
         card = legacy[key]
         faces = [k for k in new_keys if k.startswith(key + "(")]
-        if any(_FLIP.match(k) and (m := _FLIP.match(k)) and m["base"] == key for k in faces):
+        if any((m := _FLIP.match(k)) and m["base"] == key for k in faces):
             flip.add(f"{card.number} -> {', '.join(new[k].number for k in faces)}", limit)
         elif faces:
             suffix.add(f"{card.number} -> {', '.join(new[k].number for k in faces)}", limit)
@@ -419,12 +422,11 @@ def compare_fields(
         "Legacy kept a compound family string as one name; the new build splits it into "
         "several families (inferred: fewer legacy families than new).",
     )
-    f_collision = Category(
-        "name_collision",
-        LEGACY_BUG,
-        "A legacy English name is the preferred name of a different family: the legacy "
-        "translation merged distinct Japanese families under one English name (inferred: "
-        "same number of families, different set).",
+    f_mapped_missing = Category(
+        "mapped_missing",
+        UNEXPLAINED,
+        "A legacy family name maps to a family the new card does not have (possible glossary "
+        "collision or real mismatch; to investigate).",
     )
     f_extra = Category(
         "legacy_extra",
@@ -434,6 +436,7 @@ def compare_fields(
     )
     f_diff = Category("diff", UNEXPLAINED, "The family sets differ in a way not covered above.")
     unmapped_names: set[str] = set()
+    mapped_missing_names: Counter[str] = Counter()
     for key in shared:
         lc, nc = legacy[key], new[key]
         mapped = {name: resolver.resolve(name) for name in lc.families}
@@ -441,19 +444,28 @@ def compare_fields(
         ids = frozenset(fid for fid in mapped.values() if fid is not None)
         ex = f"{lc.number}: {sorted(lc.families)} vs {len(nc.families)} families"
         unmapped_names.update(missing)
-        if not missing and ids == nc.families:
+        if ids - nc.families:
+            new_names = sorted(resolver.names.get(f, str(f)) for f in nc.families)
+            f_mapped_missing.add(f"{lc.number}: {sorted(lc.families)} vs {new_names}", limit)
+            mapped_missing_names.update(
+                n for n, fid in mapped.items() if fid is not None and fid not in nc.families
+            )
+        elif not missing and ids == nc.families:
             f_same.count += 1
         elif not missing and ids < nc.families:
             f_more.add(ex, limit)
         elif len(lc.families) == len(nc.families):
-            (f_count_same if missing else f_collision).add(ex, limit)
+            f_count_same.add(ex, limit)
         elif len(lc.families) < len(nc.families):
             f_merged.add(ex, limit)
         elif len(lc.families) - len(nc.families) <= 2:
             f_extra.add(ex, limit)
         else:
             f_diff.add(ex, limit)
-    result["families"] = [f_same, f_more, f_count_same, f_merged, f_collision, f_extra, f_diff]
+    if mapped_missing_names:
+        top = ", ".join(f"{n} ({c})" for n, c in mapped_missing_names.most_common(10))
+        f_mapped_missing.explanation += f" Most frequent legacy names: {top}."
+    result["families"] = [f_mapped_missing, f_same, f_more, f_count_same, f_merged, f_extra, f_diff]
     result["families"].append(
         Category(
             "unmapped_names",
@@ -532,6 +544,17 @@ def build_report(
     legacy_only = sorted(set(legacy) - set(new))
     new_only = sorted(set(new) - set(legacy))
 
+    flip_faces = [
+        k
+        for k in new_only
+        if (m := _FLIP.match(k)) and m["base"] in legacy and m["base"] not in new
+    ]
+    flip_bases = {m["base"] for k in flip_faces if (m := _FLIP.match(k))}
+    flip_note = (
+        f'"Only in new" includes {_fmt(len(flip_faces))} flip faces `(A)`/`(B)` of the '
+        f"{_fmt(len(flip_bases))} legacy flip numbers (counted again under "
+        '"Only in legacy" as the joined legacy row).'
+    )
     out = [
         "## Table counts",
         "",
@@ -555,6 +578,8 @@ def build_report(
         f"| Only in new | {_fmt(len(new_only))} |",
         "",
         "Matched on the printed number, whitespace removed and upper case.",
+        "",
+        flip_note,
         "",
         "### Legacy-only numbers by cause",
         "",

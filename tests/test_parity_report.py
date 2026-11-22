@@ -247,7 +247,12 @@ def test_colour_categories(tool: ModuleType, dbs: tuple[Path, Path]) -> None:
 def test_family_categories(tool: ModuleType, dbs: tuple[Path, Path]) -> None:
     text = report(tool, dbs, tool.DEFAULT_GLOSSARY)
     assert "BS01-010" in row(text, "Families", "count_same")[4]  # 'Wyrm' has no mapping
-    assert "BS01-008" in row(text, "Families", "name_collision")[4]  # alias points elsewhere
+    # the alias maps to a family the new card lacks: unexplained, with both name lists
+    missing = row(text, "Families", "mapped_missing")
+    assert "BS01-008" in missing[4]
+    assert "['Moon']" in missing[4]
+    assert "unexplained" in missing[2].lower()
+    assert "Moon Thing (1)" in missing[3]
     assert "BS01-009" in row(text, "Families", "legacy_merged")[4]
     assert "BS01-011" in row(text, "Families", "legacy_extra")[4]
     assert "BS01-012" in row(text, "Families", "more")[4]
@@ -282,3 +287,8 @@ def test_missing_file(tmp_path: Path) -> None:
         capture_output=True,
     )
     assert out.returncode == 1
+
+
+def test_flip_faces_noted(tool: ModuleType, dbs: tuple[Path, Path]) -> None:
+    text = report(tool, dbs)
+    assert "includes 2 flip faces `(A)`/`(B)` of the 1 legacy flip numbers" in text
