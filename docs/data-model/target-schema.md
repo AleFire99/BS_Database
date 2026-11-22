@@ -1,10 +1,10 @@
 # Target schema
 
-This is the design document for the new normalized schema. It is extended by [#30](https://github.com/AleFire99/BS_Database/issues/30) (gameplay attributes), [#31](https://github.com/AleFire99/BS_Database/issues/31) (effects, i18n, provenance, images) and [#32](https://github.com/AleFire99/BS_Database/issues/32). It is **not** the build source: the DDL and SQLAlchemy models are owned by [#12](https://github.com/AleFire99/BS_Database/issues/12). Naming follows [ADR 0003](../adr/0003-naming-and-schema-versioning.md). Items marked "pending #9" depend on the source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9)). The record shape that `bsdb normalize` emits for these tables is in [normalization.md](../architecture/normalization.md) ([#93](https://github.com/AleFire99/BS_Database/issues/93)).
+This is the design document for the new normalized schema. It is extended by [#30](https://github.com/AleFire99/BS_Database/issues/30) (gameplay attributes), [#31](https://github.com/AleFire99/BS_Database/issues/31) (effects, i18n, provenance, images) and [#32](https://github.com/AleFire99/BS_Database/issues/32). It is **not** the build source: the DDL is `src/bs_database/schema.sql` ([ADR 0011](../adr/0011-schema-sql-source-of-truth-without-migrations.md), [#119](https://github.com/AleFire99/BS_Database/issues/119)); this document is the design and the column reference. Naming follows [ADR 0003](../adr/0003-naming-and-schema-versioning.md). Items marked "pending #9" depend on the source analysis ([#9](https://github.com/AleFire99/BS_Database/issues/9)). The record shape that `bsdb normalize` emits for these tables is in [normalization.md](../architecture/normalization.md) ([#93](https://github.com/AleFire99/BS_Database/issues/93)); how `bsdb build` fills them, with its rules and the data that has no column yet, is in [build.md](../architecture/build.md) ([#120](https://github.com/AleFire99/BS_Database/issues/120)).
 
 ## Overview
 
-The model has 33 tables: 32 entities connected by foreign keys plus the single-row `schema_meta` ([ADR 0003](../adr/0003-naming-and-schema-versioning.md)). The two diagrams below are the whole-model view; the sections after them describe each area in detail with column tables.
+The model has 34 tables: 33 entities connected by foreign keys plus the single-row `schema_meta` ([ADR 0003](../adr/0003-naming-and-schema-versioning.md)). The two diagrams below are the whole-model view; the sections after them describe each area in detail with column tables.
 
 ### Complete ER diagram
 
@@ -27,6 +27,7 @@ erDiagram
     symbols ||--o{ card_reductions : "used in"
     colors |o--o{ symbols : "colours"
     cards ||--o{ card_levels : "has"
+    cards ||--o{ card_credits : "credited"
     cards ||--o{ card_families : "has"
     families ||--o{ card_families : "used in"
     families ||--o{ family_aliases : "known as"
@@ -125,6 +126,11 @@ erDiagram
         integer id PK
         integer card_id FK
     }
+    card_credits {
+        integer id PK
+        integer card_id FK
+        integer position
+    }
     families {
         integer id PK
         text code UK
@@ -207,6 +213,7 @@ erDiagram
         integer id PK
         integer printing_id FK
         integer image_size_id FK
+        integer position
     }
     schema_meta {
         integer id PK
@@ -296,6 +303,12 @@ erDiagram
         text name_jp
         text name_en
         text block_icon
+        integer deck_limit
+        integer reduction_plain
+        integer overclock_count_min
+        integer overclock_bp_bonus
+        text overclock_condition_jp
+        text flavor_note_jp
     }
     card_numbers {
         integer id PK
@@ -309,6 +322,8 @@ erDiagram
         integer variant_id FK
         integer rarity_id FK
         text illustrator
+        text detail_jp
+        text note_jp
     }
     products {
         integer id PK
@@ -346,13 +361,41 @@ The gameplay identity: one row per distinct card. Gameplay columns (type, cost) 
 | `id` | INTEGER | PRIMARY KEY | Surrogate key. |
 | `name_jp` | TEXT | NOT NULL | Japanese card name (batspi page title). |
 | `name_en` | TEXT | | English name; NULL until translated. Source and status in `en_source_id` and `en_status_id` below; see [Multilingual text](#multilingual-text). |
-| `flavor_text_jp` | TEXT | | Flavor text as printed (`フレーバーテキスト：` in the `<pre>`). NULL when the card has none (the Magic fixture has none). On the card, not the printing; whether it varies per printing is pending #9. |
+| `flavor_text_jp` | TEXT | | Flavor text as printed (`フレーバーテキスト：` in the `<pre>`). NULL when the card has none (the Magic fixture has none). On the card, not the printing. Flavor is part of the card identity key, so it never varies inside a card ([ADR 0004 amendment](../adr/0004-card-printing-identity.md#amendment-2026-11-21-63), #63). |
 | `flavor_text_en` | TEXT | | English flavor text; NULL until translated. |
 | `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Where the English texts of this row come from; NULL while there is no English text. |
 | `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of this row; defaults to `pending`. |
 | `block_icon` | TEXT | | Block icon (`12`, `A`, ...). Placed on the card by default; per card or per number is pending #9. |
+| `card_class_jp` | TEXT | | Class printed before the type (`契約`, `トークン`), literal Japanese ([ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md)). NULL when absent. |
+| `type_mark_jp` | TEXT | | Mark printed after the type (`(禁止カード)`, `(光)`, `(闇)`), literal Japanese (ADR 0010). NULL when absent. |
+| `deck_limit` | INTEGER | CHECK `>= 1` | Maximum copies in a deck when the card states one (`1`, `20`). NULL when absent. |
+| `reduction_plain` | INTEGER | CHECK `>= 0` | Plain (colourless) cost reduction; NULL when the card has none. The coloured parts are in `card_reductions`. |
+| `overclock_count_min` | INTEGER | CHECK `>= 1` | Overclock: minimum count. Set together with `overclock_bp_bonus` (table CHECK `ck_cards_overclock_pair`). Not ultimate-only. |
+| `overclock_bp_bonus` | INTEGER | CHECK `>= 0` | Overclock: BP bonus. NULL when the card has no overclock. |
+| `overclock_condition_jp` | TEXT | | Overclock condition text, literal Japanese. NULL when absent. |
+| `flavor_note_jp` | TEXT | | Note printed with the flavor text. NULL when absent. |
 
-Whether numbers with the same name but different numbers are one card is pending #9. The planned rule: link them only if text and stats are identical.
+Several numbers share one card only when gameplay, text and flavor are identical ([ADR 0004 amendment](../adr/0004-card-printing-identity.md#amendment-2026-11-21-63), proposed, #63). The loader ([#120](https://github.com/AleFire99/BS_Database/issues/120)) groups number entries by a hash of the canonical JSON of:
+
+- `name_jp`
+- card type, class, mark, deck limit
+- cost, reduction, colors, symbols, families
+- levels: cores, BP, condition, note
+- fusion bonus, overclock
+- effects: position, levels, header, text
+- the conditions
+- flavor and flavor note
+
+English names, credits and images are not in the key: they are printing data. So `cards.name_jp` is **not unique**; `card_numbers.number` is the stable lookup. Links between flip faces ([#125](https://github.com/AleFire99/BS_Database/issues/125)) and between remakes of the same card ([#126](https://github.com/AleFire99/BS_Database/issues/126)) are out of scope.
+
+Worked example, ゴラドン (`BS01-001`, `BSC22-001`): only the BP differs, so there are two cards.
+
+| cards.id | name_jp | card_numbers.number |
+| --- | --- | --- |
+| 1 | ゴラドン | BS01-001 |
+| 2 | ゴラドン | BSC22-001 |
+
+Row ids are illustrative. 焔竜翼人マ・ドー gives two cards: `P001` and `EX001` are equal and share one card, `P20-19` adds the family 起幻 and an effect.
 
 ### card_numbers
 
@@ -374,6 +417,8 @@ One physical printing of a number in a product.
 | `variant_id` | INTEGER | NOT NULL, FOREIGN KEY to `variants.id` | Defaults to the `normal` variant; NOT NULL because SQLite treats NULLs as distinct in UNIQUE. |
 | `rarity_id` | INTEGER | FOREIGN KEY to `rarities.id` | Nullable: distribution entries on batspi show no rarity (pending #9). |
 | `illustrator` | TEXT | | Plain text for now; normalised later if needed. |
+| `detail_jp` | TEXT | | Detail text of the printing row on the page, literal Japanese. NULL when absent. Merged duplicate rows keep their distinct values joined with a newline. |
+| `note_jp` | TEXT | | Note of the printing row, literal Japanese. NULL when absent; merged like `detail_jp`. |
 
 Table constraint: `UNIQUE (card_number_id, product_id, variant_id)`. Images are not a column of `printings`: they are rows of [printing_images](#printing_images).
 
@@ -422,7 +467,7 @@ Lookup, following the lookup convention of ADR 0003: `code` plus one English `na
 
 ## Gameplay attributes
 
-Added by [#30](https://github.com/AleFire99/BS_Database/issues/30). Gameplay attributes are identical across printings of a card (a reprint keeps its number and text; only rarity and art change, see ADR 0004), so they hang off `cards`, never off `card_numbers` or `printings`. Effects, keywords and alternate costs such as `【ミラージュ：コスト2(1)】` belong to [#31](https://github.com/AleFire99/BS_Database/issues/31) and are modelled in [Effects and keywords](#effects-and-keywords), not here.
+Added by [#30](https://github.com/AleFire99/BS_Database/issues/30). Gameplay attributes are identical across printings of a card (a reprint keeps its number and text; only rarity and art change, see ADR 0004; numbers with different values are separate cards, see the [amendment](../adr/0004-card-printing-identity.md#amendment-2026-11-21-63)), so they hang off `cards`, never off `card_numbers` or `printings`. Effects, keywords and alternate costs such as `【ミラージュ：コスト2(1)】` belong to [#31](https://github.com/AleFire99/BS_Database/issues/31) and are modelled in [Effects and keywords](#effects-and-keywords), not here.
 
 Lookup tables (`card_types`, `colors`, `symbols`, `rarities`, `variants`, `product_types`) carry a stable `code` and one English `name`. They have **no Japanese name column**: the Japanese source text is translated to a `code` by the normalization stage ([#11](https://github.com/AleFire99/BS_Database/issues/11), [ADR 0008](../adr/0008-normalization-and-translation.md)), see [JP source to code](#jp-source-to-code). Data entities (`cards`, `families`, `products`) keep `name_jp` so a bad machine translation can be redone.
 
@@ -437,6 +482,7 @@ erDiagram
     symbols ||--o{ card_reductions : "used in"
     colors |o--o{ symbols : "colours"
     cards ||--o{ card_levels : "has"
+    cards ||--o{ card_credits : "credited"
     cards ||--o{ card_families : "has"
     families ||--o{ card_families : "used in"
     families ||--o{ family_aliases : "known as"
@@ -449,6 +495,8 @@ erDiagram
         integer cost
         text name_jp
         text name_en
+        text card_class_jp
+        text type_mark_jp
     }
     card_types {
         integer id PK
@@ -474,6 +522,8 @@ erDiagram
         integer card_id PK
         integer symbol_id PK
         integer count
+        text variant_jp
+        text color_jp
     }
     card_reductions {
         integer card_id PK
@@ -486,6 +536,16 @@ erDiagram
         integer level
         integer cores
         integer battle_points
+        text count_condition_jp
+        text note_jp
+    }
+    card_credits {
+        integer id PK
+        integer card_id FK
+        integer position
+        text role_jp
+        text name
+        text note
     }
     families {
         integer id PK
@@ -577,6 +637,8 @@ Pure junction table. Symbols printed on the card, from the `シンボル：` lin
 | `card_id` | INTEGER | FOREIGN KEY to `cards.id` | Part of the composite PRIMARY KEY. |
 | `symbol_id` | INTEGER | FOREIGN KEY to `symbols.id` | Part of the composite PRIMARY KEY. |
 | `count` | INTEGER | NOT NULL, CHECK `count` >= 1 | Double symbols use a count. The format of multi-symbol lines is pending #9. |
+| `variant_jp` | TEXT | | Symbol variant as printed (`EX白`), literal Japanese (ADR 0010). NULL when plain. |
+| `color_jp` | TEXT | | Colour qualifier as printed (`神(青)`), literal Japanese (ADR 0010). NULL when absent. |
 
 ### card_reductions
 
@@ -599,8 +661,10 @@ Per-level rows. Hangs off the card, not the printing.
 | `id` | INTEGER | PRIMARY KEY | Referenced by [card_effect_levels](#card_effect_levels). |
 | `card_id` | INTEGER | NOT NULL, FOREIGN KEY to `cards.id` | |
 | `level` | INTEGER | NOT NULL, CHECK `level` >= 1 | Flagged in review as a column name (ADR 0003); legal unquoted in SQLite. |
-| `cores` | INTEGER | NOT NULL, CHECK `cores` >= 0 | Cores needed on the card to reach this level (the `<n>` in `<3>Lv2`). |
+| `cores` | INTEGER | CHECK `cores` >= 0 | Cores needed on the card to reach this level (the `<n>` in `<3>Lv2`). NULL when the level is conditional (`<C2>Lv2`), see `count_condition_jp` (ADR 0010). |
 | `battle_points` | INTEGER | CHECK `battle_points` >= 0 | NULL when the level has no BP (Nexus). |
+| `count_condition_jp` | TEXT | | Core-count condition as printed (`C2`), literal Japanese (ADR 0010). NULL when the count is a plain number. |
+| `note_jp` | TEXT | | Note after the level (`真界放`, `X0000`), literal Japanese (ADR 0010). NULL when absent. |
 
 Table constraint: `UNIQUE (card_id, level)`. Magic has no level line and therefore no rows. Legacy data shows Spirit levels 1 to 4, Brave exactly one row at level 1 and Ultimate levels 3 to 6 (see [field-inventory.md](field-inventory.md)); the Brave and Ultimate line formats are pending #9.
 
@@ -1173,6 +1237,7 @@ erDiagram
         integer id PK
         integer printing_id FK
         integer image_size_id FK
+        integer position
         text path
         text source_url
         text sha256
@@ -1199,14 +1264,17 @@ Lookup (`code` plus English `name`).
 | `id` | INTEGER | PRIMARY KEY | |
 | `printing_id` | INTEGER | NOT NULL, FOREIGN KEY to `printings.id` | |
 | `image_size_id` | INTEGER | NOT NULL, FOREIGN KEY to `image_sizes.id` | Size of the file. |
-| `path` | TEXT | NOT NULL | Path relative to the release artefact. The layout is decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). |
+| `position` | INTEGER | NOT NULL, DEFAULT 1, CHECK `position` >= 1 | Order of the images of one printing and size (1 = first). batspi shows several images per printing; the build numbers them in page order (#120). |
+| `path` | TEXT | | Path relative to the release artefact. NULL while images are not stored or redistributed ([ADR 0006](../adr/0006-scraping-and-redistribution-policy.md): URL only); the layout is decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). |
 | `source_url` | TEXT | NOT NULL | Where the file was downloaded from. |
 | `sha256` | TEXT | | Hash of the file; NULL until downloaded. |
 | `width` | INTEGER | CHECK `width` > 0 | Pixels; NULL until downloaded (not read from the page). Pending #9. |
 | `height` | INTEGER | CHECK `height` > 0 | Pixels; NULL until downloaded. Pending #9. |
 | `mime_type` | TEXT | | e.g. `image/jpeg`; NULL until downloaded. |
 
-Table constraint: `UNIQUE (printing_id, image_size_id)`. Storage, download and versioning of the files are decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). A row says where an image is and where it came from; it does not require the file to be in the artefact.
+Table constraint: `UNIQUE (printing_id, image_size_id, position)`. Storage, download and versioning of the files are decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). A row says where an image is and where it came from; it does not require the file to be in the artefact.
+
+`position` was added in #120: batspi shows several images of one number (the secret art, a full-art reprint), and the caption links them to a printing only loosely, so the build associates each image with a printing by a cascade ([build.md](../architecture/build.md#rules)) and numbers the images of one printing and size 1, 2, ... in page order. The schema version stays `0.1.0` until the first release (#121).
 
 ### Worked example (BS72-007)
 
@@ -1225,17 +1293,32 @@ The page links `BS72-007.jpg` and `BS72-007-2.jpg`, each as a small `<img>` and 
 
 Q&A (ADR 0003), the batspi effect-category tags (カード効果 and 発揮タイミング tags outside the `<pre>`, a possible future source) and structured effects.
 
-## Parsed fields without a column yet
+### card_credits
 
-The parsed schema 2.1.0 ([ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md), [#108](https://github.com/AleFire99/BS_Database/issues/108)) carries facts that no table above stores. The loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)) decides where they go; until then they stay literal Japanese in the normalized documents.
+Credits printed on the card other than the illustrator (`other_credits` of [ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md)): `プロデュース：`, `ペイント：`, `書：`, `写真：`, `コラボレート：`. Hangs off the card. Not part of the card identity key.
 
-| Parsed field | Printed as | Open question |
-| --- | --- | --- |
-| `card_class` | `契約`, `トークン` before the type | A column on `cards`, or a lookup like `card_types` |
-| `type_mark` | `(禁止カード)`, `(光)`, `(闇)` after the type | What `光` and `闇` mean (assumed a rule mark, not a colour) |
-| `Level.count_condition`, `note` | `<C2>Lv2`, `Lv2/真界放`, `X0000` | `card_levels.cores` would need to be nullable |
-| `SymbolCount.variant`, `color` | `EX白`, `神(青)` | A variant of `symbols`, or a colour column on `card_symbols` |
-| `other_credits` | `プロデュース：`, `ペイント：`, `書：`, `写真：`, `コラボレート：` | A role on the credit tables |
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| `id` | INTEGER | PRIMARY KEY | |
+| `card_id` | INTEGER | NOT NULL, FOREIGN KEY to `cards.id` | `ON DELETE CASCADE`. |
+| `position` | INTEGER | NOT NULL | Order on the page. |
+| `role_jp` | TEXT | NOT NULL | Role label as printed, literal Japanese. |
+| `name` | TEXT | NOT NULL | Credited name. |
+| `note` | TEXT | | Extra text after the name; NULL when absent. |
+
+Table constraint: `UNIQUE (card_id, position)`.
+
+## Parsed fields and their columns
+
+The parsed schema 2.1.0 ([ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md), [#108](https://github.com/AleFire99/BS_Database/issues/108)) fields are stored as literal Japanese in the columns below ([#119](https://github.com/AleFire99/BS_Database/issues/119)); lookups for them may follow once the values are inventoried.
+
+| Parsed field | Column |
+| --- | --- |
+| `card_class` | `cards.card_class_jp` |
+| `type_mark` | `cards.type_mark_jp` |
+| `Level.count_condition`, `note` | `card_levels.count_condition_jp`, `card_levels.note_jp` (`cores` nullable) |
+| `SymbolCount.variant`, `color` | `card_symbols.variant_jp`, `card_symbols.color_jp` |
+| `other_credits` | `card_credits` |
 
 ## BSS_app deviations
 
@@ -1257,396 +1340,12 @@ Summary of where this model departs from the sister project [BSS_app](https://gi
 | Versioning | none | `PRAGMA user_version` and `schema_meta` | Cheap compatibility check (ADR 0003). |
 | Q&A | `QA_cards`, `QA_keywords` | none | Out of scope for v1. |
 
-## DDL draft
+## DDL
 
-This is a **draft for review, not the build source**. The real DDL and the SQLAlchemy models, including the `naming_convention`, are owned by [#12](https://github.com/AleFire99/BS_Database/issues/12) and may differ. The draft exists to check that the column tables above are consistent and that the [sample cards](samples.md) can be loaded; it runs unchanged in SQLite. Notes on the choices:
+The DDL and the static lookup seeds live in [`src/bs_database/schema.sql`](../../src/bs_database/schema.sql), the single source of truth ([ADR 0011](../adr/0011-schema-sql-source-of-truth-without-migrations.md), [#119](https://github.com/AleFire99/BS_Database/issues/119)); this document no longer repeats it. `tests/test_schema_sql.py` checks that the table set equals the entities of the complete ER diagram. Notes on the choices:
 
 - `PRAGMA user_version = 100` is schema `0.1.0` under the `major * 10000 + minor * 100 + patch` encoding of ADR 0003.
 - Constraints are named `pk_`, `fk_`, `uq_`, `ck_` and `ix_` followed by `<table>_<cols>`. Primary keys are table constraints on an `INTEGER` column, which SQLite still treats as the rowid alias.
-- `en_status_id` and `variant_id` default to `1`, which assumes the lookup seed inserts `pending` and `normal` first (id 1). The build, not the schema, guarantees that order.
+- `en_status_id` and `variant_id` default to `1`; `schema.sql` seeds `pending` and `normal` with id 1. The other lookups (colors, card types, rarities, product types, families, keywords, symbols, further variants) are filled by the loader from `data/glossary`.
 - A foreign key in SQLite cannot check that a `card_levels` row belongs to the same card as the `card_effects` row, nor that a `brave_details` card has type `brave`; the build checks both.
 - Indexes are added on foreign key columns that no primary key or unique constraint already leads with. The translation foreign keys point at tiny lookups and are not indexed.
-
-```sql
-PRAGMA foreign_keys = ON;
-PRAGMA user_version = 100;
-
--- Versioning (ADR 0003): exactly one row.
-CREATE TABLE schema_meta (
-    id INTEGER NOT NULL,
-    schema_version TEXT NOT NULL,
-    data_version TEXT NOT NULL,
-    built_at TEXT NOT NULL,
-    source_snapshot TEXT,
-    generator TEXT NOT NULL,
-    CONSTRAINT pk_schema_meta_id PRIMARY KEY (id),
-    CONSTRAINT ck_schema_meta_id CHECK (id = 1)
-);
-
--- Lookups
-CREATE TABLE translation_statuses (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    CONSTRAINT pk_translation_statuses_id PRIMARY KEY (id),
-    CONSTRAINT uq_translation_statuses_code UNIQUE (code)
-);
-
-CREATE TABLE translation_sources (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    CONSTRAINT pk_translation_sources_id PRIMARY KEY (id),
-    CONSTRAINT uq_translation_sources_code UNIQUE (code)
-);
-
-CREATE TABLE card_types (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    CONSTRAINT pk_card_types_id PRIMARY KEY (id),
-    CONSTRAINT uq_card_types_code UNIQUE (code)
-);
-
-CREATE TABLE colors (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    CONSTRAINT pk_colors_id PRIMARY KEY (id),
-    CONSTRAINT uq_colors_code UNIQUE (code)
-);
-
-CREATE TABLE symbols (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    color_id INTEGER,
-    CONSTRAINT pk_symbols_id PRIMARY KEY (id),
-    CONSTRAINT uq_symbols_code UNIQUE (code),
-    CONSTRAINT fk_symbols_color_id FOREIGN KEY (color_id) REFERENCES colors (id)
-);
-CREATE INDEX ix_symbols_color_id ON symbols (color_id);
-
-CREATE TABLE product_types (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    CONSTRAINT pk_product_types_id PRIMARY KEY (id),
-    CONSTRAINT uq_product_types_code UNIQUE (code)
-);
-
-CREATE TABLE rarities (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    sort_order INTEGER NOT NULL,
-    CONSTRAINT pk_rarities_id PRIMARY KEY (id),
-    CONSTRAINT uq_rarities_code UNIQUE (code)
-);
-
-CREATE TABLE variants (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    CONSTRAINT pk_variants_id PRIMARY KEY (id),
-    CONSTRAINT uq_variants_code UNIQUE (code)
-);
-
-CREATE TABLE effect_kinds (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    CONSTRAINT pk_effect_kinds_id PRIMARY KEY (id),
-    CONSTRAINT uq_effect_kinds_code UNIQUE (code)
-);
-
-CREATE TABLE keywords (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    CONSTRAINT pk_keywords_id PRIMARY KEY (id),
-    CONSTRAINT uq_keywords_code UNIQUE (code)
-);
-
-CREATE TABLE image_sizes (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    CONSTRAINT pk_image_sizes_id PRIMARY KEY (id),
-    CONSTRAINT uq_image_sizes_code UNIQUE (code)
-);
-
-CREATE TABLE sources (
-    id INTEGER NOT NULL,
-    code TEXT NOT NULL,
-    name TEXT NOT NULL,
-    base_url TEXT NOT NULL,
-    CONSTRAINT pk_sources_id PRIMARY KEY (id),
-    CONSTRAINT uq_sources_code UNIQUE (code)
-);
-
--- Data entities
-CREATE TABLE cards (
-    id INTEGER NOT NULL,
-    card_type_id INTEGER NOT NULL,
-    cost INTEGER NOT NULL,
-    name_jp TEXT NOT NULL,
-    name_en TEXT,
-    flavor_text_jp TEXT,
-    flavor_text_en TEXT,
-    en_source_id INTEGER,
-    en_status_id INTEGER NOT NULL DEFAULT 1,
-    block_icon TEXT,
-    CONSTRAINT pk_cards_id PRIMARY KEY (id),
-    CONSTRAINT fk_cards_card_type_id FOREIGN KEY (card_type_id) REFERENCES card_types (id),
-    CONSTRAINT fk_cards_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
-    CONSTRAINT fk_cards_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id),
-    CONSTRAINT ck_cards_cost CHECK (cost >= 0)
-);
-CREATE INDEX ix_cards_card_type_id ON cards (card_type_id);
-
-CREATE TABLE card_numbers (
-    id INTEGER NOT NULL,
-    number TEXT NOT NULL,
-    card_id INTEGER NOT NULL,
-    CONSTRAINT pk_card_numbers_id PRIMARY KEY (id),
-    CONSTRAINT uq_card_numbers_number UNIQUE (number),
-    CONSTRAINT fk_card_numbers_card_id FOREIGN KEY (card_id) REFERENCES cards (id)
-);
-CREATE INDEX ix_card_numbers_card_id ON card_numbers (card_id);
-
-CREATE TABLE products (
-    id INTEGER NOT NULL,
-    code TEXT,
-    name_jp TEXT NOT NULL,
-    name_en TEXT,
-    product_type_id INTEGER NOT NULL,
-    release_date TEXT,
-    series TEXT,
-    en_source_id INTEGER,
-    en_status_id INTEGER NOT NULL DEFAULT 1,
-    CONSTRAINT pk_products_id PRIMARY KEY (id),
-    CONSTRAINT uq_products_code UNIQUE (code),
-    CONSTRAINT fk_products_product_type_id FOREIGN KEY (product_type_id) REFERENCES product_types (id),
-    CONSTRAINT fk_products_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
-    CONSTRAINT fk_products_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id)
-);
-CREATE INDEX ix_products_product_type_id ON products (product_type_id);
-
-CREATE TABLE printings (
-    id INTEGER NOT NULL,
-    card_number_id INTEGER NOT NULL,
-    product_id INTEGER NOT NULL,
-    variant_id INTEGER NOT NULL DEFAULT 1,
-    rarity_id INTEGER,
-    illustrator TEXT,
-    CONSTRAINT pk_printings_id PRIMARY KEY (id),
-    CONSTRAINT uq_printings_card_number_id_product_id_variant_id UNIQUE (card_number_id, product_id, variant_id),
-    CONSTRAINT fk_printings_card_number_id FOREIGN KEY (card_number_id) REFERENCES card_numbers (id),
-    CONSTRAINT fk_printings_product_id FOREIGN KEY (product_id) REFERENCES products (id),
-    CONSTRAINT fk_printings_variant_id FOREIGN KEY (variant_id) REFERENCES variants (id),
-    CONSTRAINT fk_printings_rarity_id FOREIGN KEY (rarity_id) REFERENCES rarities (id)
-);
-CREATE INDEX ix_printings_product_id ON printings (product_id);
-CREATE INDEX ix_printings_variant_id ON printings (variant_id);
-CREATE INDEX ix_printings_rarity_id ON printings (rarity_id);
-
-CREATE TABLE printing_images (
-    id INTEGER NOT NULL,
-    printing_id INTEGER NOT NULL,
-    image_size_id INTEGER NOT NULL,
-    path TEXT NOT NULL,
-    source_url TEXT NOT NULL,
-    sha256 TEXT,
-    width INTEGER,
-    height INTEGER,
-    mime_type TEXT,
-    CONSTRAINT pk_printing_images_id PRIMARY KEY (id),
-    CONSTRAINT uq_printing_images_printing_id_image_size_id UNIQUE (printing_id, image_size_id),
-    CONSTRAINT fk_printing_images_printing_id FOREIGN KEY (printing_id) REFERENCES printings (id),
-    CONSTRAINT fk_printing_images_image_size_id FOREIGN KEY (image_size_id) REFERENCES image_sizes (id),
-    CONSTRAINT ck_printing_images_width CHECK (width > 0),
-    CONSTRAINT ck_printing_images_height CHECK (height > 0)
-);
-CREATE INDEX ix_printing_images_image_size_id ON printing_images (image_size_id);
-
--- Gameplay attributes
-CREATE TABLE card_colors (
-    card_id INTEGER NOT NULL,
-    color_id INTEGER NOT NULL,
-    CONSTRAINT pk_card_colors_card_id_color_id PRIMARY KEY (card_id, color_id),
-    CONSTRAINT fk_card_colors_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
-    CONSTRAINT fk_card_colors_color_id FOREIGN KEY (color_id) REFERENCES colors (id)
-);
-CREATE INDEX ix_card_colors_color_id ON card_colors (color_id);
-
-CREATE TABLE card_symbols (
-    card_id INTEGER NOT NULL,
-    symbol_id INTEGER NOT NULL,
-    count INTEGER NOT NULL,
-    CONSTRAINT pk_card_symbols_card_id_symbol_id PRIMARY KEY (card_id, symbol_id),
-    CONSTRAINT fk_card_symbols_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
-    CONSTRAINT fk_card_symbols_symbol_id FOREIGN KEY (symbol_id) REFERENCES symbols (id),
-    CONSTRAINT ck_card_symbols_count CHECK (count >= 1)
-);
-CREATE INDEX ix_card_symbols_symbol_id ON card_symbols (symbol_id);
-
-CREATE TABLE card_reductions (
-    card_id INTEGER NOT NULL,
-    symbol_id INTEGER NOT NULL,
-    count INTEGER NOT NULL,
-    CONSTRAINT pk_card_reductions_card_id_symbol_id PRIMARY KEY (card_id, symbol_id),
-    CONSTRAINT fk_card_reductions_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
-    CONSTRAINT fk_card_reductions_symbol_id FOREIGN KEY (symbol_id) REFERENCES symbols (id),
-    CONSTRAINT ck_card_reductions_count CHECK (count >= 1)
-);
-CREATE INDEX ix_card_reductions_symbol_id ON card_reductions (symbol_id);
-
-CREATE TABLE card_levels (
-    id INTEGER NOT NULL,
-    card_id INTEGER NOT NULL,
-    level INTEGER NOT NULL,
-    cores INTEGER NOT NULL,
-    battle_points INTEGER,
-    CONSTRAINT pk_card_levels_id PRIMARY KEY (id),
-    CONSTRAINT uq_card_levels_card_id_level UNIQUE (card_id, level),
-    CONSTRAINT fk_card_levels_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
-    CONSTRAINT ck_card_levels_level CHECK (level >= 1),
-    CONSTRAINT ck_card_levels_cores CHECK (cores >= 0),
-    CONSTRAINT ck_card_levels_battle_points CHECK (battle_points >= 0)
-);
-
-CREATE TABLE families (
-    id INTEGER NOT NULL,
-    code TEXT,
-    name_jp TEXT NOT NULL,
-    name_en TEXT,
-    en_source_id INTEGER,
-    en_status_id INTEGER NOT NULL DEFAULT 1,
-    CONSTRAINT pk_families_id PRIMARY KEY (id),
-    CONSTRAINT uq_families_code UNIQUE (code),
-    CONSTRAINT uq_families_name_jp UNIQUE (name_jp),
-    CONSTRAINT fk_families_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
-    CONSTRAINT fk_families_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id)
-);
-
-CREATE TABLE family_aliases (
-    id INTEGER NOT NULL,
-    family_id INTEGER NOT NULL,
-    alias TEXT NOT NULL,
-    lang TEXT NOT NULL,
-    translation_source_id INTEGER NOT NULL,
-    CONSTRAINT pk_family_aliases_id PRIMARY KEY (id),
-    CONSTRAINT uq_family_aliases_family_id_alias_lang UNIQUE (family_id, alias, lang),
-    CONSTRAINT fk_family_aliases_family_id FOREIGN KEY (family_id) REFERENCES families (id),
-    CONSTRAINT fk_family_aliases_translation_source_id FOREIGN KEY (translation_source_id) REFERENCES translation_sources (id),
-    CONSTRAINT ck_family_aliases_lang CHECK (lang IN ('jp', 'en'))
-);
-
-CREATE TABLE card_families (
-    card_id INTEGER NOT NULL,
-    family_id INTEGER NOT NULL,
-    CONSTRAINT pk_card_families_card_id_family_id PRIMARY KEY (card_id, family_id),
-    CONSTRAINT fk_card_families_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
-    CONSTRAINT fk_card_families_family_id FOREIGN KEY (family_id) REFERENCES families (id)
-);
-CREATE INDEX ix_card_families_family_id ON card_families (family_id);
-
-CREATE TABLE brave_details (
-    card_id INTEGER NOT NULL,
-    fusion_condition_jp TEXT,
-    fusion_condition_en TEXT,
-    fusion_bp_bonus INTEGER,
-    en_source_id INTEGER,
-    en_status_id INTEGER NOT NULL DEFAULT 1,
-    CONSTRAINT pk_brave_details_card_id PRIMARY KEY (card_id),
-    CONSTRAINT fk_brave_details_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
-    CONSTRAINT fk_brave_details_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
-    CONSTRAINT fk_brave_details_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id)
-);
-
-CREATE TABLE ultimate_details (
-    card_id INTEGER NOT NULL,
-    summon_condition_jp TEXT,
-    summon_condition_en TEXT,
-    en_source_id INTEGER,
-    en_status_id INTEGER NOT NULL DEFAULT 1,
-    CONSTRAINT pk_ultimate_details_card_id PRIMARY KEY (card_id),
-    CONSTRAINT fk_ultimate_details_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
-    CONSTRAINT fk_ultimate_details_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
-    CONSTRAINT fk_ultimate_details_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id)
-);
-
--- Effects and keywords
-CREATE TABLE card_effects (
-    id INTEGER NOT NULL,
-    card_id INTEGER NOT NULL,
-    position INTEGER NOT NULL,
-    effect_kind_id INTEGER NOT NULL,
-    timing_jp TEXT,
-    timing_en TEXT,
-    text_jp TEXT NOT NULL,
-    text_en TEXT,
-    en_source_id INTEGER,
-    en_status_id INTEGER NOT NULL DEFAULT 1,
-    CONSTRAINT pk_card_effects_id PRIMARY KEY (id),
-    CONSTRAINT uq_card_effects_card_id_position UNIQUE (card_id, position),
-    CONSTRAINT fk_card_effects_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
-    CONSTRAINT fk_card_effects_effect_kind_id FOREIGN KEY (effect_kind_id) REFERENCES effect_kinds (id),
-    CONSTRAINT fk_card_effects_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
-    CONSTRAINT fk_card_effects_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id),
-    CONSTRAINT ck_card_effects_position CHECK (position >= 1)
-);
-CREATE INDEX ix_card_effects_effect_kind_id ON card_effects (effect_kind_id);
-
-CREATE TABLE card_effect_levels (
-    card_effect_id INTEGER NOT NULL,
-    card_level_id INTEGER NOT NULL,
-    CONSTRAINT pk_card_effect_levels_card_effect_id_card_level_id PRIMARY KEY (card_effect_id, card_level_id),
-    CONSTRAINT fk_card_effect_levels_card_effect_id FOREIGN KEY (card_effect_id) REFERENCES card_effects (id),
-    CONSTRAINT fk_card_effect_levels_card_level_id FOREIGN KEY (card_level_id) REFERENCES card_levels (id)
-);
-CREATE INDEX ix_card_effect_levels_card_level_id ON card_effect_levels (card_level_id);
-
-CREATE TABLE card_effect_keywords (
-    card_effect_id INTEGER NOT NULL,
-    keyword_id INTEGER NOT NULL,
-    parameter_jp TEXT,
-    CONSTRAINT pk_card_effect_keywords_card_effect_id_keyword_id PRIMARY KEY (card_effect_id, keyword_id),
-    CONSTRAINT fk_card_effect_keywords_card_effect_id FOREIGN KEY (card_effect_id) REFERENCES card_effects (id),
-    CONSTRAINT fk_card_effect_keywords_keyword_id FOREIGN KEY (keyword_id) REFERENCES keywords (id)
-);
-CREATE INDEX ix_card_effect_keywords_keyword_id ON card_effect_keywords (keyword_id);
-
--- Provenance
-CREATE TABLE source_pages (
-    id INTEGER NOT NULL,
-    source_id INTEGER NOT NULL,
-    url TEXT NOT NULL,
-    fetched_at TEXT NOT NULL,
-    content_sha256 TEXT NOT NULL,
-    parser_version TEXT NOT NULL,
-    CONSTRAINT pk_source_pages_id PRIMARY KEY (id),
-    CONSTRAINT uq_source_pages_url UNIQUE (url),
-    CONSTRAINT fk_source_pages_source_id FOREIGN KEY (source_id) REFERENCES sources (id)
-);
-CREATE INDEX ix_source_pages_source_id ON source_pages (source_id);
-
-CREATE TABLE card_source_pages (
-    card_id INTEGER NOT NULL,
-    source_page_id INTEGER NOT NULL,
-    CONSTRAINT pk_card_source_pages_card_id_source_page_id PRIMARY KEY (card_id, source_page_id),
-    CONSTRAINT fk_card_source_pages_card_id FOREIGN KEY (card_id) REFERENCES cards (id),
-    CONSTRAINT fk_card_source_pages_source_page_id FOREIGN KEY (source_page_id) REFERENCES source_pages (id)
-);
-CREATE INDEX ix_card_source_pages_source_page_id ON card_source_pages (source_page_id);
-
-CREATE TABLE product_source_pages (
-    product_id INTEGER NOT NULL,
-    source_page_id INTEGER NOT NULL,
-    CONSTRAINT pk_product_source_pages_product_id_source_page_id PRIMARY KEY (product_id, source_page_id),
-    CONSTRAINT fk_product_source_pages_product_id FOREIGN KEY (product_id) REFERENCES products (id),
-    CONSTRAINT fk_product_source_pages_source_page_id FOREIGN KEY (source_page_id) REFERENCES source_pages (id)
-);
-CREATE INDEX ix_product_source_pages_source_page_id ON product_source_pages (source_page_id);
-```

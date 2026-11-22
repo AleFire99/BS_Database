@@ -2,14 +2,21 @@
 
 import logging
 import re
-from datetime import timedelta
+from collections.abc import Sequence
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Annotated
 
 import typer
 
 from bs_database import __version__
-from bs_database.db import build_db
+from bs_database.build import (
+    BuildError,
+    BuildQualityError,
+    BuildResult,
+    build_from_directories,
+)
+from bs_database.build.quality import Finding, Severity
 from bs_database.glossary import GlossaryError, load_glossary
 from bs_database.ingest.cache import CachedFetcher, RawCache
 from bs_database.ingest.fandom import FandomApi
@@ -216,20 +223,91 @@ def glossary_fandom(
     typer.echo(f"Written to {target}")
 
 
+def _render_findings(findings: Sequence[Finding]) -> list[str]:
+    """The quality summary line and one line per finding (errors first)."""
+    counts = {s: sum(1 for f in findings if f.severity is s) for s in Severity}
+    lines = [
+        f"Quality: {counts[Severity.ERROR]} errors, {counts[Severity.WARNING]} warnings, "
+        f"{counts[Severity.INFO]} info"
+    ]
+    lines += [f"  [{f.severity}] {f.id}: {f.count}, {f.title}" for f in findings]
+    return lines
+
+
+def _render_build(result: BuildResult) -> str:
+    """The build summary: rows per table, image association levels and quality findings."""
+    lines = [
+        f"Built {result.path}: {sum(result.table_counts.values())} rows in "
+        f"{len(result.table_counts)} tables"
+    ]
+    lines += [f"  {name}: {count}" for name, count in result.table_counts.items()]
+    if result.image_levels:
+        levels = ", ".join(f"{k} {v}" for k, v in result.image_levels.items())
+        lines.append(f"Image association levels: {levels}")
+    lines += _render_findings(result.findings)
+    if result.report_json is not None and result.report_md is not None:
+        lines.append(f"Report: {result.report_json} and {result.report_md}")
+    return "\n".join(lines)
+
+
 @app.command()
 def build(
     ctx: typer.Context,
-    input_dir: Annotated[
-        Path,
-        typer.Option("--input", help="Directory with the legacy normalized card JSON files."),
-    ],
-    db: Annotated[Path | None, typer.Option("--db", help="Database path.")] = None,
+    out: Annotated[
+        Path | None,
+        typer.Option("--out", help="Database file to write (default: BSDB_DB_PATH)."),
+    ] = None,
+    built_at: Annotated[
+        str | None,
+        typer.Option(
+            "--built-at",
+            help="Fixed ISO 8601 build time, so two builds of the same data are byte-identical.",
+        ),
+    ] = None,
+    data_version: Annotated[
+        str,
+        typer.Option("--data-version", help="Release tag of the data (schema_meta), e.g. v0.5.0."),
+    ] = "dev",
+    strict: Annotated[
+        bool,
+        typer.Option("--strict", help="Fail the build on quality warnings too (not on info)."),
+    ] = False,
 ) -> None:
-    """Build the SQLite database from card JSON files (appends to an existing DB)."""
+    """Build the SQLite database from data/normalized and the glossary (replaces the file).
+
+    Reads the normalized card pages and the glossary, writes a fresh database in one
+    transaction, runs the quality rules and replaces the output atomically. Quality errors
+    (and warnings with --strict) fail the build and keep the old file. The report goes to
+    <db-stem>.build_report.json and .md next to the database either way.
+    """
     settings = _settings(ctx)
-    target = db or settings.db_path
-    build_db(input_dir, target)
-    typer.echo(f"Built {target}")
+    if built_at is not None:
+        try:
+            datetime.fromisoformat(built_at)
+        except ValueError as exc:
+            raise typer.BadParameter(f"not an ISO 8601 time: {built_at!r}") from exc
+    try:
+        result = build_from_directories(
+            out or settings.db_path,
+            settings.normalized_dir,
+            settings.glossary_dir,
+            cache_dir=settings.cache_dir,
+            built_at=built_at,
+            data_version=data_version,
+            strict=strict,
+        )
+    except GlossaryError as exc:
+        typer.echo(f"error: invalid glossary in {settings.glossary_dir}:\n{exc}", err=True)
+        raise typer.Exit(1) from exc
+    except BuildQualityError as exc:
+        typer.echo(f"error: {exc}", err=True)
+        typer.echo("\n".join(_render_findings(exc.findings)), err=True)
+        typer.echo(f"Report: {exc.report_json} and {exc.report_md}", err=True)
+        raise typer.Exit(1) from exc
+    except BuildError as exc:
+        typer.echo(f"error: {exc}", err=True)
+        raise typer.Exit(1) from exc
+    typer.echo(_render_build(result))
 
 
 _UNITS = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}

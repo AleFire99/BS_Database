@@ -1,0 +1,63 @@
+{
+  "image_levels": {
+    "L0": 18,
+    "L1": 64,
+    "L5": 20
+  },
+  "quality_rules": {
+    "Q030": 26,
+    "Q031": 100,
+    "Q033": 274,
+    "Q034": 299,
+    "Q050": 103,
+    "Q051": 1,
+    "Q053": 70,
+    "Q054": 1,
+    "Q055": 3
+  },
+  "tables": {
+    "brave_details": 5,
+    "card_colors": 46,
+    "card_credits": 14,
+    "card_effect_keywords": 35,
+    "card_effect_levels": 97,
+    "card_effects": 103,
+    "card_families": 68,
+    "card_levels": 78,
+    "card_numbers": 48,
+    "card_reductions": 10,
+    "card_source_pages": 46,
+    "card_symbols": 38,
+    "card_types": 5,
+    "cards": 46,
+    "colors": 6,
+    "effect_kinds": 7,
+    "families": 313,
+    "family_aliases": 1,
+    "image_sizes": 2,
+    "keywords": 320,
+    "printing_images": 204,
+    "printings": 146,
+    "product_source_pages": 129,
+    "product_types": 8,
+    "products": 100,
+    "rarities": 32,
+    "schema_meta": 1,
+    "source_pages": 32,
+    "sources": 1,
+    "symbols": 9,
+    "translation_sources": 5,
+    "translation_statuses": 4,
+    "ultimate_details": 3,
+    "variants": 4
+  },
+  "warnings": {
+    "block_icon_conflict": 11,
+    "image_fallback_first_of_number": 20,
+    "printing_duplicate_merged": 4,
+    "product_name_folded": 4,
+    "product_type_conflict": 1,
+    "product_without_type": 2,
+    "source_page_without_raw_html": 32
+  }
+}

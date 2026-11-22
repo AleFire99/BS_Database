@@ -1,6 +1,6 @@
 # 0003. Naming conventions, BSS_app alignment and schema versioning
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-14
 
 ## Context
@@ -47,7 +47,7 @@ Use **option 2**: snake_case conventions, keeping the BSS_app entity split but n
   - Foreign keys are `<referenced_singular>_id`.
   - Natural keys are UNIQUE constraints and never primary keys (for example `card_numbers.number`, `products.code`; see [ADR 0004](0004-card-printing-identity.md)).
   - The legacy `cards.card_id` (TEXT print number) is retired because it clashes with the foreign key convention.
-- **Constraint and index names:** `pk_`, `fk_`, `uq_`, `ck_` or `ix_` followed by `<table>_<cols>`. Implemented as a SQLAlchemy `naming_convention` in #12.
+- **Constraint and index names:** `pk_`, `fk_`, `uq_`, `ck_` or `ix_` followed by `<table>_<cols>`. Written in the DDL itself (`schema.sql`), see [ADR 0011](0011-schema-sql-source-of-truth-without-migrations.md).
 - **Quoting:** none required. Avoid reserved words as bare table names (`order`, `set`); plural names such as `sets` are safe. Columns such as `level` are legal unquoted in SQLite, but each such case is flagged in review.
 - **Enum-like values:** lookup tables with foreign keys instead of CHECK lists, so a new card type or rarity needs no schema change. The one exception is language codes (for example `family_aliases.lang`). They are an internal closed list (`jp`, `en`) and may use a CHECK list.
 
@@ -91,7 +91,7 @@ If BSS_app tooling is ever shared, compatibility views can map the names without
 | `schema_version` | TEXT | Schema SemVer | `1.2.0` |
 | `data_version` | TEXT | Release tag of the data | `v0.3.0` |
 | `built_at` | TEXT | ISO-8601 UTC build time | `2026-11-14T10:00:00Z` |
-| `source_snapshot` | TEXT | Identifier of the raw source snapshot used | to be defined in #9/#12 |
+| `source_snapshot` | TEXT | Identifier of the raw source snapshot used | `batspi 2026-11-15..2026-11-21; 13480 pages; normalized 1.2.0` (format defined in #121, see [build.md](../architecture/build.md)) |
 | `generator` | TEXT | `bs_database` package version that built the file | `0.2.0` |
 
 - Schema SemVer rules:
@@ -109,7 +109,7 @@ If BSS_app tooling is ever shared, compatibility views can map the names without
 - The legacy tables and columns (`cards.card_id`, `battlePoints`) are renamed when the package schema is rebuilt in #12.
 - Names in the table were finalised by #29 to #31; further edits are allowed while this ADR is Proposed.
 - Consumers get a cheap integer compatibility check and a self-describing file.
-- The SQLAlchemy `naming_convention` and the `schema_meta` writer must be implemented in #12.
+- The constraint names (in `schema.sql`, [ADR 0011](0011-schema-sql-source-of-truth-without-migrations.md)) and the `schema_meta` writer must be implemented in #12.
 
 ## Links
 

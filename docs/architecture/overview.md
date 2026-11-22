@@ -25,19 +25,19 @@ flowchart LR
         end
         NORM["normalize"]
         GLOS["glossary<br/>(loader, validator)"]
-        DBM["db<br/>(models, build_db)"]
+        BUILD["build<br/>(reader, grouping, loaders)"]
+        SCHEMA["schema.sql"]
     end
 
     PJ[("data/parsed/*/*.json")]
     NJ[("data/normalized/*/*.json")]
-    LJ[("legacy card JSON<br/>(--input)")]
     GL[("data/glossary/*.csv")]
     DB[("battle_spirits.db<br/>(untracked build output)")]
 
     CLI --> SET
     CLI --> LOG
     CLI --> NORM
-    CLI --> DBM
+    CLI --> BUILD
     CLI --> PIPE
     PIPE --> HTTP
     PIPE --> CACHE
@@ -52,10 +52,12 @@ flowchart LR
     GL --> GLOS
     GLOS --> NORM
     NORM --> NJ
-    LJ --> DBM --> DB
+    NJ --> BUILD
+    GL --> BUILD
+    SCHEMA --> BUILD --> DB
 ```
 
-The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). They are complete: `bsdb scrape` runs the whole pipeline (HTTP client, cache, parsers, state store, parsed JSON, run report), documented in [scraper.md](scraper.md). The parsed JSON is not loaded into the database yet; the loader is [#12](https://github.com/AleFire99/BS_Database/issues/12). The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
+The `ingest` and `parsers` packages hold the target layout of the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). They are complete: `bsdb scrape` runs the whole pipeline (HTTP client, cache, parsers, state store, parsed JSON, run report), documented in [scraper.md](scraper.md). The normalized JSON is loaded into the database by `bsdb build` ([build.md](build.md), [#120](https://github.com/AleFire99/BS_Database/issues/120)). The legacy scrapers and `bsdb images` were removed in [#66](https://github.com/AleFire99/BS_Database/issues/66); they are at tag `v0.1.0` or commit `f90747b`.
 
 ### Card page parser
 
@@ -71,7 +73,7 @@ The `ingest` and `parsers` packages hold the target layout of the scraper rewrit
 - **#63 text differences.** `CardPage.differences` also compares `effects`, the side conditions and `flavor`. Credits and `flavor_note` are printing-level and excluded.
 - **Type marks, level tokens, symbol variants and extra credits (#108, ADR 0010).** The type line may start with a class (`契約`, `トークン`: `Gameplay.card_class`) and carry a bracketed mark (`禁止カード`, `光`, `闇`: `Gameplay.type_mark`); `card_type` stays one of the five base types. The level line is read by a tokenizer, not by splitting on blanks: `<C2>Lv2` has no core count (`Level.cores` is `None`, the token is `Level.count_condition`), a remark such as `/真界放` or a battle point printed as text (`X0000`) goes to `Level.note`. `シンボル：EX白` keeps `EX` in `SymbolCount.variant` and `神(青)` keeps the colour in `SymbolCount.color`. `プロデュース`, `ペイント`, `書`, `写真` and `コラボレート` credits go to `CardText.other_credits` (`RoleCredit(role, name, note)`); credit labels take a full-width or ASCII colon; an empty `イラスト：` is skipped with a warning. All values are the printed literals; what a mark means is not stated by the source and is left to the owner (ADR 0010).
 - **Fields without a schema column.** `deck_limit` (`制限カード<N>`), `card_class`, `type_mark`, `Level.count_condition` and `note`, `SymbolCount.variant` and `color`, `other_credits`, `overclock`, `OC条件`, `コンセプト`, `Printing.detail_jp` and `note_jp`, `flavor_note` and the effect `form`/`label` structure are parsed but have no column in the [target schema](../data-model/target-schema.md); #12 decides where they go.
-- **Coverage gate.** `pyproject.toml` runs coverage with branches and fails below 97% over `ingest/`, `parsers/`, `glossary.py` and `normalize/`; the legacy modules (`db.py`, `cli.py`) are not gated. CI already runs `uv run pytest --cov`.
+- **Coverage gate.** `pyproject.toml` runs coverage with branches and fails below 97% over `ingest/`, `parsers/`, `glossary.py`, `review/`, `normalize/`, `translate/` and `build/`; `cli.py` is not gated. CI already runs `uv run pytest --cov`.
 
 ## Target data flow
 
@@ -104,11 +106,11 @@ flowchart LR
 sequenceDiagram
     actor Dev as Developer
     participant C as bsdb (cli)
-    participant J as legacy card JSON
     participant I as ingest.pipeline
     participant P as data/parsed
     participant N as normalize
-    participant D as db.build_db
+    participant NJ as data/normalized
+    participant D as build.build_database
     participant DB as SQLite
 
     Dev->>C: bsdb scrape
@@ -119,17 +121,19 @@ sequenceDiagram
     C->>N: normalize_tree(parsed_dir, normalized_dir, glossary, translator)
     N->>P: read parsed JSON (never written)
     N-->>C: pages written, unmapped and uncurated terms, translations
-    Dev->>C: bsdb build --input PATH [--db PATH]
-    C->>D: build_db(input, db_path)
-    D->>J: read each JSON
-    D->>DB: insert card, type, colors, families, core requirements
+    Dev->>C: bsdb build [--out PATH] [--built-at ISO]
+    C->>D: build_from_directories(out, normalized_dir, glossary_dir)
+    D->>NJ: read each normalized page (never written)
+    D->>DB: schema.sql, lookups, cards, printings, effects, images in one transaction
+    D->>DB: foreign_key_check, then atomic replace of the output
+    C-->>Dev: rows per table and warning counts
 ```
 
 ## Components
 
 | Module | Responsibility | Inputs | Outputs |
 | --- | --- | --- | --- |
-| `bs_database.cli` | Typer app (`bsdb`): `scrape` (pipeline, [scraper.md](scraper.md)), `normalize`, `build`, global `--log-level` and `--version` | `Settings`, command options | calls the modules below |
+| `bs_database.cli` | Typer app (`bsdb`): `scrape` (pipeline, [scraper.md](scraper.md)), `normalize`, `build` ([build.md](build.md)), global `--log-level` and `--version` | `Settings`, command options | calls the modules below |
 | `bs_database.settings` | `Settings` (pydantic-settings): `BSDB_*` env and `.env`, paths derived from `data_dir` | environment | URLs, directories, request delay |
 | `bs_database.log` | `configure_logging` | level name | root logger setup |
 | `bs_database.ingest.policy` | Scraping policy helpers: base URL, User-Agent, deny list, robots.txt split and check, challenge detection | URL, robots rules, page text | `StopRun` or a boolean |
@@ -146,7 +150,8 @@ sequenceDiagram
 | `bs_database.parsers.batspi.card`, `.card_text`, `.card_sections` | Card page parser: identity and gameplay values (#70); effects, credits, flavour, printings and images (#71) | cached HTML, URL | `CardPage` |
 | `bs_database.glossary` | Load and validate the glossary CSVs; exact `jp` lookup, legacy English family aliases (#92); used by `normalize` | `data/glossary/*.csv` | `Glossary` |
 | `bs_database.normalize` | Package (`records`, `rules`, `pipeline`, #93): `normalize_page` (pure), `normalize_tree`, `translation` and `report` (#95); see [normalization.md](normalization.md) | `data/parsed`, `Glossary` | `data/normalized/<source>/<sha256>.json` |
-| `bs_database.db` | SQLAlchemy models, JSON loader, color derivation, `build_db` (legacy, rewritten in #12) | legacy card JSON tree (`bsdb build --input`) | SQLite rows |
+| `bs_database.build` | Package (`reader`, `grouping`, `lookups`, `cards`, `effects`, `products`, `images`, `builder`, #120): `build_database`, `build_from_directories`; see [build.md](build.md) | `data/normalized`, `Glossary`, raw-HTML cache (hashes), `schema.sql` | the SQLite database |
+| `bs_database.schema` | `load_schema_sql()`: the packaged `schema.sql` (ADR 0011) | n/a | DDL text |
 | `tests/tools/db_counts.py` | Per-table row counts of a SQLite file as JSON | a `.db` file | JSON on stdout |
 | `example_query.sql` | Sample SQL queries | n/a | n/a |
 | `Notes.md` | Informal notes (card type list) | n/a | n/a |
@@ -171,12 +176,12 @@ Tags refer to the epic addressing each item: E2 restructure ([#7](https://github
 | Resolved: legacy scrapers and fandom code | Removed in #66 (commit `f90747b` has them); fandom is dropped for v1 ([fandom.md](../sources/fandom.md)); the new ingestion modules (#67-#73), the parsers (#69-#71) and `bsdb scrape` are implemented | E5 |
 | Machine translation of names and families | `GoogleTranslator` output is stored as canonical names; family names were patched with ad-hoc rules in the legacy `normalize` plus `family_mapping.txt` (removed in #93). Replaced by glossaries, the [normalize package](normalization.md) (#93) and a cached translator ([ADR 0008](../adr/0008-normalization-and-translation.md)): [#92](https://github.com/AleFire99/BS_Database/issues/92) to [#95](https://github.com/AleFire99/BS_Database/issues/95) | E6 |
 | Translation failures stored as data | `translate()` returns `"Error: ..."` strings that would be persisted. Fixed by the translator and its error policy in [ADR 0008](../adr/0008-normalization-and-translation.md) ([#94](https://github.com/AleFire99/BS_Database/issues/94), [#95](https://github.com/AleFire99/BS_Database/issues/95)) | E6 |
-| Colors derived from translated symbol | Symbol-to-color map in `db.py` lacks `white`; multicolor strings (e.g. "Red purple green white yellow blue") match nothing. Designed in the target schema: `colors` with White and a `card_colors` junction filled from the Japanese colour segment ([target-schema](../data-model/target-schema.md#card_colors)); the colour mapping moves to glossaries in [#92](https://github.com/AleFire99/BS_Database/issues/92), the loader is E7. | E3, E6 |
+| Resolved: colors derived from translated symbol | The legacy symbol-to-color map in `db.py` lacked `white`; multicolor strings (e.g. "Red purple green white yellow blue") match nothing. Designed in the target schema: `colors` with White and a `card_colors` junction filled from the Japanese colour segment ([target-schema](../data-model/target-schema.md#card_colors)); the colour mapping moves to glossaries in [#92](https://github.com/AleFire99/BS_Database/issues/92), the loader (#120) fills `card_colors` from the glossary code. | E3, E6, E7 |
 | Resolved: no caching, retries or User-Agent | The legacy scrapers were removed in #66; the new client, cache, state and pipeline (#67, #68, #72, #73) provide them. Requirements are set in the [scraping policy](../sources/policy.md#5-requirements-for-the-scraper-rewrite-10) | E5 |
 | Resolved: brittle HTML selectors | The legacy selectors went with the scrapers; the new parsers read named structure and raise `ParseError` on anything unknown instead of guessing (#69-#71) | E4, E5 |
-| Card effects/text not loaded | Effects, keywords, credits, flavour, printings and images are parsed into `data/parsed` since #71 and #73. The legacy `build` still loads only name, type, cost, symbol, family and core requirements, and `reduction` never reaches the DB. Designed in the target schema: `card_effects`, `card_reductions` and flavor text ([effects](../data-model/target-schema.md#effects-and-keywords), [reductions](../data-model/target-schema.md#card_reductions)); the loader is E7 (#12). | E3, E7 |
-| Cards without a `<pre>` block are saved with null fields | `batspi_card` falls back to all-`None`, then `insert_card` fails on missing `type` | E5, E7 |
-| Loader is not idempotent for requirements and is slow | Per-card commits and per-row `get_or_create` queries; existing cards are skipped, so changes are never updated | E7 |
-| No validation of loaded data | No constraints, no checks on set coverage or duplicates | E7 |
+| Resolved: card effects/text not loaded | The legacy `build` loaded only name, type, cost, symbol, family and core requirements. `bsdb build` (#120) loads effects, keywords, reductions, credits, flavour, printings and images ([build.md](build.md)); the data with no column yet is listed there (follow-up #130). | E3, E7 |
+| Resolved: cards without a `<pre>` block | The parser raises `ParseError` instead of saving null fields | E5 |
+| Resolved: loader not idempotent and slow | `bsdb build` writes a fresh file in one transaction with `executemany` (about 5 s for the full data) and replaces the output atomically | E7 |
+| Validation of loaded data | Foreign keys and the foreign key check are in the build (#120); the quality rules and `--strict` are [#122](https://github.com/AleFire99/BS_Database/issues/122) | E7 |
 | Images not versioned or described | Paths are stored as strings; default image set range (BS19-71) is hardcoded; `data/images` and `data/json` are not in the repository | E8 |
 | No license or distribution story | No license file, no release artifacts | E9 |

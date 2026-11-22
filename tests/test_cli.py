@@ -1,8 +1,4 @@
-"""Tests.
-
-Goldens in tests/goldens/ were generated from the legacy code at 5ae5646
-(legacy code removed in #23; see tag v0.1.0).
-"""
+"""Tests of the ``bsdb`` command line."""
 
 import json
 import logging
@@ -14,7 +10,12 @@ from pathlib import Path
 
 import pytest
 from fakes import FakeEngine
-from golden_support import GLOSSARY_DIR, blank_family_curation, write_parsed_fixture
+from golden_support import (
+    GLOSSARY_DIR,
+    NORMALIZED_GOLDENS,
+    blank_family_curation,
+    write_parsed_fixture,
+)
 from typer.testing import CliRunner
 
 from bs_database import __version__
@@ -81,11 +82,6 @@ def test_invalid_log_level_fails(restore_logging: None) -> None:
     assert result.exit_code != 0
 
 
-FIXTURES = Path(__file__).parent / "fixtures"
-LEGACY_JSON = FIXTURES / "legacy" / "card_json"
-GOLDEN = Path(__file__).parent / "goldens" / "db.json"
-
-
 @pytest.fixture
 def data_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, restore_logging: None) -> Path:
     data = tmp_path / "data"
@@ -104,34 +100,87 @@ def test_commands_listed_with_help() -> None:
         assert runner.invoke(app, [name, "--help"]).exit_code == 0
 
 
-def _assert_matches_golden(db: Path) -> None:
-    golden = json.loads(GOLDEN.read_text(encoding="utf-8"))
-    con = sqlite3.connect(db)
-    for table, count in golden["counts"].items():
-        assert con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0] == count, table
-    for table in ("card_types", "colors", "families"):
-        names = sorted(r[0] for r in con.execute(f"SELECT name FROM {table}"))
-        assert names == golden[f"{table}_names"], table
-    con.close()
+def _normalized_data(data_dir: Path) -> None:
+    shutil.copytree(NORMALIZED_GOLDENS, data_dir / "normalized" / "batspi")
+    shutil.copytree(GLOSSARY_DIR, data_dir / "glossary")
 
 
-def test_build_matches_golden(data_dir: Path) -> None:
-    result = runner.invoke(app, ["build", "--input", str(LEGACY_JSON)])
-    assert result.exit_code == 0, result.output
-    _assert_matches_golden(data_dir / "battle_spirits.db")
+def _rows(db: Path, sql: str) -> list[tuple[object, ...]]:
+    with sqlite3.connect(db) as con:
+        return con.execute(sql).fetchall()
 
 
-def test_build_requires_input(data_dir: Path) -> None:
+def test_build_writes_the_default_database(data_dir: Path) -> None:
+    _normalized_data(data_dir)
     result = runner.invoke(app, ["build"])
+    assert result.exit_code == 0, result.output
+    db = data_dir / "battle_spirits.db"
+    assert _rows(db, "SELECT count(*) FROM cards") == [(46,)]
+    assert "cards: 46" in result.output
+    assert "Quality: 0 errors," in result.output
+    assert "Report: " in result.output
+    assert (data_dir / "battle_spirits.build_report.json").is_file()
+    assert "block_icon_conflict" in result.output
+    assert "Image association levels: L0 " in result.output
+
+
+def test_build_out_option_and_replace(data_dir: Path, tmp_path: Path) -> None:
+    _normalized_data(data_dir)
+    target = tmp_path / "custom.db"
+    target.write_bytes(b"old content")
+    result = runner.invoke(app, ["build", "--out", str(target)])
+    assert result.exit_code == 0, result.output
+    assert _rows(target, "SELECT count(*) FROM cards") == [(46,)]
+    assert not (data_dir / "battle_spirits.db").exists()
+
+
+def test_build_built_at_is_reproducible(data_dir: Path, tmp_path: Path) -> None:
+    _normalized_data(data_dir)
+    a, b = tmp_path / "a.db", tmp_path / "b.db"
+    for target in (a, b):
+        result = runner.invoke(
+            app, ["build", "--out", str(target), "--built-at", "2026-01-01T00:00:00+00:00"]
+        )
+        assert result.exit_code == 0, result.output
+    assert a.read_bytes() == b.read_bytes()
+
+
+def test_build_rejects_a_bad_built_at(data_dir: Path) -> None:
+    _normalized_data(data_dir)
+    result = runner.invoke(app, ["build", "--built-at", "yesterday"])
     assert result.exit_code == 2
 
 
-def test_build_db_option(data_dir: Path, tmp_path: Path) -> None:
-    target = tmp_path / "custom.db"
-    result = runner.invoke(app, ["build", "--input", str(LEGACY_JSON), "--db", str(target)])
-    assert result.exit_code == 0, result.output
-    _assert_matches_golden(target)
+def test_build_without_normalized_data_fails(data_dir: Path) -> None:
+    shutil.copytree(GLOSSARY_DIR, data_dir / "glossary")
+    result = runner.invoke(app, ["build"])
+    assert result.exit_code == 1
+    assert "bsdb normalize" in result.output
     assert not (data_dir / "battle_spirits.db").exists()
+
+
+def test_build_error_keeps_the_old_database(data_dir: Path) -> None:
+    _normalized_data(data_dir)
+    old = data_dir / "battle_spirits.db"
+    old.write_bytes(b"old content")
+    bad = next((data_dir / "normalized" / "batspi").glob("card_magic.json"))
+    bad.write_text("{}", encoding="utf-8")
+    result = runner.invoke(app, ["build"])
+    assert result.exit_code == 1
+    assert "not a normalized document" in result.output
+    assert old.read_bytes() == b"old content"
+
+
+def test_build_invalid_glossary_fails(data_dir: Path) -> None:
+    _normalized_data(data_dir)
+    (data_dir / "glossary" / "colors.csv").write_text("jp,code\n", encoding="utf-8")
+    result = runner.invoke(app, ["build"])
+    assert result.exit_code == 1
+    assert "invalid glossary" in result.output
+
+
+def test_build_input_option_is_gone(data_dir: Path) -> None:
+    assert runner.invoke(app, ["build", "--input", "x"]).exit_code == 2
 
 
 def test_images_command_removed() -> None:

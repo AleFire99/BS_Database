@@ -47,6 +47,14 @@ def _attr(tag: Tag, name: str) -> str | None:
     return value if isinstance(value, str) else None
 
 
+_STOP: _Token = ("stop",)
+
+
+def _is_boundary(tag: Tag) -> bool:
+    """A heading or a jump menu ends a section, even when malformed HTML nests it (#138)."""
+    return tag.name == "h4" or "jumpmenu" in (tag.get("class") or [])
+
+
 def _tokens(node: Tag) -> Iterator[_Token]:
     for child in node.children:
         if isinstance(child, Comment):
@@ -54,6 +62,11 @@ def _tokens(node: Tag) -> Iterator[_Token]:
         if isinstance(child, NavigableString):
             yield ("t", str(child))
         elif isinstance(child, Tag):
+            if _is_boundary(child):
+                yield _STOP
+                return
+            if child.name == "ins" or (child.name == "div" and child.find("ins") is not None):
+                continue
             if child.name == "br":
                 yield ("br",)
             elif child.name == "a":
@@ -103,8 +116,12 @@ def _section_lines(heading: Tag) -> list[list[_Token]]:
         elif isinstance(sibling, NavigableString) and not isinstance(sibling, Comment):
             tokens.append(("t", str(sibling)))
         sibling = sibling.next_sibling
+    if _STOP in tokens:
+        tokens = tokens[: tokens.index(_STOP)]
     lines: list[list[_Token]] = [[]]
     for token in tokens:
+        if token[0] == "a" and not token[1]:
+            continue  # an empty link (an anchor or a jump menu) is never content
         if token[0] == "br":
             lines.append([])
         else:

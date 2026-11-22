@@ -29,6 +29,7 @@ milestones:                      # milestone = release target; epic + sub-issues
   naming: vX.Y.Z
 checks:                          # required status checks (rulesets)
   - lint-test
+  - db-build
   - docs
   - pr-lint
   - commitlint

@@ -1,6 +1,6 @@
 # Field coverage matrix
 
-For every column of the [target schema](../data-model/target-schema.md) (the [DDL draft](../data-model/target-schema.md#ddl-draft) is the authoritative column list), this matrix records what each source offers, with a sample value and the fixture it was read from. It is evidence for the source-of-truth decision ([#56](https://github.com/AleFire99/BS_Database/issues/56), ADR 0007) and the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). It makes no modelling decision and proposes no schema change. Terms are defined in the [glossary](../domain/glossary.md). Task: [#55](https://github.com/AleFire99/BS_Database/issues/55).
+For every column of the [target schema](../data-model/target-schema.md) (the [DDL](../../src/bs_database/schema.sql) is the authoritative column list), this matrix records what each source offers, with a sample value and the fixture it was read from. It is evidence for the source-of-truth decision ([#56](https://github.com/AleFire99/BS_Database/issues/56), ADR 0007) and the scraper rewrite ([#10](https://github.com/AleFire99/BS_Database/issues/10)). It makes no modelling decision and proposes no schema change. Terms are defined in the [glossary](../domain/glossary.md). Task: [#55](https://github.com/AleFire99/BS_Database/issues/55).
 
 ## How to read this document
 
@@ -23,7 +23,7 @@ For every column of the [target schema](../data-model/target-schema.md) (the [DD
 
 Notation in the cells: `` `sample` @ `file.html` `` is a value found in that fixture. Samples are matched against the decoded text of the file: `<` and `>` appear as `&lt;` and `&gt;` in the HTML, `<br />` is a line break, and a name that carries ruby readings is split by `<rb>`/`<rt>` elements. Official cells never cite a fixture, so the best status they can have is `unknown (listed in the result list)`.
 
-Scope rule: every column of the DDL draft is covered. Surrogate `id` columns and foreign keys are `derived` by the build and are listed only where the link itself needs a source (for example which printing an image shows). Lookup tables seeded by the project (`code`/`name` pairs) are `derived`.
+Scope rule: every column of `schema.sql` is covered. Surrogate `id` columns and foreign keys are `derived` by the build and are listed only where the link itself needs a source (for example which printing an image shows). Lookup tables seeded by the project (`code`/`name` pairs) are `derived`.
 
 ### The fixtures used
 
@@ -258,7 +258,7 @@ Table: `printing_images` and the lookup `image_sizes`. The policy is **URLs only
 | `printing_id` (which printing an image shows) | `confirmed` as caption text, number then product then optional note: `シークレット` for the second file `/card/BS7/BS72-007-2.jpg` @ `card_spirit.html`; the count `2枚` @ `card_spirit.html`. Some captions have only the number: `SD19-X01-4.jpg` @ `card_ultimate.html` | `unknown` | `not fetched` | The file suffix `-N` is the order in which prints were added to the wiki, not a rarity or era order. A flip face is a letter before the suffix (`BS52-TX01A-2.jpg` @ `card_flip.html`) |
 | `width`, `height` | `confirmed` only as the HTML attributes of the small `<img>`: `width="205" height="300"` @ `card_spirit.html`. These are display attributes, not file properties | `unknown` | `not fetched` | Do not store them as the file size. The artefact stores no file |
 | `sha256`, `mime_type` | `absent` by policy (no download) | `absent` | `not fetched` | NULL in v1 |
-| `path` | `absent`: no file is stored, so there is no path | `absent` | `not fetched` | The DDL draft has `path` NOT NULL; see the gap list |
+| `path` | `absent`: no file is stored, so there is no path | `absent` | `not fetched` | `path` is nullable (#119); see the gap list |
 | `id` | `derived` | | | Surrogate key |
 
 ## 7. Gap list
@@ -286,7 +286,7 @@ Fields where no source gives a usable value, or only a derived or machine-transl
 | 17 | Fields on the page with no column | `コンセプト：` (`card_brave.html`, `card_ultimate.html`, `card_spirit_bs01.html`); the restriction suffix `(制限カード<1>)` (`card_flip.html`); the overclock token `OC<5+>+6000` (`card_ultimate.html`); the wiki's `Last-modified` stamp | Later epic; do not parse them into other columns |
 | 18 | Flip cards | Two faces per number, with `(A)` and `(B)` in the number (`BS52-TX01(A)` @ `card_flip.html`); no face concept in the target | Later epic: owner choice in ADR 0007 or a follow-up to ADR 0004 |
 | 19 | Pre-erratum and `体験会でのスペック` blocks | `<pre>` blocks that are not a printed number (`card_brave.html`, `card_magic_flash.html`) | Skip them in #10; keep the current wording only |
-| 20 | `printing_images.path`, `sha256`, `mime_type`, `width`, `height` | No download under the URL-only policy; the DDL draft has `path` NOT NULL | Null where nullable; `path` is a conflict between the DDL draft and [ADR 0006](../adr/0006-scraping-and-redistribution-policy.md), for #12 and #13 |
+| 20 | `printing_images.path`, `sha256`, `mime_type`, `width`, `height` | No download under the URL-only policy | Resolved in #119: `path` is nullable and NULL under the URL-only policy of [ADR 0006](../adr/0006-scraping-and-redistribution-policy.md), for #12 and #13 |
 | 21 | `printing_images.printing_id` | The link is a caption and a file suffix; some captions have no product (`SD19-X01-4.jpg` @ `card_ultimate.html`) | Derive from the caption where possible, otherwise leave the image unlinked |
 | 22 | Official detail view | Effect text, symbols, illustrators and flavor text were never fetched | Later epic (official is survey only) |
 | 23 | Products without a set page | Promo number groups, `ナンバーなし` and the special packs were not sampled ([batspi.md §9](batspi.md#9-not-sampled-and-open-risks)) | Later epic: sample before #10 |
@@ -304,7 +304,7 @@ Fields where the sources overlap or disagree, so that the source-of-truth ADR ([
 | `card_numbers.number` | batspi `BS72-007`, faces `BS52-TX01(A)` @ `card_flip.html`; official `.number .num` with reprint prefixes such as `26R` | The number schemes are not the same set; official `freewords=BS01` also returns `26RBS01-001` |
 | `products.release_date` | batspi set page `2025年5月17日発売` @ `set.html`; batspi card page `2025年05月17日` @ `card_spirit.html` | Two places and two formats inside batspi; official unknown |
 | `products.code`, `products.name_jp` | batspi set page; official `prodid` product names such as `[CB31]...` | Naming of the same product differs between sites |
-| Values that differ between numbers of one name | `<1>Lv1 1000 <3>Lv2 3000` against `<1>Lv1 2000 <3>Lv2 5000` @ `card_spirit_bs01.html`; a third print with another family and effect text @ `card_promo.html` | Same name, different gameplay values: input for [ADR 0004](../adr/0004-card-printing-identity.md) rather than for a source choice |
-| `flavor_text_jp` per number | The two numbers of `card_magic_flash.html` differ: the first has `フレーバーテキスト：(バトルスピリッツ メモリアルカードダスセット Hero Ver.)`, the second has none | The target keeps it on the card; the page has it per number |
+| Values that differ between numbers of one name | `<1>Lv1 1000 <3>Lv2 3000` against `<1>Lv1 2000 <3>Lv2 5000` @ `card_spirit_bs01.html`; a third print with another family and effect text @ `card_promo.html` | Same name, different gameplay values: input for [ADR 0004](../adr/0004-card-printing-identity.md) rather than for a source choice. **Resolved** by the [ADR 0004 amendment](../adr/0004-card-printing-identity.md#amendment-2026-11-21-63) ([#63](https://github.com/AleFire99/BS_Database/issues/63)): such numbers are separate cards |
+| `flavor_text_jp` per number | The two numbers of `card_magic_flash.html` differ: the first has `フレーバーテキスト：(バトルスピリッツ メモリアルカードダスセット Hero Ver.)`, the second has none | The target keeps it on the card; the page has it per number. **Resolved** by the [ADR 0004 amendment](../adr/0004-card-printing-identity.md#amendment-2026-11-21-63) ([#63](https://github.com/AleFire99/BS_Database/issues/63)): flavor is in the card identity key, so numbers with different flavor are separate cards |
 | Current wording against pre-erratum wording | `(エラッタ前) ▼` @ `card_brave.html` | batspi keeps both; only the current one is a card text |
 | `printing_images.source_url` | batspi `/card/BS7/BS72-007.jpg` @ `card_spirit.html`; official `/images/cardlist/<number>.webp`; fandom (synthetic fixture only) | Which host the stored URL points to; the policy allows URLs only |
