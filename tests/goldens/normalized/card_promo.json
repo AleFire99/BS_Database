@@ -1,0 +1,572 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E7%84%94%E7%AB%9C%E7%BF%BC%E4%BA%BA%E3%83%9E%E3%83%BB%E3%83%89%E3%83%BC",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E7%84%94%E7%AB%9C%E7%BF%BC%E4%BA%BA%E3%83%9E%E3%83%BB%E3%83%89%E3%83%BC",
+    "title_jp": "焔竜翼人マ・ドー",
+    "entries": [
+      {
+        "number": "P001",
+        "name_jp": "焔竜翼人マ・ドー",
+        "name_en": "The FlameWingDragon Ma-Dwo",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "竜人",
+              "code": "ryujin",
+              "en": "Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "翼竜",
+              "code": "yokuryu",
+              "en": "Winged Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 2,
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 3,
+              "cores": 5,
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "藤井英俊",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "望むのはすべての破壊……。\nそれが、マ・グーの眷属たる者の使命。\n戦場に血の雨を降らせ、焔竜魔人の伝説に華を添える。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      },
+      {
+        "number": "EX001",
+        "name_jp": "焔竜翼人マ・ドー",
+        "name_en": "The FlameWingDragon Ma-Dwo",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "竜人",
+              "code": "ryujin",
+              "en": "Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "翼竜",
+              "code": "yokuryu",
+              "en": "Winged Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 2,
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 3,
+              "cores": 5,
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "藤井英俊",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "望むのはすべての破壊……。\nそれが、マ・グーの眷属たる者の使命。\n戦場に血の雨を降らせ、焔竜魔人の伝説に華を添える。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      },
+      {
+        "number": "P20-19",
+        "name_jp": "焔竜翼人マ・ドー",
+        "name_en": "The FlameWingDragon Ma-Dwo",
+        "en_source": "batspi",
+        "en_status": "reviewed",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "起幻",
+              "code": "kigen",
+              "en": "Primal",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "竜人",
+              "code": "ryujin",
+              "en": "Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "翼竜",
+              "code": "yokuryu",
+              "en": "Winged Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 3000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 2,
+              "battle_points": 4000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 3,
+              "cores": 5,
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "このカードの軽減シンボルは紫/緑/白/黄/青としても扱う。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                1,
+                2,
+                3
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "Lv1・Lv2・Lv3",
+              "text_jp": "自分か相手のカードがセットされている間、お互いのバーストは破棄されず、手札/デッキに戻らない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                2,
+                3
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットのアタック/ブロック時』",
+              "header_jp": "Lv2・Lv3『このスピリットのアタック/ブロック時』",
+              "text_jp": "このスピリットは相手のバースト効果を受けない。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "藤井英俊",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "時空の彼方より飛来した2体の未確認生態。それは、時空の大神の宣戦\n布告か、それとも───今、スピリットたちが新たな力に目覚め始める。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [
+      {
+        "name_jp": "焔竜翼人マ・ドー",
+        "field": "families",
+        "values": [
+          [
+            "P001",
+            "('竜人', '翼竜')"
+          ],
+          [
+            "EX001",
+            "('竜人', '翼竜')"
+          ],
+          [
+            "P20-19",
+            "('起幻', '竜人', '翼竜')"
+          ]
+        ]
+      },
+      {
+        "name_jp": "焔竜翼人マ・ドー",
+        "field": "effects",
+        "values": [
+          [
+            "P001",
+            "()"
+          ],
+          [
+            "EX001",
+            "()"
+          ],
+          [
+            "P20-19",
+            "(Effect(position=1, form='plain', levels=(), label=None, keywords=(), timing=None, header=None, text='このカードの軽減シンボルは紫/緑/白/黄/青としても扱う。'), Effect(position=2, form='header', levels=(1, 2, 3), label=None, keywords=(), timing=None, header='Lv1・Lv2・Lv3', text='自分か相手のカードがセットされている間、お互いのバーストは破棄されず、手札/デッキに戻らない。'), Effect(position=3, form='header', levels=(2, 3), label=None, keywords=(), timing='『このスピリットのアタック/ブロック時』', header='Lv2・Lv3『このスピリットのアタック/ブロック時』', text='このスピリットは相手のバースト効果を受けない。'))"
+          ]
+        ]
+      },
+      {
+        "name_jp": "焔竜翼人マ・ドー",
+        "field": "flavor",
+        "values": [
+          [
+            "P001",
+            "'望むのはすべての破壊……。\\nそれが、マ・グーの眷属たる者の使命。\\n戦場に血の雨を降らせ、焔竜魔人の伝説に華を添える。'"
+          ],
+          [
+            "EX001",
+            "'望むのはすべての破壊……。\\nそれが、マ・グーの眷属たる者の使命。\\n戦場に血の雨を降らせ、焔竜魔人の伝説に華を添える。'"
+          ],
+          [
+            "P20-19",
+            "'時空の彼方より飛来した2体の未確認生態。それは、時空の大神の宣戦\\n布告か、それとも───今、スピリットたちが新たな力に目覚め始める。'"
+          ]
+        ]
+      }
+    ],
+    "printings": [
+      {
+        "number": "P001",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "7",
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P001",
+        "product_name_jp": "「バトルスピリッツ専用バインダー」付属",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": null,
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "EX001",
+        "product_name_jp": "Xレアパック 【龍皇ジークフリード】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?X%E3%83%AC%E3%82%A2%E3%83%91%E3%83%83%E3%82%AF%20%E3%80%90%E9%BE%8D%E7%9A%87%E3%82%B8%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AA%E3%83%BC%E3%83%89%E3%80%91",
+        "product_code": "BSC01",
+        "product_type_code": "booster",
+        "rarity_jp": "EX",
+        "rarity_code": "EX",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2010-03-18",
+        "section": "収録"
+      },
+      {
+        "number": "P20-19",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AB%E3%83%BC%E3%83%89",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "P",
+        "rarity_code": "P",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "7",
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P20-19",
+        "product_name_jp": "バトスピショップバトル",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97%E3%83%90%E3%83%88%E3%83%AB",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "2021年4月参加記念品",
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "P20-19",
+        "product_name_jp": "バトラーズカップEX",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%83%A9%E3%83%BC%E3%82%BA%E3%82%AB%E3%83%83%E3%83%97EX",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "2021年8月参加記念品",
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "EX001",
+        "product_name_jp": "プロモーションカード",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "7",
+        "release_date": null,
+        "section": "ブロックアイコン"
+      }
+    ],
+    "images": [
+      {
+        "number": "EX001",
+        "large_url": "https://batspi.com/card/ETC/EX001.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/EX001.jpg",
+        "caption": [
+          "Xレアパック 【龍皇ジークフリード】",
+          "プロモーションカード"
+        ]
+      },
+      {
+        "number": "P001",
+        "large_url": "https://batspi.com/card/ETC/P001.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/P001.jpg",
+        "caption": [
+          "プロモーションカード"
+        ]
+      },
+      {
+        "number": "P20-19",
+        "large_url": "https://batspi.com/card/ETC/P20-19.jpg",
+        "small_url": "https://batspi.com/card/ETC/small/P20-19.jpg",
+        "caption": [
+          "プロモーションカード"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

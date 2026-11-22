@@ -1,6 +1,6 @@
 # 0003. Naming conventions, BSS_app alignment and schema versioning
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-14
 
 ## Context
@@ -39,17 +39,17 @@ Use **option 2**: snake_case conventions, keeping the BSS_app entity split but n
 - **Columns:** lower snake_case, singular (`battle_points`, not `battlePoints`).
   - Booleans are named `is_…` or `has_…`.
   - Timestamps are named `…_at` and stored as ISO-8601 UTC TEXT.
-  - Language suffixes (`name_ja`, `name_en`) are used only on data entities: `cards`, `families`, `products` and effect text. The Japanese source text is kept there so a bad machine translation can be redone.
-  - Lookup rows have a stable `code` (for example `red`) plus a single English `name`. They have no `_ja`/`_en` columns; the loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)) maps Japanese source text to the `code` (see [target-schema.md](../data-model/target-schema.md#jp-source-to-code)).
+  - Language suffixes are `_jp` and `_en` (`jp`, not `ja`). They are used only on data entities: `cards`, `families`, `products` and effect text. The Japanese source text is kept there so a bad machine translation can be redone.
+  - Lookup rows have a stable `code` (for example `red`) plus a single English `name`. They have no `_jp`/`_en` columns; the normalization stage ([#11](https://github.com/AleFire99/BS_Database/issues/11), [ADR 0008](0008-normalization-and-translation.md)) maps Japanese source text to the `code` (see [target-schema.md](../data-model/target-schema.md#jp-source-to-code)). The loader ([#12](https://github.com/AleFire99/BS_Database/issues/12)) only inserts rows.
 - **Keys:**
   - The primary key is `id INTEGER PRIMARY KEY` (a rowid alias).
   - The only exception is pure junction tables (only foreign keys plus optional attributes such as a count): they use a composite primary key of their foreign key columns, as in BSS_app.
   - Foreign keys are `<referenced_singular>_id`.
   - Natural keys are UNIQUE constraints and never primary keys (for example `card_numbers.number`, `products.code`; see [ADR 0004](0004-card-printing-identity.md)).
   - The legacy `cards.card_id` (TEXT print number) is retired because it clashes with the foreign key convention.
-- **Constraint and index names:** `pk_`, `fk_`, `uq_`, `ck_` or `ix_` followed by `<table>_<cols>`. Implemented as a SQLAlchemy `naming_convention` in #12.
+- **Constraint and index names:** `pk_`, `fk_`, `uq_`, `ck_` or `ix_` followed by `<table>_<cols>`. Written in the DDL itself (`schema.sql`), see [ADR 0011](0011-schema-sql-source-of-truth-without-migrations.md).
 - **Quoting:** none required. Avoid reserved words as bare table names (`order`, `set`); plural names such as `sets` are safe. Columns such as `level` are legal unquoted in SQLite, but each such case is flagged in review.
-- **Enum-like values:** lookup tables with foreign keys instead of CHECK lists, so a new card type or rarity needs no schema change. The one exception is ISO 639-1 language codes (for example `family_aliases.lang`), which may use a CHECK list.
+- **Enum-like values:** lookup tables with foreign keys instead of CHECK lists, so a new card type or rarity needs no schema change. The one exception is language codes (for example `family_aliases.lang`). They are an internal closed list (`jp`, `en`) and may use a CHECK list.
 
 ### BSS_app → BS_Database
 
@@ -60,7 +60,7 @@ The concepts (lookups, junctions, reductions with a count, per-level rows, effec
 | `Cards` (`CardID` TEXT PK, e.g. `BSS01-001`) | `cards`, `card_numbers` (`number` UNIQUE) and `printings`, see [ADR 0004](0004-card-printing-identity.md) | Surrogate keys (Gate A); one number can have several printings, so the number is a UNIQUE natural key on `card_numbers`. |
 | `Cards.Rarity` (free TEXT) | `rarities` lookup, `printings.rarity_id` ([ADR 0004](0004-card-printing-identity.md)) | Enum-like values use lookup tables. |
 | `CardTypes` | `card_types` | Case and key style; `Name` becomes a stable `code` plus an English `name`. |
-| `Sets` | `products` (+ `product_types`), see [ADR 0004](0004-card-printing-identity.md) | Promos, magazines and distributions are releases too, so a set is one product type; `Name` (e.g. `BSS01`) becomes a UNIQUE `code`; `products` keep `name_ja` and `name_en` as a data entity. |
+| `Sets` | `products` (+ `product_types`), see [ADR 0004](0004-card-printing-identity.md) | Promos, magazines and distributions are releases too, so a set is one product type; `Name` (e.g. `BSS01`) becomes a UNIQUE `code`; `products` keep `name_jp` and `name_en` as a data entity. |
 | `Colors` | `colors` | Case and key style; `Name` becomes a stable `code` plus an English `name`. |
 | `Symbols` (`ColorID`) | `symbols` (`color_id`) | Case and key style only. |
 | `Subtypes` | `families` (final, #30) | Battle Spirits calls them families (系統); the legacy schema already uses `families`. |
@@ -72,9 +72,9 @@ The concepts (lookups, junctions, reductions with a count, per-level rows, effec
 | `CardSubtypes` | `card_families` | Follows the rename of `Subtypes`. |
 | `CardReductions` (`CardID`, `ColorID`, `Count`) | `card_reductions` (`card_id`, `symbol_id`, `count`) | Hangs off the card, not the printing. Keyed by symbol instead of colour (deviation from BSS_app `ColorID`) because reductions include the god symbol 神, which is not a colour. `count` is a legal column name. |
 | `Core` (`CoreID`, `CardID`, `Level`, `BP`, `Cores`) | `card_levels` (`id`, `card_id`, `level`, `battle_points`, `cores`) (final, #30) | Singular table name breaks the plural rule; `BP` becomes `battle_points`, `Cores` becomes `cores`. `battle_points` is NULL for levels without BP (Nexus). |
-| `Effects` (`EffectID`, `CardID`, `ConditionID`, `Description`) | `card_effects` (final, #31) | One row per effect block; `Description` becomes `text_ja` / `text_en`, plus timing and kind. See [target-schema.md](../data-model/target-schema.md#effects-and-keywords). |
+| `Effects` (`EffectID`, `CardID`, `ConditionID`, `Description`) | `card_effects` (final, #31) | One row per effect block; `Description` becomes `text_jp` / `text_en`, plus timing and kind. See [target-schema.md](../data-model/target-schema.md#effects-and-keywords). |
 | `EffectLevels` (`EffectID`, `CoreID`) | `card_effect_levels` (final, #31) | References `card_levels` instead of `Core`. |
-| `EffectKeywords` (`EffectID`, `KeywordID`, `Modifier`) | `card_effect_keywords` (final, #31) | Composite key; `Modifier` becomes `parameter_ja` (text, not structured). |
+| `EffectKeywords` (`EffectID`, `KeywordID`, `Modifier`) | `card_effect_keywords` (final, #31) | Composite key; `Modifier` becomes `parameter_jp` (text, not structured). |
 | `EffectSteps` | Deferred (ADR 0005) | Effects are text-first in v1. |
 | `QA_cards` (`QA_cardID`…) | none | Out of scope for v1. |
 | `QA_keywords` (`QA_keyID`…) | none | Out of scope for v1. |
@@ -91,7 +91,7 @@ If BSS_app tooling is ever shared, compatibility views can map the names without
 | `schema_version` | TEXT | Schema SemVer | `1.2.0` |
 | `data_version` | TEXT | Release tag of the data | `v0.3.0` |
 | `built_at` | TEXT | ISO-8601 UTC build time | `2026-11-14T10:00:00Z` |
-| `source_snapshot` | TEXT | Identifier of the raw source snapshot used | to be defined in #9/#12 |
+| `source_snapshot` | TEXT | Identifier of the raw source snapshot used | `batspi 2026-11-15..2026-11-21; 13480 pages; normalized 1.2.0` (format defined in #121, see [build.md](../architecture/build.md)) |
 | `generator` | TEXT | `bs_database` package version that built the file | `0.2.0` |
 
 - Schema SemVer rules:
@@ -109,9 +109,10 @@ If BSS_app tooling is ever shared, compatibility views can map the names without
 - The legacy tables and columns (`cards.card_id`, `battlePoints`) are renamed when the package schema is rebuilt in #12.
 - Names in the table were finalised by #29 to #31; further edits are allowed while this ADR is Proposed.
 - Consumers get a cheap integer compatibility check and a self-describing file.
-- The SQLAlchemy `naming_convention` and the `schema_meta` writer must be implemented in #12.
+- The constraint names (in `schema.sql`, [ADR 0011](0011-schema-sql-source-of-truth-without-migrations.md)) and the `schema_meta` writer must be implemented in #12.
 
 ## Links
 
 - Issue: [#27](https://github.com/AleFire99/BS_Database/issues/27) (epic [#8](https://github.com/AleFire99/BS_Database/issues/8))
 - Builds on [0002](0002-storage-technology.md).
+- Amended by [#91](https://github.com/AleFire99/BS_Database/issues/91): the Japanese suffix is `_jp`, the code mapping is owned by #11 ([ADR 0008](0008-normalization-and-translation.md)), and language codes are an internal list, not ISO 639-1.

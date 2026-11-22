@@ -1,13 +1,12 @@
 [project]
 name = "bs-database"
-version = "0.4.0"
-description = "Battle Spirits card database: scrapers, translation and DB tooling."
+version = "0.5.0"
+description = "Battle Spirits card database: scraper, normalization and DB tooling."
 requires-python = ">=3.12"
 dependencies = [
     "beautifulsoup4>=4.15.0",
     "pydantic-settings>=2.16.3",
     "requests>=2.34.2",
-    "sqlalchemy>=2.1.8",
     "typer>=0.29.1",
 ]
 
@@ -28,6 +27,11 @@ dev = [
     "pytest>=9.2.0",
     "pytest-cov>=7.1.0",
     "ruff>=0.17.5",
+]
+# Offline machine translation (#102); optional, not installed in CI.
+mt = [
+    "ctranslate2>=4.9,<5",
+    "sentencepiece>=0.2.1,<0.3",
 ]
 
 [tool.pytest.ini_options]
@@ -51,8 +55,16 @@ source = ["src"]
 branch = true
 
 [tool.coverage.report]
-# Gate for the scraper rewrite (#71): ingest/ and parsers/ only. The legacy modules
-# (db.py, cli.py, normalize.py) are rewritten by later epics and are not gated here.
-include = ["src/bs_database/ingest/*", "src/bs_database/parsers/*"]
+# Gate for the scraper rewrite (#71), the glossary (#92), the normalize package (#93), the translator (#94) and the build (#120).
+# cli.py is not gated here.
+include = [
+    "src/bs_database/ingest/*",
+    "src/bs_database/parsers/*",
+    "src/bs_database/glossary.py",
+    "src/bs_database/review/*",
+    "src/bs_database/normalize/*",
+    "src/bs_database/translate/*",
+    "src/bs_database/build/*",
+]
 fail_under = 97
 show_missing = true

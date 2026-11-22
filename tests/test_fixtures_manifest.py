@@ -75,4 +75,4 @@ def test_card_first_pre_is_type(name: str) -> None:
     pre = soup.find("pre")
     assert pre is not None
     first_line = pre.get_text().splitlines()[0].strip()
-    assert first_line.startswith(entry["card_type"])
+    assert first_line.removeprefix("契約").removeprefix("トークン").startswith(entry["card_type"])

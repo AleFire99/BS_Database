@@ -1,6 +1,7 @@
 """Printing and block-icon parsing on synthetic pages (#71)."""
 
 import logging
+from pathlib import Path
 
 import pytest
 from bs4 import BeautifulSoup
@@ -11,6 +12,7 @@ from bs_database.parsers.errors import ParseError
 
 LOGGER = "bs_database.parsers.batspi.card_sections"
 URL = "https://batspi.com/index.php?card"
+SNIPPETS = Path(__file__).parent / "fixtures" / "snippets"  # partial real pages, no manifest
 ES = " "
 
 
@@ -39,7 +41,7 @@ def test_row_shapes() -> None:
         "バトスピ部 チャレンジ (金色仕様)</p>"
     )
     got = run(page(rows), ["A-001"])
-    assert [(p.product_name_ja, p.detail_ja, p.rarity, p.note_ja) for p in got] == [
+    assert [(p.product_name_jp, p.detail_jp, p.rarity, p.note_jp) for p in got] == [
         ("契約編", None, "R", "SECRETあり"),
         ("バトスピMAX", "入場者特典", "X", "【ゼロ】先行(配布)"),
         ("メガデッキ", "記念品", None, "SECRETデザイン"),
@@ -57,7 +59,7 @@ def test_list_shape_with_labels() -> None:
         '<li><strong>A-002</strong><br/><a href="x">P2</a> &lt;R&gt;</li></ul>'
     )
     got = run(page(rows), ["A-001", "A-002"])
-    assert [(p.number, p.product_name_ja) for p in got] == [("A-001", "P1"), ("A-002", "P2")]
+    assert [(p.number, p.product_name_jp) for p in got] == [("A-001", "P1"), ("A-002", "P2")]
 
 
 def test_nested_promo_list_shape() -> None:
@@ -66,7 +68,7 @@ def test_nested_promo_list_shape() -> None:
         '<a href="x">P</a> &lt;P&gt;<br/>付属品</li></ul></li></ul>'
     )
     got = run(page(rows), ["P1"])
-    assert [(p.product_name_ja, p.product_href) for p in got] == [
+    assert [(p.product_name_jp, p.product_href) for p in got] == [
         ("P", "https://batspi.com/x"),
         ("付属品", None),
     ]
@@ -87,16 +89,26 @@ def test_face_less_label_fans_out_and_exact_label_does_not() -> None:
         '<li><strong>F-01(A)</strong><br/><a href="x">Q</a> &lt;C&gt;</li></ul>'
     )
     got = run(page(rows), ["F-01(A)", "F-01(B)"])
-    assert [(p.number, p.product_name_ja) for p in got] == [
+    assert [(p.number, p.product_name_jp) for p in got] == [
         ("F-01(A)", "P"),
         ("F-01(B)", "P"),
         ("F-01(A)", "Q"),
     ]
 
 
-def test_missing_label_on_multi_number_page_raises() -> None:
-    with pytest.raises(ParseError, match="without a card number"):
-        run(page('<p><a href="x">P</a> &lt;C&gt;</p>'), ["A-001", "A-002"])
+def test_missing_label_on_multi_number_page_attaches_to_all_and_warns(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Decision 3 of #108: a row with no number is attached to every number of the page."""
+    with caplog.at_level(logging.WARNING, logger=LOGGER):
+        printings = run(page('<p><a href="x">P</a> &lt;C&gt;</p>'), ["A-001", "A-002"])
+    assert [(p.number, p.product_name_jp) for p in printings] == [("A-001", "P"), ("A-002", "P")]
+    assert "attached to all numbers" in caplog.text
+
+
+def test_row_with_a_number_in_its_text_goes_to_that_number() -> None:
+    printings = run(page('<p><a href="x">P</a> &lt;C&gt; (A-002)</p>'), ["A-001", "A-002"])
+    assert [p.number for p in printings] == ["A-002"]
 
 
 def test_block_icon_join_and_formats() -> None:
@@ -227,7 +239,7 @@ def test_one_unresolvable_row_still_only_warns(caplog: pytest.LogCaptureFixture)
     )
     with caplog.at_level(logging.WARNING, logger=LOGGER):
         got = run(page(rows), ["A-001"])
-    assert [p.product_name_ja for p in got] == ["Q"]
+    assert [p.product_name_jp for p in got] == ["Q"]
     assert "Z-999" in caplog.text
 
 
@@ -242,4 +254,116 @@ def test_block_join_normalises_product_names() -> None:
     blocks = f'[BS01]{ES}<a href="b">ＢＳ　Ｐ１</a>{ES}(A-001){ES}ブロックアイコン:&lt;3&gt;{ES}'
     rows = '<p><a href="x">BS P1</a> &lt;C&gt;</p>'
     (got,) = run(page(rows, blocks), ["A-001"])
-    assert (got.product_name_ja, got.product_code, got.block_icon) == ("BS P1", "BS01", "3")
+    assert (got.product_name_jp, got.product_code, got.block_icon) == ("BS P1", "BS01", "3")
+
+
+def test_image_without_a_caption_still_raises_unless_it_is_a_placeholder() -> None:
+    html = '<ul class="ppy-imglist"><li><a href="/card/x.jpg"><img src="/s.jpg"/></a></li></ul>'
+    with pytest.raises(ParseError, match="without a caption"):
+        parse_images(BeautifulSoup(html, "html.parser"), URL, ["A-001"])
+    placeholder = html.replace("/card/x.jpg", "/card/BS7/NOTFOUND.jpg")
+    assert parse_images(BeautifulSoup(placeholder, "html.parser"), URL, ["A-001"]) == ()
+
+
+def test_unclosed_link_does_not_swallow_the_next_sections() -> None:
+    # #138: on 咲月帝アルティメット・ウィステリア an unclosed <a> nests the block-icon section,
+    # the jump menus and the official Q&A inside the last 収録 item (real HTML, trimmed).
+    html = (SNIPPETS / "section_unclosed_link.html").read_text("utf-8")
+    names = {p.product_name_jp for p in run(html, ["P14-32"])}
+    assert "" not in names
+    assert "Uトリガー" not in names
+    assert {"プロモーションカード", "バトルスキー トレジャーパック"} <= names
+
+
+def snippet_row(name: str) -> Printing:
+    html = (SNIPPETS / f"{name}.html").read_text("utf-8")
+    (printing,) = run(html, ["X-001"])
+    return printing
+
+
+# #144: printing rows are split from the end (rarity, then the trailing notes) and the text of
+# every link stays in the detail and the note (real HTML, one row per snippet).
+
+
+def test_row_parenthetical_in_detail_before_the_rarity() -> None:
+    row = snippet_row("printing_detail_paren")
+    assert row.product_name_jp == "バトスピ部"
+    assert (row.detail_jp, row.rarity) == ("全部員共通抽選賞品(2018年7月)", "C")
+    assert row.note_jp == "ガイ・アスラVSジークヴルム・ノヴァ"
+
+
+def test_row_two_notes_after_the_rarity() -> None:
+    row = snippet_row("printing_two_notes")
+    assert (row.detail_jp, row.rarity) == ("自販機ブースターキャンペーンカード", "X")
+    assert row.note_jp == "新規イラスト X005R"
+
+
+def test_row_empty_rarity_is_none_and_warned(caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level(logging.WARNING, logger=LOGGER):
+        row = snippet_row("printing_empty_rarity")
+    assert (row.detail_jp, row.rarity, row.note_jp) == (None, None, None)
+    assert "field=rarity" in caplog.text
+
+
+def test_row_without_rarity_keeps_the_detail_parenthetical() -> None:
+    row = snippet_row("printing_no_rarity_detail_paren")
+    assert (row.detail_jp, row.rarity) == ("(9月・10月)優勝記念品", None)
+    assert row.note_jp == "「WINNER」の文字入り"
+
+
+def test_row_keeps_the_text_of_nested_links() -> None:
+    row = snippet_row("printing_nested_link")
+    assert row.product_name_jp == "ダンカップ"
+    assert (
+        row.product_href
+        == "https://batspi.com/index.php?%E3%83%80%E3%83%B3%E3%82%AB%E3%83%83%E3%83%97"
+    )
+    assert row.detail_jp == "特別大会「ダンカップ」参加記念品"
+    assert row.note_jp == "新規イラスト「馬神 弾&月光のバローネ」"
+
+
+def test_row_note_starting_with_a_link() -> None:
+    row = snippet_row("printing_note_starts_with_link")
+    assert (row.detail_jp, row.rarity) == ("2017年8・9月当日限定大会参加記念品", "R")
+    assert row.note_jp == "硯 秀斗キャラクターイラスト入り特別仕様カード"
+
+
+def test_row_with_a_stray_closing_parenthesis_keeps_its_rarity_and_note() -> None:
+    # real: P14-21 prints ``<P>(新規イラスト・福山氏サイン＆コメント入り))``
+    rows = '<p><a href="index.php?a">箱</a> &lt;P&gt;(新規イラスト・サイン入り))</p>'
+    (row,) = run(page(rows), ["A-001"])
+    assert (row.detail_jp, row.rarity, row.note_jp) == (None, "P", "新規イラスト・サイン入り")
+
+
+@pytest.mark.parametrize(
+    ("snippet", "name", "detail", "rarity", "note"),
+    [
+        (
+            "printing_unlinked_dates",
+            "バトルスキー主催大会/バトルスキー主催大会(3on3)2017年10-12月度提供記念品",
+            None,  # a bare date is not cut: those stay distinct products
+            "C",
+            "バトルスキーver.",
+        ),
+        (
+            "printing_unlinked_date_paren",
+            "ショップバトルEXギャラクシーカップショップ代表決定戦参加賞",
+            "(2012/12/～)",
+            "P",
+            None,
+        ),
+        (
+            "printing_unlinked_date_note",
+            "バトスピ部ゴールド部員抽選賞品",
+            "(2018年6月)",
+            "-",
+            "『少年激覇ダン』馬神弾＆ヴィオレ魔ゐver.・ホロ",
+        ),
+    ],
+)
+def test_unlinked_row_moves_only_a_parenthesised_date_to_the_detail(
+    snippet: str, name: str, detail: str | None, rarity: str, note: str | None
+) -> None:
+    row = snippet_row(snippet)
+    assert (row.product_name_jp, row.product_href) == (name, None)
+    assert (row.detail_jp, row.rarity, row.note_jp) == (detail, rarity, note)

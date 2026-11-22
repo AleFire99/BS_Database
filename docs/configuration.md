@@ -9,13 +9,15 @@ Settings are defined in `src/bs_database/settings.py` (`Settings`, built on pyda
 | Variable | Default | Description |
 | --- | --- | --- |
 | `BSDB_DATA_DIR` | `data` | Base directory for all data files |
-| `BSDB_JSON_DIR` | `<data_dir>/json` | Scraped card JSON files |
 | `BSDB_IMAGES_DIR` | `<data_dir>/images` | Downloaded card images |
-| `BSDB_DB_PATH` | `<data_dir>/battle_spirits.db` | SQLite database output |
-| `BSDB_FAMILY_MAPPING_PATH` | `<data_dir>/family_mapping.txt` | Family-name normalization map |
-| `BSDB_CACHE_DIR` | `<data_dir>/cache/html` | Raw HTML cache (`<source>/<sha256(url)>.html` plus `.json` sidecar) |
+| `BSDB_DB_PATH` | `<data_dir>/battle_spirits.db` | SQLite database output (`bsdb build`, replaced atomically; `--out` overrides) |
+| `BSDB_GLOSSARY_DIR` | `<data_dir>/glossary` | Glossary CSVs (see [glossary](domain/glossary.md)) |
+| `BSDB_CACHE_DIR` | `<data_dir>/cache/html` | Raw HTML cache (`<source>/<sha256(url)>.html` plus `.json` sidecar); `bsdb build` reads it for `source_pages.content_sha256` |
 | `BSDB_STATE_DB_PATH` | `<data_dir>/state/ingest.db` | Ingestion state store (SQLite, see [ingestion-state](architecture/ingestion-state.md)) |
 | `BSDB_PARSED_DIR` | `<data_dir>/parsed` | Parsed card pages (`<source>/<sha256(url)>.json`) |
+| `BSDB_NORMALIZED_DIR` | `<data_dir>/normalized` | Normalized card pages (`<source>/<sha256(url)>.json`, see [normalization](architecture/normalization.md)) |
+| `BSDB_TRANSLATION_CACHE_PATH` | `<data_dir>/cache/translations.sqlite` | Machine-translation cache (SQLite, see [translation](architecture/translation.md)) |
+| `BSDB_MT_MODEL_DIR` | `<data_dir>/models/quickmt-ja-en` | quickmt ja-en model files (git-ignored); without them, or without `uv sync --group mt`, there is no machine translation (`NullTranslator`) |
 | `BSDB_BATSPI_URL` | `https://batspi.com/` | batspi.com base URL |
 | `BSDB_USER_AGENT` | `bs-database/<version> (+https://github.com/AleFire99/BS_Database)` | `User-Agent` sent on every request |
 | `BSDB_REQUEST_DELAY` | `3.0` | Minimum delay between HTTP requests, in seconds (must be >= 1.0, policy floor) |

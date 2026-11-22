@@ -1,0 +1,103 @@
+{
+ "batchcomplete": "",
+ "query": {
+  "pages": {
+   "15029": {
+    "ns": 0,
+    "pageid": 15029,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''Bunshin '''(分身) is a Green keyword premiered in [[BS22]], along with its respective family with the same name. Cards with this effect have the following text: Place up",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "Bunshin"
+   },
+   "2736": {
+    "ns": 0,
+    "pageid": 2736,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''Armor''' (装甲; ''Soukou'') is a keyword introduced in [[BS02]], possessed exclusively by White Spirits, and given exclusively by White cards. It was one of the very fir",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "Armor (Keyword)"
+   },
+   "40873": {
+    "ns": 0,
+    "pageid": 40873,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''Accel''' (アクセル, ''Akuseru'') is a keyword which debuted in [[BS37]] and is present on all colors. ",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "Accel"
+   },
+   "76727": {
+    "ns": 0,
+    "pageid": 76727,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''A.T. Field''' (A.T.フィールド) is a keyword introduced in [[SD62]] and [[CB21]], basing on an ability unique to the Evangelion series. The effect is worded as follows:",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "A.T. Field"
+   },
+   "80960": {
+    "ns": 0,
+    "pageid": 80960,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''AFO''', short for \"All For One (オールフォーワン)\", is a keyword introduced in [[BS62]], possessed only by [[Azure Wave]] Spirit cards, with the purpose of solely to support [",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "AFO"
+   },
+   "84242": {
+    "ns": 0,
+    "pageid": 84242,
+    "revisions": [
+     {
+      "slots": {
+       "main": {
+        "*": "'''Brave Engage''' ({{ruby|合体結誓|ブレイヴエンゲージ}}; ''bureivu engēji'') is a keyword introduced in [[BS64]], unique to the Brave card type, and only those in the \"[[Engage]]\" fa",
+        "contentformat": "text/x-wiki",
+        "contentmodel": "wikitext"
+       }
+      }
+     }
+    ],
+    "title": "Brave Engage"
+   }
+  }
+ }
+}

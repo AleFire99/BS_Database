@@ -40,3 +40,39 @@ jobs:
             echo "::error::absolute user path found"
             exit 1
           fi
+
+  db-build:
+    name: db-build
+    runs-on: ubuntu-latest
+    env:
+      BSDB_NORMALIZED_DIR: tests/goldens/normalized
+      BUILT_AT: "2026-01-01T00:00:00Z"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Install dependencies
+        run: uv sync --locked
+      - name: Build the database from the fixtures
+        run: uv run bsdb build --out build/fixtures.db --built-at "$BUILT_AT"
+      - name: Check the build is deterministic
+        run: |
+          uv run bsdb build --out build/again.db --built-at "$BUILT_AT"
+          cmp build/fixtures.db build/again.db
+      - name: Add the build report to the job summary
+        if: always()
+        run: |
+          if [ -f build/fixtures.build_report.md ]; then
+            cat build/fixtures.build_report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload the build report and database
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fixture-db-build
+          path: |
+            build/fixtures.build_report.json
+            build/fixtures.build_report.md
+            build/fixtures.db
+          if-no-files-found: warn

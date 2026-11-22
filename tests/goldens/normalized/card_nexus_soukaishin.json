@@ -1,0 +1,324 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E5%89%B5%E7%95%8C%E7%A5%9E%E3%82%A2%E3%83%9D%E3%83%AD%E3%83%BC%E3%83%B3",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E5%89%B5%E7%95%8C%E7%A5%9E%E3%82%A2%E3%83%9D%E3%83%AD%E3%83%BC%E3%83%B3",
+    "title_jp": "創界神アポローン",
+    "entries": [
+      {
+        "number": "BS44-X07",
+        "name_jp": "創界神アポローン",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "ネクサス",
+          "card_type_code": "nexus",
+          "deck_limit": null,
+          "cost": 2,
+          "reduction": {
+            "plain": 1,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "神",
+              "symbol_code": "god",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "創界神",
+              "code": "guranwoka_lit_soukaishin_world_creator_deity",
+              "en": "Grandwalker",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "オリン",
+              "code": "orin",
+              "en": "Olym",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 0,
+              "battle_points": null,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 5,
+              "battle_points": null,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "keyword_line",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "《",
+                  "name_jp": "神託",
+                  "code": "shintaku",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "《神託》〔星竜/界渡/化神＆コスト3以上〕",
+              "text_jp": "《神託》〔星竜/界渡/化神＆コスト3以上〕",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "◆対象の自分のスピリットを召喚/煌臨したとき、このネクサスにコア+1できる。\n◆このネクサスを配置したとき、同じカード名の自分の創界神ネクサスがなければ、自分のデッキの上から3枚をトラッシュに置ける。その中の対象カード1枚につき、このネクサスにコア+1する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "Lv1・Lv2",
+              "text_jp": "このネクサスのシンボルは赤としても扱う。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 4,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": "フラッシュ",
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "神技",
+                  "code": "shingi",
+                  "parameter_jp": "2"
+                }
+              ],
+              "timing_jp": "『お互いのアタックステップ』",
+              "header_jp": "【神技：2】Lv1・Lv2：フラッシュ『お互いのアタックステップ』",
+              "text_jp": "〔このネクサスのコア2個をボイドに置く〕BP6000以下の相手のスピリット1体を破壊することで、自分はデッキから1枚ドローする。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 5,
+              "form": "header",
+              "levels": [
+                2
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "神域",
+                  "code": "shiniki",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『自分のアタックステップ』",
+              "header_jp": "【神域】Lv2『自分のアタックステップ』",
+              "text_jp": "〔重複不可〕系統：「星竜」を持つ自分のスピリットが、相手のスピリット/アルティメットを破壊したとき、相手のライフのコア1個をリザーブに置く。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "安達洋介",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "BS44-X07",
+        "product_name_jp": "神煌臨編 第1章：創界神の鼓動",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E7%A5%9E%E7%85%8C%E8%87%A8%E7%B7%A8%20%E7%AC%AC1%E7%AB%A0%EF%BC%9A%E5%89%B5%E7%95%8C%E7%A5%9E%E3%81%AE%E9%BC%93%E5%8B%95",
+        "product_code": "BS44",
+        "product_type_code": "booster",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "5",
+        "release_date": "2018-04-21",
+        "section": "収録"
+      },
+      {
+        "number": "BS44-X07",
+        "product_name_jp": "バトスピチャンピオンシップ2018 -3on3-",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E3%83%81%E3%83%A3%E3%83%B3%E3%83%94%E3%82%AA%E3%83%B3%E3%82%B7%E3%83%83%E3%83%972018%20-3on3-",
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "優勝記念品",
+        "note_jp": "特別仕様",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      },
+      {
+        "number": "BS44-X07",
+        "product_name_jp": "メガデッキ【ダブルノヴァデッキX】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%A1%E3%82%AC%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E3%83%80%E3%83%96%E3%83%AB%E3%83%8E%E3%83%B4%E3%82%A1%E3%83%87%E3%83%83%E3%82%ADX%E3%80%91",
+        "product_code": "SD51",
+        "product_type_code": "starter",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "6",
+        "release_date": "2019-12-07",
+        "section": "収録"
+      },
+      {
+        "number": "BS44-X07",
+        "product_name_jp": "メガデッキ【太陽神の顕現】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%A1%E3%82%AC%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E5%A4%AA%E9%99%BD%E7%A5%9E%E3%81%AE%E9%A1%95%E7%8F%BE%E3%80%91",
+        "product_code": "SD68",
+        "product_type_code": "starter",
+        "rarity_jp": "X",
+        "rarity_code": "X",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "11",
+        "release_date": "2024-03-30",
+        "section": "収録"
+      },
+      {
+        "number": "BS44-X07",
+        "product_name_jp": "メガデッキ【太陽神の顕現】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%A1%E3%82%AC%E3%83%87%E3%83%83%E3%82%AD%E3%80%90%E5%A4%AA%E9%99%BD%E7%A5%9E%E3%81%AE%E9%A1%95%E7%8F%BE%E3%80%91",
+        "product_code": null,
+        "product_type_code": "starter",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": "発売記念イベント記念品",
+        "note_jp": "SECRETデザイン",
+        "block_icon": null,
+        "release_date": null,
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS44-X07",
+        "large_url": "https://batspi.com/card/BS4/BS44-X07.jpg",
+        "small_url": "https://batspi.com/card/BS4/small/BS44-X07.jpg",
+        "caption": [
+          "神煌臨編 第1章：創界神の鼓動"
+        ]
+      },
+      {
+        "number": "BS44-X07",
+        "large_url": "https://batspi.com/card/BS4/BS44-X07-2.jpg",
+        "small_url": "https://batspi.com/card/BS4/small/BS44-X07-2.jpg",
+        "caption": [
+          "メガデッキ【ダブルノヴァデッキX】"
+        ]
+      },
+      {
+        "number": "BS44-X07",
+        "large_url": "https://batspi.com/card/BS4/BS44-X07-3.jpg",
+        "small_url": "https://batspi.com/card/BS4/small/BS44-X07-3.jpg",
+        "caption": [
+          "メガデッキ【太陽神の顕現】"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

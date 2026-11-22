@@ -63,7 +63,7 @@ Option 1. batspi.com is the single source of truth in v1. Inside batspi the foll
 
 | Field group | Authoritative | Fallback | Notes |
 | --- | --- | --- | --- |
-| `name_ja`, card type, cost, reductions, colours, symbols, families, levels and BP, Brave and Ultimate fields, effects, flavor text | Own `<pre>` (and the page title for `name_ja`) | none, NULL | No official cross-check in v1 |
+| `name_jp`, card type, cost, reductions, colours, symbols, families, levels and BP, Brave and Ultimate fields, effects, flavor text | Own `<pre>` (and the page title for `name_jp`) | none, NULL | No official cross-check in v1 |
 | `name_en` | The English name in the batspi `<h3>`, with `translation_source = official` and status `reviewed` (it is the official Bandai English name, transcribed by the wiki) | Machine translation in #11, with `translation_source = machine` | Fandom is not used |
 | Other `_en` text (effects, flavor, families) | Machine translation in #11 (`machine`, status `machine`) | NULL with status `failed` | Reviewed text may replace it later (`manual`) |
 | Card number | The `cardno` span (the number also appears as text in the `<h3>`, for example `<BS01-001>`) | The image caption | Official prefixes such as `26R` are not adopted |
@@ -100,4 +100,5 @@ Option 1. batspi.com is the single source of truth in v1. Inside batspi the foll
 
 - Issue: [#56](https://github.com/AleFire99/BS_Database/issues/56), epic [#9](https://github.com/AleFire99/BS_Database/issues/9)
 - Evidence: [coverage-matrix.md](../sources/coverage-matrix.md), [batspi.md](../sources/batspi.md), [official.md](../sources/official.md), [fandom.md](../sources/fandom.md)
+- Amended by [ADR 0008](0008-normalization-and-translation.md) ([#91](https://github.com/AleFire99/BS_Database/issues/91)): the batspi `<h3>` English name uses the translation source `batspi`, not `official`.
 - Related: [ADR 0004](0004-card-printing-identity.md), [ADR 0005](0005-text-first-effects-and-translations.md), [ADR 0006](0006-scraping-and-redistribution-policy.md), [policy.md](../sources/policy.md)

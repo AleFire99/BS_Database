@@ -91,6 +91,9 @@ Failures are of two kinds:
 | `--refresh` | Fetch again every page this run visits (index, selected sets, pending cards). Use it with `--set` and `--limit`; alone it fetches the index and all sets again, and the request budget stops it half-way. Cards that are already `parsed` are never revisited |
 | `--max-age 30d` | Fetch again cached pages older than this (`<int><unit>`, units `s m h d w`) |
 | `--limit N` | Take at most N card pages this run (cache hits count) |
+| `--retry-failed` | First give new attempts to the pages that failed with a `parse error:` (a parser fix); 404s, policy skips and transport errors keep their state |
+| `--offline` | Serve the cache only: a page that is not in it is a retryable skip, and the HTTP client (robots.txt included) is never called, so `Requests made: 0` |
+| `--reparse` | First rewind every parsed card page to `fetched`, so the run parses it again from the cache (after a parsed-schema change such as 2.0.0 to 2.1.0, [ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md)). Use it without `--set`; combine with `--offline` for a rebuild with no request |
 
 | Exit code | Meaning |
 | --- | --- |
@@ -101,18 +104,32 @@ Failures are of two kinds:
 
 ## Parsed JSON
 
+A parsed tree written under another `schema_version` is rejected by `read_card_page`; rebuild it with `bsdb scrape --offline --reparse` (and `--retry-failed` for pages that failed to parse), with no request.
+
 `data/parsed/batspi/<sha256(url)>.json`, written atomically (temp file, fsync, rename) as UTF-8 with `ensure_ascii=False`:
 
 ```json
 {
-  "schema_version": "1.1.0",
+  "schema_version": "2.1.0",
   "url": "https://batspi.com/index.php?...",
   "provenance": {"source": "batspi", "fetched_at": "2026-11-15T12:00:00+00:00", "from_cache": true},
-  "page": {"title_ja": "...", "entries": ["..."], "printings": ["..."], "images": ["..."]}
+  "page": {"title_jp": "...", "entries": ["..."], "printings": ["..."], "images": ["..."]}
 }
 ```
 
 The file name is the same digest as the cache stem, so one URL maps to `cache/html/batspi/<d>.html` and `.json` and to `parsed/batspi/<d>.json`; to go from a file back to its URL, read the `url` field. The page name is not used: Japanese names take up to three bytes per character (255-byte limit) and differ by percent-encoding form. `page` is `dataclasses.asdict` of the `CardPage` (see the [card page parser](overview.md#card-page-parser)). `fetched_at` is the time of the original fetch (the cache sidecar); `from_cache` says whether the read that produced this file came from the cache, not whether the original fetch did.
+
+### Printing rows
+
+A 収録 row is one `<br />` line, such as `<a>バトスピ部</a>全部員共通抽選賞品(2018年7月) <C>(ガイ・アスラVSジークヴルム・ノヴァ)`. `parsers/batspi/card_sections.py` reads it from the end (#144):
+
+1. The text of the row keeps the text of every link in place, except a product link at the very start (its text is the product name). A link inside the text, such as `特別大会「<a>ダンカップ</a>」参加記念品`, is printed content and stays in the detail or the note. The first link still gives the product name and URL.
+2. The last `<X>` that is followed only by balanced parenthetical groups is the rarity; the groups are the note (several groups are joined with a space, a stray extra `)` is ignored). An empty `<>` leaves the rarity `None` and logs a `field=rarity` warning.
+3. Without such a rarity, a balanced group at the end is the note.
+4. Without a product link, the row text before the detail is the product name; a parenthesised date in it (`(2018年6月)`, `(2012/12/～)`, a parenthetical that starts with a four-digit year) and what follows it move to the detail. A bare date (`Vジャンプ2012年1月号付録`) stays in the name, so those remain distinct products.
+5. Whatever is left is the detail, its own parentheses included (`全部員共通抽選賞品(2018年7月)`).
+
+The quality rule Q040 (see [build](build.md#quality-rules)) warns about an empty `「」` or a `<X>` left in a printing detail or note. The real rows that show each case are in `tests/fixtures/snippets/`.
 
 ## Report
 

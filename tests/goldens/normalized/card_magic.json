@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E3%82%B8%E3%83%A3%E3%83%99%E3%83%AA%E3%83%B3%E3%83%89%E3%83%AD%E3%83%BC",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E3%82%B8%E3%83%A3%E3%83%99%E3%83%AA%E3%83%B3%E3%83%89%E3%83%AD%E3%83%BC",
+    "title_jp": "ジャベリンドロー",
+    "entries": [
+      {
+        "number": "BS72-075",
+        "name_jp": "ジャベリンドロー",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "マジック",
+          "card_type_code": "magic",
+          "deck_limit": null,
+          "cost": 4,
+          "reduction": {
+            "plain": 2,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [],
+          "families": [
+            {
+              "jp": "武迅",
+              "code": "bujin",
+              "en": "Martial",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "keyword_line",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "ミラージュ",
+                  "code": "mirage",
+                  "parameter_jp": "コスト2(1)(このカードは手札からセットできる)"
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "【ミラージュ：コスト2(1)(このカードは手札からセットできる)】",
+              "text_jp": "【ミラージュ：コスト2(1)(このカードは手札からセットできる)】",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "セット中",
+                  "code": "setto_chu",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": "『自分のアタックステップ開始時』",
+              "header_jp": "【セット中】『自分のアタックステップ開始時』",
+              "text_jp": "相手の手元にあるカードの色3色につき、自分の創界神ネクサスの「契約神ルー」1つにコア+1する。\nこの効果で対象のコアが3個以上になったとき、自分はデッキから1枚ドローできる。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 3,
+              "form": "header",
+              "levels": [],
+              "label": "メイン",
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": "メイン：",
+              "text_jp": "自分はデッキから2枚ドローする。\nその後、自分の「契約神ルー」があるとき、自分のデッキを上から4枚オープンできる。\nその中の系統：「締皇」と「武迅」を持つスピリットカード1枚を手札に加える。\n残ったカードはデッキの下に戻す。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "高梨かりた",
+              "note": null
+            },
+            {
+              "name": "ikuyoan",
+              "note": "プロモーションカード・ルー"
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": null,
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "BS72-075",
+        "product_name_jp": "契約編：環 第1章：廻帰再醒",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%92%B0%20%E7%AC%AC1%E7%AB%A0%EF%BC%9A%E5%BB%BB%E5%B8%B0%E5%86%8D%E9%86%92",
+        "product_code": "BS72",
+        "product_type_code": "booster",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "12",
+        "release_date": "2025-05-17",
+        "section": "収録"
+      },
+      {
+        "number": "BS72-075",
+        "product_name_jp": "バトルスキーイベント提供記念品",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": null,
+        "product_code": null,
+        "product_type_code": "promo",
+        "rarity_jp": null,
+        "rarity_code": null,
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": null,
+        "section": "ブロックアイコン"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS72-075",
+        "large_url": "https://batspi.com/card/BS7/BS72-075.jpg",
+        "small_url": "https://batspi.com/card/BS7/small/BS72-075.jpg",
+        "caption": [
+          "契約編：環 第1章：廻帰再醒"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

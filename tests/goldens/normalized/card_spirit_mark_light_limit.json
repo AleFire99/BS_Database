@@ -1,0 +1,257 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E3%82%B5%E3%83%B3%E3%83%94%E3%83%A9%E3%83%BC%E3%83%BB%E3%83%89%E3%83%A9%E3%82%B4%E3%83%B3",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E3%82%B5%E3%83%B3%E3%83%94%E3%83%A9%E3%83%BC%E3%83%BB%E3%83%89%E3%83%A9%E3%82%B4%E3%83%B3",
+    "title_jp": "サンピラー・ドラゴン",
+    "entries": [
+      {
+        "number": "SD10-009",
+        "name_jp": "サンピラー・ドラゴン",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": 1,
+          "cost": 4,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "星竜",
+              "code": "seiryuu",
+              "en": "Astral Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 2000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 3,
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": null,
+          "card_class_jp": null,
+          "type_mark_jp": "光"
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "header",
+              "levels": [
+                1,
+                2
+              ],
+              "label": null,
+              "keywords": [],
+              "timing_jp": "『このスピリットの召喚時』",
+              "header_jp": "Lv1・Lv2『このスピリットの召喚時』",
+              "text_jp": "自分のトラッシュにある系統：「星竜」を持つスピリットカード/ブレイヴカード1枚を手札に戻す。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            },
+            {
+              "position": 2,
+              "form": "header",
+              "levels": [
+                2
+              ],
+              "label": null,
+              "keywords": [
+                {
+                  "bracket": "【",
+                  "name_jp": "強化",
+                  "code": "kyoka",
+                  "parameter_jp": null
+                }
+              ],
+              "timing_jp": null,
+              "header_jp": "Lv2【強化】",
+              "text_jp": "アルティメット以外の自分の「BP破壊効果」の上限を+1000する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "藤井英俊",
+              "note": null
+            }
+          ],
+          "concepts": [],
+          "flavor_jp": "私の故郷の国には象徴となる剣が存在しない。\n今回、各国の剣を確認することができたので、\nこの旅を終えた後にでも作ってしまおうかな。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "SD10-009",
+        "product_name_jp": "ツルギデッキ 【シャイニングチャージ】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%84%E3%83%AB%E3%82%AE%E3%83%87%E3%83%83%E3%82%AD%20%E3%80%90%E3%82%B7%E3%83%A3%E3%82%A4%E3%83%8B%E3%83%B3%E3%82%B0%E3%83%81%E3%83%A3%E3%83%BC%E3%82%B8%E3%80%91",
+        "product_code": "SD10",
+        "product_type_code": "starter",
+        "rarity_jp": "U",
+        "rarity_code": "U",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2012-09-08",
+        "section": "収録"
+      },
+      {
+        "number": "SD10-009",
+        "product_name_jp": "はじめてのバトルセット 【出撃!シャイニングソード】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AE%E3%83%90%E3%83%88%E3%83%AB%E3%82%BB%E3%83%83%E3%83%88%20%E3%80%90%E5%87%BA%E6%92%83%21%E3%82%B7%E3%83%A3%E3%82%A4%E3%83%8B%E3%83%B3%E3%82%B0%E3%82%BD%E3%83%BC%E3%83%89%E3%80%91",
+        "product_code": "SD12",
+        "product_type_code": "starter",
+        "rarity_jp": "U",
+        "rarity_code": "U",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2012-09-08",
+        "section": "収録"
+      },
+      {
+        "number": "SD10-009",
+        "product_name_jp": "バトスピやろうぜ!【はじめてのソードアイズセット】",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%90%E3%83%88%E3%82%B9%E3%83%94%E3%82%84%E3%82%8D%E3%81%86%E3%81%9C%21%E3%80%90%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AE%E3%82%BD%E3%83%BC%E3%83%89%E3%82%A2%E3%82%A4%E3%82%BA%E3%82%BB%E3%83%83%E3%83%88%E3%80%91",
+        "product_code": "SD18",
+        "product_type_code": "starter",
+        "rarity_jp": "U",
+        "rarity_code": "U",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": null,
+        "release_date": "2013-03-22",
+        "section": "収録"
+      },
+      {
+        "number": "SD10-009",
+        "product_name_jp": "リミテッドパック2024 契約編：真 Vol.1",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E3%83%AA%E3%83%9F%E3%83%86%E3%83%83%E3%83%89%E3%83%91%E3%83%83%E3%82%AF2024%20%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%9C%9F%20Vol.1",
+        "product_code": null,
+        "product_type_code": "booster",
+        "rarity_jp": "C",
+        "rarity_code": "C",
+        "variant_jp": null,
+        "variant_code": "normal",
+        "detail_jp": null,
+        "note_jp": null,
+        "block_icon": "11",
+        "release_date": null,
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "SD10-009",
+        "large_url": "https://batspi.com/card/SD/SD10-009.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD10-009.jpg",
+        "caption": [
+          "ツルギデッキ 【シャイニングチャージ】"
+        ]
+      },
+      {
+        "number": "SD10-009",
+        "large_url": "https://batspi.com/card/SD/SD10-009-2.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD10-009-2.jpg",
+        "caption": [
+          "はじめてのバトルセット 【出撃!シャイニングソード】"
+        ]
+      },
+      {
+        "number": "SD10-009",
+        "large_url": "https://batspi.com/card/SD/SD10-009-3.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD10-009-3.jpg",
+        "caption": [
+          "バトスピやろうぜ!【はじめてのソードアイズセット】",
+          "光の赤デッキ"
+        ]
+      },
+      {
+        "number": "SD10-009",
+        "large_url": "https://batspi.com/card/SD/SD10-009-4.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD10-009-4.jpg",
+        "caption": []
+      },
+      {
+        "number": "SD10-009",
+        "large_url": "https://batspi.com/card/SD/SD10-009-5.jpg",
+        "small_url": "https://batspi.com/card/SD/small/SD10-009-5.jpg",
+        "caption": [
+          "シークレット"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

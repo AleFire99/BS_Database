@@ -177,7 +177,7 @@ Types: `feat` `fix` `docs` `refactor` `test` `ci` `chore` `build` `perf` `style`
 - The title is a Conventional Commit. It becomes the squash commit.
 - The body follows the template and must contain `Closes #<n>` and a link to the Gate C (or D) approval.
 - `pr-lint` enforces which branch may target which base: `task/*` → `feature/*`; `feature/*`, `release/*`, `hotfix/*` and `dependabot/*` → `dev`; only `release/*` or `hotfix/*` → `main`.
-- Required checks: `lint-test`, `docs`, `pr-lint`, `commitlint`.
+- Required checks: `lint-test`, `db-build` (the fixture database build, see [build.md](docs/architecture/build.md#in-ci)), `docs`, `pr-lint`, `commitlint`.
 
 ## Local setup
 
@@ -190,6 +190,46 @@ uv run bsdb --help                         # dev loop: run the CLI from the work
 ```
 
 Add dependencies with `uv add <pkg>` (or `uv add --dev <pkg>` for dev tools) and commit `uv.lock`.
+
+## Adding a glossary entry
+
+Glossaries are CSV files in `data/glossary/` (see [ADR 0008](docs/adr/0008-normalization-and-translation.md)).
+
+1. Pick the file: `colors`, `symbols`, `card_types`, `rarities`, `variants`, `product_types`, `product_code_prefixes`, `product_name_keywords`, `keywords` or `families`.
+2. Add one row. `jp` must be exactly what the parser emits. Do not pad with spaces.
+3. Keep rows sorted by `code` (families: by `code`, then `jp`). Do not duplicate a `jp` or a `code`.
+4. Fill `en` for closed kinds. Mark a guessed English name in `notes` as `provisional`. A name taken from the fandom wiki carries `notes` = `fandom: <title>`.
+5. Legacy English family names go in `family_legacy_en.csv`. Fill `jp` with a name that exists in `families.csv`.
+6. Run `uv run pytest tests/test_glossary.py tests/test_glossary_seed.py`. The loader lists every violation as `<file>:<line>: <rule>`.
+
+Family and keyword codes are lowercase ASCII slugs, unique and sorted. Use the romaji of the Japanese name when it is known (`kijuu`, `gattai_chu`). Otherwise use a slug of the English name (`a_laws`, `aeon_arcana`). Existing codes are never renamed. `product_code_prefixes.csv` (`prefix,code,notes`) maps a product-code prefix to a `product_types` code: prefixes are unique and sorted, and the code must exist in `product_types.csv`. The longest matching prefix wins ([normalization](docs/architecture/normalization.md#rules)). `product_name_keywords.csv` (`keyword,code,notes`) types products that have no product code (or no matching prefix) by a substring of the Japanese product name: keywords are unique and sorted, the code must exist in `product_types.csv`, matching is NFKC and the **longest** keyword wins. Check a new keyword against the real product names first (`bsdb glossary review` lists the untyped ones in *Untyped products*), and add a longer keyword when a short one mistypes a product.
+
+### Curating with the review command
+
+1. Run `bsdb scrape` and `bsdb normalize`, so `data/normalized/` is current.
+2. Run `uv run bsdb glossary review --legacy-db <path to the v0.1.0 battle_spirits.db> [--out DIR]`. The output is `data/review/review.md`, `families.csv`, `keywords.csv` and `family_legacy_en.csv`. Nothing in `data/glossary/` changes.
+3. Read `review.md` (families, keywords, `no_split` candidates, product-code prefixes, untyped products, slug conflicts, legacy pairs). Agree the names with the owner.
+4. Copy `families.csv` and `family_legacy_en.csv` together into `data/glossary/`. Fill missing codes and English names by hand, then re-sort `families.csv` and `keywords.csv` by `code` (the loader requires it).
+5. Run the tests above and `bsdb normalize --strict`, then regenerate the goldens with `uv run python tests/tools/regen_normalized_goldens.py`.
+
+## Reading the normalize report
+
+`bsdb normalize` writes `data/normalized/_report.md` (and the same data as `_report.json`) next to the pages.
+
+- **Unmapped, closed**: a colour, symbol, card type, rarity, variant or product type with no glossary row. The page is not written. Add the row to the right CSV.
+- **Unmapped, warnings**: a family or keyword with no glossary row. `--strict` fails on these. Add the row.
+- **Uncurated**: a row exists but its `code` is empty. Not an error; fill the code (see the review command above).
+- **Translation**: per category (families, names, products), how many texts came from the glossary or batspi, and how many are `machine`, `pending` or `failed`, and `chars_to_translate`, the Japanese characters still to send to the engine. `pending` means no key, over the `--max-chars` budget or the null engine; `failed` means the engine errored. Both are retried on the next run.
+
+Strict mode (`bsdb normalize --strict`) is checked in CI by `tests/test_normalize_strict.py`, with no translation model.
+
+## Building the database
+
+`uv run bsdb build [--out PATH] [--built-at ISO8601] [--strict]` writes a fresh SQLite file from `data/normalized/` and the glossary (no network; the raw-HTML cache is only read for page hashes). It prints the rows per table and a quality summary and writes `<db-stem>.build_report.json` and `.md` next to the database; quality errors (and warnings with `--strict`) fail the build and keep the old file. See [build](docs/architecture/build.md) for the rules, the severities and the report.
+
+**Adding a quality rule.**
+
+A rule is a read-only SQL query in `src/bs_database/build/quality/rules.py` (`RULES`): one row per violation, first column a short example, a stable `ORDER BY`. Pick the next free id of the severity range (`Q0xx` error, `Q03x` warning, `Q05x` info), measure it on the full data first (`uv run python` with `run_rules` on a built database), and add a failing case to `FAILING` in `tests/test_quality_rules.py` (a mutation of the clean data set in `tests/quality_support.py`); a meta-test fails when an id has none. A new loader warning kind needs an entry in `LOADER_KINDS` (`quality/loader.py`). Then regenerate the count golden and document the rule in the catalogue of [build](docs/architecture/build.md#quality-rules). After a change to the build, regenerate the count golden with `uv run python tests/tools/regen_build_goldens.py` and review the diff. To compare a build with the v0.1.0 database run `uv run python tests/tools/parity_report.py <legacy.db> <new.db> --out report.md`; it regenerates the body of [parity-v0.1.0](docs/data-model/parity-v0.1.0.md) below its hand-written header. A schema change is an edit of `src/bs_database/schema.sql` ([ADR 0011](docs/adr/0011-schema-sql-source-of-truth-without-migrations.md)) together with `docs/data-model/target-schema.md`; `tests/test_schema_sql.py` checks that they agree.
 
 ## Releases
 

@@ -83,6 +83,31 @@ HEADERS = [
     ("【OC中】Lv3・Lv4『x』", (3, 4), None, (Keyword("【", "OC中", None),), "『x』"),
     ("メイン：", (), "メイン", (), None),
     ("フラッシュ：", (), "フラッシュ", (), None),
+    # #108: a blank after the levels, an ascii colon, the timing before the parameter or keyword
+    (
+        "Lv1・Lv2・Lv3 【粉砕】『このスピリットのアタック時』",
+        (1, 2, 3),
+        None,
+        (Keyword("【", "粉砕", None),),
+        "『このスピリットのアタック時』",
+    ),
+    ("Lv1・Lv2 『x』", (1, 2), None, (), "『x』"),
+    (
+        "Lv1・Lv2・Lv3:フラッシュ【覚醒】",
+        (1, 2, 3),
+        "フラッシュ",
+        (Keyword("【", "覚醒", None),),
+        None,
+    ),
+    ("Lv2『x』〔ターン1回〕", (2,), None, (), "『x』"),
+    ("Lv2『x』【起動：フラッシュ】", (2,), None, (Keyword("【", "起動", "フラッシュ"),), "『x』"),
+    (
+        "『x』【起動：フラッシュ】〔ターン1回〕",
+        (),
+        None,
+        (Keyword("【", "起動", "フラッシュ"),),
+        "『x』",
+    ),
 ]
 
 
@@ -226,16 +251,50 @@ def test_trailer_credits_and_flavor() -> None:
         "二行目",
         "",
     ]
-    illustrators, concepts, flavor, note = parse_trailer(lines)
+    illustrators, concepts, flavor, note, others = parse_trailer(lines)
     assert [(c.name, c.note) for c in illustrators] == [("a", None), ("b", "note")]
     assert [c.name for c in concepts] == ["石垣純哉"]
-    assert (flavor, note) == ("一行目\n二行目", "メモ")
+    assert (flavor, note, others) == ("一行目\n二行目", "メモ", ())
 
 
 def test_trailer_flavor_note_without_parentheses_and_empty() -> None:
-    assert parse_trailer(["フレーバーテキスト：そのまま", "x"])[2:] == ("x", "そのまま")
-    assert parse_trailer(["フレーバーテキスト：", ""])[2:] == (None, None)
-    assert parse_trailer([])[2:] == (None, None)
+    assert parse_trailer(["フレーバーテキスト：そのまま", "x"])[2:4] == ("x", "そのまま")
+    assert parse_trailer(["フレーバーテキスト：", ""])[2:4] == (None, None)
+    assert parse_trailer([])[2:4] == (None, None)
+
+
+def test_trailer_other_credits_and_ascii_colons() -> None:
+    lines = [
+        "イラスト:SUNRIZE",
+        "コンセプト:やまだたかひろ",
+        "プロデュース：杉田智和",
+        "ペイント：a(b)",
+        "書：c",
+        "写真：d",
+        "コラボレート：アイドルマスター",
+    ]
+    illustrators, concepts, _, _, others = parse_trailer(lines)
+    assert [c.name for c in illustrators] == ["SUNRIZE"]
+    assert [c.name for c in concepts] == ["やまだたかひろ"]
+    assert [(c.role, c.name, c.note) for c in others] == [
+        ("プロデュース", "杉田智和", None),
+        ("ペイント", "a", "b"),
+        ("書", "c", None),
+        ("写真", "d", None),
+        ("コラボレート", "アイドルマスター", None),
+    ]
+
+
+def test_trailer_empty_illustrator_is_ignored_with_a_warning(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    result = parse_trailer(["イラスト：", "イラスト：x"], "BS00-001")
+    assert [c.name for c in result[0]] == ["x"]
+    assert "empty illustrator ignored" in caplog.text
+
+
+def test_split_trailer_at_other_credits() -> None:
+    assert split_trailer(["効果", "書：x"]) == (["効果"], ["書：x"])
 
 
 def test_trailer_errors() -> None:
@@ -253,3 +312,22 @@ def test_parse_card_text() -> None:
     assert [e.text for e in text.effects] == ["効果"]
     assert text.flavor == "f"
     assert text.illustrators[0].name == "a"
+
+
+@pytest.mark.parametrize(
+    ("line", "keyword"),
+    [
+        # ASCII colon between name and parameter (#109)
+        ("【Sバースト:自分のライフ減少後】", Keyword("【", "Sバースト", "自分のライフ減少後")),
+        # 《…》 keyword nested in 【…】 keeps no inner brackets (#109)
+        (
+            "【《バースト封印》：自分のライフ減少後】",
+            Keyword("【", "バースト封印", "自分のライフ減少後"),
+        ),
+        # full-width colon unchanged
+        ("【バースト：自分のライフ減少後】", Keyword("【", "バースト", "自分のライフ減少後")),
+    ],
+)
+def test_keyword_separator_and_nested_brackets(line: str, keyword: Keyword) -> None:
+    effects, *_ = parse_body([line, "テキスト"])
+    assert effects[0].keywords == (keyword,)

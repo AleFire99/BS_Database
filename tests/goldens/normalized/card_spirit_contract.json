@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.2.0",
+  "parsed_schema_version": "2.1.0",
+  "url": "https://batspi.com/index.php?%E7%B4%85%E8%93%AE%E3%81%AE%E9%9B%B7%E7%9A%87%E9%BE%8D%E3%82%B8%E3%83%BC%E3%82%AF%E3%83%B4%E3%83%AB%E3%83%A0",
+  "provenance": {
+    "source": "batspi",
+    "fetched_at": "2026-11-15T12:00:00+00:00",
+    "from_cache": true
+  },
+  "page": {
+    "url": "https://batspi.com/index.php?%E7%B4%85%E8%93%AE%E3%81%AE%E9%9B%B7%E7%9A%87%E9%BE%8D%E3%82%B8%E3%83%BC%E3%82%AF%E3%83%B4%E3%83%AB%E3%83%A0",
+    "title_jp": "紅蓮の雷皇龍ジークヴルム",
+    "entries": [
+      {
+        "number": "BS75-CX01",
+        "name_jp": "紅蓮の雷皇龍ジークヴルム",
+        "name_en": null,
+        "en_source": null,
+        "en_status": "pending",
+        "gameplay": {
+          "card_type_jp": "スピリット",
+          "card_type_code": "spirit",
+          "deck_limit": null,
+          "cost": 6,
+          "reduction": {
+            "plain": 3,
+            "parts": []
+          },
+          "colors": [
+            {
+              "jp": "赤",
+              "code": "red"
+            }
+          ],
+          "symbols": [
+            {
+              "symbol_jp": "赤",
+              "symbol_code": "red",
+              "count": 1,
+              "variant_jp": null,
+              "color_jp": null
+            }
+          ],
+          "families": [
+            {
+              "jp": "紅蓮契約",
+              "code": "guren_keiyaku",
+              "en": "Crimson Contract",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "締皇",
+              "code": "teiou",
+              "en": "Concluser",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            },
+            {
+              "jp": "星竜",
+              "code": "seiryuu",
+              "en": "Astral Dragon",
+              "en_source": "manual",
+              "en_status": "reviewed"
+            }
+          ],
+          "levels": [
+            {
+              "level": 1,
+              "cores": 1,
+              "battle_points": 5000,
+              "count_condition": null,
+              "note": null
+            },
+            {
+              "level": 2,
+              "cores": 3,
+              "battle_points": 7000,
+              "count_condition": null,
+              "note": null
+            }
+          ],
+          "fusion_bp_bonus": null,
+          "overclock": {
+            "count_min": 4,
+            "bp_bonus": 5000
+          },
+          "card_class_jp": "契約",
+          "type_mark_jp": null
+        },
+        "text": {
+          "effects": [
+            {
+              "position": 1,
+              "form": "plain",
+              "levels": [],
+              "label": null,
+              "keywords": [],
+              "timing_jp": null,
+              "header_jp": null,
+              "text_jp": "魂状態のこのカードには《契約煌臨》できる。\nこのとき、煌臨するカードに、自分のフィールド/リザーブのコアを好きなだけ置く。\nこのカード/スピリットは、自分のライフ1につき、コストを-1する。\n【契約煌臨元】/【スピリット】Lv1・Lv2『自分のターン』\nブロックされていないこのスピリットは相手の効果を受けない。\n【契約煌臨元】/【スピリット】Lv1・Lv2『このスピリットのアタック時』\n自分のカウント+2する。\nその後、自分のライフのコア1個をトラッシュに置くことで、自分のデッキを上から3枚オープンする。\nその中の「紅蓮」/「ヴルム」/「クシナ」1枚ずつを手札に加える。\n残ったカードは破棄する。",
+              "text_en": null,
+              "en_source": null,
+              "en_status": "pending"
+            }
+          ],
+          "fusion_conditions_jp": [],
+          "summon_condition_jp": null,
+          "overclock_condition_jp": null,
+          "illustrators": [
+            {
+              "name": "北熊",
+              "note": null
+            }
+          ],
+          "concepts": [
+            {
+              "name": "石垣純哉",
+              "note": null
+            }
+          ],
+          "flavor_jp": "紅蓮の雷は流星――そして超神星になる。",
+          "flavor_note_jp": null,
+          "flavor_en": null,
+          "en_source": null,
+          "en_status": "pending",
+          "other_credits": []
+        }
+      }
+    ],
+    "differences": [],
+    "printings": [
+      {
+        "number": "BS75-CX01",
+        "product_name_jp": "契約編：環 第4章：英雄傑集",
+        "product_name_en": null,
+        "product_en_source": null,
+        "product_en_status": "pending",
+        "product_href": "https://batspi.com/index.php?%E5%A5%91%E7%B4%84%E7%B7%A8%EF%BC%9A%E7%92%B0%20%E7%AC%AC4%E7%AB%A0%EF%BC%9A%E8%8B%B1%E9%9B%84%E5%82%91%E9%9B%86",
+        "product_code": "BS75",
+        "product_type_code": "booster",
+        "rarity_jp": "契約X",
+        "rarity_code": "CX",
+        "variant_jp": "SECRETあり",
+        "variant_code": "secret",
+        "detail_jp": null,
+        "note_jp": "SECRETあり",
+        "block_icon": "12",
+        "release_date": "2026-02-14",
+        "section": "収録"
+      }
+    ],
+    "images": [
+      {
+        "number": "BS75-CX01",
+        "large_url": "https://batspi.com/card/BS7/BS75-CX01.jpg",
+        "small_url": "https://batspi.com/card/BS7/small/BS75-CX01.jpg",
+        "caption": [
+          "契約編：環 第4章：英雄傑集"
+        ]
+      },
+      {
+        "number": "BS75-CX01",
+        "large_url": "https://batspi.com/card/BS7/BS75-CX01-2.jpg",
+        "small_url": "https://batspi.com/card/BS7/small/BS75-CX01-2.jpg",
+        "caption": [
+          "契約編：環 第4章：英雄傑集",
+          "シークレット"
+        ]
+      }
+    ],
+    "unmapped": [],
+    "uncurated": []
+  }
+}

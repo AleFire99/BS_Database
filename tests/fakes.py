@@ -2,9 +2,9 @@
 
 import functools
 import json
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 import pytest
 
@@ -12,6 +12,7 @@ from bs_database.ingest.http import HttpClient, HttpResponse
 from bs_database.parsers.batspi.card import parse_card_page
 from bs_database.parsers.batspi.index import parse_index
 from bs_database.settings import Settings
+from bs_database.translate.types import Lang, TranslationResult
 
 HTML_DIR = Path(__file__).parent / "fixtures" / "html"
 MANIFEST: dict[str, dict[str, object]] = json.loads(
@@ -103,3 +104,58 @@ def memoise_parsers(monkeypatch: pytest.MonkeyPatch) -> None:
     """Make the pipeline use memoised (identical) card and index parsers."""
     monkeypatch.setattr("bs_database.ingest.pipeline.parse_card_page", _CACHED_CARD)
     monkeypatch.setattr("bs_database.ingest.pipeline.parse_index", _CACHED_INDEX)
+
+
+class FakeEngine:
+    """A translator that upper-cases and records every call; ``fail`` texts come back failed."""
+
+    name = "fake"
+
+    def __init__(self, fail: frozenset[str] = frozenset()) -> None:
+        self.calls: list[list[str]] = []
+        self.fail = fail
+
+    def translate(
+        self, texts: Sequence[str], *, src: Lang = "jp", tgt: Lang = "en"
+    ) -> list[TranslationResult]:
+        self.calls.append(list(texts))
+        return [
+            TranslationResult(None, "failed", self.name)
+            if t in self.fail
+            else TranslationResult(f"<{t}>", "machine", self.name)
+            for t in texts
+        ]
+
+
+class FakeSP:
+    """A fake SentencePiece model: pieces are the characters; decode joins them."""
+
+    def encode(self, text: str, out_type: type[str]) -> list[str]:
+        return list(text)
+
+    def decode(self, pieces: list[str]) -> str:
+        return "".join(pieces)
+
+
+class _FakeHyp:
+    def __init__(self, hypotheses: list[list[str]]) -> None:
+        self.hypotheses = hypotheses
+
+
+class FakeCT2:
+    """A fake CTranslate2 translator: upper-cases the pieces; records each call's options.
+
+    ``fail_on`` raises for a batch containing that piece list; ``hypotheses`` is how many
+    hypotheses each result carries.
+    """
+
+    def __init__(self, *, fail_on: list[str] | None = None, hypotheses: int = 1) -> None:
+        self.calls: list[tuple[list[list[str]], dict[str, Any]]] = []
+        self.fail_on = fail_on
+        self.hypotheses = hypotheses
+
+    def translate_batch(self, source: list[list[str]], **options: Any) -> list[_FakeHyp]:
+        self.calls.append((source, options))
+        if self.fail_on is not None and self.fail_on in source:
+            raise RuntimeError("boom")
+        return [_FakeHyp([[p.upper() for p in s]] * self.hypotheses) for s in source]

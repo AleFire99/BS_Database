@@ -14,7 +14,7 @@ from typing import Any
 import pytest
 from fakes import ROBOTS_URL, FakeClock, FakeSite, Killed, fixture_url, make_client, memoise_parsers
 
-from bs_database.ingest.cache import CachedFetcher, RawCache
+from bs_database.ingest.cache import OFFLINE_REASON, CachedFetcher, RawCache
 from bs_database.ingest.http import (
     TRANSPORT_ERROR_REASON,
     Blocked,
@@ -65,9 +65,10 @@ def crawl(
     options: RunOptions = ONLY_SET,
     *,
     refresh: bool = False,
+    offline: bool = False,
 ) -> RunReport:
     client = make_client(settings, site, clock)
-    fetcher = CachedFetcher(client, RawCache(settings.cache_dir), refresh=refresh)
+    fetcher = CachedFetcher(client, RawCache(settings.cache_dir), refresh=refresh, offline=offline)
     with StateStore(settings.state_db_path) as store:
         return run_pipeline(
             settings, fetcher, store, requests_made=lambda: client.requests_made, options=options
@@ -334,10 +335,7 @@ def test_discovery_notes_for_the_promo_list(tmp_path: Path) -> None:
     settings, clock = make_settings(tmp_path), FakeClock()
     site = FakeSite(clock)
     report = crawl(settings, site, clock, RunOptions(sets=("プロモーションカード",), limit=0))
-    (note,) = report.notes
-    assert note.set_title == "プロモーションカード"
-    assert len(note.unknown_numbers) == 9
-    assert "9 unknown numbers" in render(report)
+    assert report.notes == []  # every number of the list has a known scheme since #108
     assert state_of(settings, PROMO_URL).state is S.PARSED
     assert counts(settings)[S.DISCOVERED] > 1000  # promo cards discovered, none fetched
     assert PROMO_URL in site.urls()
@@ -476,3 +474,102 @@ def test_without_a_filter_every_set_is_visited(tmp_path: Path) -> None:
     report = crawl(settings, site, clock, RunOptions(limit=0))
     assert isinstance(report.stop, BudgetExhausted)
     assert len(site.calls) == 4  # robots, index, then sets in index order
+
+
+def test_retry_failed_resets_only_parse_errors_and_offline_makes_no_request(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    site = FakeSite(clock, unmapped="fallback")
+    real = parse_card_page
+    bad, gone = CARD_URLS[7], CARD_URLS[9]
+    site.overrides[gone] = HttpResponse(404, {}, b"not found")
+
+    def broken(html: str, url: str) -> Any:
+        if url == bad:
+            raise ParseError("no card block")
+        return real(html, url)
+
+    monkeypatch.setattr(PARSE, broken)
+    for _ in range(3):  # three failures: exhausted
+        crawl(settings, site, clock)
+    assert {r.url for r in crawl(settings, site, clock).exhausted} == {bad, gone}
+    monkeypatch.setattr(PARSE, real)
+    # a plain run does not touch an exhausted page
+    assert crawl(settings, site, clock).cards_parsed == 0
+    offline_site = FakeSite(clock, unmapped="fallback")
+    report = crawl(
+        settings, offline_site, clock, RunOptions(sets=(SET_NAME,), retry_failed=True), offline=True
+    )
+    assert offline_site.calls == [] and report.requests_made == 0  # not even robots.txt
+    assert report.cards_parsed == 1
+    assert state_of(settings, bad).state is S.PARSED
+    record = state_of(settings, gone)
+    assert record.state is S.FAILED and record.attempts == 3  # the 404 stays exhausted
+    assert [r.url for r in report.exhausted] == [gone]
+
+
+def test_reparse_rewinds_parsed_cards_and_parses_them_again_from_the_cache(
+    tmp_path: Path,
+) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    first = crawl(settings, FakeSite(clock, unmapped="fallback"), clock)
+    assert first.cards_parsed > 0
+    documents = sorted(settings.parsed_dir.rglob("*.json"))
+    for path in documents:
+        path.write_text("{}", encoding="utf-8")  # an old document
+    plain = crawl(settings, FakeSite(clock, unmapped="fallback"), clock)
+    assert plain.cards_parsed == 0  # a plain run does not parse parsed pages again
+    offline_site = FakeSite(clock, unmapped="fallback")
+    report = crawl(settings, offline_site, clock, RunOptions(reparse=True), offline=True)
+    assert offline_site.calls == [] and report.requests_made == 0
+    assert report.cards_parsed == first.cards_parsed
+    assert all(path.read_text(encoding="utf-8") != "{}" for path in documents)
+    assert state_of(settings, CARD_URLS[7]).state is S.PARSED
+
+
+def test_offline_miss_is_a_retryable_skip(tmp_path: Path) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    site = FakeSite(clock, unmapped="fallback")
+    report = crawl(settings, site, clock, offline=True)
+    assert site.calls == [] and report.requests_made == 0
+    record = state_of(settings, INDEX_URL)
+    assert record.state is S.FAILED and record.attempts == 1  # not exhausted at once
+    assert report.index_unobtainable and report.exit_code == 1
+    assert not _permanent(Skipped("u", OFFLINE_REASON))
+
+
+def listing_index(*names: str) -> bytes:
+    """A minimal card list index whose products are the given fixture pages."""
+    links = "".join(
+        f'<p><a href="{fixture_url(name).removeprefix("https://batspi.com/")}">{name}</a></p>'
+        for name in names
+    )
+    return f'<div id="body"><h2>カードリスト</h2><h3>一覧</h3>{links}</div>'.encode()
+
+
+def test_single_card_page_listed_as_a_set_is_parsed_as_a_card(tmp_path: Path) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    site = FakeSite(clock)
+    site.pages[INDEX_URL] = listing_index("card_spirit_listed_as_set.html")
+    url = fixture_url("card_spirit_listed_as_set.html")
+    report = crawl(settings, site, clock, RunOptions())
+    assert report.failures == [] and report.cards_parsed == 1
+    assert state_of(settings, url).state is S.PARSED
+    (doc,) = parsed_files(settings).values()
+    assert doc["url"] == url and doc["page"]["entries"][0]["number"] == "P022"
+    # a second run walks the page again from the cache and writes the same card
+    again = FakeSite(clock)
+    report2 = crawl(settings, again, clock, RunOptions())
+    assert again.calls == [] and report2.failures == [] and report2.cards_parsed == 1
+
+
+def test_year_list_listed_as_a_set_discovers_its_cards(tmp_path: Path) -> None:
+    settings, clock = make_settings(tmp_path), FakeClock()
+    site = FakeSite(clock)
+    site.pages[INDEX_URL] = listing_index("list_year_event_gifts.html")
+    url = fixture_url("list_year_event_gifts.html")
+    report = crawl(settings, site, clock, RunOptions(limit=0))
+    assert report.failures == []
+    assert state_of(settings, url).state is S.PARSED
+    assert counts(settings)[S.DISCOVERED] > 10  # the year entries, none fetched
