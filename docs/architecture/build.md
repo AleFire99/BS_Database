@@ -213,3 +213,7 @@ The full-data build stays local, because `data/normalized` is not in the reposit
 ## Measured on the full local data
 
 13,480 pages, 2026-11-21, offline, about 5 s and a 31 MB file: 14,693 cards for 14,715 numbers (22 cards with two numbers), 1,044 products, 24,130 printings (186 duplicate rows merged), 34,977 effects, 41,234 printing images (L0 11,134, L1 7,809, L2 6, L3 3, L4 3, L5 1,662), 13,480 source pages. `foreign_key_check` is empty and `integrity_check` is `ok`.
+
+## Parity with v0.1.0
+
+[data-model/parity-v0.1.0.md](../data-model/parity-v0.1.0.md) ([#124](https://github.com/AleFire99/BS_Database/issues/124)) compares this build with the legacy v0.1.0 database table by table and field by field, and explains every difference. It is produced by `tests/tools/parity_report.py`.
