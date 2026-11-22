@@ -126,7 +126,8 @@ A 収録 row is one `<br />` line, such as `<a>バトスピ部</a>全部員共�
 1. The text of the row keeps the text of every link in place, except a product link at the very start (its text is the product name). A link inside the text, such as `特別大会「<a>ダンカップ</a>」参加記念品`, is printed content and stays in the detail or the note. The first link still gives the product name and URL.
 2. The last `<X>` that is followed only by balanced parenthetical groups is the rarity; the groups are the note (several groups are joined with a space, a stray extra `)` is ignored). An empty `<>` leaves the rarity `None` and logs a `field=rarity` warning.
 3. Without such a rarity, a balanced group at the end is the note.
-4. Whatever is left is the detail, its own parentheses included (`全部員共通抽選賞品(2018年7月)`).
+4. Without a product link, the row text before the detail is the product name; a parenthesised date in it (`(2018年6月)`, `(2012/12/～)`, a parenthetical that starts with a four-digit year) and what follows it move to the detail. A bare date (`Vジャンプ2012年1月号付録`) stays in the name, so those remain distinct products.
+5. Whatever is left is the detail, its own parentheses included (`全部員共通抽選賞品(2018年7月)`).
 
 The quality rule Q040 (see [build](build.md#quality-rules)) warns about an empty `「」` or a `<X>` left in a printing detail or note. The real rows that show each case are in `tests/fixtures/snippets/`.
 
