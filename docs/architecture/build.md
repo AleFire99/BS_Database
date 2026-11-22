@@ -92,15 +92,14 @@ Ids are assigned in Python from sorted keys, never from the order of the input: 
 
 ## Data with no column (dropped)
 
-The normalized documents hold values that the schema has no column for. They are not loaded; follow-up [#130](https://github.com/AleFire99/BS_Database/issues/130) proposes additive columns.
+The normalized documents hold values that the schema has no column for. They are not loaded.
 
-- `reduction.plain` (10,407 entries), the variant and colour of reduction parts
-- `deck_limit` (85)
-- the overclock values and `overclock_condition_jp` (517)
-- `flavor_note_jp` (19)
-- printing `detail_jp`, `note_jp` and `section` (used only to match illustrators and images), `product_href`
+- the variant and colour of reduction parts
+- printing `section` and `product_href`
 - the credits of the other members of a merged card
 - `differences` of a page
+
+Loaded by [#130](https://github.com/AleFire99/BS_Database/issues/130), as nullable columns: `cards.deck_limit`, `cards.reduction_plain`, `cards.overclock_count_min`, `cards.overclock_bp_bonus`, `cards.overclock_condition_jp`, `cards.flavor_note_jp`, `printings.detail_jp` and `printings.note_jp`. Card-level values are constant inside a group (they are in the ADR 0004 key), so the first member supplies them. When duplicate printing rows merge, the distinct non-empty `detail_jp` and `note_jp` values are kept in first-seen order and joined with a newline.
 
 Concept credits are loaded (`card_credits`, role `コンセプト`).
 
