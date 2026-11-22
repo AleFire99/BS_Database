@@ -204,6 +204,24 @@ def _split_row(text: str, context: str) -> tuple[str | None, str | None, str | N
     return text or None, None, None
 
 
+def _row_text(line: list[_Token]) -> str:
+    """The row text with the text of every link in place (#144).
+
+    Only a product link at the start of the row is left out (its text is the product name);
+    a link inside the text, such as ``公認イベント「<a>...</a>」``, is printed content.
+    """
+    parts: list[str] = []
+    first_link = True
+    for token in line:
+        if token[0] == "t":
+            parts.append(token[1])
+        elif token[0] == "a":
+            if not (first_link and not "".join(parts).strip()):
+                parts.append(token[1])
+            first_link = False
+    return "".join(parts).replace("　", " ").strip()
+
+
 def _printing_rows(heading: Tag, context: str = "") -> list[_Row]:
     rows: list[_Row] = []
     label: str | None = None
@@ -213,7 +231,7 @@ def _printing_rows(heading: Tag, context: str = "") -> list[_Row]:
             label = strong
         link = next((t for t in line if t[0] == "a"), None)
         text = "".join(t[1] for t in line if t[0] == "t").replace("　", " ").strip()
-        detail, rarity, note = _split_row(text, context)
+        detail, rarity, note = _split_row(_row_text(line), context)
         if link is not None:
             rows.append(_Row(label, link[1], link[2], detail, rarity, note, text))
         elif text:

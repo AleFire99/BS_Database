@@ -283,7 +283,6 @@ def snippet_row(name: str) -> Printing:
 
 # #144: printing rows are split from the end (rarity, then the trailing notes) and the text of
 # every link stays in the detail and the note (real HTML, one row per snippet).
-_SPLIT = pytest.mark.xfail(strict=True, reason="#144 link text not kept yet")
 
 
 def test_row_parenthetical_in_detail_before_the_rarity() -> None:
@@ -312,7 +311,6 @@ def test_row_without_rarity_keeps_the_detail_parenthetical() -> None:
     assert row.note_jp == "「WINNER」の文字入り"
 
 
-@_SPLIT
 def test_row_keeps_the_text_of_nested_links() -> None:
     row = snippet_row("printing_nested_link")
     assert row.product_name_jp == "ダンカップ"
@@ -324,7 +322,6 @@ def test_row_keeps_the_text_of_nested_links() -> None:
     assert row.note_jp == "新規イラスト「馬神 弾&月光のバローネ」"
 
 
-@_SPLIT
 def test_row_note_starting_with_a_link() -> None:
     row = snippet_row("printing_note_starts_with_link")
     assert (row.detail_jp, row.rarity) == ("2017年8・9月当日限定大会参加記念品", "R")
