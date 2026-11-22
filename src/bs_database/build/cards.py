@@ -102,6 +102,7 @@ def load_cards(
                 f"{group.first.number}: card type {gameplay['card_type_jp']!r} unmapped"
             )
         name_en, flavor_en, source, status = _english(entry, text)
+        overclock = gameplay["overclock"]
         card_rows.append(
             (
                 card_id,
@@ -116,6 +117,12 @@ def load_cards(
                 _block_icon(group, printings, warnings),
                 gameplay["card_class_jp"],
                 gameplay["type_mark_jp"],
+                gameplay["deck_limit"],
+                gameplay["reduction"]["plain"],
+                overclock["count_min"] if overclock else None,
+                overclock["bp_bonus"] if overclock else None,
+                text["overclock_condition_jp"] if text else None,
+                text["flavor_note_jp"] if text else None,
             )
         )
         by_group[group.key] = card_id
@@ -123,8 +130,10 @@ def load_cards(
             by_number[number] = card_id
     conn.executemany(
         "INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp,"
-        " flavor_text_en, en_source_id, en_status_id, block_icon, card_class_jp, type_mark_jp)"
-        " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        " flavor_text_en, en_source_id, en_status_id, block_icon, card_class_jp, type_mark_jp,"
+        " deck_limit, reduction_plain, overclock_count_min, overclock_bp_bonus,"
+        " overclock_condition_jp, flavor_note_jp)"
+        " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         card_rows,
     )
     number_ids = {n: i for i, n in enumerate(sorted(by_number), start=1)}
