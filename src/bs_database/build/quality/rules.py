@@ -275,6 +275,15 @@ RULES: tuple[Rule, ...] = (
         " ORDER BY l.card_id",
     ),
     Rule(
+        "Q040",
+        W,
+        "A printing detail or note has an empty 「」 or a rarity mark left in it (#144)",
+        "SELECT n.number || ' ' || coalesce(p.detail_jp, '') || ' | ' || coalesce(p.note_jp, '')"
+        " FROM printings p JOIN card_numbers n ON n.id = p.card_number_id"
+        " WHERE p.detail_jp LIKE '%「」%' OR p.note_jp LIKE '%「」%'"
+        " OR p.detail_jp GLOB '*<*>*' OR p.note_jp GLOB '*<*>*' ORDER BY p.id",
+    ),
+    Rule(
         "Q050",
         I,
         "An effect has no English text yet (ADR 0005, text first)",

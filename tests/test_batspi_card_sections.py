@@ -273,3 +273,97 @@ def test_unclosed_link_does_not_swallow_the_next_sections() -> None:
     assert "" not in names
     assert "Uトリガー" not in names
     assert {"プロモーションカード", "バトルスキー トレジャーパック"} <= names
+
+
+def snippet_row(name: str) -> Printing:
+    html = (SNIPPETS / f"{name}.html").read_text("utf-8")
+    (printing,) = run(html, ["X-001"])
+    return printing
+
+
+# #144: printing rows are split from the end (rarity, then the trailing notes) and the text of
+# every link stays in the detail and the note (real HTML, one row per snippet).
+
+
+def test_row_parenthetical_in_detail_before_the_rarity() -> None:
+    row = snippet_row("printing_detail_paren")
+    assert row.product_name_jp == "バトスピ部"
+    assert (row.detail_jp, row.rarity) == ("全部員共通抽選賞品(2018年7月)", "C")
+    assert row.note_jp == "ガイ・アスラVSジークヴルム・ノヴァ"
+
+
+def test_row_two_notes_after_the_rarity() -> None:
+    row = snippet_row("printing_two_notes")
+    assert (row.detail_jp, row.rarity) == ("自販機ブースターキャンペーンカード", "X")
+    assert row.note_jp == "新規イラスト X005R"
+
+
+def test_row_empty_rarity_is_none_and_warned(caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level(logging.WARNING, logger=LOGGER):
+        row = snippet_row("printing_empty_rarity")
+    assert (row.detail_jp, row.rarity, row.note_jp) == (None, None, None)
+    assert "field=rarity" in caplog.text
+
+
+def test_row_without_rarity_keeps_the_detail_parenthetical() -> None:
+    row = snippet_row("printing_no_rarity_detail_paren")
+    assert (row.detail_jp, row.rarity) == ("(9月・10月)優勝記念品", None)
+    assert row.note_jp == "「WINNER」の文字入り"
+
+
+def test_row_keeps_the_text_of_nested_links() -> None:
+    row = snippet_row("printing_nested_link")
+    assert row.product_name_jp == "ダンカップ"
+    assert (
+        row.product_href
+        == "https://batspi.com/index.php?%E3%83%80%E3%83%B3%E3%82%AB%E3%83%83%E3%83%97"
+    )
+    assert row.detail_jp == "特別大会「ダンカップ」参加記念品"
+    assert row.note_jp == "新規イラスト「馬神 弾&月光のバローネ」"
+
+
+def test_row_note_starting_with_a_link() -> None:
+    row = snippet_row("printing_note_starts_with_link")
+    assert (row.detail_jp, row.rarity) == ("2017年8・9月当日限定大会参加記念品", "R")
+    assert row.note_jp == "硯 秀斗キャラクターイラスト入り特別仕様カード"
+
+
+def test_row_with_a_stray_closing_parenthesis_keeps_its_rarity_and_note() -> None:
+    # real: P14-21 prints ``<P>(新規イラスト・福山氏サイン＆コメント入り))``
+    rows = '<p><a href="index.php?a">箱</a> &lt;P&gt;(新規イラスト・サイン入り))</p>'
+    (row,) = run(page(rows), ["A-001"])
+    assert (row.detail_jp, row.rarity, row.note_jp) == (None, "P", "新規イラスト・サイン入り")
+
+
+@pytest.mark.parametrize(
+    ("snippet", "name", "detail", "rarity", "note"),
+    [
+        (
+            "printing_unlinked_dates",
+            "バトルスキー主催大会/バトルスキー主催大会(3on3)2017年10-12月度提供記念品",
+            None,  # a bare date is not cut: those stay distinct products
+            "C",
+            "バトルスキーver.",
+        ),
+        (
+            "printing_unlinked_date_paren",
+            "ショップバトルEXギャラクシーカップショップ代表決定戦参加賞",
+            "(2012/12/～)",
+            "P",
+            None,
+        ),
+        (
+            "printing_unlinked_date_note",
+            "バトスピ部ゴールド部員抽選賞品",
+            "(2018年6月)",
+            "-",
+            "『少年激覇ダン』馬神弾＆ヴィオレ魔ゐver.・ホロ",
+        ),
+    ],
+)
+def test_unlinked_row_moves_only_a_parenthesised_date_to_the_detail(
+    snippet: str, name: str, detail: str | None, rarity: str, note: str | None
+) -> None:
+    row = snippet_row(snippet)
+    assert (row.product_name_jp, row.product_href) == (name, None)
+    assert (row.detail_jp, row.rarity, row.note_jp) == (detail, rarity, note)
