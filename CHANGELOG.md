@@ -3,6 +3,55 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.0] - 2026-11-22
+
+### Added
+
+- **glossary:** Add glossary CSVs with a validating loader (#98)
+- **normalize:** Replace the legacy normalize with the normalize package (#99)
+- **translate:** Add the translator with a deepl engine and a translation cache (#100)
+- **normalize:** Translate names and families with a report and strict mode (#101)
+- **translate:** Replace the deepl engine with the offline quickmt ja-en engine (#103)
+- **glossary:** Curate families, keywords, rarities and prefixes from the full scrape (#105)
+- **review:** Import english glossary names from the fandom wiki api (#110)
+- **normalize:** Type products without a code from keywords in their name (#115)
+- **normalize:** Normalization and translation of the full batspi data set (#117)
+- **db:** Add schema.sql as the packaged database schema with smoke tests (#129)
+- **build:** Build the SQLite database from normalized data (#134)
+- **build:** Write schema_meta per ADR 0003 with a data version option (#135)
+- **build:** Add quality rules and a build report to bsdb build (#139)
+- **tools:** Add a parity report between the v0.1.0 database and the new build (#143)
+- **build:** Store deck limit, plain reduction, overclock, flavor note and printing notes (#145)
+- **build:** Build and validate the database from normalized data (epic #12) (#146)
+
+### Changed
+
+- Rename ja to jp and add ADR 0008 for normalization and translation (#97)
+
+### Data
+
+- **glossary:** Curate the terms found by the full re-parse (#114)
+
+### Documentation
+
+- **adr:** Accept 0008 normalization and translation design
+- **adr:** Accept 0002, 0003, 0004 and 0005
+- **adr:** Group card numbers into one card only when gameplay and text match (#127)
+- **adr:** Make schema.sql the source of truth without migrations (#128)
+
+### Fixed
+
+- **parsers:** Parse every batspi page left over by the full scrape (#111)
+- **parsers:** Split half-width joined families and clean keyword separators (#113)
+- **parsers:** Read the remaining fandom name page shapes (#116)
+- **parsers:** Stop the printings section at a nested heading or jump menu (#140)
+- **parsers:** Split printing rows from the trailing rarity and keep link text (#149)
+
+### Internal
+
+- **build:** Build the database from the fixtures in CI (#141)
+- Bump typer from 0.29.1 to 0.29.2 (#136)
+
 ## [0.4.0] - 2026-11-15
 
 ### Added
