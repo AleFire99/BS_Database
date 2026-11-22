@@ -26,6 +26,9 @@ SECTION_BLOCK_ICON = "ブロックアイコン"
 _FACE_RE = re.compile(r"\([A-Z]\)$")
 _RARITY_RE = re.compile(r"<([^<>]*)>")
 _OPEN, _CLOSE = "(（", ")）"
+_DATE_RE = re.compile(
+    r"[(（]?\d{4}(?:年|/\d)"
+)  # ``(2018年7月)``, ``(2012/12/～)``, ``2017年5-8月度``
 _LINK = "\x00"
 _BLOCK_RE = re.compile(
     rf"^(?:\[(?P<code>[^\]]+)\])?\s*{_LINK}\s*(?:\((?P<nums>[^)]*)\))?\s*"
@@ -222,6 +225,15 @@ def _row_text(line: list[_Token]) -> str:
     return "".join(parts).replace("　", " ").strip()
 
 
+def _name_and_date(name: str, detail: str | None) -> tuple[str, str | None]:
+    """Cut the date off the name of a row without a product link; it goes in front of the detail."""
+    match = _DATE_RE.search(name)
+    if match is None or match.start() == 0:
+        return name, detail
+    date = name[match.start() :].strip()
+    return name[: match.start()].strip(), date if detail is None else f"{date} {detail}"
+
+
 def _printing_rows(heading: Tag, context: str = "") -> list[_Row]:
     rows: list[_Row] = []
     label: str | None = None
@@ -235,7 +247,8 @@ def _printing_rows(heading: Tag, context: str = "") -> list[_Row]:
         if link is not None:
             rows.append(_Row(label, link[1], link[2], detail, rarity, note, text))
         elif text:
-            rows.append(_Row(label, detail or text, None, None, rarity, note, text))
+            name, detail = _name_and_date(detail or text, None)
+            rows.append(_Row(label, name, None, detail, rarity, note, text))
     return rows
 
 

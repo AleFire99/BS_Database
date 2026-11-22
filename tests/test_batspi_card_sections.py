@@ -333,3 +333,37 @@ def test_row_with_a_stray_closing_parenthesis_keeps_its_rarity_and_note() -> Non
     rows = '<p><a href="index.php?a">箱</a> &lt;P&gt;(新規イラスト・サイン入り))</p>'
     (row,) = run(page(rows), ["A-001"])
     assert (row.detail_jp, row.rarity, row.note_jp) == (None, "P", "新規イラスト・サイン入り")
+
+
+@pytest.mark.parametrize(
+    ("snippet", "name", "detail", "rarity", "note"),
+    [
+        (
+            "printing_unlinked_dates",
+            "バトルスキー主催大会/バトルスキー主催大会(3on3)",
+            "2017年10-12月度提供記念品",
+            "C",
+            "バトルスキーver.",
+        ),
+        (
+            "printing_unlinked_date_paren",
+            "ショップバトルEXギャラクシーカップショップ代表決定戦参加賞",
+            "(2012/12/～)",
+            "P",
+            None,
+        ),
+        (
+            "printing_unlinked_date_note",
+            "バトスピ部ゴールド部員抽選賞品",
+            "(2018年6月)",
+            "-",
+            "『少年激覇ダン』馬神弾＆ヴィオレ魔ゐver.・ホロ",
+        ),
+    ],
+)
+def test_unlinked_row_moves_the_date_from_the_name_to_the_detail(
+    snippet: str, name: str, detail: str, rarity: str, note: str | None
+) -> None:
+    row = snippet_row(snippet)
+    assert (row.product_name_jp, row.product_href) == (name, None)
+    assert (row.detail_jp, row.rarity, row.note_jp) == (detail, rarity, note)
