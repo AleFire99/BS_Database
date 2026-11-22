@@ -199,6 +199,17 @@ JSON (`schema_version` `1.0.0`):
 
 The Markdown file has the same data as a summary table and a findings table; `|` and line breaks in examples are escaped.
 
+## In CI
+
+The `db-build` job of [ci.yml](../../.github/workflows/ci.yml) ([#123](https://github.com/AleFire99/BS_Database/issues/123)) is a required check. It works in four steps:
+
+1. It builds the database from the 32 normalized goldens (`BSDB_NORMALIZED_DIR=tests/goldens/normalized`) with a fixed `--built-at`. The build is non-strict, so only an error-severity finding fails the job.
+2. It builds a second time and compares the two files with `cmp`, so any non-determinism fails the job.
+3. It appends `fixtures.build_report.md` to the job summary.
+4. It uploads the report and the database as the artefact `fixture-db-build`, even when the build fails.
+
+The full-data build stays local, because `data/normalized` is not in the repository.
+
 ## Measured on the full local data
 
 13,480 pages, 2026-11-21, offline, about 5 s and a 31 MB file: 14,693 cards for 14,715 numbers (22 cards with two numbers), 1,044 products, 24,130 printings (186 duplicate rows merged), 34,977 effects, 41,234 printing images (L0 11,134, L1 7,809, L2 6, L3 3, L4 3, L5 1,662), 13,480 source pages. `foreign_key_check` is empty and `integrity_check` is `ok`.
