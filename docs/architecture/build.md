@@ -149,6 +149,7 @@ There are two sources. **Rules** (`bs_database.build.quality.rules`, ids `Q0xx` 
 | Q037 | warning | The cores of a card decrease at a higher level | 0 |
 | Q038 | warning | A source page is linked to no card and no product | 0 |
 | Q039 | warning | The levels of a card have a gap | 0 |
+| Q040 | warning | A printing detail or note has an empty `「」` or a `<X>` rarity mark left in it ([#144](https://github.com/AleFire99/BS_Database/issues/144)) | 0 |
 | Q050 | info | An effect has no English text yet (ADR 0005, text first) | 34,977 |
 | Q051 | info | An `other` effect starts with `Lv` (not parsed, [#133](https://github.com/AleFire99/BS_Database/issues/133)) | 48 |
 | Q052 | info | A symbol colour is not one of the card colours | 35 |

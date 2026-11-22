@@ -65,6 +65,7 @@ FAILING: dict[str, Mutation] = {
         " VALUES (2, 1, 'https://example.test/orphan', '2026-01-01T00:00:00Z', 'b', '2.1.0')"
     ),
     "Q039": _sql("UPDATE card_levels SET level = 4 WHERE id = 2"),
+    "Q040": _sql("UPDATE printings SET note_jp = '新規イラスト「」' WHERE id = 1"),
     "Q050": _sql("UPDATE card_effects SET text_en = NULL WHERE id = 1"),
     "Q051": _sql("UPDATE card_effects SET text_jp = 'Lv1-2『召喚時』効果' WHERE id = 2"),
     "Q052": _sql("UPDATE card_colors SET color_id = 2"),
