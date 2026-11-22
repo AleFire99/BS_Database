@@ -273,3 +273,63 @@ def test_unclosed_link_does_not_swallow_the_next_sections() -> None:
     assert "" not in names
     assert "Uトリガー" not in names
     assert {"プロモーションカード", "バトルスキー トレジャーパック"} <= names
+
+
+def snippet_row(name: str) -> Printing:
+    html = (SNIPPETS / f"{name}.html").read_text("utf-8")
+    (printing,) = run(html, ["X-001"])
+    return printing
+
+
+# #144: printing rows are split from the end (rarity, then the trailing notes) and the text of
+# every link stays in the detail and the note (real HTML, one row per snippet).
+_SPLIT = pytest.mark.xfail(strict=True, reason="#144 not fixed yet")
+
+
+@_SPLIT
+def test_row_parenthetical_in_detail_before_the_rarity() -> None:
+    row = snippet_row("printing_detail_paren")
+    assert row.product_name_jp == "バトスピ部"
+    assert (row.detail_jp, row.rarity) == ("全部員共通抽選賞品(2018年7月)", "C")
+    assert row.note_jp == "ガイ・アスラVSジークヴルム・ノヴァ"
+
+
+@_SPLIT
+def test_row_two_notes_after_the_rarity() -> None:
+    row = snippet_row("printing_two_notes")
+    assert (row.detail_jp, row.rarity) == ("自販機ブースターキャンペーンカード", "X")
+    assert row.note_jp == "新規イラスト X005R"
+
+
+@_SPLIT
+def test_row_empty_rarity_is_none_and_warned(caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level(logging.WARNING, logger=LOGGER):
+        row = snippet_row("printing_empty_rarity")
+    assert (row.detail_jp, row.rarity, row.note_jp) == (None, None, None)
+    assert "field=rarity" in caplog.text
+
+
+@_SPLIT
+def test_row_without_rarity_keeps_the_detail_parenthetical() -> None:
+    row = snippet_row("printing_no_rarity_detail_paren")
+    assert (row.detail_jp, row.rarity) == ("(9月・10月)優勝記念品", None)
+    assert row.note_jp == "「WINNER」の文字入り"
+
+
+@_SPLIT
+def test_row_keeps_the_text_of_nested_links() -> None:
+    row = snippet_row("printing_nested_link")
+    assert row.product_name_jp == "ダンカップ"
+    assert (
+        row.product_href
+        == "https://batspi.com/index.php?%E3%83%80%E3%83%B3%E3%82%AB%E3%83%83%E3%83%97"
+    )
+    assert row.detail_jp == "特別大会「ダンカップ」参加記念品"
+    assert row.note_jp == "新規イラスト「馬神 弾&月光のバローネ」"
+
+
+@_SPLIT
+def test_row_note_starting_with_a_link() -> None:
+    row = snippet_row("printing_note_starts_with_link")
+    assert (row.detail_jp, row.rarity) == ("2017年8・9月当日限定大会参加記念品", "R")
+    assert row.note_jp == "硯 秀斗キャラクターイラスト入り特別仕様カード"
