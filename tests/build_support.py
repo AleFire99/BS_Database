@@ -52,10 +52,12 @@ BUILD_REGEN_COMMAND = "uv run python tests/tools/regen_build_goldens.py"
 
 
 def build_summary(out: Path) -> dict[str, dict[str, int]]:
-    """What the build golden records: rows per table, warning counts and image cascade levels."""
+    """What the build golden records: rows per table, loader warnings, image cascade levels and
+    the quality rules that fire (id to count)."""
     result = build(out, golden_documents())
     return {
         "tables": result.table_counts,
         "warnings": result.warnings,
         "image_levels": result.image_levels,
+        "quality_rules": {f.id: f.count for f in result.findings if f.origin == "rule"},
     }
