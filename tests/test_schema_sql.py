@@ -176,3 +176,37 @@ def test_printing_images_allow_several_positions(conn: sqlite3.Connection) -> No
             "INSERT INTO printing_images (printing_id, image_size_id, position, source_url)"
             " VALUES (1, 2, 2, 'c')"
         )
+
+
+@pytest.mark.parametrize(
+    ("column", "value"),
+    [
+        ("deck_limit", 0),
+        ("reduction_plain", -1),
+        ("overclock_count_min", 0),
+        ("overclock_bp_bonus", None),  # half-set pair: count_min 1, bp_bonus NULL
+    ],
+)
+def test_card_check_constraints_reject_bad_values(
+    conn: sqlite3.Connection, column: str, value: int | None
+) -> None:
+    pair = {"overclock_count_min": 1, "overclock_bp_bonus": 0}
+    values = {"deck_limit": 1, "reduction_plain": 0, **pair, column: value}
+    if column == "overclock_bp_bonus":
+        values["overclock_count_min"] = 1
+    names = ", ".join(values)
+    marks = ", ".join("?" for _ in values)
+    with pytest.raises(sqlite3.IntegrityError, match="CHECK"):
+        conn.execute(
+            f"INSERT INTO cards (id, card_type_id, cost, name_jp, {names})"
+            f" VALUES (1, 1, 0, 'x', {marks})",
+            tuple(values.values()),
+        )
+
+
+def test_card_check_constraints_accept_good_values(conn: sqlite3.Connection) -> None:
+    conn.execute("PRAGMA foreign_keys = OFF")  # card_types is a glossary lookup, not seeded
+    conn.execute(
+        "INSERT INTO cards (id, card_type_id, cost, name_jp, deck_limit, reduction_plain,"
+        " overclock_count_min, overclock_bp_bonus) VALUES (1, 1, 0, 'x', 20, 0, 4, 4000)"
+    )
