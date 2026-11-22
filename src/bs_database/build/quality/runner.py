@@ -8,7 +8,7 @@ from bs_database.build.quality.rules import RULES
 
 
 def _example(row: Sequence[object]) -> str:
-    return " ".join(str(v) for v in row)
+    return " ".join(" ".join(str(v).split()) for v in row)
 
 
 def run_rules(conn: sqlite3.Connection, rules: Sequence[Rule] = RULES) -> list[Finding]:

@@ -205,6 +205,125 @@ RULES: tuple[Rule, ...] = (
         "SELECT name_jp FROM products WHERE code IS NULL"
         " GROUP BY name_jp HAVING count(*) > 1 ORDER BY name_jp",
     ),
+    Rule(
+        "Q030",
+        W,
+        "A card has no English name",
+        "SELECT name_jp FROM cards WHERE nullif(trim(name_en), '') IS NULL ORDER BY id",
+    ),
+    Rule(
+        "Q031",
+        W,
+        "A product has no English name",
+        "SELECT name_jp FROM products"
+        " WHERE nullif(trim(name_en), '') IS NULL AND trim(name_jp) != '' ORDER BY id",
+    ),
+    Rule(
+        "Q032",
+        W,
+        "A family has no English name",
+        "SELECT name_jp FROM families WHERE nullif(trim(name_en), '') IS NULL ORDER BY id",
+    ),
+    Rule(
+        "Q033",
+        W,
+        "A family is used by no card",
+        "SELECT f.name_jp FROM families f"
+        " WHERE NOT EXISTS (SELECT 1 FROM card_families x WHERE x.family_id = f.id) ORDER BY f.id",
+    ),
+    Rule(
+        "Q034",
+        W,
+        "A keyword is used by no effect",
+        "SELECT k.name FROM keywords k"
+        " WHERE NOT EXISTS (SELECT 1 FROM card_effect_keywords x WHERE x.keyword_id = k.id)"
+        " ORDER BY k.id",
+    ),
+    Rule(
+        "Q036",
+        W,
+        "A spirit level has no battle points",
+        "SELECT c.name_jp || ' Lv' || l.level FROM card_levels l"
+        " JOIN cards c ON c.id = l.card_id JOIN card_types t ON t.id = c.card_type_id"
+        " WHERE t.code = 'spirit' AND l.battle_points IS NULL ORDER BY l.id",
+    ),
+    Rule(
+        "Q037",
+        W,
+        "The cores of a card decrease from one level to a higher one",
+        "SELECT c.name_jp || ' Lv' || a.level || ' ' || a.cores || ' > Lv' || b.level || ' '"
+        " || b.cores FROM card_levels a JOIN card_levels b ON b.card_id = a.card_id"
+        " AND b.level > a.level AND b.cores < a.cores JOIN cards c ON c.id = a.card_id"
+        " ORDER BY a.id, b.id",
+    ),
+    Rule(
+        "Q038",
+        W,
+        "A source page is linked to no card and no product",
+        "SELECT p.url FROM source_pages p"
+        " WHERE NOT EXISTS (SELECT 1 FROM card_source_pages x WHERE x.source_page_id = p.id)"
+        " AND NOT EXISTS (SELECT 1 FROM product_source_pages x WHERE x.source_page_id = p.id)"
+        " ORDER BY p.id",
+    ),
+    Rule(
+        "Q039",
+        W,
+        "The levels of a card have a gap",
+        "SELECT c.name_jp FROM card_levels l JOIN cards c ON c.id = l.card_id"
+        " GROUP BY l.card_id HAVING max(l.level) - min(l.level) + 1 != count(*)"
+        " ORDER BY l.card_id",
+    ),
+    Rule(
+        "Q050",
+        I,
+        "An effect has no English text yet (ADR 0005, text first)",
+        "SELECT c.name_jp || ' #' || e.position FROM card_effects e"
+        " JOIN cards c ON c.id = e.card_id WHERE nullif(trim(e.text_en), '') IS NULL"
+        " ORDER BY e.id",
+    ),
+    Rule(
+        "Q051",
+        I,
+        "An effect of kind other starts with a level, which the normalizer does not parse (#133)",
+        "SELECT c.name_jp || ' #' || e.position || ' ' || substr(e.text_jp, 1, 12)"
+        " FROM card_effects e JOIN cards c ON c.id = e.card_id"
+        " JOIN effect_kinds k ON k.id = e.effect_kind_id"
+        " WHERE k.code = 'other' AND e.text_jp LIKE 'Lv%' ORDER BY e.id",
+    ),
+    Rule(
+        "Q052",
+        I,
+        "A symbol has a colour that is not one of the card colours",
+        "SELECT c.name_jp || ' ' || y.code FROM card_symbols s JOIN cards c ON c.id = s.card_id"
+        " JOIN symbols y ON y.id = s.symbol_id WHERE y.color_id IS NOT NULL"
+        " AND NOT EXISTS (SELECT 1 FROM card_colors k WHERE k.card_id = s.card_id"
+        " AND k.color_id = y.color_id) ORDER BY s.card_id, y.id",
+    ),
+    Rule(
+        "Q053",
+        I,
+        "A printing has no image",
+        "SELECT n.number || ' ' || p.product_id FROM printings p"
+        " JOIN card_numbers n ON n.id = p.card_number_id"
+        " WHERE NOT EXISTS (SELECT 1 FROM printing_images i WHERE i.printing_id = p.id)"
+        " ORDER BY p.id",
+    ),
+    Rule(
+        "Q054",
+        I,
+        "A card has no image on any printing",
+        "SELECT c.name_jp FROM cards c WHERE NOT EXISTS (SELECT 1 FROM card_numbers n"
+        " JOIN printings p ON p.card_number_id = n.id JOIN printing_images i"
+        " ON i.printing_id = p.id WHERE n.card_id = c.id) ORDER BY c.id",
+    ),
+    Rule(
+        "Q055",
+        I,
+        "A spirit, brave or ultimate card has no effects",
+        "SELECT c.name_jp FROM cards c JOIN card_types t ON t.id = c.card_type_id"
+        " WHERE t.code IN ('spirit', 'brave', 'ultimate')"
+        " AND NOT EXISTS (SELECT 1 FROM card_effects e WHERE e.card_id = c.id) ORDER BY c.id",
+    ),
 )
 
 

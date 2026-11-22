@@ -53,6 +53,31 @@ FAILING: dict[str, Mutation] = {
         "UPDATE products SET code = NULL",
         "INSERT INTO products (id, name_jp, product_type_id) VALUES (2, 'ブースター', 1)",
     ),
+    "Q030": _sql("UPDATE cards SET name_en = NULL"),
+    "Q031": _sql("UPDATE products SET name_en = NULL"),
+    "Q032": _sql("UPDATE families SET name_en = NULL"),
+    "Q033": _sql("INSERT INTO families (id, name_jp) VALUES (2, '孤児')"),
+    "Q034": _sql("INSERT INTO keywords (id, code, name) VALUES (2, 'orphan', 'Orphan')"),
+    "Q036": _sql("UPDATE card_levels SET battle_points = NULL WHERE id = 2"),
+    "Q037": _sql("UPDATE card_levels SET cores = 0 WHERE id = 2"),
+    "Q038": _sql(
+        "INSERT INTO source_pages (id, source_id, url, fetched_at, content_sha256, parser_version)"
+        " VALUES (2, 1, 'https://example.test/orphan', '2026-01-01T00:00:00Z', 'b', '2.1.0')"
+    ),
+    "Q039": _sql("UPDATE card_levels SET level = 4 WHERE id = 2"),
+    "Q050": _sql("UPDATE card_effects SET text_en = NULL WHERE id = 1"),
+    "Q051": _sql("UPDATE card_effects SET text_jp = 'Lv1-2『召喚時』効果' WHERE id = 2"),
+    "Q052": _sql("UPDATE card_colors SET color_id = 2"),
+    "Q053": _sql(
+        "INSERT INTO card_numbers (id, number, card_id) VALUES (2, 'BS01-002', 1)",
+        "INSERT INTO printings (id, card_number_id, product_id) VALUES (2, 2, 1)",
+    ),
+    "Q054": _sql("DELETE FROM printing_images"),
+    "Q055": _sql(
+        "DELETE FROM card_effect_levels",
+        "DELETE FROM card_effect_keywords",
+        "DELETE FROM card_effects",
+    ),
 }
 
 
