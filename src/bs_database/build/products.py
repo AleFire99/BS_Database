@@ -8,6 +8,8 @@ The rules, measured on the full local data (see docs/architecture/build.md):
   its earliest non-null release date. A product without any type falls back to ``other``.
 - A printing is keyed by ``(number, product, variant)``; the first row in ``(url, page)`` order
   wins, nulls are filled from later rows and a conflicting non-null value is kept as first.
+  The distinct non-empty ``detail_jp`` and ``note_jp`` of the merged rows are kept in first-seen
+  order and joined with a newline.
 """
 
 import sqlite3
@@ -45,6 +47,8 @@ class Printing:
     rarity: str | None
     names: set[str] = field(default_factory=set)
     texts: list[str] = field(default_factory=list)
+    details: list[str] = field(default_factory=list)
+    notes: list[str] = field(default_factory=list)
     id: int = 0
 
     @property
@@ -148,6 +152,12 @@ def collect(
                     warnings.add("printing_rarity_conflict", f"{row['number']} {key[1]}")
             current.names.add(row["product_name_jp"])
             current.texts.extend(t for t in texts if t)
+            for values, value in (
+                (current.details, row["detail_jp"]),
+                (current.notes, row["note_jp"]),
+            ):
+                if value and value not in values:
+                    values.append(value)
     return list(products.values()), list(printings.values())
 
 
@@ -227,11 +237,13 @@ def load_products_and_printings(
                 lookups.variants[printing.variant],
                 lookups.rarities[printing.rarity] if printing.rarity else None,
                 pick_illustrator(illustrators.get(printing.number, []), printing.texts),
+                "\n".join(printing.details) or None,
+                "\n".join(printing.notes) or None,
             )
         )
     conn.executemany(
         "INSERT INTO printings (id, card_number_id, product_id, variant_id, rarity_id,"
-        " illustrator) VALUES (?, ?, ?, ?, ?, ?)",
+        " illustrator, detail_jp, note_jp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         printing_rows,
     )
     return PrintingIndex(products, printings, by_number)
