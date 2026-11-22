@@ -177,7 +177,7 @@ Types: `feat` `fix` `docs` `refactor` `test` `ci` `chore` `build` `perf` `style`
 - The title is a Conventional Commit. It becomes the squash commit.
 - The body follows the template and must contain `Closes #<n>` and a link to the Gate C (or D) approval.
 - `pr-lint` enforces which branch may target which base: `task/*` → `feature/*`; `feature/*`, `release/*`, `hotfix/*` and `dependabot/*` → `dev`; only `release/*` or `hotfix/*` → `main`.
-- Required checks: `lint-test`, `docs`, `pr-lint`, `commitlint`.
+- Required checks: `lint-test`, `db-build` (the fixture database build, see [build.md](docs/architecture/build.md#in-ci)), `docs`, `pr-lint`, `commitlint`.
 
 ## Local setup
 
