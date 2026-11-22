@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from build_support import as_document, build, golden_documents, golden_json, query
 
-from bs_database.build import BuildError
+from bs_database.build import BuildError, BuildQualityError
 from bs_database.build.reader import Json
 
 
@@ -128,19 +128,30 @@ def test_duplicate_symbols_are_merged(tmp_path: Path) -> None:
     assert result.warnings["symbol_merged"] == 1
 
 
-def test_unmapped_codes_are_skipped_with_warnings(tmp_path: Path) -> None:
+def test_unmapped_family_is_skipped_with_a_warning(tmp_path: Path) -> None:
     data = _spirit()
     gameplay = data["page"]["entries"][0]["gameplay"]
     gameplay["families"][0]["code"] = None
-    gameplay["colors"][0]["code"] = None
-    gameplay["symbols"][0]["symbol_code"] = None
     out = tmp_path / "x.db"
     result = build(out, [as_document(data)])
     assert result.warnings["family_unmapped"] == 1
-    assert result.warnings["color_unmapped"] == 1
-    assert result.warnings["symbol_unmapped"] == 1
     assert query(out, "SELECT count(*) FROM card_families")[0][0] == len(gameplay["families"]) - 1
-    assert query(out, "SELECT count(*) FROM card_colors")[0][0] == 0
+
+
+@pytest.mark.parametrize(
+    ("field", "kind"),
+    [("colors", "color_unmapped"), ("symbols", "symbol_unmapped")],
+)
+def test_unmapped_closed_lookup_value_fails_the_build(
+    tmp_path: Path, field: str, kind: str
+) -> None:
+    data = _spirit()
+    entry = data["page"]["entries"][0]["gameplay"][field][0]
+    entry["symbol_code" if field == "symbols" else "code"] = None
+    out = tmp_path / "x.db"
+    with pytest.raises(BuildQualityError, match=kind):
+        build(out, [as_document(data)])
+    assert not out.exists()
 
 
 def test_duplicate_level_keeps_the_first(tmp_path: Path) -> None:

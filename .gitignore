@@ -13,6 +13,8 @@ node_modules/
 .tmp-mermaid/
 .env
 /battle_spirits.db
+/battle_spirits.build_report.*
+/data/*.build_report.*
 /data/*.db
 /data/state/
 /data/parsed/

@@ -225,7 +225,11 @@ Strict mode (`bsdb normalize --strict`) is checked in CI by `tests/test_normaliz
 
 ## Building the database
 
-`uv run bsdb build [--out PATH] [--built-at ISO8601]` writes a fresh SQLite file from `data/normalized/` and the glossary (no network; the raw-HTML cache is only read for page hashes). It prints the rows per table and the warnings; see [build](docs/architecture/build.md) for the rules and the warning kinds. After a change to the build, regenerate the count golden with `uv run python tests/tools/regen_build_goldens.py` and review the diff. A schema change is an edit of `src/bs_database/schema.sql` ([ADR 0011](docs/adr/0011-schema-sql-source-of-truth-without-migrations.md)) together with `docs/data-model/target-schema.md`; `tests/test_schema_sql.py` checks that they agree.
+`uv run bsdb build [--out PATH] [--built-at ISO8601] [--strict]` writes a fresh SQLite file from `data/normalized/` and the glossary (no network; the raw-HTML cache is only read for page hashes). It prints the rows per table and a quality summary and writes `<db-stem>.build_report.json` and `.md` next to the database; quality errors (and warnings with `--strict`) fail the build and keep the old file. See [build](docs/architecture/build.md) for the rules, the severities and the report.
+
+**Adding a quality rule.**
+
+A rule is a read-only SQL query in `src/bs_database/build/quality/rules.py` (`RULES`): one row per violation, first column a short example, a stable `ORDER BY`. Pick the next free id of the severity range (`Q0xx` error, `Q03x` warning, `Q05x` info), measure it on the full data first (`uv run python` with `run_rules` on a built database), and add a failing case to `FAILING` in `tests/test_quality_rules.py` (a mutation of the clean data set in `tests/quality_support.py`); a meta-test fails when an id has none. A new loader warning kind needs an entry in `LOADER_KINDS` (`quality/loader.py`). Then regenerate the count golden and document the rule in the catalogue of [build](docs/architecture/build.md#quality-rules). After a change to the build, regenerate the count golden with `uv run python tests/tools/regen_build_goldens.py` and review the diff. A schema change is an edit of `src/bs_database/schema.sql` ([ADR 0011](docs/adr/0011-schema-sql-source-of-truth-without-migrations.md)) together with `docs/data-model/target-schema.md`; `tests/test_schema_sql.py` checks that they agree.
 
 ## Releases
 

@@ -3,14 +3,16 @@
 The build ([#120](https://github.com/AleFire99/BS_Database/issues/120), epic [#12](https://github.com/AleFire99/BS_Database/issues/12), [ADR 0011](../adr/0011-schema-sql-source-of-truth-without-migrations.md)) turns the normalized card pages of `data/normalized/` into one SQLite file with the 34 tables of [schema.sql](../../src/bs_database/schema.sql) ([target-schema.md](../data-model/target-schema.md)). It uses only the standard library `sqlite3`; SQLAlchemy and the legacy loader were removed.
 
 ```bash
-uv run bsdb build [--out PATH] [--built-at ISO8601] [--data-version TAG]
+uv run bsdb build [--out PATH] [--built-at ISO8601] [--data-version TAG] [--strict]
 ```
 
 - `--out` is the database file (default `BSDB_DB_PATH`, `data/battle_spirits.db`). The build always writes a **fresh** file and replaces the old one; it never appends.
 - `--built-at` fixes `schema_meta.built_at`, so two builds of the same data are byte-identical.
 - `--data-version` sets `schema_meta.data_version`, the release tag of the data (default `dev`; a release passes `vX.Y.Z`).
 - It reads `BSDB_NORMALIZED_DIR`, `BSDB_GLOSSARY_DIR` and, for the page hashes, `BSDB_CACHE_DIR`. It makes no network request.
-- Exit code 0 on success (warnings do not change it), 1 when the build fails (no normalized pages, invalid glossary, a page of another schema major version, a number in two pages, a foreign key violation). The old output file is then untouched.
+- `--strict` also fails the build on quality warnings (info never fails).
+- It prints the rows per table, the image association levels and a quality summary, and writes the [build report](#build-report) next to the database.
+- Exit code 0 on success (warnings and info do not change it), 1 when the build fails: no normalized pages, invalid glossary, a page of another schema major version, a number in two pages, a quality error (a rule of severity `error`, including a foreign key violation, rule Q001), or a quality warning under `--strict`. The old output file is then untouched.
 
 ## Flow
 
@@ -29,21 +31,26 @@ flowchart TD
     PROD["products and printings<br/>(merge, fold, fallback)"]
     IMG["printing images<br/>(association cascade)"]
     SRC["source pages and links"]
-    CHECK{"foreign_key_check<br/>integrity_check"}
+    QUALITY{"quality rules<br/>+ loader warnings<br/>(error; warning if --strict)"}
+    REPORT[("out.build_report.json / .md<br/>(always written)")]
+    CHECK{"integrity_check"}
     OUT[("out (os.replace)")]
     FAIL["error: temp deleted,<br/>old file kept"]
 
     NJ --> READ --> GROUP
     DDL --> TMP
     GL --> LOOK
-    TMP --> LOOK --> CARDS --> EFF --> PROD --> IMG --> SRC --> CHECK
+    TMP --> LOOK --> CARDS --> EFF --> PROD --> IMG --> SRC --> QUALITY
     GROUP --> CARDS
     RAW --> SRC
+    QUALITY --> REPORT
+    QUALITY -- ok --> CHECK
+    QUALITY -- fails --> FAIL
     CHECK -- ok --> OUT
-    CHECK -- violation --> FAIL
+    CHECK -- bad --> FAIL
 ```
 
-`build_database` (in `src/bs_database/build/builder.py`) does six steps: write to `<out>.tmp`, run `schema.sql`, set `foreign_keys=ON`, insert everything in **one transaction**, run `PRAGMA foreign_key_check` (any row is an error) and `integrity_check`, then `os.replace` onto the output. On any error the temp file is deleted.
+`build_database` (in `src/bs_database/build/builder.py`) does these steps: write to `<out>.tmp`, run `schema.sql`, set `foreign_keys=ON`, insert everything in **one transaction**, run the quality rules and map the loader warnings to findings (still inside the transaction, read-only), commit, run `integrity_check`, then `os.replace` onto the output. A failing finding raises `BuildQualityError` before the commit. On any error the temp file is deleted and the old output stays.
 
 | Module (`bs_database.build`) | Role |
 | --- | --- |
@@ -54,6 +61,7 @@ flowchart TD
 | `products` | Products, printings, illustrator rule |
 | `images` | Image association cascade, source pages and links |
 | `diagnostics` | `BuildWarnings` (counted, with examples), `BuildError` |
+| `quality` | Rule registry (`rules`), `run_rules`, loader warning severities (`loader`), the report (`report`); see [Quality rules](#quality-rules) |
 
 ## Determinism
 
@@ -96,26 +104,100 @@ The normalized documents hold values that the schema has no column for. They are
 
 Concept credits are loaded (`card_credits`, role `コンセプト`).
 
-## Warnings
+## Quality rules
 
-Every kind is counted and printed by `bsdb build`; none stops the build.
+[#122](https://github.com/AleFire99/BS_Database/issues/122). A finding has a severity:
 
-| Kind | Meaning |
+| Severity | Effect |
 | --- | --- |
-| `block_icon_conflict` | A card whose printings have different block icons |
-| `color_unmapped`, `symbol_unmapped`, `family_unmapped`, `keyword_unmapped` | A value without a glossary code was skipped |
-| `symbol_merged` | The same symbol twice on a card, merged |
-| `level_duplicate`, `effect_position_invalid`, `keyword_duplicate` | A repeated level, effect position or keyword, first kept |
-| `effect_level_missing` | An effect level that is not a level of the card, skipped |
-| `product_name_folded` | A name-only row joined a product by its code |
-| `product_name_conflict`, `product_type_conflict` | A product with several names or types, the rule picked one |
-| `product_without_type` | A product with no type, set to `other` |
-| `printing_duplicate_merged`, `printing_rarity_conflict` | Duplicate printing rows merged; two different rarities |
-| `printing_number_unknown` | A printing of a number with no card entry, skipped |
-| `image_fallback_first_of_product` (L4), `image_fallback_first_of_number` (L5), `image_without_printing` | Weak image association, or an image of a number without printings (skipped) |
-| `source_page_without_raw_html` | The raw HTML was not in the cache; the hash is of the normalized document |
+| `error` | Fails the build (exit 1, old database kept). |
+| `warning` | Reported; fails the build only with `--strict`. |
+| `info` | Reported, never fails, not even with `--strict`. |
 
-Quality rules and `--strict` are [#122](https://github.com/AleFire99/BS_Database/issues/122).
+There are two sources. **Rules** (`bs_database.build.quality.rules`, ids `Q0xx` errors, `Q03x` warnings, `Q05x` info) are read-only SQL queries on the finished database; each returns one row per violation, and the runner counts the rows and keeps three examples. **Loader warnings** (`bs_database.build.quality.loader`) are the repairs the loaders count while inserting; each kind has a severity in `LOADER_KINDS`, and a test fails if a kind used in `build/*.py` is not mapped. "Full" is the count on the full local data (13,480 pages, 2026-11-22); the fixtures have no error.
+
+| Id | Severity | What | Full |
+| --- | --- | --- | ---: |
+| Q001 | error | A foreign key points to a missing row (`PRAGMA foreign_key_check`) | 0 |
+| Q002 | error | A card has no card number | 0 |
+| Q003 | error | A card number has no printing | 0 |
+| Q004 | error | A card has a blank Japanese name | 0 |
+| Q005 | error | An effect has blank text | 0 |
+| Q006 | error | A product has a blank Japanese name ([#138](https://github.com/AleFire99/BS_Database/issues/138), a printing of P14-32) | 1 |
+| Q007 | error | A card has no levels, or a magic card has some | 0 |
+| Q008 | error | A brave or ultimate card lacks its details row, or another card has one | 0 |
+| Q009 | error | A card that is not magic has no colour | 0 |
+| Q010 | error | A card or product has no source page | 0 |
+| Q011 | error | An effect is linked to a level of another card | 0 |
+| Q012 | error | The effect positions of a card do not run 1..n | 0 |
+| Q013 | error | A `level` or `constant` effect is linked to no level | 0 |
+| Q014 | error | Cost outside 0..50 (real maximum 30) | 0 |
+| Q015 | error | Level outside 1..10 (real maximum 6) | 0 |
+| Q016 | error | Cores outside 0..30 (real maximum 20) | 0 |
+| Q017 | error | Battle points outside 1..999,999 (real 290..530,000) | 0 |
+| Q018 | error | A symbol or reduction count outside 1..9, or more than 9 symbols on a card | 0 |
+| Q019 | error | A release date is not `YYYY-MM-DD`, a fetch time is not ISO 8601, or `built_at` is not UTC with `Z` | 0 |
+| Q020 | error | English text with a `pending` or `failed` status (ADR 0005) | 0 |
+| Q021 | error | A `machine` or `reviewed` status without English text | 0 |
+| Q022 | error | English text without a source, or a source without English text | 0 |
+| Q023 | error | Two products without a code share a name (`UNIQUE(code)` allows it) | 0 |
+| Q030 | warning | A card has no English name | 0 |
+| Q031 | warning | A product (with a name) has no English name | 0 |
+| Q032 | warning | A family has no English name | 0 |
+| Q033 | warning | A family is used by no card | 0 |
+| Q034 | warning | A keyword is used by no effect | 0 |
+| Q036 | warning | A spirit level has no battle points | 2 |
+| Q037 | warning | The cores of a card decrease at a higher level | 0 |
+| Q038 | warning | A source page is linked to no card and no product | 0 |
+| Q039 | warning | The levels of a card have a gap | 0 |
+| Q050 | info | An effect has no English text yet (ADR 0005, text first) | 34,977 |
+| Q051 | info | An `other` effect starts with `Lv` (not parsed, [#133](https://github.com/AleFire99/BS_Database/issues/133)) | 48 |
+| Q052 | info | A symbol colour is not one of the card colours | 35 |
+| Q053 | info | A printing has no image | 6,492 |
+| Q054 | info | A card has no image on any printing | 23 |
+| Q055 | info | A spirit, brave or ultimate card has no effects | 365 |
+
+Q035 is not used. Rules that were rejected: keys that `UNIQUE` already covers, "a number belongs to two cards" (the schema makes it impossible), reduction above cost (155 real cards), product date ranges.
+
+Loader warning kinds (the key is the finding id; "Full" is the count on the full data):
+
+| Kind | Severity | Meaning | Full |
+| --- | --- | --- | ---: |
+| `color_unmapped`, `symbol_unmapped` | error | A closed-lookup value without a glossary code was skipped | 0 |
+| `family_unmapped`, `keyword_unmapped` | warning | A family or keyword without a glossary code was skipped | 0 |
+| `level_duplicate`, `effect_position_invalid`, `keyword_duplicate` | warning | A repeated level, effect position or keyword, first kept | 0 |
+| `effect_level_missing` | warning | An effect level that is not a level of the card, skipped | 1 |
+| `product_name_conflict`, `product_type_conflict` | warning | A product with several names or types, the rule picked one | 4, 1 |
+| `product_without_type` | warning | A product with no type, set to `other` | 82 |
+| `printing_rarity_conflict` | warning | Two different rarities for one printing | 1 |
+| `printing_number_unknown` | warning | A printing of a number with no card entry, skipped | 0 |
+| `image_without_printing` | warning | An image of a number without printings, skipped | 0 |
+| `source_page_without_raw_html` | warning | The raw HTML was not in the cache; the hash is of the normalized document | 0 |
+| `block_icon_conflict` | info | A card whose printings have different block icons ([#131](https://github.com/AleFire99/BS_Database/issues/131)) | 1,352 |
+| `image_fallback_first_of_product` (L4), `image_fallback_first_of_number` (L5) | info | Weak image association | 3, 1,662 |
+| `printing_duplicate_merged` | info | Duplicate printing rows merged | 186 |
+| `product_name_folded` | info | A name-only row joined a product by its code | 69 |
+| `symbol_merged` | info | The same symbol twice on a card, merged | 2 |
+
+Today the full build fails with exactly one error, Q006, until #138 is fixed.
+
+## Build report
+
+Every build writes `<db-stem>.build_report.json` and `<db-stem>.build_report.md` next to the output database (`battle_spirits.build_report.json` for `battle_spirits.db`), also when it fails on quality findings (then there is no new database). Both are deterministic: no timestamp, findings sorted by severity then id, atomic writes.
+
+JSON (`schema_version` `1.0.0`):
+
+| Key | Content |
+| --- | --- |
+| `schema_version` | Report format version |
+| `database` | File name of the database |
+| `strict` | Whether `--strict` was used |
+| `status` | `ok`, or `failed` (an error, or a warning under `--strict`) |
+| `summary` | Per severity (`error`, `warning`, `info`): `findings` (distinct ids) and `occurrences` |
+| `findings` | List of `id`, `severity`, `origin` (`rule` or `loader`), `title`, `count`, `examples` (up to 3) |
+| `tables` | Rows per table |
+
+The Markdown file has the same data as a summary table and a findings table; `|` and line breaks in examples are escaped.
 
 ## Measured on the full local data
 
