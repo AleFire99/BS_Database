@@ -176,3 +176,21 @@ def test_golden_printings(tmp_path: Path) -> None:
     ) == [
         ("BS72", "契約編：環 第1章：廻帰再醒", "2025-05-17", "booster", "secret", "R", "伊藤正市")
     ]
+
+
+def test_printing_detail_and_note_merge_distinct_values_in_order(tmp_path: Path) -> None:
+    data = _doc()
+    data["page"]["printings"] = [
+        _row(data, detail_jp="a", note_jp=None),
+        _row(data, detail_jp="b", note_jp="n1"),
+        _row(data, detail_jp="a", note_jp="n2"),
+        _row(data, detail_jp="", note_jp="n1"),
+        _row(data, variant_code="secret", detail_jp=None, note_jp=None),
+    ]
+    out = tmp_path / "x.db"
+    build(out, [as_document(data)])
+    assert query(
+        out,
+        "SELECT v.code, p.detail_jp, p.note_jp FROM printings p"
+        " JOIN variants v ON v.id = p.variant_id ORDER BY v.code",
+    ) == [("normal", "a\nb", "n1\nn2"), ("secret", None, None)]
