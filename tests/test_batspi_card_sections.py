@@ -1,6 +1,7 @@
 """Printing and block-icon parsing on synthetic pages (#71)."""
 
 import logging
+from pathlib import Path
 
 import pytest
 from bs4 import BeautifulSoup
@@ -11,6 +12,7 @@ from bs_database.parsers.errors import ParseError
 
 LOGGER = "bs_database.parsers.batspi.card_sections"
 URL = "https://batspi.com/index.php?card"
+SNIPPETS = Path(__file__).parent / "fixtures" / "snippets"  # partial real pages, no manifest
 ES = " "
 
 
@@ -261,3 +263,13 @@ def test_image_without_a_caption_still_raises_unless_it_is_a_placeholder() -> No
         parse_images(BeautifulSoup(html, "html.parser"), URL, ["A-001"])
     placeholder = html.replace("/card/x.jpg", "/card/BS7/NOTFOUND.jpg")
     assert parse_images(BeautifulSoup(placeholder, "html.parser"), URL, ["A-001"]) == ()
+
+
+def test_unclosed_link_does_not_swallow_the_next_sections() -> None:
+    # #138: on 咲月帝アルティメット・ウィステリア an unclosed <a> nests the block-icon section,
+    # the jump menus and the official Q&A inside the last 収録 item (real HTML, trimmed).
+    html = (SNIPPETS / "section_unclosed_link.html").read_text("utf-8")
+    names = {p.product_name_jp for p in run(html, ["P14-32"])}
+    assert "" not in names
+    assert "Uトリガー" not in names
+    assert {"プロモーションカード", "バトルスキー トレジャーパック"} <= names
