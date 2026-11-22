@@ -230,8 +230,9 @@ def build_database(
         if conn.execute("PRAGMA integrity_check").fetchone() != ("ok",):
             raise BuildError("integrity_check failed")
         conn.close()
-        os.replace(tmp, out)
+        # The report goes first: if it cannot be written, the old database stays in place.
         report_json, report_md = write_report(out, report)
+        os.replace(tmp, out)
     except BaseException:
         conn.close()
         _remove(tmp)

@@ -98,7 +98,8 @@ RULES: tuple[Rule, ...] = (
         "SELECT 'card ' || c.id || ' ' || c.name_jp FROM cards c"
         " WHERE NOT EXISTS (SELECT 1 FROM card_source_pages s WHERE s.card_id = c.id)"
         " UNION ALL SELECT 'product ' || p.id || ' ' || p.name_jp FROM products p"
-        " WHERE NOT EXISTS (SELECT 1 FROM product_source_pages s WHERE s.product_id = p.id)",
+        " WHERE NOT EXISTS (SELECT 1 FROM product_source_pages s WHERE s.product_id = p.id)"
+        " ORDER BY 1",
     ),
     Rule(
         "Q011",
@@ -165,7 +166,7 @@ RULES: tuple[Rule, ...] = (
         " UNION ALL SELECT c.name_jp || ' reduction ' || r.count FROM card_reductions r"
         " JOIN cards c ON c.id = r.card_id WHERE r.count NOT BETWEEN 1 AND 9"
         " UNION ALL SELECT c.name_jp || ' symbols ' || sum(s.count) FROM card_symbols s"
-        " JOIN cards c ON c.id = s.card_id GROUP BY s.card_id HAVING sum(s.count) > 9",
+        " JOIN cards c ON c.id = s.card_id GROUP BY s.card_id HAVING sum(s.count) > 9 ORDER BY 1",
     ),
     Rule(
         "Q019",
@@ -178,7 +179,7 @@ RULES: tuple[Rule, ...] = (
         " WHERE datetime(fetched_at) IS NULL"
         " UNION ALL SELECT 'schema_meta built_at ' || built_at FROM schema_meta"
         " WHERE built_at NOT GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T"
-        "[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z' OR datetime(built_at) IS NULL",
+        "[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z' OR datetime(built_at) IS NULL ORDER BY 1",
     ),
     Rule(
         "Q020",
