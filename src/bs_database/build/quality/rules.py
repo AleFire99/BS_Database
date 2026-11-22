@@ -8,8 +8,150 @@ from bs_database.build.quality.model import Rule, Severity
 
 E, W, I = Severity.ERROR, Severity.WARNING, Severity.INFO  # noqa: E741
 
+# A card has English text when its name or its flavor text has some; the other tables have one
+# text column each. ``en_text`` is NULL or blank when there is none (ADR 0005).
+_ENGLISH = """
+WITH t(kind, id, en, source_id, status_id) AS (
+    SELECT 'card', id, coalesce(nullif(trim(name_en), ''), nullif(trim(flavor_text_en), '')),
+           en_source_id, en_status_id FROM cards
+    UNION ALL SELECT 'effect', id, nullif(trim(text_en), ''), en_source_id, en_status_id
+              FROM card_effects
+    UNION ALL SELECT 'product', id, nullif(trim(name_en), ''), en_source_id, en_status_id
+              FROM products
+    UNION ALL SELECT 'family', id, nullif(trim(name_en), ''), en_source_id, en_status_id
+              FROM families
+    UNION ALL SELECT 'brave', card_id, nullif(trim(fusion_condition_en), ''), en_source_id,
+                     en_status_id FROM brave_details
+    UNION ALL SELECT 'ultimate', card_id, nullif(trim(summon_condition_en), ''), en_source_id,
+                     en_status_id FROM ultimate_details
+)
+SELECT t.kind || ' ' || t.id FROM t JOIN translation_statuses s ON s.id = t.status_id
+WHERE {where} ORDER BY t.kind, t.id
+"""
+
 RULES: tuple[Rule, ...] = (
     Rule("Q001", E, "A foreign key points to a missing row", "PRAGMA foreign_key_check"),
+    Rule(
+        "Q002",
+        E,
+        "A card has no card number",
+        "SELECT 'card ' || c.id || ' ' || c.name_jp FROM cards c"
+        " WHERE NOT EXISTS (SELECT 1 FROM card_numbers n WHERE n.card_id = c.id) ORDER BY c.id",
+    ),
+    Rule(
+        "Q003",
+        E,
+        "A card number has no printing",
+        "SELECT n.number FROM card_numbers n"
+        " WHERE NOT EXISTS (SELECT 1 FROM printings p WHERE p.card_number_id = n.id)"
+        " ORDER BY n.number",
+    ),
+    Rule(
+        "Q004",
+        E,
+        "A card has a blank Japanese name",
+        "SELECT 'card ' || id FROM cards WHERE trim(name_jp) = '' ORDER BY id",
+    ),
+    Rule(
+        "Q005",
+        E,
+        "An effect has blank text",
+        "SELECT c.name_jp || ' #' || e.position FROM card_effects e"
+        " JOIN cards c ON c.id = e.card_id WHERE trim(e.text_jp) = '' ORDER BY e.id",
+    ),
+    Rule(
+        "Q006",
+        E,
+        "A product has a blank Japanese name",
+        "SELECT 'product ' || id || coalesce(' ' || code, '') FROM products"
+        " WHERE trim(name_jp) = '' ORDER BY id",
+    ),
+    Rule(
+        "Q007",
+        E,
+        "A card has no levels (or a magic card has some)",
+        "SELECT c.name_jp || ' ' || t.code FROM cards c JOIN card_types t ON t.id = c.card_type_id"
+        " WHERE (t.code = 'magic') = EXISTS (SELECT 1 FROM card_levels l WHERE l.card_id = c.id)"
+        " ORDER BY c.id",
+    ),
+    Rule(
+        "Q008",
+        E,
+        "A brave or ultimate card lacks its details row, or another card has one",
+        "SELECT c.name_jp || ' ' || t.code FROM cards c JOIN card_types t ON t.id = c.card_type_id"
+        " WHERE (t.code = 'brave') != EXISTS (SELECT 1 FROM brave_details d WHERE d.card_id = c.id)"
+        " OR (t.code = 'ultimate') != EXISTS"
+        " (SELECT 1 FROM ultimate_details d WHERE d.card_id = c.id) ORDER BY c.id",
+    ),
+    Rule(
+        "Q009",
+        E,
+        "A card that is not magic has no colour",
+        "SELECT c.name_jp FROM cards c JOIN card_types t ON t.id = c.card_type_id"
+        " WHERE t.code != 'magic'"
+        " AND NOT EXISTS (SELECT 1 FROM card_colors k WHERE k.card_id = c.id) ORDER BY c.id",
+    ),
+    Rule(
+        "Q010",
+        E,
+        "A card or a product has no source page",
+        "SELECT 'card ' || c.id || ' ' || c.name_jp FROM cards c"
+        " WHERE NOT EXISTS (SELECT 1 FROM card_source_pages s WHERE s.card_id = c.id)"
+        " UNION ALL SELECT 'product ' || p.id || ' ' || p.name_jp FROM products p"
+        " WHERE NOT EXISTS (SELECT 1 FROM product_source_pages s WHERE s.product_id = p.id)",
+    ),
+    Rule(
+        "Q011",
+        E,
+        "An effect is linked to a level of another card",
+        "SELECT c.name_jp || ' #' || e.position || ' Lv' || l.level FROM card_effect_levels x"
+        " JOIN card_effects e ON e.id = x.card_effect_id"
+        " JOIN card_levels l ON l.id = x.card_level_id"
+        " JOIN cards c ON c.id = e.card_id WHERE l.card_id != e.card_id ORDER BY e.id, l.level",
+    ),
+    Rule(
+        "Q012",
+        E,
+        "The effect positions of a card do not run 1..n",
+        "SELECT c.name_jp FROM card_effects e JOIN cards c ON c.id = e.card_id"
+        " GROUP BY e.card_id HAVING min(e.position) != 1 OR max(e.position) != count(*)"
+        " ORDER BY e.card_id",
+    ),
+    Rule(
+        "Q013",
+        E,
+        "A level or constant effect is linked to no level",
+        "SELECT c.name_jp || ' #' || e.position FROM card_effects e"
+        " JOIN effect_kinds k ON k.id = e.effect_kind_id JOIN cards c ON c.id = e.card_id"
+        " WHERE k.code IN ('level', 'constant')"
+        " AND NOT EXISTS (SELECT 1 FROM card_effect_levels x WHERE x.card_effect_id = e.id)"
+        " ORDER BY e.id",
+    ),
+    Rule(
+        "Q020",
+        E,
+        "English text with a pending or failed status (ADR 0005)",
+        _ENGLISH.format(where="en IS NOT NULL AND s.code IN ('pending', 'failed')"),
+    ),
+    Rule(
+        "Q021",
+        E,
+        "A machine or reviewed status without English text (ADR 0005)",
+        _ENGLISH.format(where="en IS NULL AND s.code IN ('machine', 'reviewed')"),
+    ),
+    Rule(
+        "Q022",
+        E,
+        "English text without a source, or a source without English text (ADR 0005)",
+        _ENGLISH.format(where="(en IS NOT NULL) != (source_id IS NOT NULL)"),
+    ),
+    Rule(
+        "Q023",
+        E,
+        "Two products without a code share a name, which UNIQUE(code) does not catch",
+        "SELECT name_jp FROM products WHERE code IS NULL"
+        " GROUP BY name_jp HAVING count(*) > 1 ORDER BY name_jp",
+    ),
 )
 
 

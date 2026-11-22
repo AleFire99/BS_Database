@@ -22,6 +22,31 @@ def _sql(*statements: str) -> Mutation:
 # rule id -> a mutation of the clean data set that makes exactly that rule fire
 FAILING: dict[str, Mutation] = {
     "Q001": _sql("INSERT INTO card_numbers (number, card_id) VALUES ('X-1', 99)"),
+    "Q002": _sql(
+        "INSERT INTO cards (id, card_type_id, cost, name_jp) VALUES (2, 2, 1, 'マジック')"
+    ),
+    "Q003": _sql("INSERT INTO card_numbers (number, card_id) VALUES ('BS01-002', 1)"),
+    "Q004": _sql("UPDATE cards SET name_jp = ' '"),
+    "Q005": _sql("UPDATE card_effects SET text_jp = '' WHERE id = 1"),
+    "Q006": _sql("UPDATE products SET name_jp = ''"),
+    "Q007": _sql("DELETE FROM card_effect_levels", "DELETE FROM card_levels"),
+    "Q008": _sql("INSERT INTO brave_details (card_id) VALUES (1)"),
+    "Q009": _sql("DELETE FROM card_colors"),
+    "Q010": _sql("DELETE FROM card_source_pages"),
+    "Q011": _sql(
+        "INSERT INTO cards (id, card_type_id, cost, name_jp) VALUES (2, 1, 1, 'もう一枚')",
+        "INSERT INTO card_levels (id, card_id, level) VALUES (3, 2, 1)",
+        "INSERT INTO card_effect_levels (card_effect_id, card_level_id) VALUES (2, 3)",
+    ),
+    "Q012": _sql("UPDATE card_effects SET position = 5 WHERE id = 2"),
+    "Q013": _sql("DELETE FROM card_effect_levels"),
+    "Q020": _sql("UPDATE families SET en_status_id = 1"),
+    "Q021": _sql("UPDATE families SET name_en = NULL, en_source_id = NULL"),
+    "Q022": _sql("UPDATE families SET en_source_id = NULL"),
+    "Q023": _sql(
+        "UPDATE products SET code = NULL",
+        "INSERT INTO products (id, name_jp, product_type_id) VALUES (2, 'ブースター', 1)",
+    ),
 }
 
 
@@ -58,6 +83,6 @@ def test_examples_are_capped_and_the_count_is_complete() -> None:
     conn = clean_db()
     for i in range(5):
         conn.execute(f"INSERT INTO card_numbers (number, card_id) VALUES ('X-{i}', 99)")
-    (finding,) = run_rules(conn)
+    (finding,) = [f for f in run_rules(conn) if f.id == "Q001"]
     assert finding.count == 5
     assert len(finding.examples) == 3

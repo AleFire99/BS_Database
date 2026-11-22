@@ -71,7 +71,7 @@ def test_error_without_an_old_database_leaves_only_the_report(tmp_path: Path) ->
 def test_foreign_key_violation_is_rule_q001(tmp_path: Path) -> None:
     with pytest.raises(BuildQualityError) as info:
         build_database(tmp_path / "x.db", real_glossary(), load=_fk_break)
-    assert [f.id for f in info.value.failed] == ["Q001"]
+    assert "Q001" in [f.id for f in info.value.failed]
 
 
 def test_warning_passes_but_fails_under_strict(tmp_path: Path) -> None:
