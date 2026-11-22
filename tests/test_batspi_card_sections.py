@@ -326,3 +326,10 @@ def test_row_note_starting_with_a_link() -> None:
     row = snippet_row("printing_note_starts_with_link")
     assert (row.detail_jp, row.rarity) == ("2017年8・9月当日限定大会参加記念品", "R")
     assert row.note_jp == "硯 秀斗キャラクターイラスト入り特別仕様カード"
+
+
+def test_row_with_a_stray_closing_parenthesis_keeps_its_rarity_and_note() -> None:
+    # real: P14-21 prints ``<P>(新規イラスト・福山氏サイン＆コメント入り))``
+    rows = '<p><a href="index.php?a">箱</a> &lt;P&gt;(新規イラスト・サイン入り))</p>'
+    (row,) = run(page(rows), ["A-001"])
+    assert (row.detail_jp, row.rarity, row.note_jp) == (None, "P", "新規イラスト・サイン入り")

@@ -170,7 +170,7 @@ def _only_groups(tail: str) -> list[str] | None:
     start = 0
     for index, char in enumerate(tail):
         if depth == 0:
-            if char.isspace():
+            if char.isspace() or char in _CLOSE:  # a stray ``)`` is a typo of the page
                 continue
             if char not in _OPEN:
                 return None
