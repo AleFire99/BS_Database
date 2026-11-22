@@ -26,9 +26,8 @@ SECTION_BLOCK_ICON = "ブロックアイコン"
 _FACE_RE = re.compile(r"\([A-Z]\)$")
 _RARITY_RE = re.compile(r"<([^<>]*)>")
 _OPEN, _CLOSE = "(（", ")）"
-_DATE_RE = re.compile(
-    r"[(（]?\d{4}(?:年|/\d)"
-)  # ``(2018年7月)``, ``(2012/12/～)``, ``2017年5-8月度``
+# a parenthesised date: ``(2018年7月)``, ``(2012/12/～)``
+_DATE_RE = re.compile(r"[(（]\d{4}(?:年|/\d)")
 _LINK = "\x00"
 _BLOCK_RE = re.compile(
     rf"^(?:\[(?P<code>[^\]]+)\])?\s*{_LINK}\s*(?:\((?P<nums>[^)]*)\))?\s*"
@@ -226,7 +225,10 @@ def _row_text(line: list[_Token]) -> str:
 
 
 def _name_and_date(name: str, detail: str | None) -> tuple[str, str | None]:
-    """Cut the date off the name of a row without a product link; it goes in front of the detail."""
+    """Cut a parenthesised date off the name of a row without a product link (to the detail).
+
+    A bare date (``Vジャンプ2012年1月号付録``) stays in the name: those are distinct products.
+    """
     match = _DATE_RE.search(name)
     if match is None or match.start() == 0:
         return name, detail

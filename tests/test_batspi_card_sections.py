@@ -340,8 +340,8 @@ def test_row_with_a_stray_closing_parenthesis_keeps_its_rarity_and_note() -> Non
     [
         (
             "printing_unlinked_dates",
-            "バトルスキー主催大会/バトルスキー主催大会(3on3)",
-            "2017年10-12月度提供記念品",
+            "バトルスキー主催大会/バトルスキー主催大会(3on3)2017年10-12月度提供記念品",
+            None,  # a bare date is not cut: those stay distinct products
             "C",
             "バトルスキーver.",
         ),
@@ -361,8 +361,8 @@ def test_row_with_a_stray_closing_parenthesis_keeps_its_rarity_and_note() -> Non
         ),
     ],
 )
-def test_unlinked_row_moves_the_date_from_the_name_to_the_detail(
-    snippet: str, name: str, detail: str, rarity: str, note: str | None
+def test_unlinked_row_moves_only_a_parenthesised_date_to_the_detail(
+    snippet: str, name: str, detail: str | None, rarity: str, note: str | None
 ) -> None:
     row = snippet_row(snippet)
     assert (row.product_name_jp, row.product_href) == (name, None)
