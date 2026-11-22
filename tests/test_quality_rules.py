@@ -40,6 +40,12 @@ FAILING: dict[str, Mutation] = {
     ),
     "Q012": _sql("UPDATE card_effects SET position = 5 WHERE id = 2"),
     "Q013": _sql("DELETE FROM card_effect_levels"),
+    "Q014": _sql("UPDATE cards SET cost = 51"),
+    "Q015": _sql("UPDATE card_levels SET level = 11 WHERE id = 2"),
+    "Q016": _sql("UPDATE card_levels SET cores = 31 WHERE id = 2"),
+    "Q017": _sql("UPDATE card_levels SET battle_points = 1000000 WHERE id = 2"),
+    "Q018": _sql("UPDATE card_symbols SET count = 10"),
+    "Q019": _sql("UPDATE products SET release_date = '2026-13-01'"),
     "Q020": _sql("UPDATE families SET en_status_id = 1"),
     "Q021": _sql("UPDATE families SET name_en = NULL, en_source_id = NULL"),
     "Q022": _sql("UPDATE families SET en_source_id = NULL"),
@@ -86,3 +92,38 @@ def test_examples_are_capped_and_the_count_is_complete() -> None:
     (finding,) = [f for f in run_rules(conn) if f.id == "Q001"]
     assert finding.count == 5
     assert len(finding.examples) == 3
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        _sql("UPDATE card_reductions SET count = 10"),
+        _sql(
+            "UPDATE card_symbols SET count = 5",
+            "INSERT INTO card_symbols (card_id, symbol_id, count) VALUES (1, 2, 5)",
+        ),
+        _sql("UPDATE products SET release_date = '26-1-1'"),
+        _sql("UPDATE source_pages SET fetched_at = 'yesterday'"),
+        _sql("UPDATE schema_meta SET built_at = 'now'"),
+    ],
+)
+def test_range_and_date_variants_fire_too(mutation: Mutation) -> None:
+    conn = clean_db()
+    conn.execute(
+        "INSERT INTO schema_meta (id, schema_version, data_version, built_at, generator)"
+        " VALUES (1, '0.1.0', 'dev', '2026-01-01T00:00:00Z', 'test')"
+    )
+    mutation(conn)
+    assert {f.id for f in run_rules(conn)} & {"Q014", "Q016", "Q017", "Q018", "Q019"}
+
+
+def test_the_range_boundaries_pass() -> None:
+    conn = clean_db()
+    conn.execute("UPDATE cards SET cost = 50")
+    conn.execute(
+        "UPDATE card_levels SET level = 10, cores = 30, battle_points = 999999 WHERE id = 2"
+    )
+    conn.execute("UPDATE card_symbols SET count = 9")
+    conn.execute("UPDATE card_reductions SET count = 9")
+    conn.execute("UPDATE card_levels SET cores = NULL, battle_points = NULL WHERE id = 1")
+    assert [f for f in run_rules(conn) if f.id in {"Q014", "Q015", "Q016", "Q017", "Q018"}] == []

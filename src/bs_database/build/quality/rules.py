@@ -128,6 +128,59 @@ RULES: tuple[Rule, ...] = (
         " ORDER BY e.id",
     ),
     Rule(
+        "Q014",
+        E,
+        "A cost is outside 0..50",
+        "SELECT name_jp || ' cost ' || cost FROM cards WHERE cost NOT BETWEEN 0 AND 50 ORDER BY id",
+    ),
+    Rule(
+        "Q015",
+        E,
+        "A level is outside 1..10",
+        "SELECT c.name_jp || ' Lv' || l.level FROM card_levels l JOIN cards c ON c.id = l.card_id"
+        " WHERE l.level NOT BETWEEN 1 AND 10 ORDER BY l.id",
+    ),
+    Rule(
+        "Q016",
+        E,
+        "Cores are outside 0..30",
+        "SELECT c.name_jp || ' Lv' || l.level || ' cores ' || l.cores FROM card_levels l"
+        " JOIN cards c ON c.id = l.card_id"
+        " WHERE l.cores IS NOT NULL AND l.cores NOT BETWEEN 0 AND 30 ORDER BY l.id",
+    ),
+    Rule(
+        "Q017",
+        E,
+        "Battle points are outside 1..999999",
+        "SELECT c.name_jp || ' Lv' || l.level || ' BP ' || l.battle_points FROM card_levels l"
+        " JOIN cards c ON c.id = l.card_id WHERE l.battle_points IS NOT NULL"
+        " AND l.battle_points NOT BETWEEN 1 AND 999999 ORDER BY l.id",
+    ),
+    Rule(
+        "Q018",
+        E,
+        "A symbol or reduction count is outside 1..9, or a card has more than 9 symbols",
+        "SELECT c.name_jp || ' symbol ' || s.count FROM card_symbols s"
+        " JOIN cards c ON c.id = s.card_id WHERE s.count NOT BETWEEN 1 AND 9"
+        " UNION ALL SELECT c.name_jp || ' reduction ' || r.count FROM card_reductions r"
+        " JOIN cards c ON c.id = r.card_id WHERE r.count NOT BETWEEN 1 AND 9"
+        " UNION ALL SELECT c.name_jp || ' symbols ' || sum(s.count) FROM card_symbols s"
+        " JOIN cards c ON c.id = s.card_id GROUP BY s.card_id HAVING sum(s.count) > 9",
+    ),
+    Rule(
+        "Q019",
+        E,
+        "A date is not YYYY-MM-DD, or a timestamp is not ISO 8601 (built_at: UTC with Z)",
+        "SELECT 'product ' || id || ' ' || release_date FROM products"
+        " WHERE release_date IS NOT NULL"
+        " AND (date(release_date) IS NULL OR date(release_date) != release_date)"
+        " UNION ALL SELECT 'page ' || id || ' ' || fetched_at FROM source_pages"
+        " WHERE datetime(fetched_at) IS NULL"
+        " UNION ALL SELECT 'schema_meta built_at ' || built_at FROM schema_meta"
+        " WHERE built_at NOT GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T"
+        "[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z' OR datetime(built_at) IS NULL",
+    ),
+    Rule(
         "Q020",
         E,
         "English text with a pending or failed status (ADR 0005)",
