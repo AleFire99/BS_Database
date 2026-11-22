@@ -505,11 +505,14 @@ def _fmt(n: int) -> str:
 
 
 def _categories_table(cats: Sequence[Category]) -> list[str]:
-    lines = ["| Category | Count | Label | Explanation | Examples |", "|---|---:|---|---|---|"]
+    lines = [
+        "| Category | Count | Label | Explanation | Examples |",
+        "| --- | ---: | --- | --- | --- |",
+    ]
     for c in cats:
         if c.count == 0 and c.key not in ("same",):
             continue
-        ex = "<br>".join(f"`{e}`".replace("|", "\\|") for e in c.examples) or ""
+        ex = "<br>".join(f"`{e}`".replace("|", "\\|") for e in c.examples) or "-"
         lines.append(f"| {c.key} | {_fmt(c.count)} | {c.label} | {c.explanation} | {ex} |")
     return lines
 
@@ -533,7 +536,7 @@ def build_report(
         "## Table counts",
         "",
         "| Legacy table | Rows | New table | Rows | Label | Explanation |",
-        "|---|---:|---|---:|---|---|",
+        "| --- | ---: | --- | ---: | --- | --- |",
     ]
     for lt, nts in TABLE_MAP:
         nrows = sum(nc.get(t, 0) for t in nts)
@@ -543,7 +546,7 @@ def build_report(
             f"| `{lt}` | {_fmt(lc.get(lt, 0))} | {names} | {_fmt(nrows)} | {label} | {why} |"
         )
     out += ["", "## Number overlap", ""]
-    out += ["| Group | Numbers |", "|---|---:|"]
+    out += ["| Group | Numbers |", "| --- | ---: |"]
     out += [
         f"| Legacy | {_fmt(len(legacy))} |",
         f"| New | {_fmt(len(new))} |",
@@ -567,7 +570,7 @@ def build_report(
         f"{min(NEW_ONLY_TOP, len(ranked))}:",
         "",
         "| Prefix | Numbers |",
-        "|---|---:|",
+        "| --- | ---: |",
     ]
     out += [f"| {p} | {_fmt(c)} |" for p, c in ranked[:NEW_ONLY_TOP]]
     rest = ranked[NEW_ONLY_TOP:]
