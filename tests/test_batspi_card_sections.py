@@ -283,10 +283,9 @@ def snippet_row(name: str) -> Printing:
 
 # #144: printing rows are split from the end (rarity, then the trailing notes) and the text of
 # every link stays in the detail and the note (real HTML, one row per snippet).
-_SPLIT = pytest.mark.xfail(strict=True, reason="#144 not fixed yet")
+_SPLIT = pytest.mark.xfail(strict=True, reason="#144 link text not kept yet")
 
 
-@_SPLIT
 def test_row_parenthetical_in_detail_before_the_rarity() -> None:
     row = snippet_row("printing_detail_paren")
     assert row.product_name_jp == "バトスピ部"
@@ -294,14 +293,12 @@ def test_row_parenthetical_in_detail_before_the_rarity() -> None:
     assert row.note_jp == "ガイ・アスラVSジークヴルム・ノヴァ"
 
 
-@_SPLIT
 def test_row_two_notes_after_the_rarity() -> None:
     row = snippet_row("printing_two_notes")
     assert (row.detail_jp, row.rarity) == ("自販機ブースターキャンペーンカード", "X")
     assert row.note_jp == "新規イラスト X005R"
 
 
-@_SPLIT
 def test_row_empty_rarity_is_none_and_warned(caplog: pytest.LogCaptureFixture) -> None:
     with caplog.at_level(logging.WARNING, logger=LOGGER):
         row = snippet_row("printing_empty_rarity")
@@ -309,7 +306,6 @@ def test_row_empty_rarity_is_none_and_warned(caplog: pytest.LogCaptureFixture) -
     assert "field=rarity" in caplog.text
 
 
-@_SPLIT
 def test_row_without_rarity_keeps_the_detail_parenthetical() -> None:
     row = snippet_row("printing_no_rarity_detail_paren")
     assert (row.detail_jp, row.rarity) == ("(9月・10月)優勝記念品", None)
