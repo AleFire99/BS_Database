@@ -117,7 +117,9 @@ def test_build_writes_the_default_database(data_dir: Path) -> None:
     db = data_dir / "battle_spirits.db"
     assert _rows(db, "SELECT count(*) FROM cards") == [(46,)]
     assert "cards: 46" in result.output
-    assert "Warnings (" in result.output
+    assert "Quality: 0 errors," in result.output
+    assert "Report: " in result.output
+    assert (data_dir / "battle_spirits.build_report.json").is_file()
     assert "block_icon_conflict" in result.output
     assert "Image association levels: L0 " in result.output
 

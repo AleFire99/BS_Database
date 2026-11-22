@@ -7,7 +7,7 @@ import pytest
 from golden_support import real_glossary
 
 from bs_database import __version__
-from bs_database.build import BuildError, build_database
+from bs_database.build import BuildError, BuildQualityError, build_database
 from bs_database.build.builder import schema_version_text, source_snapshot, utc_timestamp
 from bs_database.build.reader import Document
 from bs_database.normalize.records import NORMALIZED_SCHEMA_VERSION
@@ -96,7 +96,7 @@ def test_foreign_key_violation_is_an_error(tmp_path: Path) -> None:
         conn.execute("PRAGMA defer_foreign_keys = ON")
         conn.execute("INSERT INTO card_numbers (number, card_id) VALUES ('A-1', 99)")
 
-    with pytest.raises(BuildError, match="foreign key"):
+    with pytest.raises(BuildQualityError, match="Q001"):
         build_database(tmp_path / "x.db", real_glossary(), load=bad)
     assert not (tmp_path / "x.db").exists()
 

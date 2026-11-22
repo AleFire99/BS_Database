@@ -15,6 +15,17 @@ from bs_database.build.grouping import group_entries
 from bs_database.build.images import load_images, load_source_pages
 from bs_database.build.lookups import Lookups, insert_lookups
 from bs_database.build.products import load_products_and_printings
+from bs_database.build.quality import (
+    RULES,
+    Finding,
+    Rule,
+    build_quality_report,
+    failing,
+    loader_findings,
+    run_rules,
+    sort_findings,
+    write_report,
+)
 from bs_database.build.reader import Document, printings_by_number, read_documents
 from bs_database.glossary import Glossary, load_glossary
 from bs_database.ingest.cache import RawCache
@@ -33,6 +44,30 @@ class BuildResult:
     table_counts: dict[str, int]
     warnings: dict[str, int]
     image_levels: dict[str, int]  # images decided by each level of the association cascade
+    findings: tuple[Finding, ...] = ()  # quality findings (rules and loader warnings), sorted
+    report_json: Path | None = None
+    report_md: Path | None = None
+
+
+class BuildQualityError(BuildError):
+    """The quality findings fail the build (errors, or warnings under ``--strict``).
+
+    The report is written anyway; the database is not.
+    """
+
+    def __init__(
+        self,
+        findings: Sequence[Finding],
+        failed: Sequence[Finding],
+        report_json: Path,
+        report_md: Path,
+    ) -> None:
+        ids = ", ".join(f"{f.id} ({f.count})" for f in failed)
+        super().__init__(f"quality findings fail the build: {ids}")
+        self.findings = tuple(findings)
+        self.failed = tuple(failed)
+        self.report_json = report_json
+        self.report_md = report_md
 
 
 DEFAULT_DATA_VERSION = "dev"
@@ -127,6 +162,7 @@ def build_from_directories(
     cache_dir: Path | None = None,
     built_at: str | None = None,
     data_version: str = DEFAULT_DATA_VERSION,
+    strict: bool = False,
 ) -> BuildResult:
     """Read the glossary and the normalized documents, then :func:`build_database`."""
     glossary = load_glossary(glossary_dir)
@@ -140,6 +176,7 @@ def build_from_directories(
         cache_dir=cache_dir,
         built_at=built_at,
         data_version=data_version,
+        strict=strict,
     )
 
 
@@ -151,13 +188,17 @@ def build_database(
     cache_dir: Path | None = None,
     built_at: str | None = None,
     data_version: str = DEFAULT_DATA_VERSION,
+    strict: bool = False,
     load: Loader | None = None,
+    rules: Sequence[Rule] | None = None,
 ) -> BuildResult:
     """Build a fresh database at ``out``.
 
-    The data goes to ``<out>.tmp`` (never appended to), is inserted in one transaction and
-    checked (foreign keys, integrity) before ``os.replace`` puts it at ``out``. On any error
-    the temp file is deleted and an existing ``out`` stays as it was.
+    The data goes to ``<out>.tmp`` (never appended to) and is inserted in one transaction. The
+    quality rules (#122) run on it before the commit; errors (and warnings when ``strict``) raise
+    :class:`BuildQualityError`. Then ``integrity_check`` and ``os.replace`` put it at ``out``.
+    On any error the temp file is deleted and an existing ``out`` stays as it was. The build
+    report is written next to ``out`` whether the build succeeds or fails on quality findings.
     """
     tmp = out.with_name(out.name + ".tmp")
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -176,17 +217,25 @@ def build_database(
             load(conn, lookups, warnings)
         image_levels = _load_data(conn, lookups, warnings, documents, cache_dir)
         _insert_meta(conn, stamp, source_snapshot(documents), data_version)
-        violations = conn.execute("PRAGMA foreign_key_check").fetchall()
-        if violations:
-            raise BuildError(f"foreign key violations: {violations[:5]}")
+        findings = sort_findings(
+            [*run_rules(conn, RULES if rules is None else rules), *loader_findings(warnings)]
+        )
+        counts = table_counts(conn)
+        report = build_quality_report(out, findings, counts, strict=strict)
+        failed = failing(findings, strict=strict)
+        if failed:
+            report_json, report_md = write_report(out, report)
+            raise BuildQualityError(findings, failed, report_json, report_md)
         conn.execute("COMMIT")
         if conn.execute("PRAGMA integrity_check").fetchone() != ("ok",):
             raise BuildError("integrity_check failed")
-        counts = table_counts(conn)
         conn.close()
         os.replace(tmp, out)
+        report_json, report_md = write_report(out, report)
     except BaseException:
         conn.close()
         _remove(tmp)
         raise
-    return BuildResult(out, counts, warnings.counts(), image_levels)
+    return BuildResult(
+        out, counts, warnings.counts(), image_levels, tuple(findings), report_json, report_md
+    )
