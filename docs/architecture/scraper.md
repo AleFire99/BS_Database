@@ -119,6 +119,17 @@ A parsed tree written under another `schema_version` is rejected by `read_card_p
 
 The file name is the same digest as the cache stem, so one URL maps to `cache/html/batspi/<d>.html` and `.json` and to `parsed/batspi/<d>.json`; to go from a file back to its URL, read the `url` field. The page name is not used: Japanese names take up to three bytes per character (255-byte limit) and differ by percent-encoding form. `page` is `dataclasses.asdict` of the `CardPage` (see the [card page parser](overview.md#card-page-parser)). `fetched_at` is the time of the original fetch (the cache sidecar); `from_cache` says whether the read that produced this file came from the cache, not whether the original fetch did.
 
+### Printing rows
+
+A 収録 row is one `<br />` line, such as `<a>バトスピ部</a>全部員共通抽選賞品(2018年7月) <C>(ガイ・アスラVSジークヴルム・ノヴァ)`. `parsers/batspi/card_sections.py` reads it from the end (#144):
+
+1. The text of the row keeps the text of every link in place, except a product link at the very start (its text is the product name). A link inside the text, such as `特別大会「<a>ダンカップ</a>」参加記念品`, is printed content and stays in the detail or the note. The first link still gives the product name and URL.
+2. The last `<X>` that is followed only by balanced parenthetical groups is the rarity; the groups are the note (several groups are joined with a space, a stray extra `)` is ignored). An empty `<>` leaves the rarity `None` and logs a `field=rarity` warning.
+3. Without such a rarity, a balanced group at the end is the note.
+4. Whatever is left is the detail, its own parentheses included (`全部員共通抽選賞品(2018年7月)`).
+
+The quality rule Q040 (see [build](build.md#quality-rules)) warns about an empty `「」` or a `<X>` left in a printing detail or note. The real rows that show each case are in `tests/fixtures/snippets/`.
+
 ## Report
 
 Each run prints: pages per state, cards parsed this run, failures with reasons (this run, the first 20, then `+N more`), exhausted pages, sets without a card list, discovery notes, warnings, `Requests made N (incl. robots.txt)`, the cache hit rate (`hits / (hits + fetched)` over the pages obtained this run) and why the run stopped.
