@@ -195,7 +195,7 @@ Add dependencies with `uv add <pkg>` (or `uv add --dev <pkg>` for dev tools) and
 
 Glossaries are CSV files in `data/glossary/` (see [ADR 0008](docs/adr/0008-normalization-and-translation.md)).
 
-1. Pick the file: `colors`, `symbols`, `card_types`, `rarities`, `variants`, `product_types`, `product_code_prefixes`, `product_name_keywords`, `keywords` or `families`.
+1. Pick the file: `colors`, `symbols`, `card_types`, `rarities`, `variants`, `product_types`, `timings`, `card_classes`, `product_code_prefixes`, `product_name_keywords`, `keywords` or `families`.
 2. Add one row. `jp` must be exactly what the parser emits. Do not pad with spaces.
 3. Keep rows sorted by `code` (families: by `code`, then `jp`). Do not duplicate a `jp` or a `code`.
 4. Fill `en` for closed kinds. Mark a guessed English name in `notes` as `provisional`. A name taken from the fandom wiki carries `notes` = `fandom: <title>`.
@@ -204,11 +204,13 @@ Glossaries are CSV files in `data/glossary/` (see [ADR 0008](docs/adr/0008-norma
 
 Family and keyword codes are lowercase ASCII slugs, unique and sorted. Use the romaji of the Japanese name when it is known (`kijuu`, `gattai_chu`). Otherwise use a slug of the English name (`a_laws`, `aeon_arcana`). Existing codes are never renamed. `product_code_prefixes.csv` (`prefix,code,notes`) maps a product-code prefix to a `product_types` code: prefixes are unique and sorted, and the code must exist in `product_types.csv`. The longest matching prefix wins ([normalization](docs/architecture/normalization.md#rules)). `product_name_keywords.csv` (`keyword,code,notes`) types products that have no product code (or no matching prefix) by a substring of the Japanese product name: keywords are unique and sorted, the code must exist in `product_types.csv`, matching is NFKC and the **longest** keyword wins. Check a new keyword against the real product names first (`bsdb glossary review` lists the untyped ones in *Untyped products*), and add a longer keyword when a short one mistypes a product.
 
+**Timings and card classes** ([ADR 0012](docs/adr/0012-english-text-term-protection-and-provenance.md), #155). `timings.csv` has one row per timing string: the `timing_jp` values and the timing-like `『…』` spans that only occur inside effect text (`notes` = `in-text only`). `jp` and `en` both keep the source `『』`. The English follows one pattern: `『When this Spirit is summoned』`, `『When this Spirit attacks or blocks』` (a slash list reads `A or B`, three items `A, B or C`; a subject list `Spirit or Ultimate`), `『When this Spirit is destroyed by your opponent』`, `『During your Attack Step』`, `『During either player's Attack Step』`, `『At the start of your opponent's Main Step』`, `『After you activate a Burst』`, `『While attacking』`. Use the vocabulary of `keywords.csv` (Advent, Manifest, Rebirth, Soul Burst, Mirage), capitalise Spirit, Brave, Ultimate, Nexus, Mirage, Burst and the step names, and keep the rest in sentence case. The code is the ASCII slug of the English. `card_classes.csv` maps `card_class_jp` (`契約` is Contract, `トークン` is Token) and is separate from `card_types`. Both kinds are **closed**: `en` is required and the file needs at least one row. A new timing must be curated before it can be looked up; mark a doubtful English as `provisional`.
+
 ### Curating with the review command
 
 1. Run `bsdb scrape` and `bsdb normalize`, so `data/normalized/` is current.
-2. Run `uv run bsdb glossary review --legacy-db <path to the v0.1.0 battle_spirits.db> [--out DIR]`. The output is `data/review/review.md`, `families.csv`, `keywords.csv` and `family_legacy_en.csv`. Nothing in `data/glossary/` changes.
-3. Read `review.md` (families, keywords, `no_split` candidates, product-code prefixes, untyped products, slug conflicts, legacy pairs). Agree the names with the owner.
+2. Run `uv run bsdb glossary review --legacy-db <path to the v0.1.0 battle_spirits.db> [--out DIR]`. The output is `data/review/review.md`, `families.csv`, `keywords.csv`, `family_legacy_en.csv`, `timings.csv` and `card_classes.csv`. Nothing in `data/glossary/` changes.
+3. Read `review.md` (families, keywords, timings, card classes, `no_split` candidates, product-code prefixes, untyped products, slug conflicts, legacy pairs). Agree the names with the owner.
 4. Copy `families.csv` and `family_legacy_en.csv` together into `data/glossary/`. Fill missing codes and English names by hand, then re-sort `families.csv` and `keywords.csv` by `code` (the loader requires it).
 5. Run the tests above and `bsdb normalize --strict`, then regenerate the goldens with `uv run python tests/tools/regen_normalized_goldens.py`.
 
@@ -216,7 +218,7 @@ Family and keyword codes are lowercase ASCII slugs, unique and sorted. Use the r
 
 `bsdb normalize` writes `data/normalized/_report.md` (and the same data as `_report.json`) next to the pages.
 
-- **Unmapped, closed**: a colour, symbol, card type, rarity, variant or product type with no glossary row. The page is not written. Add the row to the right CSV.
+- **Unmapped, closed**: a colour, symbol, card type, rarity, variant or product type with no glossary row. The page is not written. Add the row to the right CSV. Timings and card classes are closed kinds too; once normalize looks them up (#157) a missing one is reported the same way.
 - **Unmapped, warnings**: a family or keyword with no glossary row. `--strict` fails on these. Add the row.
 - **Uncurated**: a row exists but its `code` is empty. Not an error; fill the code (see the review command above).
 - **Translation**: per category (families, names, products), how many texts came from the glossary or batspi, and how many are `machine`, `pending` or `failed`, and `chars_to_translate`, the Japanese characters still to send to the engine. `pending` means no key, over the `--max-chars` budget or the null engine; `failed` means the engine errored. Both are retried on the next run.
