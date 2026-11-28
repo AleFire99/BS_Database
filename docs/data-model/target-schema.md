@@ -365,7 +365,7 @@ The gameplay identity: one row per distinct card. Gameplay columns (type, cost) 
 | `flavor_text_en` | TEXT | | English flavor text; NULL until translated. Source and status in `flavor_en_source_id` and `flavor_en_status_id`. |
 | `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `name_en` only; NULL while there is no English name. |
 | `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of `name_en` only; defaults to `pending`. A card with a name but no flavor text is not `pending` here; read the flavor pair for the flavor. |
-| `flavor_en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `flavor_text_en`; NULL while there is no English flavor text ([ADR 0012](../adr/0012-english-effect-text-and-provenance.md)). |
+| `flavor_en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `flavor_text_en`; NULL while there is no English flavor text ([ADR 0012](../adr/0012-english-text-term-protection-and-provenance.md)). |
 | `flavor_en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of `flavor_text_en`; defaults to `pending`. |
 | `block_icon` | TEXT | | Block icon (`12`, `A`, ...). Placed on the card by default; per card or per number is pending #9. |
 | `card_class_jp` | TEXT | | Class printed before the type (`契約`, `トークン`), literal Japanese ([ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md)). NULL when absent. |
@@ -1128,7 +1128,7 @@ Lookup: how far a translation has come.
 
 - The Japanese text is the source of truth and is never overwritten by a translation.
 - A failed translation is `X_en` NULL with the status `failed`. An error string is **never** stored as text; this fixes the legacy `Error: …` and `Aaaaaa` names.
-- `en_source_id` and `en_status_id` describe the row's **non-NULL** English texts, not a single column ([ADR 0008](../adr/0008-normalization-and-translation.md)). A NULL `X_en` always means "not translated". On `cards`, the name and the flavor text have a pair each (`en_*` for `name_en`, `flavor_en_*` for `flavor_text_en`, [ADR 0012](../adr/0012-english-effect-text-and-provenance.md)), because the name often comes from batspi (`batspi`/`reviewed`) while the flavor is machine-translated. A card with a name but no flavor has a `pending` flavor pair, so a consumer must not read `en_status_id` as the status of the whole card.
+- `en_source_id` and `en_status_id` describe the row's **non-NULL** English texts, not a single column ([ADR 0008](../adr/0008-normalization-and-translation.md)). A NULL `X_en` always means "not translated". On `cards`, the name and the flavor text have a pair each (`en_*` for `name_en`, `flavor_en_*` for `flavor_text_en`, [ADR 0012](../adr/0012-english-text-term-protection-and-provenance.md)), because the name often comes from batspi (`batspi`/`reviewed`) while the flavor is machine-translated. A card with a name but no flavor has a `pending` flavor pair, so a consumer must not read `en_status_id` as the status of the whole card.
 - `en_source_id` is NULL while there is no English text. `en_status_id` is NOT NULL with the default `pending`. Names on lookups are English only, as in [ADR 0003](../adr/0003-naming-and-schema-versioning.md).
 - A third language would add `_xx` columns; it is out of scope.
 - Full-text search (FTS5) over `cards.name_*` and `card_effects.text_*` is a build option for [#12](https://github.com/AleFire99/BS_Database/issues/12), not designed here.
