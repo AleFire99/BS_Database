@@ -106,3 +106,18 @@ def test_default_loader_without_files_raises(tmp_path: Path) -> None:
 def test_default_loader_failure_becomes_failed(tmp_path: Path) -> None:
     engine = QuickMTTranslator(tmp_path / "missing")
     assert engine.translate(["a"])[0].status == "failed"
+
+
+def test_hypothesis_at_the_decoding_limit_is_failed() -> None:
+    engine = QuickMTTranslator(
+        Path("m"),
+        max_decoding_length=3,
+        loader=lambda *_: Models(FakeCT2(), FakeSP(), FakeSP()),
+    )
+    out = engine.translate(["ab", "abc", "abcd", "de"])
+    assert [(r.text, r.status) for r in out] == [
+        ("AB", "machine"),
+        (None, "failed"),
+        (None, "failed"),
+        ("DE", "machine"),
+    ]
