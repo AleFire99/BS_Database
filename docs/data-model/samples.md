@@ -71,11 +71,11 @@ The page says `<R> (SECRETあり)` and links two images, so the number has two p
 INSERT INTO products (id, code, name_jp, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
     (1, 'BS72', '第1章：廻帰再醒', NULL, 1, '2025-05-17', '契約編：環', NULL, 1);
 
-INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
+INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, flavor_en_source_id, flavor_en_status_id, block_icon) VALUES
     (3, 1, 4, '光爪の武芸者ヘルハウンド', NULL,
      'ルーの下に集った武芸者たちは、各々自慢の武器を携えている。その武器
 で戦うのは大型のスピリット。彼らの誉れはスピリットの討伐である。',
-     NULL, NULL, 1, '12');
+     NULL, NULL, 1, NULL, 1, '12');
 
 INSERT INTO card_numbers (id, number, card_id) VALUES
     (3, 'BS72-007', 3);
@@ -136,11 +136,11 @@ A Nexus has no BP, so `battle_points` is NULL. The plain reduction `(2)` is reso
 INSERT INTO products (id, code, name_jp, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
     (2, 'BS74', '第3章：覇極来臨', NULL, 1, '2025-11-22', '契約編：環', NULL, 1);
 
-INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
+INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, flavor_en_source_id, flavor_en_status_id, block_icon) VALUES
     (1, 2, 3, 'ゼウスの雷火山', NULL,
      '噴火すると、周囲に雷火を落とすオリン随一の山。その有様は、
 ゼウスの怒りと揶揄される。　―『創世書記』神世界図125―',
-     NULL, NULL, 1, '12');
+     NULL, NULL, 1, NULL, 1, '12');
 
 INSERT INTO card_numbers (id, number, card_id) VALUES
     (1, 'BS72-069', 1);
@@ -193,8 +193,8 @@ The Magic card has no level line and no symbol line, so there are no `card_level
 INSERT INTO products (id, code, name_jp, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
     (3, NULL, 'バトルスキーイベント提供記念品', NULL, 2, NULL, NULL, NULL, 1);
 
-INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
-    (2, 3, 4, 'ジャベリンドロー', NULL, NULL, NULL, NULL, 1, '12');
+INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, flavor_en_source_id, flavor_en_status_id, block_icon) VALUES
+    (2, 3, 4, 'ジャベリンドロー', NULL, NULL, NULL, NULL, 1, NULL, 1, '12');
 
 INSERT INTO card_numbers (id, number, card_id) VALUES
     (2, 'BS72-075', 2);
@@ -245,8 +245,8 @@ No fixture exists for a Brave card. The only data is the **legacy database**: En
 INSERT INTO products (id, code, name_jp, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
     (4, 'BS11', '[PENDING #9] BS11 name', NULL, 1, NULL, NULL, NULL, 1);
 
-INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
-    (4, 4, 4, '[PENDING #9] BS11-051', 'Evil Fisher', NULL, NULL, 1, 2, NULL);
+INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, flavor_en_source_id, flavor_en_status_id, block_icon) VALUES
+    (4, 4, 4, '[PENDING #9] BS11-051', 'Evil Fisher', NULL, NULL, 1, 2, NULL, 1, NULL);
 
 INSERT INTO card_numbers (id, number, card_id) VALUES
     (4, 'BS11-051', 4);
@@ -275,8 +275,8 @@ Also legacy-only: English name `Ultimate Randolph`, cost 6, colour blue, familie
 INSERT INTO products (id, code, name_jp, name_en, product_type_id, release_date, series, en_source_id, en_status_id) VALUES
     (5, 'BS24', '[PENDING #9] BS24 name', NULL, 1, NULL, NULL, NULL, 1);
 
-INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, block_icon) VALUES
-    (5, 5, 6, '[PENDING #9] BS24-078', 'Ultimate Randolph', NULL, NULL, 1, 2, NULL);
+INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp, flavor_text_en, en_source_id, en_status_id, flavor_en_source_id, flavor_en_status_id, block_icon) VALUES
+    (5, 5, 6, '[PENDING #9] BS24-078', 'Ultimate Randolph', NULL, NULL, 1, 2, NULL, 1, NULL);
 
 INSERT INTO card_numbers (id, number, card_id) VALUES
     (5, 'BS24-078', 5);

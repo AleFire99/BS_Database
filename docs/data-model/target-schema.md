@@ -362,11 +362,14 @@ The gameplay identity: one row per distinct card. Gameplay columns (type, cost) 
 | `name_jp` | TEXT | NOT NULL | Japanese card name (batspi page title). |
 | `name_en` | TEXT | | English name; NULL until translated. Source and status in `en_source_id` and `en_status_id` below; see [Multilingual text](#multilingual-text). |
 | `flavor_text_jp` | TEXT | | Flavor text as printed (`フレーバーテキスト：` in the `<pre>`). NULL when the card has none (the Magic fixture has none). On the card, not the printing. Flavor is part of the card identity key, so it never varies inside a card ([ADR 0004 amendment](../adr/0004-card-printing-identity.md#amendment-2026-11-21-63), #63). |
-| `flavor_text_en` | TEXT | | English flavor text; NULL until translated. |
-| `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Where the English texts of this row come from; NULL while there is no English text. |
-| `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of this row; defaults to `pending`. |
+| `flavor_text_en` | TEXT | | English flavor text; NULL until translated. Source and status in `flavor_en_source_id` and `flavor_en_status_id`. |
+| `en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `name_en` only; NULL while there is no English name. |
+| `en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of `name_en` only; defaults to `pending`. A card with a name but no flavor text is not `pending` here; read the flavor pair for the flavor. |
+| `flavor_en_source_id` | INTEGER | FOREIGN KEY to `translation_sources.id` | Source of `flavor_text_en`; NULL while there is no English flavor text ([ADR 0012](../adr/0012-english-effect-text-and-provenance.md)). |
+| `flavor_en_status_id` | INTEGER | NOT NULL, FOREIGN KEY to `translation_statuses.id` | Translation status of `flavor_text_en`; defaults to `pending`. |
 | `block_icon` | TEXT | | Block icon (`12`, `A`, ...). Placed on the card by default; per card or per number is pending #9. |
 | `card_class_jp` | TEXT | | Class printed before the type (`契約`, `トークン`), literal Japanese ([ADR 0010](../adr/0010-parsed-schema-type-marks-levels-symbols-credits.md)). NULL when absent. |
+| `card_class_en` | TEXT | | English class (`Contract`, `Token`), filled from the `card_classes` glossary by normalize; plain text with no provenance column, as it is curated (`manual`, `reviewed`, ADR 0012 decision 8). NULL when absent. |
 | `type_mark_jp` | TEXT | | Mark printed after the type (`(禁止カード)`, `(光)`, `(闇)`), literal Japanese (ADR 0010). NULL when absent. |
 | `deck_limit` | INTEGER | CHECK `>= 1` | Maximum copies in a deck when the card states one (`1`, `20`). NULL when absent. |
 | `reduction_plain` | INTEGER | CHECK `>= 0` | Plain (colourless) cost reduction; NULL when the card has none. The coloured parts are in `card_reductions`. |
@@ -496,6 +499,7 @@ erDiagram
         text name_jp
         text name_en
         text card_class_jp
+        text card_class_en
         text type_mark_jp
     }
     card_types {
@@ -1044,6 +1048,8 @@ erDiagram
         text flavor_text_en
         integer en_source_id FK
         integer en_status_id FK
+        integer flavor_en_source_id FK
+        integer flavor_en_status_id FK
     }
     card_effects {
         integer id PK
@@ -1122,7 +1128,7 @@ Lookup: how far a translation has come.
 
 - The Japanese text is the source of truth and is never overwritten by a translation.
 - A failed translation is `X_en` NULL with the status `failed`. An error string is **never** stored as text; this fixes the legacy `Error: …` and `Aaaaaa` names.
-- `en_source_id` and `en_status_id` describe the row's **non-NULL** English texts, not a single column ([ADR 0008](../adr/0008-normalization-and-translation.md)). A NULL `X_en` always means "not translated". On `cards`, one pair covers `name_en` and `flavor_text_en`: `name_en` can be machine-translated (status `machine`) while `flavor_text_en` stays NULL. If a row needs different sources for two texts, the model must change (accepted for v1, see ADR 0005).
+- `en_source_id` and `en_status_id` describe the row's **non-NULL** English texts, not a single column ([ADR 0008](../adr/0008-normalization-and-translation.md)). A NULL `X_en` always means "not translated". On `cards`, the name and the flavor text have a pair each (`en_*` for `name_en`, `flavor_en_*` for `flavor_text_en`, [ADR 0012](../adr/0012-english-effect-text-and-provenance.md)), because the name often comes from batspi (`batspi`/`reviewed`) while the flavor is machine-translated. A card with a name but no flavor has a `pending` flavor pair, so a consumer must not read `en_status_id` as the status of the whole card.
 - `en_source_id` is NULL while there is no English text. `en_status_id` is NOT NULL with the default `pending`. Names on lookups are English only, as in [ADR 0003](../adr/0003-naming-and-schema-versioning.md).
 - A third language would add `_xx` columns; it is out of scope.
 - Full-text search (FTS5) over `cards.name_*` and `card_effects.text_*` is a build option for [#12](https://github.com/AleFire99/BS_Database/issues/12), not designed here.
@@ -1274,7 +1280,7 @@ Lookup (`code` plus English `name`).
 
 Table constraint: `UNIQUE (printing_id, image_size_id, position)`. Storage, download and versioning of the files are decided in [#13](https://github.com/AleFire99/BS_Database/issues/13). A row says where an image is and where it came from; it does not require the file to be in the artefact.
 
-`position` was added in #120: batspi shows several images of one number (the secret art, a full-art reprint), and the caption links them to a printing only loosely, so the build associates each image with a printing by a cascade ([build.md](../architecture/build.md#rules)) and numbers the images of one printing and size 1, 2, ... in page order. The schema version stays `0.1.0` until the first release (#121).
+`position` was added in #120: batspi shows several images of one number (the secret art, a full-art reprint), and the caption links them to a printing only loosely, so the build associates each image with a printing by a cascade ([build.md](../architecture/build.md#rules)) and numbers the images of one printing and size 1, 2, ... in page order. The schema is `0.2.0` since #158 (flavor provenance and `card_class_en`).
 
 ### Worked example (BS72-007)
 
@@ -1344,7 +1350,7 @@ Summary of where this model departs from the sister project [BSS_app](https://gi
 
 The DDL and the static lookup seeds live in [`src/bs_database/schema.sql`](../../src/bs_database/schema.sql), the single source of truth ([ADR 0011](../adr/0011-schema-sql-source-of-truth-without-migrations.md), [#119](https://github.com/AleFire99/BS_Database/issues/119)); this document no longer repeats it. `tests/test_schema_sql.py` checks that the table set equals the entities of the complete ER diagram. Notes on the choices:
 
-- `PRAGMA user_version = 100` is schema `0.1.0` under the `major * 10000 + minor * 100 + patch` encoding of ADR 0003.
+- `PRAGMA user_version = 200` is schema `0.2.0` (#158; a breaking change in 0.x is a minor bump) under the `major * 10000 + minor * 100 + patch` encoding of ADR 0003.
 - Constraints are named `pk_`, `fk_`, `uq_`, `ck_` and `ix_` followed by `<table>_<cols>`. Primary keys are table constraints on an `INTEGER` column, which SQLite still treats as the rowid alias.
 - `en_status_id` and `variant_id` default to `1`; `schema.sql` seeds `pending` and `normal` with id 1. The other lookups (colors, card types, rarities, product types, families, keywords, symbols, further variants) are filled by the loader from `data/glossary`.
 - A foreign key in SQLite cannot check that a `card_levels` row belongs to the same card as the `card_effects` row, nor that a `brave_details` card has type `brave`; the build checks both.
