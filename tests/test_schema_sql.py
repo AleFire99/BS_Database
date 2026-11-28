@@ -43,7 +43,7 @@ def _er_entities() -> list[set[str]]:
 def test_loads_and_is_consistent(conn: sqlite3.Connection) -> None:
     assert conn.execute("PRAGMA foreign_key_check").fetchall() == []
     assert conn.execute("PRAGMA integrity_check").fetchone() == ("ok",)
-    assert conn.execute("PRAGMA user_version").fetchone() == (100,)
+    assert conn.execute("PRAGMA user_version").fetchone() == (200,)
 
 
 def test_seeds_present(conn: sqlite3.Connection) -> None:

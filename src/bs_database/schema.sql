@@ -1,5 +1,5 @@
 PRAGMA foreign_keys = ON;
-PRAGMA user_version = 100;
+PRAGMA user_version = 200;
 
 -- Versioning (ADR 0003): exactly one row.
 CREATE TABLE schema_meta (
@@ -124,10 +124,14 @@ CREATE TABLE cards (
     name_en TEXT,
     flavor_text_jp TEXT,
     flavor_text_en TEXT,
+    -- en_source_id / en_status_id describe name_en only; the flavor text has its own pair
     en_source_id INTEGER,
     en_status_id INTEGER NOT NULL DEFAULT 1,
+    flavor_en_source_id INTEGER,
+    flavor_en_status_id INTEGER NOT NULL DEFAULT 1,
     block_icon TEXT,
     card_class_jp TEXT,
+    card_class_en TEXT,
     type_mark_jp TEXT,
     deck_limit INTEGER,
     reduction_plain INTEGER,
@@ -139,6 +143,8 @@ CREATE TABLE cards (
     CONSTRAINT fk_cards_card_type_id FOREIGN KEY (card_type_id) REFERENCES card_types (id),
     CONSTRAINT fk_cards_en_source_id FOREIGN KEY (en_source_id) REFERENCES translation_sources (id),
     CONSTRAINT fk_cards_en_status_id FOREIGN KEY (en_status_id) REFERENCES translation_statuses (id),
+    CONSTRAINT fk_cards_flavor_en_source_id FOREIGN KEY (flavor_en_source_id) REFERENCES translation_sources (id),
+    CONSTRAINT fk_cards_flavor_en_status_id FOREIGN KEY (flavor_en_status_id) REFERENCES translation_statuses (id),
     CONSTRAINT ck_cards_cost CHECK (cost >= 0),
     CONSTRAINT ck_cards_deck_limit CHECK (deck_limit >= 1),
     CONSTRAINT ck_cards_reduction_plain CHECK (reduction_plain >= 0),

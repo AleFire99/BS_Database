@@ -8,12 +8,14 @@ from bs_database.build.quality.model import Rule, Severity
 
 E, W, I = Severity.ERROR, Severity.WARNING, Severity.INFO  # noqa: E741
 
-# A card has English text when its name or its flavor text has some; the other tables have one
-# text column each. ``en_text`` is NULL or blank when there is none (ADR 0005).
+# A card has two English texts, its name and its flavor text, each with its own source and status
+# (ADR 0012); the other tables have one text column each. ``en`` is NULL or blank when there is
+# none (ADR 0005).
 _ENGLISH = """
 WITH t(kind, id, en, source_id, status_id) AS (
-    SELECT 'card', id, coalesce(nullif(trim(name_en), ''), nullif(trim(flavor_text_en), '')),
-           en_source_id, en_status_id FROM cards
+    SELECT 'card', id, nullif(trim(name_en), ''), en_source_id, en_status_id FROM cards
+    UNION ALL SELECT 'card flavor', id, nullif(trim(flavor_text_en), ''), flavor_en_source_id,
+                     flavor_en_status_id FROM cards
     UNION ALL SELECT 'effect', id, nullif(trim(text_en), ''), en_source_id, en_status_id
               FROM card_effects
     UNION ALL SELECT 'product', id, nullif(trim(name_en), ''), en_source_id, en_status_id

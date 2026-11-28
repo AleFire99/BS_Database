@@ -10,7 +10,6 @@ from bs_database.build.reader import Json
 
 CONCEPT_ROLE = "コンセプト"
 JOIN = "・"
-STATUS_FAILED = "failed"
 
 
 @dataclass(frozen=True, slots=True)
@@ -38,16 +37,19 @@ def _block_icon(
     return icons[0] if icons else None
 
 
-def _english(entry: Json, text: Json | None) -> tuple[str | None, str | None, str | None, str]:
-    """``(name_en, flavor_en, source code, status code)``: one pair covers both (ADR 0005)."""
-    pairs = [(entry["name_en"], entry["en_source"], entry["en_status"])]
-    if text is not None:
-        pairs.append((text["flavor_en"], text["en_source"], text["en_status"]))
-    chosen = next(((s, st) for value, s, st in pairs if value), None)
-    if chosen is None:
-        failed = any(st == STATUS_FAILED for _, _, st in pairs)
-        chosen = (None, STATUS_FAILED if failed else STATUS_PENDING)
-    return entry["name_en"], text["flavor_en"] if text else None, chosen[0], chosen[1]
+def _pair(source: str | None, status: str | None) -> tuple[str | None, str]:
+    """``(source code, status code)``: a status is never missing (ADR 0005)."""
+    return source, status or STATUS_PENDING
+
+
+def _english(
+    entry: Json, text: Json | None
+) -> tuple[tuple[str | None, str], tuple[str | None, str]]:
+    """The name pair and the flavor pair (ADR 0012): each text carries its own provenance."""
+    name = _pair(entry["en_source"], entry["en_status"])
+    if text is None:
+        return name, (None, STATUS_PENDING)
+    return name, _pair(text["en_source"], text["en_status"])
 
 
 @dataclass(slots=True)
@@ -101,7 +103,7 @@ def load_cards(
             raise BuildError(
                 f"{group.first.number}: card type {gameplay['card_type_jp']!r} unmapped"
             )
-        name_en, flavor_en, source, status = _english(entry, text)
+        (name_source, name_status), (flavor_source, flavor_status) = _english(entry, text)
         overclock = gameplay["overclock"]
         card_rows.append(
             (
@@ -109,13 +111,16 @@ def load_cards(
                 lookups.card_types[type_code],
                 gameplay["cost"],
                 entry["name_jp"],
-                name_en,
+                entry["name_en"],
                 text["flavor_jp"] if text else None,
-                flavor_en,
-                lookups.source_id(source),
-                lookups.status_id(status),
+                text["flavor_en"] if text else None,
+                lookups.source_id(name_source),
+                lookups.status_id(name_status),
+                lookups.source_id(flavor_source),
+                lookups.status_id(flavor_status),
                 _block_icon(group, printings, warnings),
                 gameplay["card_class_jp"],
+                gameplay.get("card_class_en"),
                 gameplay["type_mark_jp"],
                 gameplay["deck_limit"],
                 gameplay["reduction"]["plain"],
@@ -130,10 +135,10 @@ def load_cards(
             by_number[number] = card_id
     conn.executemany(
         "INSERT INTO cards (id, card_type_id, cost, name_jp, name_en, flavor_text_jp,"
-        " flavor_text_en, en_source_id, en_status_id, block_icon, card_class_jp, type_mark_jp,"
-        " deck_limit, reduction_plain, overclock_count_min, overclock_bp_bonus,"
-        " overclock_condition_jp, flavor_note_jp)"
-        " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        " flavor_text_en, en_source_id, en_status_id, flavor_en_source_id, flavor_en_status_id,"
+        " block_icon, card_class_jp, card_class_en, type_mark_jp, deck_limit, reduction_plain,"
+        " overclock_count_min, overclock_bp_bonus, overclock_condition_jp, flavor_note_jp)"
+        " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         card_rows,
     )
     number_ids = {n: i for i, n in enumerate(sorted(by_number), start=1)}
