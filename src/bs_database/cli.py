@@ -158,10 +158,11 @@ def glossary_review(
 ) -> None:
     """Propose glossary rows from data/normalized and the legacy snapshot, for the owner.
 
-    Writes review.md (families, keywords, no_split candidates, product-code prefixes, untyped
-    products, slug conflicts, legacy pairs) and ready-to-copy families.csv, keywords.csv and
-    family_legacy_en.csv. Nothing under data/glossary is changed. Copy families.csv and
-    family_legacy_en.csv together, and re-sort families.csv and keywords.csv by code after
+    Writes review.md (families, keywords, timings, card classes, no_split candidates,
+    product-code prefixes, untyped products, slug conflicts, legacy pairs) and ready-to-copy
+    families.csv, keywords.csv, family_legacy_en.csv, timings.csv and card_classes.csv.
+    Nothing under data/glossary is changed. Copy families.csv and family_legacy_en.csv
+    together, and re-sort families.csv and keywords.csv by code after
     filling codes by hand (the loader requires it).
     """
     settings = _settings(ctx)
@@ -179,6 +180,7 @@ def glossary_review(
     write_review(target, review)
     typer.echo(
         f"Review: {len(review.families)} families, {len(review.keywords)} keywords, "
+        f"{len(review.timings)} timings, {len(review.classes)} card classes, "
         f"{len(review.no_split)} no_split candidates, {len(review.prefixes)} prefixes, "
         f"{len(review.conflicts)} slug conflicts"
     )

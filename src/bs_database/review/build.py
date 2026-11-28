@@ -38,6 +38,9 @@ Row = Mapping[str, str]
 FAMILY_COLUMNS = ("jp", "code", "en", "notes", "aliases_en", "no_split")
 KEYWORD_COLUMNS = ("jp", "code", "en", "notes")
 LEGACY_COLUMNS = ("legacy_en", "preferred_en", "jp", "notes")
+TIMING_COLUMNS = ("jp", "code", "en", "notes")
+CLASS_COLUMNS = ("jp", "code", "en", "notes")
+IN_TEXT_ONLY = "in-text only"
 
 SOURCE_GLOSSARY = "glossary"
 SOURCE_ALIAS = "alias"
@@ -85,6 +88,22 @@ class KeywordRow:
     known: bool
     fandom_title: str = ""
     code_conflict: str = ""
+
+
+@dataclass(frozen=True, slots=True)
+class TimingRow:
+    """A timing (or a card class) of the corpus; ``known`` is False without a glossary row.
+
+    ``in_timing_jp`` is False for a span seen only inside effect text (``timing_jp`` never
+    holds it); card classes leave it True.
+    """
+
+    jp: str
+    cards: int
+    code: str
+    en: str
+    known: bool
+    in_timing_jp: bool = True
 
 
 @dataclass(frozen=True, slots=True)
@@ -167,6 +186,10 @@ class Review:
     rarities: tuple[RarityRow, ...] = ()
     with_fandom: bool = False
     untyped: tuple[UntypedRow, ...] = ()
+    timings: tuple[TimingRow, ...] = ()
+    timing_csv: tuple[tuple[str, ...], ...] = ()
+    classes: tuple[TimingRow, ...] = ()
+    class_csv: tuple[tuple[str, ...], ...] = ()
 
     @property
     def family_sources(self) -> tuple[tuple[str, int], ...]:
@@ -332,6 +355,38 @@ def _keyword_rows(
     return rows, csv_rows
 
 
+def _closed_rows(
+    cards: Mapping[str, int],
+    intext: Mapping[str, int],
+    glossary_rows: Sequence[Row],
+) -> tuple[list[TimingRow], list[tuple[str, ...]]]:
+    """Rows of a closed kind seeded from the corpus: ``cards`` (the field) and ``intext``.
+
+    The English is the glossary row's own, never proposed; the code is its own, else the slug
+    of the English (blank while the English is). A span only in ``intext`` is flagged and its
+    seed notes say ``in-text only``.
+    """
+    existing = {r["jp"]: r for r in glossary_rows}
+    jps = sorted(set(existing) | set(cards) | set(intext))
+    rows: list[TimingRow] = []
+    csv_rows: list[tuple[str, ...]] = []
+    for jp in jps:
+        row = existing.get(jp, {})
+        en = row.get("en", "")
+        code = row.get("code", "") or slugify(en)
+        in_field = jp in cards or jp not in intext
+        notes = row.get("notes", "")
+        if not in_field and not notes:
+            notes = IN_TEXT_ONLY
+        rows.append(
+            TimingRow(jp, cards.get(jp, intext.get(jp, 0)), code, en, jp in existing, in_field)
+        )
+        csv_rows.append((jp, code, en, notes))
+    rows.sort(key=lambda r: (-r.cards, r.jp))
+    csv_rows.sort(key=lambda r: (r[1], r[0]))
+    return rows, csv_rows
+
+
 def _rarity_rows(corpus: Corpus, data: FandomData) -> list[RarityRow]:
     """Fandom rarities matched to batspi ones by letter or Japanese name, then the leftovers."""
     batspi = {jp_key(jp): jp for jp in corpus.rarity_printings}
@@ -435,6 +490,8 @@ def build_review(
     legacy_rows: Sequence[Row],
     prefix_rows: Sequence[Row],
     fandom: FandomData | None = None,
+    timing_rows: Sequence[Row] = (),
+    class_rows: Sequence[Row] = (),
 ) -> Review:
     """Build every review table and CSV from already-read inputs."""
     aliases = {r["legacy_en"].casefold(): r["preferred_en"] for r in legacy_rows}
@@ -444,6 +501,8 @@ def build_review(
     keywords, keyword_csv = _keyword_rows(corpus, keyword_rows, kw_names)
     known = {r["jp"] for r in family_rows}
     legacy, legacy_csv = _legacy_rows(link, legacy_rows)
+    timings, timing_csv = _closed_rows(corpus.timing_cards, corpus.intext_timing_cards, timing_rows)
+    classes, class_csv = _closed_rows(corpus.class_cards, {}, class_rows)
     return Review(
         tuple(families),
         tuple(keywords),
@@ -462,4 +521,8 @@ def build_review(
         tuple(_rarity_rows(corpus, fandom)) if fandom else (),
         fandom is not None,
         tuple(_untyped_rows(corpus)),
+        tuple(timings),
+        tuple(timing_csv),
+        tuple(classes),
+        tuple(class_csv),
     )
