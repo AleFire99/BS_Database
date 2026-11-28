@@ -175,3 +175,24 @@ def test_round_trip_property() -> None:
     for (src, expected), r in zip(cases, out, strict=True):
         if src.strip():
             assert (r.status, r.text) == ("machine", expected.strip() or expected), src
+
+
+def test_golden_effect_text() -> None:
+    src = (
+        "【アタック時】赤青を支払う：「ミカド」を手札に加える。\n"
+        "系統：「悪魔契約」を持つスピリット\n"
+        "【ダブルシンボル】"
+    )
+    engine = ScriptedEngine(
+        {
+            "<k0/><k1/>を支払う：<k2/>を手札に加える。": "<k0/> Pay <k1/>: add <k2/> to your hand.",
+            "<k0/><k1/>を持つスピリット": "A spirit with <k1/> <k0/>",
+            "<k0/>": "<k0/>",
+        }
+    )
+    out = _make(engine).translate([src])[0]
+    assert out.text == (
+        "【アタック時】 Pay Red Blue: add 「Mikado」 to your hand.\n"
+        "A spirit with 「悪魔契約」 Family:\n"
+        "【Double Symbol】"
+    )
