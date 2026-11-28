@@ -1,0 +1,118 @@
+jp,code,en,notes
+『自分のバースト発動後』,after_you_activate_a_burst,『After you activate a Burst』,
+『自分のSバースト発動後』,after_you_activate_a_soul_burst,『After you activate a Soul Burst』,
+『お互いのアタックステップ終了時』,at_the_end_of_either_player_s_attack_step,『At the end of either player's Attack Step』,
+『自分のアタックステップ終了時』,at_the_end_of_your_attack_step,『At the end of your Attack Step』,
+『相手のアタックステップ終了時』,at_the_end_of_your_opponent_s_attack_step,『At the end of your opponent's Attack Step』,
+『お互いのアタックステップ開始時』,at_the_start_of_either_player_s_attack_step,『At the start of either player's Attack Step』,
+『自分のアタックステップ開始時』,at_the_start_of_your_attack_step,『At the start of your Attack Step』,
+『自分のドローステップ開始時』,at_the_start_of_your_draw_step,『At the start of your Draw Step』,
+『自分のメインステップ開始時』,at_the_start_of_your_main_step,『At the start of your Main Step』,
+『相手のアタックステップ開始時』,at_the_start_of_your_opponent_s_attack_step,『At the start of your opponent's Attack Step』,
+『相手のメインステップ開始時』,at_the_start_of_your_opponent_s_main_step,『At the start of your opponent's Main Step』,
+『ブロックできない』,cannot_block,『Cannot block』,in-text only; provisional
+『お互いのアタックステップ』,during_either_player_s_attack_step,『During either player's Attack Step』,
+『お互いのエンドステップ』,during_either_player_s_end_step,『During either player's End Step』,
+『お互いのメインステップ』,during_either_player_s_main_step,『During either player's Main Step』,
+『お互いのリフレッシュステップ』,during_either_player_s_refresh_step,『During either player's Refresh Step』,
+『お互いのスタートステップ』,during_either_player_s_start_step,『During either player's Start Step』,
+『アタックステップ』,during_the_attack_step,『During the Attack Step』,in-text only
+『コアステップ』,during_the_core_step,『During the Core Step』,in-text only
+『ドローステップ』,during_the_draw_step,『During the Draw Step』,in-text only
+『メインステップ』,during_the_main_step,『During the Main Step』,in-text only
+『リフレッシュステップ』,during_the_refresh_step,『During the Refresh Step』,in-text only
+『自分のアタックステップ』,during_your_attack_step,『During your Attack Step』,
+『自分のコアステップ』,during_your_core_step,『During your Core Step』,
+『自分のドローステップ』,during_your_draw_step,『During your Draw Step』,
+『自分のエンドステップ』,during_your_end_step,『During your End Step』,
+『自分のメインステップ』,during_your_main_step,『During your Main Step』,
+『相手のアタックステップ』,during_your_opponent_s_attack_step,『During your opponent's Attack Step』,
+『相手のドローステップ』,during_your_opponent_s_draw_step,『During your opponent's Draw Step』,in-text only
+『相手のエンドステップ』,during_your_opponent_s_end_step,『During your opponent's End Step』,
+『相手のメインステップ』,during_your_opponent_s_main_step,『During your opponent's Main Step』,
+『相手のリフレッシュステップ』,during_your_opponent_s_refresh_step,『During your opponent's Refresh Step』,
+『相手のスタート/コア/ドローステップ』,during_your_opponent_s_start_core_or_draw_step,"『During your opponent's Start, Core or Draw Step』",
+『相手のスタートステップ』,during_your_opponent_s_start_step,『During your opponent's Start Step』,
+『相手のターン』,during_your_opponent_s_turn,『During your opponent's turn』,
+『自分のリフレッシュステップ』,during_your_refresh_step,『During your Refresh Step』,
+『自分のスタートステップ』,during_your_start_step,『During your Start Step』,
+『自分のターン』,during_your_turn,『During your turn』,
+『自分/相手/お互いのアタックステップ』,during_your_your_opponent_s_or_either_player_s_attack_step,"『During your, your opponent's or either player's Attack Step』",in-text only; provisional
+『アタック時』,when_attacking,『When attacking』,
+『アタック/ブロック時』,when_attacking_or_blocking,『When attacking or blocking』,
+『ブロック時』,when_blocking,『When blocking』,
+『破壊時』,when_destroyed,『When destroyed』,
+『系統：「皇獣」を持つ自分のスピリットのアタック時』,when_one_of_your_spirits_with_the_family_attacks,『When one of your Spirits with the family 「皇獣」 attacks』,provisional
+『召喚時』,when_summoned,『When summoned』,in-text only
+『このブレイヴの転醒時』,when_this_brave_is_rebirthed,『When this Brave is Rebirthed』,
+『このブレイヴの召喚時』,when_this_brave_is_summoned,『When this Brave is summoned』,
+『このブレイヴ/ネクサスの召喚/配置時』,when_this_brave_or_nexus_is_summoned_or_placed,『When this Brave or Nexus is summoned or placed』,in-text only
+『このミラージュのセット時』,when_this_mirage_is_set,『When this Mirage is set』,
+『このネクサスの破壊時』,when_this_nexus_is_destroyed,『When this Nexus is destroyed』,
+『相手によるこのネクサスの破壊時』,when_this_nexus_is_destroyed_by_your_opponent,『When this Nexus is destroyed by your opponent』,
+『このネクサスの配置時』,when_this_nexus_is_placed,『When this Nexus is placed』,
+『このネクサスの配置/破壊時』,when_this_nexus_is_placed_or_destroyed,『When this Nexus is placed or destroyed』,
+『このネクサスの転醒時』,when_this_nexus_is_rebirthed,『When this Nexus is Rebirthed』,
+『このネクサスの転醒/破壊時』,when_this_nexus_is_rebirthed_or_destroyed,『When this Nexus is Rebirthed or destroyed』,
+『このスピリットの煌臨時』,when_this_spirit_advents,『When this Spirit Advents』,
+『このスピリットの煌臨/アタック/ブロック時』,when_this_spirit_advents_attacks_or_blocks,"『When this Spirit Advents, attacks or blocks』",
+『このスピリットの煌臨/アタック時』,when_this_spirit_advents_or_attacks,『When this Spirit Advents or attacks』,
+『このスピリットの煌臨/ブロック時』,when_this_spirit_advents_or_blocks,『When this Spirit Advents or blocks』,
+『このスピリットの煌臨/破壊時』,when_this_spirit_advents_or_is_destroyed,『When this Spirit Advents or is destroyed』,
+『このスピリットのアタック時』,when_this_spirit_attacks,『When this Spirit attacks』,
+『このスピリットのアタック/バトル時』,when_this_spirit_attacks_or_battles,『When this Spirit attacks or battles』,in-text only
+『このスピリットのアタック/ブロック時』,when_this_spirit_attacks_or_blocks,『When this Spirit attacks or blocks』,
+『このスピリットのアタック/破壊時』,when_this_spirit_attacks_or_is_destroyed,『When this Spirit attacks or is destroyed』,
+『このスピリットの合体アタック時』,when_this_spirit_attacks_while_braved,『When this Spirit attacks while Braved』,provisional
+『このスピリットのバトル時』,when_this_spirit_battles,『When this Spirit battles』,
+『このスピリットのブロック時』,when_this_spirit_blocks,『When this Spirit blocks』,
+『このスピリットのブロック/破壊時』,when_this_spirit_blocks_or_is_destroyed,『When this Spirit blocks or is destroyed』,
+『このスピリット/ブレイヴ/ネクサスの転醒時』,when_this_spirit_brave_or_nexus_is_rebirthed,"『When this Spirit, Brave or Nexus is Rebirthed』",in-text only
+『このスピリットの破壊時』,when_this_spirit_is_destroyed,『When this Spirit is destroyed』,
+『相手によるこのスピリットの破壊時』,when_this_spirit_is_destroyed_by_your_opponent,『When this Spirit is destroyed by your opponent』,
+『相手によるこのスピリットの消滅時』,when_this_spirit_is_eliminated_by_your_opponent,『When this Spirit is eliminated by your opponent』,provisional
+『相手によるこのスピリットの消滅/破壊時』,when_this_spirit_is_eliminated_or_destroyed_by_your_opponent,『When this Spirit is eliminated or destroyed by your opponent』,provisional
+『このスピリットの転醒時』,when_this_spirit_is_rebirthed,『When this Spirit is Rebirthed』,
+『このスピリットの転醒/アタック時』,when_this_spirit_is_rebirthed_or_attacks,『When this Spirit is Rebirthed or attacks』,
+『このスピリットの転醒/ブロック時』,when_this_spirit_is_rebirthed_or_blocks,『When this Spirit is Rebirthed or blocks』,
+『このスピリットの召喚時』,when_this_spirit_is_summoned,『When this Spirit is summoned』,
+『このスピリットの召喚/煌臨/転醒時』,when_this_spirit_is_summoned_advents_or_is_rebirthed,"『When this Spirit is summoned, Advents or is Rebirthed』",in-text only
+『このスピリットの召喚/アタック/ブロック時』,when_this_spirit_is_summoned_attacks_or_blocks,"『When this Spirit is summoned, attacks or blocks』",
+『このスピリットの召喚/煌臨時』,when_this_spirit_is_summoned_or_advents,『When this Spirit is summoned or Advents』,
+『このスピリットの召喚/アタック時』,when_this_spirit_is_summoned_or_attacks,『When this Spirit is summoned or attacks』,
+『このスピリットの召喚/ブロック時』,when_this_spirit_is_summoned_or_blocks,『When this Spirit is summoned or blocks』,
+『このスピリットの召喚/破壊時』,when_this_spirit_is_summoned_or_destroyed,『When this Spirit is summoned or destroyed』,
+『このスピリットの召喚/転醒時』,when_this_spirit_is_summoned_or_rebirthed,『When this Spirit is summoned or Rebirthed』,in-text only
+『このスピリットの顕現時』,when_this_spirit_manifests,『When this Spirit Manifests』,provisional
+『このスピリットの顕現/アタック/ブロック時』,when_this_spirit_manifests_attacks_or_blocks,"『When this Spirit Manifests, attacks or blocks』",provisional
+『このスピリットの顕現/アタック時』,when_this_spirit_manifests_or_attacks,『When this Spirit Manifests or attacks』,provisional
+『このスピリットの顕現/破壊時』,when_this_spirit_manifests_or_is_destroyed,『When this Spirit Manifests or is destroyed』,provisional
+『このスピリット/ブレイヴの召喚時』,when_this_spirit_or_brave_is_summoned,『When this Spirit or Brave is summoned』,in-text only
+『このスピリット/ネクサスの召喚/配置時』,when_this_spirit_or_nexus_is_summoned_or_placed,『When this Spirit or Nexus is summoned or placed』,in-text only
+『このスピリット/アルティメットの煌臨時』,when_this_spirit_or_ultimate_advents,『When this Spirit or Ultimate Advents』,in-text only
+『このスピリット/アルティメットのアタック時』,when_this_spirit_or_ultimate_attacks,『When this Spirit or Ultimate attacks』,
+『このスピリット/アルティメットの合体アタック時』,when_this_spirit_or_ultimate_attacks_while_braved,『When this Spirit or Ultimate attacks while Braved』,provisional
+『このスピリット/アルティメットのブロック時』,when_this_spirit_or_ultimate_blocks,『When this Spirit or Ultimate blocks』,in-text only
+『相手によるこのスピリット/アルティメットの破壊時』,when_this_spirit_or_ultimate_is_destroyed_by_your_opponent,『When this Spirit or Ultimate is destroyed by your opponent』,
+『このスピリット/アルティメットの召喚時』,when_this_spirit_or_ultimate_is_summoned,『When this Spirit or Ultimate is summoned』,in-text only
+『このスピリット/アルティメットの召喚/煌臨/転醒時』,when_this_spirit_or_ultimate_is_summoned_advents_or_is_rebirthed,"『When this Spirit or Ultimate is summoned, Advents or is Rebirthed』",in-text only
+『このスピリット/アルティメットの召喚/煌臨時』,when_this_spirit_or_ultimate_is_summoned_or_advents,『When this Spirit or Ultimate is summoned or Advents』,in-text only
+『このスピリット/アルティメット/ブレイヴの召喚時』,when_this_spirit_ultimate_or_brave_is_summoned,"『When this Spirit, Ultimate or Brave is summoned』",in-text only
+『このアルティメットの煌臨時』,when_this_ultimate_advents,『When this Ultimate Advents』,
+『このアルティメットの煌臨/アタック時』,when_this_ultimate_advents_or_attacks,『When this Ultimate Advents or attacks』,
+『このアルティメットのアタック時』,when_this_ultimate_attacks,『When this Ultimate attacks』,
+『このアルティメットのアタック/ブロック時』,when_this_ultimate_attacks_or_blocks,『When this Ultimate attacks or blocks』,
+『このアルティメットの合体アタック時』,when_this_ultimate_attacks_while_braved,『When this Ultimate attacks while Braved』,provisional
+『このアルティメットのバトル時』,when_this_ultimate_battles,『When this Ultimate battles』,
+『このアルティメットのブロック時』,when_this_ultimate_blocks,『When this Ultimate blocks』,
+『このアルティメットの破壊時』,when_this_ultimate_is_destroyed,『When this Ultimate is destroyed』,
+『相手によるこのアルティメットの破壊時』,when_this_ultimate_is_destroyed_by_your_opponent,『When this Ultimate is destroyed by your opponent』,
+『相手によるこのアルティメットの消滅/破壊時』,when_this_ultimate_is_eliminated_or_destroyed_by_your_opponent,『When this Ultimate is eliminated or destroyed by your opponent』,provisional
+『このアルティメットの召喚時』,when_this_ultimate_is_summoned,『When this Ultimate is summoned』,
+『このアルティメットの召喚/煌臨時』,when_this_ultimate_is_summoned_or_advents,『When this Ultimate is summoned or Advents』,
+『このアルティメットの召喚/アタック時』,when_this_ultimate_is_summoned_or_attacks,『When this Ultimate is summoned or attacks』,
+『このアルティメットの召喚/ブロック時』,when_this_ultimate_is_summoned_or_blocks,『When this Ultimate is summoned or blocks』,
+『このアルティメットの召喚/破壊時』,when_this_ultimate_is_summoned_or_destroyed,『When this Ultimate is summoned or destroyed』,
+『相手による自分のスピリットの破壊時』,when_your_spirit_is_destroyed_by_your_opponent,『When your Spirit is destroyed by your opponent』,
+『アタック中』,while_attacking,『While attacking』,
+『ブロック中』,while_blocking,『While blocking』,

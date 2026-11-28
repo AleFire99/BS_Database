@@ -1,4 +1,5 @@
 import glob
+import json
 from pathlib import Path
 
 import pytest
@@ -119,3 +120,39 @@ def test_legacy_order_and_rebirth(glossary: Glossary) -> None:
 
 def test_unresolved_legacy(glossary: Glossary) -> None:
     assert len(glossary.unresolved_legacy()) == 40
+
+
+def test_timings_and_classes_counts_and_shape(glossary: Glossary) -> None:
+    timings = glossary.entries["timings"]
+    assert len(timings) == 117
+    assert sum(1 for t in timings if t.notes.startswith("in-text only")) == 22
+    for t in timings:
+        assert t.jp[0] == "『" and t.jp[-1] == "』", t.jp
+        assert t.en[0] == "『" and t.en[-1] == "』", t.en
+        assert t.en == t.en.strip()
+        assert "  " not in t.en
+    assert [(c.jp, c.code, c.en) for c in glossary.entries["card_classes"]] == [
+        ("契約", "contract", "Contract"),
+        ("トークン", "token", "Token"),
+    ]
+    contract = glossary.lookup("card_classes", "契約")
+    assert contract is not None and contract.en == "Contract"
+    summoned = glossary.lookup("timings", "『このスピリットの召喚時』")
+    assert summoned is not None and summoned.en == "『When this Spirit is summoned』"
+
+
+def test_every_normalized_timing_and_class_is_mapped(glossary: Glossary) -> None:
+    """Needs the real ``data/normalized`` (git-ignored); skipped in CI."""
+    pages = sorted((ROOT / "data" / "normalized").glob("*/*.json"))
+    if not pages:
+        pytest.skip("data/normalized is absent")
+    seen: set[tuple[str, str]] = set()
+    for path in pages:
+        for entry in json.loads(path.read_text(encoding="utf-8"))["page"]["entries"]:
+            if cls := entry["gameplay"].get("card_class_jp"):
+                seen.add(("card_classes", cls))
+            for effect in entry["text"]["effects"]:
+                if effect["timing_jp"]:
+                    seen.add(("timings", effect["timing_jp"]))
+    assert seen
+    assert sorted(k for k in seen if glossary.lookup(*k) is None) == []
