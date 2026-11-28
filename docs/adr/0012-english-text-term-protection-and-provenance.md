@@ -1,6 +1,6 @@
 # 0012. English text, term protection and provenance
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-28
 
 ## Context
