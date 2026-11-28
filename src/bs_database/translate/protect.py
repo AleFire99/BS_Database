@@ -201,3 +201,11 @@ def _render(span: Span, resolver: TermResolver) -> str:
 def restore(validated: str, spans: Sequence[Span], resolver: TermResolver) -> str:
     """Replace each token of a validated line by the rendering of its span."""
     return _TOKEN_RE.sub(lambda m: _render(spans[int(m.group(1))], resolver), validated)
+
+
+_SENTENCE_RE = re.compile(r"[^。]*。|[^。]+")
+
+
+def split_sentences(line: str) -> list[str]:
+    """Split ``line`` after each ``。`` (kept on its sentence); blank pieces are dropped."""
+    return [s for s in _SENTENCE_RE.findall(line) if s.strip()]
