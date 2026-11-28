@@ -50,6 +50,7 @@ _BRACKETS: dict[str, tuple[SpanKind, str]] = {
     "「": (SpanKind.NAME, "」"),
 }
 FAMILY_LABEL = "系統："
+MAX_NAME_LENGTH = 20
 
 _TOKEN = r"<\s*k\s*(\d+)\s*/\s*>"
 _TOKEN_RE = re.compile(_TOKEN)
@@ -148,9 +149,10 @@ class GlossaryResolver:
     """Resolves spans from the glossaries, the card name map and the timing map.
 
     Bracketed terms: ``keywords``, ``card_types``, then ``timings``. ``「…」``: a family
-    ``en``, then ``card_names``, then ``romanise(jp)`` (never unknown). ``系統：`` is
-    ``Family:``. A glyph run is the symbols' ``en`` joined by spaces, unknown if any glyph
-    is not a symbol.
+    ``en``, then ``card_names``, then ``romanise(jp)`` (counted in ``fallbacks``). A
+    name containing ``。`` or a space, or longer than ``MAX_NAME_LENGTH``, is not a name: unknown.
+    ``系統：`` is ``Family:``. A glyph run is the symbols' ``en`` joined by spaces, unknown if
+    any glyph is not a symbol.
     """
 
     def __init__(
@@ -165,6 +167,7 @@ class GlossaryResolver:
         self._card_names = card_names or {}
         self._timings = timings or {}
         self._romanise = romanise
+        self.fallbacks = 0  # names romanised because no glossary or name map knew them
 
     def resolve(self, kind: SpanKind, jp: str) -> str | None:
         if kind is SpanKind.FAMILY_LABEL:
@@ -182,11 +185,19 @@ class GlossaryResolver:
                 return entry.en
         return self._timings.get(jp)
 
-    def _name(self, jp: str) -> str:
+    def _name(self, jp: str) -> str | None:
         family = self._glossary.lookup("families", jp)
         if isinstance(family, FamilyEntry) and family.en:
             return family.en
-        return self._card_names.get(jp) or self._romanise(jp)
+        known = self._card_names.get(jp)
+        if known:
+            return known
+        # Not a name: a sentence or a long quotation would be romanised into junk.
+        # 20 characters covers the longest real names and families, which are short.
+        if "。" in jp or any(c.isspace() for c in jp) or len(jp) > MAX_NAME_LENGTH:
+            return None
+        self.fallbacks += 1
+        return self._romanise(jp)
 
 
 def _render(span: Span, resolver: TermResolver) -> str:
@@ -199,13 +210,31 @@ def _render(span: Span, resolver: TermResolver) -> str:
 
 
 def restore(validated: str, spans: Sequence[Span], resolver: TermResolver) -> str:
-    """Replace each token of a validated line by the rendering of its span."""
-    return _TOKEN_RE.sub(lambda m: _render(spans[int(m.group(1))], resolver), validated)
+    """Replace each token of a validated line by the rendering of its span.
+
+    ``Family:`` gets a space after it when the next character is not whitespace.
+    """
+
+    def sub(m: re.Match[str]) -> str:
+        span = spans[int(m.group(1))]
+        text = _render(span, resolver)
+        nxt = m.string[m.end() : m.end() + 1]
+        if span.kind is SpanKind.FAMILY_LABEL and text != span.text and nxt and not nxt.isspace():
+            text += " "
+        return text
+
+    return _TOKEN_RE.sub(sub, validated)
 
 
 _SENTENCE_RE = re.compile(r"[^。]*。|[^。]+")
 
 
-def split_sentences(line: str) -> list[str]:
-    """Split ``line`` after each ``。`` (kept on its sentence); blank pieces are dropped."""
-    return [s for s in _SENTENCE_RE.findall(line) if s.strip()]
+def split_sentences(line: str, pattern: re.Pattern[str]) -> list[str]:
+    """Split ``line`` after each ``。`` outside protected spans (kept on its sentence).
+
+    The line is masked first, so a ``。`` inside ``「あ。い」`` is never a boundary. Blank
+    pieces are dropped.
+    """
+    masked, spans = protect(line, pattern)
+    pieces = [s for s in _SENTENCE_RE.findall(masked) if s.strip()]
+    return [_TOKEN_RE.sub(lambda m: spans[int(m.group(1))].text, s) for s in pieces]

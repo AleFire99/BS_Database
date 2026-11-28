@@ -1,12 +1,13 @@
 import logging
 import random
+import re
 from pathlib import Path
 
 import pytest
 from fakes import ScriptedEngine
 
 from bs_database.glossary import Entry, Glossary
-from bs_database.translate.protect import GlossaryResolver
+from bs_database.translate.protect import GlossaryResolver, protect, span_pattern
 from bs_database.translate.protected import PROTECTION_VERSION, ProtectedTranslator
 
 GLYPHS = ["赤", "青"]
@@ -169,7 +170,9 @@ def test_round_trip_property() -> None:
             if piece == "赤青" and parts[-1:] == ["赤青"]:
                 piece = "あ"  # two runs side by side would merge into one
             parts.append(piece)
-        cases.append(("".join(parts), "".join(spans.get(p, p) for p in parts)))
+        expected = "".join(spans.get(p, p) for p in parts)
+        expected = re.sub(r"Family:(?=\S)", "Family: ", expected)  # a space before what follows
+        cases.append(("".join(parts), expected))
     texts = [c[0] for c in cases]
     out = _make(ScriptedEngine()).translate(texts)  # the echo engine keeps the tokens
     for (src, expected), r in zip(cases, out, strict=True):
@@ -196,3 +199,81 @@ def test_golden_effect_text() -> None:
         "A spirit with 「悪魔契約」 Family:\n"
         "【Double Symbol】"
     )
+
+
+def test_retry_does_not_split_inside_a_span() -> None:
+    e = ScriptedEngine(
+        {
+            "<k0/>を得る。次。": "bad <k",
+            "<k0/>を得る。": "Gain <k0/>.",
+            "次。": "Next.",
+        }
+    )
+    out = _make(e).translate(["「あ。い」を得る。次。"])
+    assert e.calls[1] == ["<k0/>を得る。", "次。"]
+    assert out[0].text == "Gain 「rom」. Next.".replace("rom", "あ。い")
+
+
+def test_romanised_fallback_is_counted_as_unresolved(caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level(logging.INFO):
+        out = _make(ScriptedEngine()).translate(["「未登録」", "「ミカド」"])
+    assert [r.text for r in out] == ["「未登録」", "「Mikado」"]
+    assert "unresolved=1" in caplog.text
+
+
+def _mutations(masked: str, n: int, rng: random.Random) -> list[tuple[str, str]]:
+    """(mutated output, expected status) for one echoed masked line with ``n`` tokens."""
+    tok = [f"<k{i}/>" for i in range(n)]
+    out = [
+        (masked.replace(tok[0], "", 1), "failed"),  # drop
+        (masked + " " + tok[rng.randrange(n)], "failed"),  # duplicate
+        (masked + f" <k{n + rng.randint(0, 5)}/>", "failed"),  # foreign index
+        (masked + " <k", "failed"),  # stray marker
+        (masked.replace(tok[0], "<K0/>", 1), "failed"),  # uppercase
+    ]
+    if n > 1:
+        swapped = masked.replace(tok[0], "@@").replace(tok[1], tok[0]).replace("@@", tok[1])
+        out.append((swapped, "machine"))  # reorder is allowed
+    return out
+
+
+def test_mutation_fuzz_never_yields_garbled_text() -> None:
+    rng = random.Random(156)
+    names = ["【ダブルシンボル】", "「ミカド」", "系統：", "赤青"]
+    for _ in range(200):
+        n = rng.randint(1, 4)
+        picks = [rng.choice(names) for _ in range(n)]
+        src = "あ".join(picks) + "い"
+        masked, spans = protect(src, span_pattern(GLYPHS))
+        if len(spans) != n:  # adjacent glyph runs merged
+            continue
+        for mutated, status in _mutations(masked, n, rng):
+            out = _make(ScriptedEngine({masked: mutated}), retry=False).translate([src])[0]
+            assert out.status == status, (src, mutated)
+            if status == "failed":
+                assert out.text is None
+            else:
+                assert out.text is not None
+                assert "<k" not in out.text and "<K" not in out.text
+
+
+def test_mixed_batch_maps_every_field_to_its_result() -> None:
+    e = ScriptedEngine({"<k0/>悪い": "no token", "良い": "Good", "二": "Two", "一": "One"})
+    texts = [
+        "一\n\n二",  # blank line inside
+        "",  # empty field
+        "【ダブルシンボル】悪い\n良い",  # bad line in the middle of the batch
+        "良い",
+        "   ",
+        "一",
+    ]
+    out = _make(e).translate(texts)
+    assert [(r.status, r.text) for r in out] == [
+        ("machine", "One\n\nTwo"),
+        ("pending", None),
+        ("failed", None),
+        ("machine", "Good"),
+        ("pending", None),
+        ("machine", "One"),
+    ]
+    assert e.calls == [["一", "二", "<k0/>悪い", "良い", "良い", "一"]]

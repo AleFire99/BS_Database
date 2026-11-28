@@ -121,12 +121,13 @@ class ProtectedTranslator:
         retries: dict[int, list[_Unit]] = {}
         if self._retry:
             for n, line in enumerate(lines):
-                sentences = split_sentences(line.raw)
+                sentences = split_sentences(line.raw, self._pattern)
                 if line.outcome == "bad" and len(sentences) > 1:
                     retries[n] = [self._unit(s) for s in sentences]
         self._run([u for units in retries.values() for u in units], src, tgt)
 
         counter = _Counting(self._resolver)
+        fallbacks_before = getattr(self._resolver, "fallbacks", 0)
         done: dict[int, str] = {}  # id(line) -> restored text
         for n, line in enumerate(lines):
             if n in retries:
@@ -160,7 +161,7 @@ class ProtectedTranslator:
             len(lines),
             len(retries),
             sum(r.status == "failed" for r in out),
-            counter.unresolved,
+            counter.unresolved + getattr(self._resolver, "fallbacks", 0) - fallbacks_before,
         )
         return out
 

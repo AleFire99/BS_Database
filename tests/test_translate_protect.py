@@ -9,6 +9,7 @@ from bs_database.translate.protect import (
     protect,
     restore,
     span_pattern,
+    split_sentences,
     validate,
 )
 
@@ -168,3 +169,38 @@ def test_pykakasi_romaniser() -> None:
     romanise = kakasi_romaniser()
     assert romanise("ミカド") == "Mikado"
     assert romanise("ABC") == "ABC"
+
+
+@pytest.mark.parametrize("jp", ["あ。い", "あ い", "あ　い", "あ" * 21])
+def test_name_that_is_not_name_like_keeps_its_japanese(jp: str) -> None:
+    r = _resolver()
+    assert r.resolve(SpanKind.NAME, jp) is None
+    assert r.fallbacks == 0
+    masked, spans = protect(f"「{jp}」", PAT)
+    assert restore(masked, spans, r) == f"「{jp}」"
+
+
+def test_name_at_the_limit_is_romanised_and_counted() -> None:
+    r = _resolver()
+    assert r.resolve(SpanKind.NAME, "あ" * 20) == f"rom({'あ' * 20})"
+    assert r.resolve(SpanKind.NAME, "ミカド") == "Mikado"  # name map: not a fallback
+    assert r.fallbacks == 1
+
+
+def test_split_sentences_ignores_the_stop_inside_a_span() -> None:
+    assert split_sentences("「あ。い」を得る。次。", PAT) == ["「あ。い」を得る。", "次。"]
+    assert split_sentences("あ。【い。う】", PAT) == ["あ。", "【い。う】"]
+    assert split_sentences("あ", PAT) == ["あ"]
+    assert split_sentences("", PAT) == []
+
+
+def test_uppercase_token_is_not_accepted() -> None:
+    assert validate("Gain <K0/>", [_s("【A】")]) is None
+
+
+def test_family_label_gets_a_space_before_a_non_space() -> None:
+    r = _resolver()
+    masked, spans = protect("系統：「悪魔契約」", PAT)
+    assert restore(masked, spans, r) == "Family: 「Demon Contract」"
+    assert restore("<k0/> x", protect("系統：", PAT)[1], r) == "Family: x"
+    assert restore("<k0/>", protect("系統：", PAT)[1], r) == "Family:"
