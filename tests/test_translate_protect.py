@@ -1,9 +1,13 @@
 import pytest
 
+from bs_database.glossary import Entry, FamilyEntry, Glossary
 from bs_database.translate.protect import (
+    GlossaryResolver,
     Span,
     SpanKind,
+    kakasi_romaniser,
     protect,
+    restore,
     span_pattern,
     validate,
 )
@@ -92,3 +96,75 @@ def test_invalid_lines(out: str) -> None:
 def test_no_span_line() -> None:
     assert validate("Hello.", []) == "Hello."
     assert validate("Hello <k0/>", []) is None
+
+
+# --- restore and resolver ---------------------------------------------------------------
+
+
+def _entry(jp: str, en: str) -> Entry:
+    return Entry(jp, jp, en, "")
+
+
+def _glossary() -> Glossary:
+    fam = FamilyEntry("悪魔契約", "akuma", "Demon Contract", "", (), False)
+    return Glossary(
+        entries={
+            "keywords": (_entry("ダブルシンボル", "Double Symbol"), _entry("空", "")),
+            "card_types": (_entry("スピリット", "Spirit"),),
+            "families": (fam,),
+            "symbols": (_entry("赤", "Red"), _entry("青", "Blue")),
+        },
+        legacy_family_aliases=(),
+    )
+
+
+def _resolver() -> GlossaryResolver:
+    return GlossaryResolver(
+        _glossary(),
+        card_names={"ミカド": "Mikado"},
+        timings={"アタック時": "When Attacking"},
+        romanise=lambda jp: f"rom({jp})",
+    )
+
+
+@pytest.mark.parametrize(
+    ("jp", "expected"),
+    [
+        ("【ダブルシンボル】", "【Double Symbol】"),
+        ("【スピリット】", "【Spirit】"),
+        ("【未知】", "【未知】"),  # unresolved keeps its Japanese
+        ("【空】", "【空】"),  # empty English counts as unknown
+        ("『アタック時』", "『When Attacking』"),
+        ("《ダブルシンボル》", "《Double Symbol》"),
+        ("〔スピリット〕", "〔Spirit〕"),
+        ("「悪魔契約」", "「Demon Contract」"),
+        ("「ミカド」", "「Mikado」"),
+        ("「未登録」", "「rom(未登録)」"),
+        ("系統：", "Family:"),
+        ("赤青", "Red Blue"),
+        ("赤黒", "赤黒"),
+    ],
+)
+def test_restore_renders_each_class(jp: str, expected: str) -> None:
+    masked, spans = protect(jp, span_pattern(["赤", "青", "黒"]))
+    assert restore(masked, spans, _resolver()) == expected
+
+
+def test_restore_puts_tokens_back_in_place() -> None:
+    masked, spans = protect("【ダブルシンボル】を持つ「ミカド」", PAT)
+    out = validate("Has <k1/> with <k0/>.", spans)
+    assert out is not None
+    assert restore(out, spans, _resolver()) == "Has 「Mikado」 with 【Double Symbol】."
+
+
+def test_default_resolver_romanise_is_identity() -> None:
+    r = GlossaryResolver(_glossary())
+    assert r.resolve(SpanKind.NAME, "未登録") == "未登録"
+    assert r.resolve(SpanKind.KEYWORD, "未知") is None
+
+
+def test_pykakasi_romaniser() -> None:
+    pytest.importorskip("pykakasi")
+    romanise = kakasi_romaniser()
+    assert romanise("ミカド") == "Mikado"
+    assert romanise("ABC") == "ABC"
