@@ -1,6 +1,6 @@
 # 0005. Text-first effects and translation storage
 
-- Status: Accepted
+- Status: Accepted. Amended by [0012](0012-english-text-term-protection-and-provenance.md)
 - Date: 2026-11-14
 
 ## Context
