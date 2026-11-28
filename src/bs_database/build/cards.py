@@ -37,19 +37,14 @@ def _block_icon(
     return icons[0] if icons else None
 
 
-def _pair(source: str | None, status: str | None) -> tuple[str | None, str]:
-    """``(source code, status code)``: a status is never missing (ADR 0005)."""
-    return source, status or STATUS_PENDING
-
-
 def _english(
     entry: Json, text: Json | None
 ) -> tuple[tuple[str | None, str], tuple[str | None, str]]:
     """The name pair and the flavor pair (ADR 0012): each text carries its own provenance."""
-    name = _pair(entry["en_source"], entry["en_status"])
+    name = (entry["en_source"], entry["en_status"])
     if text is None:
         return name, (None, STATUS_PENDING)
-    return name, _pair(text["en_source"], text["en_status"])
+    return name, (text["en_source"], text["en_status"])
 
 
 @dataclass(slots=True)

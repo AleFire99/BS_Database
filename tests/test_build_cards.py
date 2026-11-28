@@ -296,3 +296,10 @@ def test_condition_english_is_read_with_its_pair(tmp_path: Path) -> None:
     assert _details(out, "ultimate_details", "summon_condition_en") == {
         ("Summon: 1+ red spirit", "manual", "reviewed")
     }
+
+
+def test_missing_en_status_on_an_entry_is_an_error(tmp_path: Path) -> None:
+    data = _spirit()
+    del data["page"]["entries"][0]["en_status"]
+    with pytest.raises(KeyError, match="en_status"):
+        build(tmp_path / "x.db", [as_document(data)])
