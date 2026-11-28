@@ -59,7 +59,7 @@ def load_effects(
                     effect["position"],
                     lookups.effect_kinds[effect_kind(effect)],
                     effect["timing_jp"],
-                    None,
+                    effect.get("timing_en"),
                     effect["text_jp"],
                     effect["text_en"],
                     lookups.source_id(effect["en_source"]),

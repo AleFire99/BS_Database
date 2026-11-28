@@ -263,25 +263,58 @@ def _load_credits(
     )
 
 
+def _condition_pair(text: Json | None, prefix: str, lookups: Lookups) -> tuple[int | None, int]:
+    """Source and status ids of a condition English; absent keys give ``(NULL, pending)``."""
+    source, status = (
+        (text.get(f"{prefix}_en_source"), text.get(f"{prefix}_en_status")) if text else (None, None)
+    )
+    return lookups.source_id(source), lookups.status_id(status or STATUS_PENDING)
+
+
+def _joined(value: str | list[str] | None) -> str | None:
+    """A condition English as text: a list is joined by newlines like the Japanese one."""
+    if isinstance(value, list):
+        value = "\n".join(value)
+    return value or None
+
+
 def _load_details(
     conn: sqlite3.Connection, lookups: Lookups, groups: list[CardGroup], by_group: dict[str, int]
 ) -> None:
-    brave: list[tuple[int, str | None, int | None]] = []
-    ultimate: list[tuple[int, str | None]] = []
+    """Brave and ultimate details; the condition English keys are optional (ADR 0012 d7)."""
+    brave: list[tuple[object, ...]] = []
+    ultimate: list[tuple[object, ...]] = []
     for group in groups:
         entry = group.first.entry
         gameplay, text = entry["gameplay"], entry["text"]
         card_id = by_group[group.key]
         if gameplay["card_type_code"] == "brave":
             conditions = text["fusion_conditions_jp"] if text else []
-            brave.append((card_id, "\n".join(conditions) or None, gameplay["fusion_bp_bonus"]))
+            en = _joined(text.get("fusion_conditions_en") if text else None)
+            source, status = _condition_pair(text, "fusion", lookups)
+            brave.append(
+                (
+                    card_id,
+                    "\n".join(conditions) or None,
+                    en,
+                    gameplay["fusion_bp_bonus"],
+                    source,
+                    status,
+                )
+            )
         elif gameplay["card_type_code"] == "ultimate":
-            ultimate.append((card_id, text["summon_condition_jp"] if text else None))
+            en = _joined(text.get("summon_condition_en") if text else None)
+            source, status = _condition_pair(text, "summon", lookups)
+            ultimate.append(
+                (card_id, text["summon_condition_jp"] if text else None, en, source, status)
+            )
     conn.executemany(
-        "INSERT INTO brave_details (card_id, fusion_condition_jp, fusion_bp_bonus)"
-        " VALUES (?, ?, ?)",
+        "INSERT INTO brave_details (card_id, fusion_condition_jp, fusion_condition_en,"
+        " fusion_bp_bonus, en_source_id, en_status_id) VALUES (?, ?, ?, ?, ?, ?)",
         brave,
     )
     conn.executemany(
-        "INSERT INTO ultimate_details (card_id, summon_condition_jp) VALUES (?, ?)", ultimate
+        "INSERT INTO ultimate_details (card_id, summon_condition_jp, summon_condition_en,"
+        " en_source_id, en_status_id) VALUES (?, ?, ?, ?, ?)",
+        ultimate,
     )

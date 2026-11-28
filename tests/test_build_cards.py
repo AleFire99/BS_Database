@@ -257,3 +257,42 @@ def test_overclock_columns_are_both_set_or_both_null(golden_db: Path) -> None:
         golden_db,
         "SELECT 1 FROM cards WHERE (overclock_count_min IS NULL) <> (overclock_bp_bonus IS NULL)",
     )
+
+
+def _details(path: Path, table: str, column: str) -> set[tuple[object, ...]]:
+    return set(
+        query(
+            path,
+            f"SELECT d.{column}, s.code, t.code FROM {table} d"
+            " LEFT JOIN translation_sources s ON s.id = d.en_source_id"
+            " JOIN translation_statuses t ON t.id = d.en_status_id",
+        )
+    )
+
+
+def test_condition_english_is_read_with_its_pair(tmp_path: Path) -> None:
+    out = tmp_path / "x.db"
+    brave = golden_json("card_brave")
+    build(out, [as_document(brave)])
+    assert _details(out, "brave_details", "fusion_condition_en") == {(None, None, "pending")}
+    for entry in brave["page"]["entries"]:
+        entry["text"].update(
+            fusion_conditions_en=["Right: cost 5+", "Left: cost 3+"],
+            fusion_en_source="machine",
+            fusion_en_status="machine",
+        )
+    build(out, [as_document(brave)])
+    assert _details(out, "brave_details", "fusion_condition_en") == {
+        ("Right: cost 5+\nLeft: cost 3+", "machine", "machine")
+    }
+    ultimate = golden_json("card_ultimate")
+    for entry in ultimate["page"]["entries"]:
+        entry["text"].update(
+            summon_condition_en="Summon: 1+ red spirit",
+            summon_en_source="manual",
+            summon_en_status="reviewed",
+        )
+    build(out, [as_document(ultimate)])
+    assert _details(out, "ultimate_details", "summon_condition_en") == {
+        ("Summon: 1+ red spirit", "manual", "reviewed")
+    }
