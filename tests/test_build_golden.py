@@ -32,7 +32,7 @@ def test_build_is_consistent(tmp_path: Path) -> None:
     build(out, golden_documents())
     assert query(out, "PRAGMA foreign_key_check") == []
     assert query(out, "PRAGMA integrity_check") == [("ok",)]
-    assert query(out, "PRAGMA user_version") == [(100,)]
+    assert query(out, "PRAGMA user_version") == [(200,)]
 
 
 def test_two_builds_have_the_same_dump(tmp_path: Path) -> None:

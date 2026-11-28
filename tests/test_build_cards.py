@@ -177,25 +177,55 @@ def test_block_icon_conflict_takes_the_first_and_counts(tmp_path: Path) -> None:
     assert result.warnings["block_icon_conflict"] == 1
 
 
-def test_english_pair_follows_the_text_that_exists(tmp_path: Path) -> None:
+_PAIRS = (
+    "SELECT c.name_en, s.code, t.code, c.flavor_text_en, fs.code, ft.code FROM cards c"
+    " LEFT JOIN translation_sources s ON s.id = c.en_source_id"
+    " JOIN translation_statuses t ON t.id = c.en_status_id"
+    " LEFT JOIN translation_sources fs ON fs.id = c.flavor_en_source_id"
+    " JOIN translation_statuses ft ON ft.id = c.flavor_en_status_id"
+)
+
+
+def test_name_and_flavor_keep_their_own_provenance(tmp_path: Path) -> None:
     data = _spirit()
     entry = data["page"]["entries"][0]
-    entry["name_en"] = "Hellhound"
-    entry["en_source"], entry["en_status"] = "machine", "machine"
+    entry["name_en"], entry["en_source"], entry["en_status"] = "Hellhound", "batspi", "reviewed"
+    entry["text"].update(flavor_en="A hound.", en_source="machine", en_status="machine")
     out = tmp_path / "x.db"
     build(out, [as_document(data)])
-    assert query(
-        out,
-        "SELECT c.name_en, s.code, t.code FROM cards c JOIN translation_sources s"
-        " ON s.id = c.en_source_id JOIN translation_statuses t ON t.id = c.en_status_id",
-    ) == [("Hellhound", "machine", "machine")]
-    entry["name_en"], entry["en_source"], entry["en_status"] = None, None, "failed"
+    assert query(out, _PAIRS) == [
+        ("Hellhound", "batspi", "reviewed", "A hound.", "machine", "machine")
+    ]
+
+
+def test_missing_text_gives_a_pending_flavor_pair(tmp_path: Path) -> None:
+    data = _spirit()
+    entry = data["page"]["entries"][0]
+    entry["name_en"], entry["en_source"], entry["en_status"] = "Hellhound", "batspi", "reviewed"
+    entry["text"] = None
+    out = tmp_path / "x.db"
     build(out, [as_document(data)])
-    assert query(
-        out,
-        "SELECT c.name_en, c.en_source_id, t.code FROM cards c JOIN translation_statuses t"
-        " ON t.id = c.en_status_id",
-    ) == [(None, None, "failed")]
+    assert query(out, _PAIRS) == [("Hellhound", "batspi", "reviewed", None, None, "pending")]
+
+
+def test_failed_flavor_leaves_the_name_pair(tmp_path: Path) -> None:
+    data = _spirit()
+    entry = data["page"]["entries"][0]
+    entry["name_en"], entry["en_source"], entry["en_status"] = "Hellhound", "machine", "machine"
+    entry["text"].update(flavor_en=None, en_source=None, en_status="failed")
+    out = tmp_path / "x.db"
+    build(out, [as_document(data)])
+    assert query(out, _PAIRS) == [("Hellhound", "machine", "machine", None, None, "failed")]
+
+
+def test_card_class_en_is_read_when_present(tmp_path: Path) -> None:
+    data = _spirit()
+    out = tmp_path / "x.db"
+    build(out, [as_document(data)])
+    assert query(out, "SELECT card_class_en FROM cards") == [(None,)]
+    data["page"]["entries"][0]["gameplay"]["card_class_en"] = "Contract"
+    build(out, [as_document(data)])
+    assert query(out, "SELECT card_class_en FROM cards") == [("Contract",)]
 
 
 def test_unmapped_card_type_is_an_error(tmp_path: Path) -> None:
@@ -227,3 +257,49 @@ def test_overclock_columns_are_both_set_or_both_null(golden_db: Path) -> None:
         golden_db,
         "SELECT 1 FROM cards WHERE (overclock_count_min IS NULL) <> (overclock_bp_bonus IS NULL)",
     )
+
+
+def _details(path: Path, table: str, column: str) -> set[tuple[object, ...]]:
+    return set(
+        query(
+            path,
+            f"SELECT d.{column}, s.code, t.code FROM {table} d"
+            " LEFT JOIN translation_sources s ON s.id = d.en_source_id"
+            " JOIN translation_statuses t ON t.id = d.en_status_id",
+        )
+    )
+
+
+def test_condition_english_is_read_with_its_pair(tmp_path: Path) -> None:
+    out = tmp_path / "x.db"
+    brave = golden_json("card_brave")
+    build(out, [as_document(brave)])
+    assert _details(out, "brave_details", "fusion_condition_en") == {(None, None, "pending")}
+    for entry in brave["page"]["entries"]:
+        entry["text"].update(
+            fusion_conditions_en=["Right: cost 5+", "Left: cost 3+"],
+            fusion_en_source="machine",
+            fusion_en_status="machine",
+        )
+    build(out, [as_document(brave)])
+    assert _details(out, "brave_details", "fusion_condition_en") == {
+        ("Right: cost 5+\nLeft: cost 3+", "machine", "machine")
+    }
+    ultimate = golden_json("card_ultimate")
+    for entry in ultimate["page"]["entries"]:
+        entry["text"].update(
+            summon_condition_en="Summon: 1+ red spirit",
+            summon_en_source="manual",
+            summon_en_status="reviewed",
+        )
+    build(out, [as_document(ultimate)])
+    assert _details(out, "ultimate_details", "summon_condition_en") == {
+        ("Summon: 1+ red spirit", "manual", "reviewed")
+    }
+
+
+def test_missing_en_status_on_an_entry_is_an_error(tmp_path: Path) -> None:
+    data = _spirit()
+    del data["page"]["entries"][0]["en_status"]
+    with pytest.raises(KeyError, match="en_status"):
+        build(tmp_path / "x.db", [as_document(data)])

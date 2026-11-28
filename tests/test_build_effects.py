@@ -107,3 +107,16 @@ def test_missing_level_duplicate_position_and_keywords(tmp_path: Path) -> None:
         " ON w.id = x.keyword_id",
     ) == [("mirage", "コスト2(1)")]
     assert query(out, "SELECT count(*) FROM card_effect_levels")[0][0] == 2
+
+
+def test_timing_en_is_read_when_present(tmp_path: Path) -> None:
+    data = golden_json("card_spirit_header_timing")
+    out = tmp_path / "x.db"
+    build(out, [as_document(data)])
+    assert query(out, "SELECT count(*) FROM card_effects WHERE timing_en IS NOT NULL") == [(0,)]
+    effects = data["page"]["entries"][0]["text"]["effects"]
+    effects[0]["timing_en"] = "On Summon"
+    build(out, [as_document(data)])
+    assert query(out, "SELECT timing_en FROM card_effects WHERE timing_en IS NOT NULL") == [
+        ("On Summon",)
+    ]

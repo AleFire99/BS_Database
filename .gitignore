@@ -21,6 +21,6 @@ node_modules/
 /data/parsed/
 /data/cache/
 /data/models/
-/data/normalized/
+/data/normalized
 /data/review/
 /data/*.log

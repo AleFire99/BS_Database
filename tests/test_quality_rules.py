@@ -153,3 +153,13 @@ def test_the_range_boundaries_pass() -> None:
     conn.execute("UPDATE card_reductions SET count = 9")
     conn.execute("UPDATE card_levels SET cores = NULL, battle_points = NULL WHERE id = 1")
     assert [f for f in run_rules(conn) if f.id in {"Q014", "Q015", "Q016", "Q017", "Q018"}] == []
+
+
+def test_flavor_provenance_is_checked_apart_from_the_name() -> None:
+    conn = clean_db()
+    conn.execute("UPDATE cards SET flavor_en_status_id = 3")  # machine, no flavor text
+    (finding,) = [f for f in run_rules(conn) if f.id == "Q021"]
+    assert finding.examples == ("card flavor 1",)
+    conn = clean_db()
+    conn.execute("UPDATE cards SET flavor_text_en = 'A hound.', flavor_en_source_id = 3")
+    assert {f.id for f in run_rules(conn)} & {"Q020", "Q021", "Q022"} == {"Q020"}

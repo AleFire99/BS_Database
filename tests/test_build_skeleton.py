@@ -57,10 +57,10 @@ def test_schema_meta_and_checks(tmp_path: Path) -> None:
         "SELECT schema_version, data_version, built_at, source_snapshot, generator"
         " FROM schema_meta",
     )
-    assert (version, data, built, snapshot) == ("0.1.0", "dev", "2026-01-01T00:00:00Z", None)
+    assert (version, data, built, snapshot) == ("0.2.0", "dev", "2026-01-01T00:00:00Z", None)
     assert generator == __version__
     assert _rows(out, "PRAGMA foreign_key_check") == []
-    assert _rows(out, "PRAGMA user_version") == [(100,)]
+    assert _rows(out, "PRAGMA user_version") == [(200,)]
 
 
 def test_schema_version_text() -> None:
