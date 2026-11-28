@@ -42,7 +42,7 @@ jp,code,en,notes
 『アタック/ブロック時』,when_attacking_or_blocking,『When attacking or blocking』,
 『ブロック時』,when_blocking,『When blocking』,
 『破壊時』,when_destroyed,『When destroyed』,
-『系統：「皇獣」を持つ自分のスピリットのアタック時』,when_one_of_your_spirits_with_the_family_attacks,『When one of your Spirits with the family 「皇獣」 attacks』,provisional
+『系統：「皇獣」を持つ自分のスピリットのアタック時』,when_one_of_your_spirits_with_the_family_attacks,『When one of your Spirits with the family 「Emperor Beast」 attacks』,
 『召喚時』,when_summoned,『When summoned』,in-text only
 『このブレイヴの転醒時』,when_this_brave_is_rebirthed,『When this Brave is Rebirthed』,
 『このブレイヴの召喚時』,when_this_brave_is_summoned,『When this Brave is summoned』,
@@ -83,10 +83,10 @@ jp,code,en,notes
 『このスピリットの召喚/ブロック時』,when_this_spirit_is_summoned_or_blocks,『When this Spirit is summoned or blocks』,
 『このスピリットの召喚/破壊時』,when_this_spirit_is_summoned_or_destroyed,『When this Spirit is summoned or destroyed』,
 『このスピリットの召喚/転醒時』,when_this_spirit_is_summoned_or_rebirthed,『When this Spirit is summoned or Rebirthed』,in-text only
-『このスピリットの顕現時』,when_this_spirit_manifests,『When this Spirit Manifests』,provisional
-『このスピリットの顕現/アタック/ブロック時』,when_this_spirit_manifests_attacks_or_blocks,"『When this Spirit Manifests, attacks or blocks』",provisional
-『このスピリットの顕現/アタック時』,when_this_spirit_manifests_or_attacks,『When this Spirit Manifests or attacks』,provisional
-『このスピリットの顕現/破壊時』,when_this_spirit_manifests_or_is_destroyed,『When this Spirit Manifests or is destroyed』,provisional
+『このスピリットの顕現時』,when_this_spirit_manifests,『When this Spirit Manifests』,
+『このスピリットの顕現/アタック/ブロック時』,when_this_spirit_manifests_attacks_or_blocks,"『When this Spirit Manifests, attacks or blocks』",
+『このスピリットの顕現/アタック時』,when_this_spirit_manifests_or_attacks,『When this Spirit Manifests or attacks』,
+『このスピリットの顕現/破壊時』,when_this_spirit_manifests_or_is_destroyed,『When this Spirit Manifests or is destroyed』,
 『このスピリット/ブレイヴの召喚時』,when_this_spirit_or_brave_is_summoned,『When this Spirit or Brave is summoned』,in-text only
 『このスピリット/ネクサスの召喚/配置時』,when_this_spirit_or_nexus_is_summoned_or_placed,『When this Spirit or Nexus is summoned or placed』,in-text only
 『このスピリット/アルティメットの煌臨時』,when_this_spirit_or_ultimate_advents,『When this Spirit or Ultimate Advents』,in-text only

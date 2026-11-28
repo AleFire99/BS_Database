@@ -151,7 +151,7 @@ def test_every_normalized_timing_and_class_is_mapped(glossary: Glossary) -> None
         for entry in json.loads(path.read_text(encoding="utf-8"))["page"]["entries"]:
             if cls := entry["gameplay"].get("card_class_jp"):
                 seen.add(("card_classes", cls))
-            for effect in entry["text"]["effects"]:
+            for effect in (entry["text"] or {}).get("effects", []):
                 if effect["timing_jp"]:
                     seen.add(("timings", effect["timing_jp"]))
     assert seen
