@@ -159,3 +159,36 @@ class FakeCT2:
         if self.fail_on is not None and self.fail_on in source:
             raise RuntimeError("boom")
         return [_FakeHyp([[p.upper() for p in s]] * self.hypotheses) for s in source]
+
+
+class ScriptedEngine:
+    """A translator that answers from ``script`` (text -> output), else echoes the text.
+
+    A script value of ``None`` makes that text ``failed``; ``pending`` texts come back
+    ``pending``. Every call is recorded in ``calls``.
+    """
+
+    name = "scripted"
+
+    def __init__(
+        self,
+        script: Mapping[str, str | None] | None = None,
+        pending: frozenset[str] = frozenset(),
+    ) -> None:
+        self.script = dict(script or {})
+        self.pending = pending
+        self.calls: list[list[str]] = []
+
+    def translate(
+        self, texts: Sequence[str], *, src: Lang = "jp", tgt: Lang = "en"
+    ) -> list[TranslationResult]:
+        self.calls.append(list(texts))
+        out: list[TranslationResult] = []
+        for t in texts:
+            if t in self.pending:
+                out.append(TranslationResult(None, "pending", self.name))
+            elif t in self.script and self.script[t] is None:
+                out.append(TranslationResult(None, "failed", self.name))
+            else:
+                out.append(TranslationResult(self.script.get(t, t), "machine", self.name))
+        return out

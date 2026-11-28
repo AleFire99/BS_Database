@@ -11,7 +11,9 @@ The translator ([#94](https://github.com/AleFire99/BS_Database/issues/94), [ADR 
 | `quickmt` | `QuickMTTranslator`: the offline quickmt ja-en engine (CTranslate2 + SentencePiece, lazy imports) |
 | `cache` | `TranslationCache`: SQLite, keyed by (engine, src, tgt, sha256 of the text) |
 | `cached` | `CachedTranslator`: cache first, optional character budget, one INFO log line per call |
-| `factory` | `make_translator(settings)`: picks the engine |
+| `protect` | Term protection (#156): span masking, token validation, `GlossaryResolver`, restore |
+| `protected` | `ProtectedTranslator`: per-line batch, validation, sentence-split retry |
+| `factory` | `make_translator(settings, protect=None)`: picks the engine |
 
 ## Flow
 
@@ -81,7 +83,7 @@ The engine ([#102](https://github.com/AleFire99/BS_Database/issues/102)) runs th
 - Only `jp` to `en`; any other pair raises `ValueError`.
 - Deterministic decoding: beam size 5, one hypothesis, no sampling, one inference thread. Compute type `int8` (a constructor argument, not a setting). Texts go in batches of 32.
 - The model loads on the first non-empty call. SentencePiece encodes to pieces without BOS/EOS, `translate_batch` runs, and the target SentencePiece model decodes.
-- Nothing raises on engine errors. A load failure (missing or corrupt model, missing library) logs one WARNING and marks every text `failed`. A batch exception, a wrong number of hypotheses or an empty output marks only that batch (or text) `failed`. Blank text is `pending`.
+- Nothing raises on engine errors. A load failure (missing or corrupt model, missing library) logs one WARNING and marks every text `failed`. A batch exception, a wrong number of hypotheses, an empty output or a hypothesis that reaches the decoding limit (256 tokens, truncated) marks only that batch (or text) `failed`. Blank text is `pending`.
 - The libraries are typed with small private protocols and loaded with `importlib`, so mypy and CI do not need them.
 
 ### Setup
@@ -94,6 +96,17 @@ uvx --from huggingface_hub hf download quickmt/quickmt-ja-en --exclude "eole-mod
 ```
 
 About 410 MB. The flags `--exclude` and `--local-dir` were checked against `hf download --help`. The files `model.bin`, `src.spm.model` and `tgt.spm.model` must end up in `BSDB_MT_MODEL_DIR` (default `data/models/quickmt-ja-en`, git-ignored). Tests never download the model and never read a local one.
+
+## Term protection
+
+[ADR 0012](../adr/0012-english-text-term-protection-and-provenance.md), [#156](https://github.com/AleFire99/BS_Database/issues/156). `make_translator(settings, protect=ProtectionConfig(resolver, glyphs))` returns `ProtectedTranslator(CachedTranslator(QuickMTTranslator))`. Without `protect` nothing changes.
+
+- Per field: split on `\n`, mask each line (`【…】`, `《…》`, `〔…〕`, `『…』`, `「…」`, `系統：`, runs of two or more symbol glyphs become `<k0/>`, numbered per line), send all lines of all texts as one batch, validate, restore, rejoin.
+- A line is valid when the token multiset equals the one sent (order is free) and no marker residue is left. Quotes the model puts around a token (`"<k0/>"`, `「<k0/>」`) are always stripped, since the English is rendered with the source brackets, but only symmetric pairs. Tokens are lowercase only: `<K0/>` fails.
+- Restore keeps the source brackets around the English (`【Double Symbol】`). `「…」` is the family English, else the card name map, else the romanised Japanese, only for name-like text (no `。`, no space, at most 20 characters; anything else keeps its Japanese) and counted as unresolved (`pykakasi` from the `mt` group, imported lazily; the `romanise` argument of `GlossaryResolver` is injectable, default identity). A span the glossaries do not know keeps its Japanese: the field does not fail, and the INFO line counts them (`unresolved=`).
+- Retry: a bad line with several sentences is split after each `。` and the sentences are translated in one second batch (decoding is deterministic, so repeating the same input would change nothing). `。` inside a bracket span is never a boundary. `。` inside a bracket span is never a boundary. A single sentence fails at once. A line that still fails makes the whole field `failed`, never partial text.
+- The engine name is `quickmt-ja-en+prot1` (`PROTECTION_VERSION`); bump it on any rule change. The cache sits below protection and stores engine output per masked line, so glossary or name-map edits apply without re-translating.
+- `pykakasi` is GPL-3.0-or-later; see the release epic [#14](https://github.com/AleFire99/BS_Database/issues/14).
 
 ## Third-party models
 

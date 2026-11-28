@@ -5,7 +5,8 @@ Needs the optional ``mt`` dependency group (``uv sync --group mt``) and the mode
 lazily, so the module imports without them and CI never needs them.
 
 Decoding is deterministic: beam search, one hypothesis, no sampling, one inference thread.
-Nothing here raises on engine errors: a load failure marks every text ``failed`` (one
+A text whose hypothesis reaches ``max_decoding_length`` was truncated and is ``failed``
+(ADR 0012). Nothing here raises on engine errors: a load failure marks every text ``failed`` (one
 WARNING), a batch failure marks only that batch.
 """
 
@@ -114,7 +115,14 @@ class QuickMTTranslator:
             )
             if len(results) != len(batch) or any(len(r.hypotheses) != 1 for r in results):
                 raise ValueError(f"expected {len(batch)} single hypotheses, got {len(results)}")
-            return [models.tgt_spm.decode(r.hypotheses[0]).strip() for r in results]
+            # a hypothesis as long as the limit was cut off: empty text means ``failed``
+            limit = self._max_decoding_length
+            return [
+                ""
+                if len(r.hypotheses[0]) >= limit
+                else models.tgt_spm.decode(r.hypotheses[0]).strip()
+                for r in results
+            ]
         except Exception as exc:  # noqa: BLE001 - a bad batch must not stop the run
             log.warning("quickmt batch of %d failed (%s)", len(batch), type(exc).__name__)
             return None

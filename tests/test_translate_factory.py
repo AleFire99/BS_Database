@@ -3,8 +3,15 @@ from pathlib import Path
 
 import pytest
 
+from bs_database.glossary import Glossary
 from bs_database.settings import Settings
-from bs_database.translate import NullTranslator, make_translator
+from bs_database.translate import (
+    GlossaryResolver,
+    NullTranslator,
+    ProtectedTranslator,
+    ProtectionConfig,
+    make_translator,
+)
 from bs_database.translate.cached import CachedTranslator
 from bs_database.translate.quickmt import MODEL_FILES
 
@@ -57,3 +64,23 @@ def test_model_and_libraries_give_cached_quickmt(
     t = make_translator(Settings(data_dir=tmp_path / "data", mt_model_dir=model), max_chars=10)
     assert isinstance(t, CachedTranslator)
     assert t.name == "quickmt-ja-en"
+
+
+def _protect() -> ProtectionConfig:
+    glossary = Glossary(entries={}, legacy_family_aliases=())
+    return ProtectionConfig(GlossaryResolver(glossary), ("赤",))
+
+
+def test_protect_wraps_the_cached_engine(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    model = _model(tmp_path)
+    monkeypatch.setattr("bs_database.translate.factory.find_spec", lambda name: object())
+    s = Settings(data_dir=tmp_path / "data", mt_model_dir=model)
+    t = make_translator(s, protect=_protect())
+    assert isinstance(t, ProtectedTranslator)
+    assert t.name == "quickmt-ja-en+prot1"
+    assert not isinstance(make_translator(s), ProtectedTranslator)
+
+
+def test_protect_leaves_null_alone(tmp_path: Path) -> None:
+    s = Settings(data_dir=tmp_path, mt_model_dir=tmp_path / "nope")
+    assert isinstance(make_translator(s, protect=_protect()), NullTranslator)

@@ -107,6 +107,14 @@ flowchart LR
   - Every rule change bumps the engine name and invalidates cached results.
 - Follow-up work: [#155](https://github.com/AleFire99/BS_Database/issues/155) (glossary), [#156](https://github.com/AleFire99/BS_Database/issues/156) (protection layer), [#158](https://github.com/AleFire99/BS_Database/issues/158) (schema), [#162](https://github.com/AleFire99/BS_Database/issues/162) (architecture docs).
 
+## Amendments
+
+Recorded with the implementation of [#156](https://github.com/AleFire99/BS_Database/issues/156), at the owner's Gate B decision of 2026-11-28. They clarify decisions 3 and 5; nothing else changes.
+
+- **Retry (decision 5).** "One retry per failed line" means: split the failed line after each `。` and translate the sentences as one second batch, numbering the placeholders again per sentence. Decoding is deterministic, so repeating the same input would give the same output. A line with a single sentence fails at once. If any sentence still fails, the whole field is `failed`.
+- **Rendering (decision 3).** The canonical English keeps the source brackets (`【Duel】`, `《…》`, `〔…〕`, `『…』`, `「…」`). A span the glossaries do not know keeps its Japanese inside the brackets; the field does not fail, and the translator logs how many spans were unresolved. `系統：` becomes `Family:` and a run of symbol glyphs becomes the glyphs' English joined by spaces.
+- **Romanisation (decision 4).** Names missing from the family glossary and the card name map are romanised with `pykakasi`, an optional dependency of the `mt` group (GPL-3.0-or-later, to be handled by the release epic [#14](https://github.com/AleFire99/BS_Database/issues/14)).
+
 ## Links
 
 - Issue: [#154](https://github.com/AleFire99/BS_Database/issues/154), epic [#147](https://github.com/AleFire99/BS_Database/issues/147)
