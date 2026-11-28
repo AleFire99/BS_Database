@@ -10,18 +10,23 @@ from pathlib import Path
 
 from bs_database.ingest.atomic import atomic_write
 from bs_database.review.build import (
+    CLASS_COLUMNS,
     FAMILY_COLUMNS,
     KEYWORD_COLUMNS,
     LEGACY_COLUMNS,
+    TIMING_COLUMNS,
     FamilyRow,
     KeywordRow,
     Review,
+    TimingRow,
 )
 
 REVIEW_MD = "review.md"
 FAMILIES_CSV = "families.csv"
 KEYWORDS_CSV = "keywords.csv"
 LEGACY_CSV = "family_legacy_en.csv"
+TIMINGS_CSV = "timings.csv"
+CLASSES_CSV = "card_classes.csv"
 NO_LEGACY_SAMPLE = 20
 
 
@@ -66,6 +71,14 @@ def _keyword_status(k: KeywordRow) -> str:
     if k.fandom_title:
         return f"new: from fandom ({k.fandom_title})"
     return "new: needs code and EN"
+
+
+def _closed_status(r: TimingRow) -> str:
+    if not r.known:
+        return "new: needs EN" if r.in_timing_jp else "new: not in timing_jp, needs EN"
+    if not r.in_timing_jp:
+        return "known: not in timing_jp"
+    return "known"
 
 
 def source_summary(review: Review) -> str:
@@ -121,6 +134,24 @@ def render_markdown(review: Review) -> str:
         keyword_table,
         "No machine proposals: the owner writes the English names.",
     )
+    timing_table = _table(
+        ["JP", "Cards", "Code", "EN", "Status"],
+        [[t.jp, t.cards, t.code, t.en, _closed_status(t)] for t in review.timings],
+        right=1,
+    )
+    lines += _section(
+        "Timings",
+        len(review.timings),
+        timing_table,
+        "Every effect `timing_jp` and every timing-like `『…』` span of the effect text. "
+        "No machine proposals: the owner writes the English.",
+    )
+    class_table = _table(
+        ["JP", "Cards", "Code", "EN", "Status"],
+        [[c.jp, c.cards, c.code, c.en, _closed_status(c)] for c in review.classes],
+        right=1,
+    )
+    lines += _section("Card classes", len(review.classes), class_table)
     if review.with_fandom:
         rarity_table = _table(
             ["Fandom JP", "Letter", "EN", "batspi rarity", "Printings"],
@@ -199,13 +230,15 @@ def render_csv(header: Sequence[str], rows: Sequence[Sequence[str]]) -> str:
 
 
 def write_review(out_dir: Path, review: Review) -> list[Path]:
-    """Write the Markdown and the three CSV files into ``out_dir``; returns their paths."""
+    """Write the Markdown and the five CSV files into ``out_dir``; returns their paths."""
     out_dir.mkdir(parents=True, exist_ok=True)
     files = {
         REVIEW_MD: render_markdown(review),
         FAMILIES_CSV: render_csv(FAMILY_COLUMNS, review.family_csv),
         KEYWORDS_CSV: render_csv(KEYWORD_COLUMNS, review.keyword_csv),
         LEGACY_CSV: render_csv(LEGACY_COLUMNS, review.legacy_csv),
+        TIMINGS_CSV: render_csv(TIMING_COLUMNS, review.timing_csv),
+        CLASSES_CSV: render_csv(CLASS_COLUMNS, review.class_csv),
     }
     paths = []
     for name, text in files.items():

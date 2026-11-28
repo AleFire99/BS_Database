@@ -13,10 +13,12 @@ from bs_database.review.build import Review, build_review, slugify
 from bs_database.review.corpus import NO_PRODUCT_CODE, collect_corpus, product_prefix
 from bs_database.review.legacy import link_families
 from bs_database.review.render import (
+    CLASSES_CSV,
     FAMILIES_CSV,
     KEYWORDS_CSV,
     LEGACY_CSV,
     REVIEW_MD,
+    TIMINGS_CSV,
     cell,
     render_markdown,
     write_review,
@@ -298,7 +300,14 @@ def test_write_review_files_are_deterministic_and_loadable_as_csv(tmp_path: Path
     entries, legacy = strong_cards("甲", "Alpha")
     review = make_review([page(entries)], legacy)
     paths = write_review(tmp_path / "out", review)
-    assert [p.name for p in paths] == [REVIEW_MD, FAMILIES_CSV, KEYWORDS_CSV, LEGACY_CSV]
+    assert [p.name for p in paths] == [
+        REVIEW_MD,
+        FAMILIES_CSV,
+        KEYWORDS_CSV,
+        LEGACY_CSV,
+        TIMINGS_CSV,
+        CLASSES_CSV,
+    ]
     first = [p.read_bytes() for p in paths]
     write_review(tmp_path / "out", review)
     assert [p.read_bytes() for p in paths] == first
@@ -391,3 +400,78 @@ def test_markdown_lists_no_legacy_count_sample_and_copy_notes() -> None:
     assert "n-19" in text
     assert "n-20" not in text
     assert "together" in text
+
+
+def timing_card(
+    number: str, timing: str | None, text: str, card_class: str | None = None
+) -> dict[str, Any]:
+    return {
+        "number": number,
+        "gameplay": {"families": [], "card_class_jp": card_class},
+        "text": {"effects": [{"keywords": [], "timing_jp": timing, "text_jp": text}]},
+    }
+
+
+def timing_review(
+    timing_rows: list[Any] | None = None, class_rows: list[Any] | None = None
+) -> Review:
+    cards = [
+        timing_card("a-1", "『このスピリットの召喚時』", "x", "契約"),
+        timing_card(
+            "a-2", "『このスピリットの召喚時』", "『このスピリット/ブレイヴの召喚時』y", "契約"
+        ),
+        timing_card(
+            "a-3", None, "『アタックステップ』と『創世書記』と『ブロックできない』", "トークン"
+        ),
+        timing_card("a-4", "『自分のターン』", "『このスピリットの召喚時』"),
+    ]
+    corpus = collect_corpus([page(cards)])
+    link = link_families(corpus.card_families, {})
+    return build_review(corpus, link, [], [], [], [], None, timing_rows or [], class_rows or [])
+
+
+def test_corpus_counts_timings_in_text_spans_and_classes() -> None:
+    corpus = collect_corpus(
+        [page([timing_card("a-1", "『このスピリットの召喚時』", "『x時』『書記』")])]
+    )
+    assert dict(corpus.timing_cards) == {"『このスピリットの召喚時』": 1}
+    assert dict(corpus.intext_timing_cards) == {"『x時』": 1}
+    review = timing_review()
+    assert {t.jp: t.cards for t in review.timings} == {
+        "『このスピリットの召喚時』": 2,
+        "『このスピリット/ブレイヴの召喚時』": 1,
+        "『アタックステップ』": 1,
+        "『自分のターン』": 1,
+    }
+    assert {c.jp: c.cards for c in review.classes} == {"契約": 2, "トークン": 1}
+
+
+def test_in_text_only_spans_are_flagged_and_titles_ignored() -> None:
+    review = timing_review()
+    flags = {t.jp: t.in_timing_jp for t in review.timings}
+    assert flags["『このスピリットの召喚時』"] is True
+    assert flags["『アタックステップ』"] is False
+    assert "『創世書記』" not in flags
+    seed = {r[0]: r for r in review.timing_csv}
+    assert seed["『アタックステップ』"] == ("『アタックステップ』", "", "", "in-text only")
+    assert seed["『自分のターン』"][3] == ""
+    text = render_markdown(review)
+    assert "## Timings (4)" in text
+    assert "new: not in timing_jp, needs EN" in text
+    assert "## Card classes (2)" in text
+
+
+def test_timing_seed_keeps_curated_rows_and_slugs_codes() -> None:
+    rows = [{"jp": "『自分のターン』", "code": "", "en": "『During your turn』", "notes": "p"}]
+    review = timing_review(
+        rows, [{"jp": "契約", "code": "contract", "en": "Contract", "notes": ""}]
+    )
+    seed = {r[0]: r for r in review.timing_csv}
+    assert seed["『自分のターン』"] == (
+        "『自分のターン』",
+        "during_your_turn",
+        "『During your turn』",
+        "p",
+    )
+    assert {c[0]: c for c in review.class_csv}["契約"] == ("契約", "contract", "Contract", "")
+    assert [t.known for t in review.timings if t.jp == "『自分のターン』"] == [True]

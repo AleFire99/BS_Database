@@ -19,6 +19,8 @@ MINIMAL: dict[str, str] = {
     "variants": f"{H}\n,normal,Normal,\nSECRETあり,secret,Secret,\n",
     "product_types": f"{H}\n,booster,Booster,\n,starter,Starter,\n",
     "keywords": f"{H}\n激突,clash,,\nミラージュ,mirage,Mirage,\n",
+    "timings": f"{H}\n『アタック時』,when_attacking,『When attacking』,\n",
+    "card_classes": f"{H}\n契約,contract,Contract,\nトークン,token,Token,\n",
     "families": f"{H},aliases_en,no_split\nA・B,,,,,1\n爬獣,,Reptile Beast,,Rep,\n",
     "family_legacy_en": (
         "legacy_en,preferred_en,jp,notes\nRebirth,Reptile Beast,爬獣,\nSky,Fang,,\n"
@@ -279,3 +281,35 @@ def test_keyword_unsorted(tmp_path: Path) -> None:
 def test_keyword_bad_header(tmp_path: Path) -> None:
     errs = errors_of(tmp_path, product_name_keywords="code,keyword,notes\n")
     assert any("product_name_keywords.csv:1: header" in e for e in errs)
+
+
+@pytest.mark.parametrize("kind", ["timings", "card_classes"])
+class TestClosedKinds:
+    def test_loads_and_looks_up(self, tmp_path: Path, kind: str) -> None:
+        g = load_glossary(make(tmp_path))
+        row = g.entries[kind][0]
+        assert g.lookup(kind, row.jp) == row
+        assert row.en
+
+    def test_missing_file(self, tmp_path: Path, kind: str) -> None:
+        make(tmp_path)
+        (tmp_path / f"{kind}.csv").unlink()
+        with pytest.raises(GlossaryError, match=rf"{kind}.csv:0: missing file"):
+            load_glossary(tmp_path)
+
+    def test_empty_en(self, tmp_path: Path, kind: str) -> None:
+        errs = errors_of(tmp_path, **{kind: f"{H}\nx,a,,\n"})
+        assert f"{kind}.csv:2: empty en" in errs
+
+    def test_duplicate_jp_and_code(self, tmp_path: Path, kind: str) -> None:
+        errs = errors_of(tmp_path, **{kind: f"{H}\nx,a,A,\nx,a,B,\n"})
+        assert f"{kind}.csv:3: duplicate jp 'x'" in errs
+        assert f"{kind}.csv:3: duplicate code 'a'" in errs
+
+    def test_unsorted(self, tmp_path: Path, kind: str) -> None:
+        errs = errors_of(tmp_path, **{kind: f"{H}\nx,b,B,\ny,a,A,\n"})
+        assert f"{kind}.csv:3: rows not sorted by code" in errs
+
+    def test_needs_a_row(self, tmp_path: Path, kind: str) -> None:
+        errs = errors_of(tmp_path, **{kind: f"{H}\n"})
+        assert f"{kind}.csv: a closed kind needs at least one row" in errs

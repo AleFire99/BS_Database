@@ -9,6 +9,11 @@ from bs_database.review.legacy import link_families
 from bs_database.review.source import iter_pages, load_legacy_families, read_csv_rows
 
 
+def _optional_rows(path: Path) -> list[dict[str, str]]:
+    """The rows of a glossary CSV, ``[]`` while the file does not exist yet."""
+    return read_csv_rows(path) if path.is_file() else []
+
+
 def run_review(
     normalized_dir: Path,
     glossary_dir: Path,
@@ -30,4 +35,6 @@ def run_review(
         read_csv_rows(glossary_dir / "family_legacy_en.csv"),
         read_csv_rows(glossary_dir / "product_code_prefixes.csv"),
         load_names(fandom_path) if fandom_path is not None else None,
+        _optional_rows(glossary_dir / "timings.csv"),
+        _optional_rows(glossary_dir / "card_classes.csv"),
     )

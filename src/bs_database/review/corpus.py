@@ -6,6 +6,8 @@ from dataclasses import dataclass, field
 from typing import Any
 
 NO_PRODUCT_CODE = ""
+_BRACKETED = re.compile(r"『[^』]*』")
+_TIMING_LIKE = re.compile(r"(?:時|ステップ|中|後)』$")
 
 
 @dataclass(frozen=True, slots=True)
@@ -30,6 +32,9 @@ class Corpus:
     (``NO_PRODUCT_CODE`` for printings without one). ``rarity_printings`` counts printings per
     batspi ``rarity_jp``. ``untyped`` maps a product name to ``(printings, products)`` for
     the printings no type rule resolved (``products`` counts distinct product codes).
+    ``timing_cards`` counts distinct card numbers per effect ``timing_jp`` (brackets kept),
+    ``intext_timing_cards`` per timing-like ``『…』`` span inside an effect's text (ends in
+    時, ステップ, 中 or 後; a book title does not), ``class_cards`` per ``card_class_jp``.
     """
 
     card_families: Mapping[str, frozenset[str]]
@@ -40,6 +45,9 @@ class Corpus:
     products: Mapping[str, ProductStat]
     rarity_printings: Mapping[str, int] = field(default_factory=dict)
     untyped: Mapping[str, tuple[int, int]] = field(default_factory=dict)
+    timing_cards: Mapping[str, int] = field(default_factory=dict)
+    intext_timing_cards: Mapping[str, int] = field(default_factory=dict)
+    class_cards: Mapping[str, int] = field(default_factory=dict)
 
 
 def product_prefix(product_code: str) -> str:
@@ -67,6 +75,9 @@ class _Builder:
         self.rarities: dict[str, int] = {}
         self.untyped_printings: dict[str, int] = {}
         self.untyped_codes: dict[str, set[str]] = {}
+        self.timing_cards: dict[str, set[str]] = {}
+        self.intext_cards: dict[str, set[str]] = {}
+        self.class_cards: dict[str, set[str]] = {}
 
     def add_entry(self, entry: dict[str, Any]) -> None:
         number: str = entry["number"]
@@ -78,7 +89,14 @@ class _Builder:
                 self.machine.setdefault(f["jp"], f["en"])
         for left, right in zip(families, families[1:], strict=False):
             self.pairs.setdefault((left, right), set()).add(number)
+        if card_class := entry["gameplay"].get("card_class_jp"):
+            self.class_cards.setdefault(card_class, set()).add(number)
         for effect in (entry.get("text") or {}).get("effects", []):
+            if timing := effect.get("timing_jp"):
+                self.timing_cards.setdefault(timing, set()).add(number)
+            for span in _BRACKETED.findall(effect.get("text_jp") or ""):
+                if _TIMING_LIKE.search(span):
+                    self.intext_cards.setdefault(span, set()).add(number)
             for keyword in effect["keywords"]:
                 self.keyword_cards.setdefault(keyword["name_jp"], set()).add(number)
 
@@ -120,6 +138,9 @@ class _Builder:
                 name: (count, len(self.untyped_codes[name]))
                 for name, count in self.untyped_printings.items()
             },
+            {jp: len(n) for jp, n in self.timing_cards.items()},
+            {jp: len(n) for jp, n in self.intext_cards.items()},
+            {jp: len(n) for jp, n in self.class_cards.items()},
         )
 
 

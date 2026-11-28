@@ -10,7 +10,14 @@ from typer.testing import CliRunner
 
 from bs_database.cli import app
 from bs_database.normalize.pipeline import normalize_tree
-from bs_database.review.render import FAMILIES_CSV, KEYWORDS_CSV, LEGACY_CSV, REVIEW_MD
+from bs_database.review.render import (
+    CLASSES_CSV,
+    FAMILIES_CSV,
+    KEYWORDS_CSV,
+    LEGACY_CSV,
+    REVIEW_MD,
+    TIMINGS_CSV,
+)
 from bs_database.review.source import iter_pages
 from bs_database.translate import NullTranslator
 
@@ -34,9 +41,12 @@ def test_review_writes_tables_and_csvs(data_dir: Path, tmp_path: Path) -> None:
     result = runner.invoke(app, ["glossary", "review", "--legacy-db", str(legacy)])
     assert result.exit_code == 0, result.output
     out = data_dir / "review"
-    for name in (REVIEW_MD, FAMILIES_CSV, KEYWORDS_CSV, LEGACY_CSV):
+    for name in (REVIEW_MD, FAMILIES_CSV, KEYWORDS_CSV, LEGACY_CSV, TIMINGS_CSV, CLASSES_CSV):
         assert (out / name).is_file()
-    assert "## Families (" in (out / REVIEW_MD).read_text(encoding="utf-8")
+    text = (out / REVIEW_MD).read_text(encoding="utf-8")
+    assert "## Families (" in text
+    assert "## Timings (" in text
+    assert "## Card classes (" in text
     assert "Review: " in result.output
     assert (data_dir / "glossary" / "families.csv").read_bytes() == (
         GLOSSARY_DIR / "families.csv"

@@ -25,8 +25,21 @@ KINDS = (
     "product_types",
     "keywords",
     "families",
+    "timings",
+    "card_classes",
 )
-CLOSED = frozenset({"colors", "symbols", "card_types", "rarities", "variants", "product_types"})
+CLOSED = frozenset(
+    {
+        "colors",
+        "symbols",
+        "card_types",
+        "rarities",
+        "variants",
+        "product_types",
+        "timings",
+        "card_classes",
+    }
+)
 LEGACY_FILE = "family_legacy_en"
 PREFIX_FILE = "product_code_prefixes"
 KEYWORD_FILE = "product_name_keywords"
@@ -212,7 +225,7 @@ def _read_rows(path: Path, columns: tuple[str, ...], errors: list[str]) -> list[
 
 
 def _check_common(kind: str, rows: list[Row], errors: list[str]) -> None:
-    """Rules 3 to 8 shared by the eight kinds."""
+    """Rules 3 to 8 shared by every kind."""
     name = f"{kind}.csv"
     seen_jp: set[str] = set()
     seen_code: set[str] = set()
