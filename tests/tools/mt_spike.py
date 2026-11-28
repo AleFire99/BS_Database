@@ -27,17 +27,23 @@ from bs_database.translate.types import Translator
 
 SHORT_MAX = 100
 MAX_EXAMPLES = 8
+MAX_DIFF_EXAMPLES = 5
 BANDS = ((60, "<=60"), (150, "61-150"), (10**9, ">150"))
-OPEN_QUOTES = "\"'“‘「«"
-CLOSE_QUOTES = "\"'”’」»"
-# style -> (token for index i, regex with one group capturing the index)
-STYLES: dict[str, tuple[Callable[[int], str], str]] = {
-    "brk": (lambda i: f"⟦K{i}⟧", r"⟦\s*K\s*(\d+)\s*⟧"),
-    "xml": (lambda i: f"<k{i}/>", r"<\s*k\s*(\d+)\s*/\s*>"),
-    "tok": (lambda i: f"K{i}K", r"(?<![A-Za-z])K(\d+)K(?![A-Za-z])"),
-    "sq": (lambda i: f"[{i}]", r"\[\s*(\d+)\s*\]"),
+PAIRS = {'"': '"', "“": "”", "「": "」", "‘": "’"}
+# style -> (token for index i, regex with one group capturing the index, residue regex)
+STYLES: dict[str, tuple[Callable[[int], str], str, str]] = {
+    "brk": (lambda i: f"⟦K{i}⟧", r"⟦\s*K\s*(\d+)\s*⟧", r"[⟦⟧]"),
+    "xml": (lambda i: f"<k{i}/>", r"<\s*k\s*(\d+)\s*/\s*>", r"<\s*/?\s*k|/\s*>"),
+    "tok": (lambda i: f"K{i}K", r"K(\d+)K", r"K\d+|\d+K"),
+    "sq": (lambda i: f"[{i}]", r"\[\s*(\d+)\s*\]", r"\[\s*\d*|\d+\s*\]"),
 }
 STYLE_NAMES = ("raw", *STYLES)
+MODES = ("whole", "line")
+# (style, mode) combinations that are run; line mode only for the two best styles + baseline
+COMBOS = [
+    (st, m) for st in STYLE_NAMES for m in MODES if m == "whole" or st in ("raw", "brk", "xml")
+]
+GROUPS = ("all", "longest", "stratified")
 
 
 @dataclass(frozen=True)
@@ -47,6 +53,7 @@ class Sample:
     kind: str  # text | flavor | summon
     card_type: str
     text: str
+    group: str = "stratified"  # longest | stratified | flavor | summon
 
 
 def span_pattern(glyphs: Sequence[str] = ()) -> re.Pattern[str]:
@@ -87,28 +94,32 @@ class Check:
     lost: bool
     duplicated: bool
     foreign: bool
+    garbled: bool
     order_changed: bool
 
 
 def restore(out: str, style: str, spans: Sequence[str]) -> Check:
-    """Put the spans back, tolerating quotes and spaces around the tokens."""
-    rx = re.compile(
-        rf"(?:[{re.escape(OPEN_QUOTES)}]\s*)?(?:{STYLES[style][1]})(?:\s*[{re.escape(CLOSE_QUOTES)}])?"
-    )
+    """Put the spans back; strip only symmetric quote pairs around a token."""
+    tok, residue = STYLES[style][1], STYLES[style][2]
+    pair = re.compile(rf"([\"“「‘])\s*({tok})\s*([\"”」’])")
+    out = pair.sub(lambda m: m.group(2) if PAIRS[m.group(1)] == m.group(4) else m.group(0), out)
+    rx = re.compile(tok)
     found = [int(m.group(1)) for m in rx.finditer(out)]
     counts = Counter(found)
     valid = range(len(spans))
     lost = any(counts[i] == 0 for i in valid)
     duplicated = any(counts[i] > 1 for i in valid)
     foreign = any(i not in valid for i in counts)
+    garbled = re.search(residue, rx.sub("", out)) is not None
     order = [i for n, i in enumerate(found) if i in valid and i not in found[:n]]
     restored = rx.sub(lambda m: spans[int(m.group(1))] if int(m.group(1)) < len(spans) else "", out)
     return Check(
         restored,
-        not lost and not duplicated and not foreign,
+        not (lost or duplicated or foreign or garbled),
         lost,
         duplicated,
         foreign,
+        garbled,
         order != sorted(order),
     )
 
@@ -165,141 +176,356 @@ def draw_sample(
     rest = [t for t in sorted(texts) if t not in chosen]
     while len(chosen) < n_text and rest:
         chosen.append(rest.pop(rng.randrange(len(rest))))
-    out = [Sample("text", texts[t], t) for t in chosen]
+    longest_set = set(longest)
+    out = [
+        Sample("text", texts[t], t, "longest" if t in longest_set else "stratified") for t in chosen
+    ]
     flavors = sorted(found["flavor"])
     out += [
-        Sample("flavor", found["flavor"][t], t)
+        Sample("flavor", found["flavor"][t], t, "flavor")
         for t in rng.sample(flavors, min(n_flavor, len(flavors)))
     ]
-    out += [Sample("summon", found["summon"][t], t) for t in sorted(found["summon"])]
+    out += [Sample("summon", found["summon"][t], t, "summon") for t in sorted(found["summon"])]
     return out
 
 
 Counter_ = Callable[[str], int]
+STOPS = (".", "!", "?", '"', "”", ")", "]")
 
 
 def truncated(src: str, out: str, limit: int, count: Counter_ | None) -> bool:
     """Heuristic: token count at the decoding limit, or a long text with no final stop."""
     if count is not None and count(out) >= limit - 1:
         return True
-    return len(src) > 200 and not out.rstrip().endswith((".", "!", "?", '"', "”", ")", "]"))
+    return len(src) > 200 and not out.rstrip().endswith(STOPS)
+
+
+def source_repeats(src: str, size: int = 8) -> bool:
+    """True when the source itself repeats a ``size``-char run three or more times."""
+    grams = Counter(src[i : i + size] for i in range(max(0, len(src) - size + 1)))
+    return any(c >= 3 for c in grams.values())
+
+
+def repetition(src: str, out: str) -> bool:
+    """A word 3-gram that occurs 3+ times in the output while the source does not repeat."""
+    words = re.findall(r"[a-z0-9']+", out.lower())
+    grams = Counter(zip(words, words[1:], words[2:], strict=False))
+    return any(c >= 3 for c in grams.values()) and not source_repeats(src)
+
+
+def low_coverage(src: str, out: str, ratio: float = 0.6) -> bool:
+    """Output has fewer sentences than ``ratio`` of the source lines/sentences."""
+    n_src = len([x for x in re.split(r"[。\n]", src) if x.strip()])
+    n_out = len([x for x in re.split(r"(?<=[.!?])\s+|\n", out) if x.strip()])
+    return n_src >= 2 and n_out < ratio * n_src
 
 
 @dataclass
-class StyleResult:
-    style: str
+class Tally:
+    """Counters of one result over one group of samples."""
+
     n: int = 0
     with_spans: int = 0
     survived: int = 0
     lost: int = 0
     duplicated: int = 0
     foreign: int = 0
+    garbled: int = 0
     order_changed: int = 0
     truncated: int = 0
+    repetition: int = 0
+    coverage: int = 0
     failed: int = 0
+
+
+@dataclass
+class Unit:
+    """One translated string: a whole sample, or one line of it in line mode."""
+
+    sample: int
+    src: str
+    masked: str
+    spans: list[str]
+
+
+@dataclass
+class ComboResult:
+    style: str
+    mode: str
+    tallies: dict[str, Tally] = field(default_factory=dict)
     s_short: float = 0.0
     s_long: float = 0.0
+    trunc512: int | None = None
     examples: list[dict[str, str]] = field(default_factory=list)
+    per_sample: list[dict[str, Any]] = field(default_factory=list)
 
 
-def run_style(
+def build_units(texts: Sequence[str], style: str, mode: str, pat: re.Pattern[str]) -> list[Unit]:
+    """Split (line mode) and mask the texts; empty lines are not translated."""
+    units: list[Unit] = []
+    for i, text in enumerate(texts):
+        parts = [text] if mode == "whole" else [x for x in text.split("\n") if x.strip()]
+        for part in parts:
+            masked, spans = mask(part, style, pat) if style != "raw" else (part, [])
+            units.append(Unit(i, part, masked, spans))
+    return units
+
+
+def translate_units(
+    units: Sequence[Unit],
+    texts: Sequence[str],
+    translator: Translator,
+    clock: Callable[[], float] = time.perf_counter,
+) -> tuple[list[list[str | None]], dict[bool, float]]:
+    """Translate units in one batch per sample length class; return outputs and s/text."""
+    outs: list[str | None] = [None] * len(units)
+    secs: dict[bool, float] = {True: 0.0, False: 0.0}
+    for short in (True, False):
+        idx = [k for k, u in enumerate(units) if (len(texts[u.sample]) <= SHORT_MAX) == short]
+        n_samples = len({units[k].sample for k in idx})
+        if not idx:
+            continue
+        t0 = clock()
+        got = translator.translate([units[k].masked for k in idx])
+        secs[short] = (clock() - t0) / n_samples
+        for k, r in zip(idx, got, strict=True):
+            outs[k] = r.text
+    per: list[list[str | None]] = [[] for _ in texts]
+    for u, o in zip(units, outs, strict=True):
+        per[u.sample].append(o)
+    return per, secs
+
+
+def score(
     style: str,
+    mode: str,
+    samples: Sequence[Sample],
+    units: Sequence[Unit],
+    per: list[list[str | None]],
+    limit: int,
+    count: Counter_ | None,
+) -> ComboResult:
+    """Score the translated units per sample and tally them by group."""
+    res = ComboResult(style, mode, {g: Tally() for g in GROUPS})
+    by_sample: dict[int, list[Unit]] = {}
+    for u in units:
+        by_sample.setdefault(u.sample, []).append(u)
+    for i, s in enumerate(samples):
+        outs = per[i]
+        ts = [res.tallies["all"], res.tallies.get(s.group, Tally())]
+        for t in ts:
+            t.n += 1
+        us = by_sample.get(i, [])
+        if not us or any(o is None for o in outs):
+            for t in ts:
+                t.failed += 1
+            res.per_sample.append({"bad": True, "out": None})
+            continue
+        checks = [
+            restore(o or "", style, u.spans) if style != "raw" else None
+            for u, o in zip(us, outs, strict=True)
+        ]
+        joined = "\n".join(
+            c.restored if c else (o or "") for c, o in zip(checks, outs, strict=True)
+        )
+        raw_joined = "\n".join(o or "" for o in outs)
+        spanned = any(u.spans for u in us)
+        flags = {
+            "truncated": any(
+                truncated(u.src, o or "", limit, count) for u, o in zip(us, outs, strict=True)
+            ),
+            "repetition": repetition(s.text, joined),
+            "coverage": low_coverage(s.text, joined),
+        }
+        real = [c for c in checks if c is not None]
+        survived = all(c.survived for c in real)
+        for t in ts:
+            for name, v in flags.items():
+                setattr(t, name, getattr(t, name) + v)
+            if spanned and style != "raw":
+                t.with_spans += 1
+                t.survived += survived
+                t.lost += any(c.lost for c in real)
+                t.duplicated += any(c.duplicated for c in real)
+                t.foreign += any(c.foreign for c in real)
+                t.garbled += any(c.garbled for c in real)
+                t.order_changed += any(c.order_changed for c in real)
+            elif spanned:
+                t.with_spans += 1
+        bad = (spanned and style != "raw" and not survived) or any(flags.values())
+        res.per_sample.append({"bad": bad, "out": raw_joined})
+        if spanned and style != "raw" and not survived and len(res.examples) < MAX_EXAMPLES:
+            res.examples.append(
+                {
+                    "source": "\n".join(u.masked for u in us),
+                    "output": raw_joined,
+                    "spans": " | ".join(sp for u in us for sp in u.spans),
+                }
+            )
+    return res
+
+
+def run_combo(
+    style: str,
+    mode: str,
     samples: Sequence[Sample],
     translator: Translator,
     pat: re.Pattern[str],
     limit: int,
     count: Counter_ | None,
     clock: Callable[[], float] = time.perf_counter,
-) -> StyleResult:
-    """Translate every sample under one style (timed per length class) and score it."""
-    masked = [(mask(s.text, style, pat) if style != "raw" else (s.text, [])) for s in samples]
-    outs: list[str | None] = [None] * len(samples)
-    res = StyleResult(style, n=len(samples))
-    for is_short in (True, False):
-        idx = [i for i, s in enumerate(samples) if (len(s.text) <= SHORT_MAX) == is_short]
-        if not idx:
-            continue
-        t0 = clock()
-        got = translator.translate([masked[i][0] for i in idx])
-        elapsed = (clock() - t0) / len(idx)
-        if is_short:
-            res.s_short = elapsed
-        else:
-            res.s_long = elapsed
-        for i, r in zip(idx, got, strict=True):
-            outs[i] = r.text
-    for s, (m, spans), out in zip(samples, masked, outs, strict=True):
-        if out is None:
-            res.failed += 1
-            continue
-        if truncated(s.text, out, limit, count):
-            res.truncated += 1
-        if style == "raw" or not spans:
-            continue
-        res.with_spans += 1
-        chk = restore(out, style, spans)
-        res.survived += chk.survived
-        res.lost += chk.lost
-        res.duplicated += chk.duplicated
-        res.foreign += chk.foreign
-        res.order_changed += chk.order_changed
-        if not chk.survived and len(res.examples) < MAX_EXAMPLES:
-            res.examples.append({"source": m, "output": out, "spans": " | ".join(spans)})
+) -> ComboResult:
+    """Translate every sample under one style and mode and score it."""
+    texts = [s.text for s in samples]
+    units = build_units(texts, style, mode, pat)
+    per, secs = translate_units(units, texts, translator, clock)
+    res = score(style, mode, samples, units, per, limit, count)
+    res.s_short, res.s_long = secs[True], secs[False]
     return res
+
+
+def whole_vs_line(
+    whole: ComboResult, line: ComboResult, samples: Sequence[Sample]
+) -> list[dict[str, str]]:
+    """Up to MAX_DIFF_EXAMPLES samples whose good/bad outcome differs between the modes."""
+    out: list[dict[str, str]] = []
+    for s, w, ln in zip(samples, whole.per_sample, line.per_sample, strict=True):
+        if w["bad"] != ln["bad"] and len(out) < MAX_DIFF_EXAMPLES:
+            out.append(
+                {
+                    "source": s.text,
+                    "whole": f"{'BAD' if w['bad'] else 'ok'}: {w['out']}",
+                    "line": f"{'BAD' if ln['bad'] else 'ok'}: {ln['out']}",
+                }
+            )
+    return out
 
 
 def compare_lengths(
     samples: Sequence[Sample],
+    pat: re.Pattern[str],
     make: Callable[[int], Translator],
     counts: Callable[[int], Counter_ | None],
     n: int = 20,
-) -> list[dict[str, Any]]:
-    """Re-run the n longest raw texts with decoding limits 256 and 512."""
+) -> dict[str, Any]:
+    """Re-run the n longest texts with limits 256 and 512; differing outputs = truncated."""
     longest = sorted((s.text for s in samples), key=lambda t: (-len(t), t))[:n]
     rows: list[dict[str, Any]] = [{"src_chars": len(t)} for t in longest]
-    for limit in (256, 512):
-        tr, count = make(limit), counts(limit)
-        for row, src, r in zip(rows, longest, tr.translate(longest), strict=True):
-            out = r.text or ""
-            row[f"out_chars_{limit}"] = len(out)
-            row[f"tokens_{limit}"] = count(out) if count else None
-            row[f"truncated_{limit}"] = truncated(src, out, limit, count)
-    return rows
+    differ: dict[str, int] = {}
+    for style, mode in COMBOS:
+        if style not in ("raw", "brk", "xml"):
+            continue
+        units = build_units(longest, style, mode, pat)
+        outs = {}
+        for limit in (256, 512):
+            per, _ = translate_units(units, longest, make(limit))
+            outs[limit] = ["\n".join(o or "" for o in p) for p in per]
+        differ[f"{style}/{mode}"] = sum(a != b for a, b in zip(outs[256], outs[512], strict=True))
+        if (style, mode) == ("raw", "whole"):
+            for limit in (256, 512):
+                count = counts(limit)
+                for row, src, out in zip(rows, longest, outs[limit], strict=True):
+                    row[f"out_chars_{limit}"] = len(out)
+                    row[f"tokens_{limit}"] = count(out) if count else None
+                    row[f"truncated_{limit}"] = truncated(src, out, limit, count)
+    return {"rows": rows, "differ": differ, "n": len(longest)}
 
 
 def pct(a: int, b: int) -> str:
-    return f"{a} ({100 * a / b:.1f}%)" if b else f"{a} (n/a)"
+    return f"{a} ({100 * a / b:.0f}%)" if b else f"{a} (n/a)"
+
+
+def _table(results: list[ComboResult], group: str, cmp: dict[str, Any] | None) -> list[str]:
+    head = (
+        "| style | mode | n | w/ spans | survived | lost | dup | foreign | garbled | order "
+        "| repetition | coverage | truncated |"
+    )
+    cols = 13
+    if cmp is not None:
+        head += " trunc-512 (of 20) | s/text short | s/text long |"
+        cols += 3
+    else:
+        head += " failed |"
+        cols += 1
+    lines = [head, "|" + " --- |" * cols]
+    for r in results:
+        t, w = r.tallies[group], r.tallies[group].with_spans
+        row = (
+            f"| {r.style} | {r.mode} | {t.n} | {w} | {pct(t.survived, w)} | {pct(t.lost, w)} "
+            f"| {pct(t.duplicated, w)} | {pct(t.foreign, w)} | {pct(t.garbled, w)} "
+            f"| {pct(t.order_changed, w)} | {pct(t.repetition, t.n)} | {pct(t.coverage, t.n)} "
+            f"| {pct(t.truncated, t.n)} |"
+        )
+        if cmp is not None:
+            d = cmp["differ"].get(f"{r.style}/{r.mode}")
+            row += f" {'-' if d is None else d} | {r.s_short:.3f} | {r.s_long:.3f} |"
+        else:
+            row += f" {t.failed} |"
+        lines.append(row)
+    return lines
 
 
 def write_report(
-    out: Path, meta: dict[str, Any], results: list[StyleResult], cmp: list[dict[str, Any]]
+    out: Path,
+    meta: dict[str, Any],
+    results: list[ComboResult],
+    cmp: dict[str, Any],
+    diffs: dict[str, list[dict[str, str]]],
 ) -> None:
     out.mkdir(parents=True, exist_ok=True)
-    payload = {"meta": meta, "styles": [r.__dict__ for r in results], "compare_256_512": cmp}
+    payload = {
+        "meta": meta,
+        "results": [r.__dict__ for r in results],
+        "compare_256_512": cmp,
+        "diffs": diffs,
+    }
+    payload["results"] = [{**r.__dict__, "per_sample": None} for r in results]
     (out / "results.json").write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+        json.dumps(payload, ensure_ascii=False, indent=2, default=lambda o: o.__dict__),
+        encoding="utf-8",
     )
     lines = [
         "# MT placeholder spike (#153)",
         "",
-        f"Sample: {meta['n_samples']} texts (seed {meta['seed']}), "
+        f"Sample: {meta['n_samples']} texts (seed {meta['seed']}), kinds {meta['kinds']}, "
         f"cold model load {meta['cold_load_s']:.1f} s.",
         "",
-        "| style | texts w/ spans | survival | lost | duplicated | foreign "
-        "| order changed | truncated | failed | s/text short | s/text long |",
-        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+        "Notes:",
+        "- The 20 longest texts are forced into the sample, so the *all* table over-weights long "
+        "texts; *longest* and *stratified* are reported separately below.",
+        "- Rates are over texts with spans (survival columns) or over all texts in the group "
+        "(repetition, coverage, truncated). Garbled = marker residue left after restoring. "
+        "Repetition and coverage are heuristics (3-gram x3; output sentences < 60% of source).",
+        "- Timing is per batch: each length class (short <= 100 chars, long) is translated as one "
+        "batch and divided by its text count; line mode divides by samples, not lines.",
+        "- trunc-512: of the 20 longest texts, how many outputs differ between decoding limits "
+        "256 and 512 (differ = truncated at 256).",
+        "",
+        "## All samples",
+        "",
+        *_table(results, "all", cmp),
+        "",
+        "## 20 longest (forced)",
+        "",
+        *_table(results, "longest", None),
+        "",
+        "## Stratified texts",
+        "",
+        *_table(results, "stratified", None),
     ]
-    for r in results:
-        w = r.with_spans
-        lines.append(
-            f"| {r.style} | {w} | {pct(r.survived, w)} | {pct(r.lost, w)} | {pct(r.duplicated, w)} "
-            f"| {pct(r.foreign, w)} | {pct(r.order_changed, w)} | {pct(r.truncated, r.n)} "
-            f"| {r.failed} | {r.s_short:.3f} | {r.s_long:.3f} |"
-        )
+    for key, exs in diffs.items():
+        if exs:
+            lines += ["", f"## Whole vs line differs: {key}", ""]
+            for ex in exs:
+                lines += [
+                    f"- source: `{ex['source']}`",
+                    f"  - whole: `{ex['whole']}`",
+                    f"  - line: `{ex['line']}`",
+                ]
     for r in results:
         if not r.examples:
             continue
-        lines += ["", f"## Failures: {r.style}", ""]
+        lines += ["", f"## Failures: {r.style}/{r.mode}", ""]
         for ex in r.examples:
             lines += [
                 f"- spans: `{ex['spans']}`",
@@ -314,7 +540,7 @@ def write_report(
         "| out chars 512 | tokens 512 | trunc 512 |",
         "| --- | --- | --- | --- | --- | --- | --- |",
     ]
-    for row in cmp:
+    for row in cmp["rows"]:
         lines.append(
             f"| {row['src_chars']} | {row['out_chars_256']} | {row['tokens_256']} "
             f"| {row['truncated_256']} "
@@ -351,9 +577,9 @@ def main(argv: list[str]) -> int:
     cold = time.perf_counter() - t0
     count = token_counter(tr)
     results = []
-    for style in STYLE_NAMES:
-        print(f"style {style} ...", flush=True)
-        results.append(run_style(style, samples, tr, pat, 256, count))
+    for style, mode in COMBOS:
+        print(f"style {style} {mode} ...", flush=True)
+        results.append(run_combo(style, mode, samples, tr, pat, 256, count))
     translators: dict[int, QuickMTTranslator] = {256: tr}
 
     def make(limit: int) -> QuickMTTranslator:
@@ -364,14 +590,20 @@ def main(argv: list[str]) -> int:
     def counts(limit: int) -> Counter_ | None:
         return token_counter(make(limit))
 
-    cmp = compare_lengths(samples, make, counts)
+    cmp = compare_lengths(samples, pat, make, counts)
+    for r in results:
+        r.trunc512 = cmp["differ"].get(f"{r.style}/{r.mode}")
+    by = {(r.style, r.mode): r for r in results}
+    diffs = {
+        st: whole_vs_line(by[st, "whole"], by[st, "line"], samples) for st in ("raw", "brk", "xml")
+    }
     meta = {
         "seed": args.seed,
         "n_samples": len(samples),
         "cold_load_s": cold,
         "kinds": dict(Counter(s.kind for s in samples)),
     }
-    write_report(args.out, meta, results, cmp)
+    write_report(args.out, meta, results, cmp, diffs)
     print(f"wrote {args.out}/report.md")
     return 0
 
